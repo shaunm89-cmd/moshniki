@@ -6,67 +6,112 @@
   <title>Moshniki • Budget</title>
   <style>
     :root{
-      --bg:#0b0f17; --panel:#121a2a; --panel2:#0f1626; --text:#e8eefc; --muted:#9fb0d0;
-      --line:#223152; --good:#37d67a; --bad:#ff5c70; --warn:#ffcc66; --accent:#6aa9ff;
-      --chip:#17223a;
-      --radius:14px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --bg0:#070a12; --bg1:#0b1020; --panel:#111a2c; --panel2:#0f1627;
+      --text:#e9efff; --muted:#9fb0d0; --line:#24365e;
+      --good:#3be37f; --bad:#ff5c74; --warn:#ffcc66; --accent:#6aa9ff;
+      --chip:#15213a;
+      --radius:16px;
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-    body{margin:0;background:linear-gradient(160deg,#070a11 0%, #0b1020 55%, #090d17 100%);color:var(--text);}
-    .wrap{max-width:1200px;margin:0 auto;padding:22px;}
-    header{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
-    .title{display:flex;flex-direction:column;gap:4px}
-    h1{margin:0;font-size:22px;letter-spacing:.3px}
-    .sub{color:var(--muted);font-size:13px}
-    .tabs{display:flex;gap:8px;flex-wrap:wrap}
-    .tab{
-      border:1px solid var(--line); background:transparent; color:var(--text);
-      padding:10px 12px;border-radius:999px; cursor:pointer; font-weight:700; font-size:13px;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 800px at 20% 0%, #0e1a3a 0%, transparent 60%),
+                  radial-gradient(900px 700px at 90% 10%, #1b2d5f 0%, transparent 55%),
+                  linear-gradient(160deg,var(--bg0) 0%, var(--bg1) 55%, #060912 100%);
+      color:var(--text);
     }
-    .tab.active{background:rgba(106,169,255,.18); border-color:rgba(106,169,255,.6);}
-    .grid{display:grid;grid-template-columns:1.4fr .6fr;gap:14px;margin-top:14px}
+    .wrap{max-width:1240px;margin:0 auto;padding:22px;}
+    header{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;}
+    .title{display:flex;flex-direction:column;gap:6px}
+    h1{margin:0;font-size:22px;letter-spacing:.3px}
+    .sub{color:var(--muted);font-size:13px;line-height:1.35}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .tab{
+      border:1px solid rgba(36,54,94,.9);
+      background:rgba(255,255,255,.02);
+      color:var(--text);
+      padding:10px 12px;border-radius:999px; cursor:pointer;
+      font-weight:900; font-size:13px;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+    }
+    .tab:hover{transform: translateY(-1px)}
+    .tab.active{background:rgba(106,169,255,.18); border-color:rgba(106,169,255,.7);}
+    .grid{display:grid;grid-template-columns:1.55fr .85fr;gap:14px;margin-top:14px}
     @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
-    .card{background:linear-gradient(180deg,var(--panel) 0%, var(--panel2) 100%); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);}
-    .card .hd{padding:14px 14px 10px;border-bottom:1px solid rgba(34,49,82,.6);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .card{
+      background:linear-gradient(180deg,rgba(17,26,44,.95) 0%, rgba(15,22,39,.95) 100%);
+      border:1px solid rgba(36,54,94,.9); border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .card .hd{
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(36,54,94,.65);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
     .card .hd h2{margin:0;font-size:16px}
     .card .bd{padding:14px}
     .btn{
-      border:1px solid var(--line); background:rgba(255,255,255,.03); color:var(--text);
-      padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:800; font-size:13px;
+      border:1px solid rgba(36,54,94,.9);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      padding:10px 12px; border-radius:14px;
+      cursor:pointer; font-weight:950; font-size:13px;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
     }
-    .btn.primary{border-color:rgba(106,169,255,.7); background:rgba(106,169,255,.15)}
-    .btn.danger{border-color:rgba(255,92,112,.7); background:rgba(255,92,112,.10)}
-    .btn.small{padding:7px 9px;border-radius:10px;font-size:12px}
+    .btn:hover{transform: translateY(-1px)}
+    .btn.primary{border-color:rgba(106,169,255,.85); background:rgba(106,169,255,.16)}
+    .btn.danger{border-color:rgba(255,92,116,.85); background:rgba(255,92,116,.10)}
+    .btn.good{border-color:rgba(59,227,127,.75); background:rgba(59,227,127,.10)}
+    .btn.small{padding:8px 10px;border-radius:12px;font-size:12px}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .chip{background:var(--chip);border:1px solid var(--line);padding:8px 10px;border-radius:999px;color:var(--muted);font-size:12px}
+    .chip{background:var(--chip);border:1px solid rgba(36,54,94,.9);padding:8px 10px;border-radius:999px;color:var(--muted);font-size:12px}
     input, select{
-      background:#0b1222; color:var(--text); border:1px solid var(--line);
-      padding:10px 10px; border-radius:12px; outline:none; width:100%;
+      background:#0b1222; color:var(--text);
+      border:1px solid rgba(36,54,94,.9);
+      padding:10px 10px; border-radius:14px; outline:none; width:100%;
     }
-    input:focus, select:focus{border-color:rgba(106,169,255,.7); box-shadow:0 0 0 4px rgba(106,169,255,.12)}
+    input:focus, select:focus{
+      border-color:rgba(106,169,255,.85);
+      box-shadow:0 0 0 4px rgba(106,169,255,.12)
+    }
+    label{display:block}
     .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     @media (max-width: 540px){ .two{grid-template-columns:1fr} }
     table{width:100%;border-collapse:collapse}
-    th, td{border-bottom:1px solid rgba(34,49,82,.5);padding:10px 8px;text-align:left;vertical-align:middle}
-    th{color:var(--muted);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.7px}
+    th, td{border-bottom:1px solid rgba(36,54,94,.55);padding:10px 8px;text-align:left;vertical-align:middle}
+    th{color:var(--muted);font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.7px}
     .money{text-align:right;font-variant-numeric: tabular-nums;}
     .muted{color:var(--muted)}
-    .pos{color:var(--good);font-weight:900}
-    .neg{color:var(--bad);font-weight:900}
-    .warn{color:var(--warn);font-weight:900}
+    .pos{color:var(--good);font-weight:950}
+    .neg{color:var(--bad);font-weight:950}
     .hidden{display:none}
     .kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .kpi .box{padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.15)}
-    .kpi .lbl{color:var(--muted);font-size:12px;font-weight:800}
-    .kpi .val{font-size:18px;font-weight:950;margin-top:6px}
+    .box{
+      padding:12px;border:1px solid rgba(36,54,94,.9);
+      border-radius:16px;background:rgba(0,0,0,.18)
+    }
+    .kpi .lbl{color:var(--muted);font-size:12px;font-weight:900}
+    .kpi .val{font-size:18px;font-weight:1000;margin-top:6px}
     .list{display:flex;flex-direction:column;gap:10px}
-    .note{color:var(--muted);font-size:12px;line-height:1.4}
-    .hr{height:1px;background:rgba(34,49,82,.6);margin:12px 0}
-    .pillbar{height:10px;background:rgba(255,255,255,.06);border:1px solid rgba(34,49,82,.6);border-radius:999px;overflow:hidden}
-    .pillbar > div{height:100%;background:rgba(106,169,255,.6)}
-    .right{justify-content:flex-end}
-    .nowrap{white-space:nowrap}
+    .note{color:var(--muted);font-size:12px;line-height:1.45}
+    .hr{height:1px;background:rgba(36,54,94,.65);margin:12px 0}
+    .pillbar{height:10px;background:rgba(255,255,255,.06);border:1px solid rgba(36,54,94,.7);border-radius:999px;overflow:hidden}
+    .pillbar > div{height:100%;background:rgba(106,169,255,.65)}
+    .statusDot{width:9px;height:9px;border-radius:999px;display:inline-block;margin-right:8px;background:#666}
+    .statusOk{background:rgba(59,227,127,.95)}
+    .statusOff{background:rgba(255,204,102,.95)}
+    .statusErr{background:rgba(255,92,116,.95)}
+    .toast{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      background:rgba(15,22,39,.92); border:1px solid rgba(36,54,94,.9);
+      padding:10px 12px; border-radius:14px; box-shadow: var(--shadow);
+      color:var(--text); font-size:13px; font-weight:900;
+      opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;
+    }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(-6px)}
   </style>
 </head>
 <body>
@@ -74,13 +119,19 @@
     <header>
       <div class="title">
         <h1>Moshniki • Personal Budget</h1>
-        <div class="sub">Local-only (saved in this browser). No logins, no servers.</div>
+        <div class="sub">
+          <span class="statusDot" id="syncDot"></span>
+          <span id="syncText">Local mode (not signed in)</span>
+          <div class="note">Sign in to sync across devices (home/work). Signed-out still works locally.</div>
+        </div>
       </div>
+
       <div class="tabs">
         <button class="tab active" data-tab="budget">Weekly Budget</button>
         <button class="tab" data-tab="debts">Debt Tracker</button>
         <button class="tab" data-tab="history">Archived Weeks</button>
         <button class="tab" data-tab="settings">Settings</button>
+        <button class="tab" data-tab="account">Account</button>
       </div>
     </header>
 
@@ -122,8 +173,8 @@
 
             <div class="two">
               <div>
-                <label class="muted">Pay day label (e.g. 7-Jan)</label>
-                <input id="paydayInput" placeholder="7-Jan">
+                <label class="muted">Payday (Wednesday)</label>
+                <input id="paydayInput" type="date">
               </div>
               <div>
                 <label class="muted">Income</label>
@@ -142,8 +193,8 @@
                 <input id="guiltInput" type="number" step="0.01" min="0">
               </div>
               <div>
-                <label class="muted">Quick note (optional)</label>
-                <input id="noteInput" placeholder="Birthday, bigger power bill, etc">
+                <label class="muted">Week note (optional)</label>
+                <input id="noteInput" placeholder="Birthday, bigger electricity bill, strata catch-up etc">
               </div>
             </div>
 
@@ -163,45 +214,44 @@
                   <tbody id="billsBody"></tbody>
                 </table>
                 <div class="row" style="margin-top:10px">
-                  <input id="newBillName" placeholder="Add bill name (e.g. Strata Rates)">
+                  <input id="newBillName" placeholder="Add bill name (e.g. Strata)">
                   <input id="newBillAmt" type="number" step="0.01" min="0" placeholder="0.00" style="max-width:180px">
                   <button class="btn primary" id="addBillBtn">Add</button>
                 </div>
               </div>
 
-              <div style="flex:0.9;min-width:260px">
+              <div style="flex:0.95;min-width:260px">
                 <h3 style="margin:0 0 8px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px">Breakdown</h3>
-                <div class="list">
-                  <div class="box" style="padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.15)">
-                    <div class="row" style="justify-content:space-between">
-                      <div class="muted">Bills total</div>
-                      <div class="money" id="billsTotal">$0.00</div>
-                    </div>
-                    <div class="row" style="justify-content:space-between;margin-top:8px">
-                      <div class="muted">Groceries + Guilt-free</div>
-                      <div class="money" id="spendTotal">$0.00</div>
-                    </div>
-                    <div class="row" style="justify-content:space-between;margin-top:8px">
-                      <div class="muted">Savings</div>
-                      <div class="money" id="savingsTotal">$0.00</div>
-                    </div>
-                    <div class="hr"></div>
-                    <div class="row" style="justify-content:space-between">
-                      <div class="muted">Leftover / Shortfall</div>
-                      <div class="money" id="diffLine">$0.00</div>
-                    </div>
-                    <div class="note" style="margin-top:8px">
-                      Tip: Instead of deleting columns like Excel, hit <b>Complete Week</b> to archive it and start a clean one.
-                    </div>
-                  </div>
 
-                  <div class="box" style="padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.15)">
-                    <div class="muted" style="font-weight:900;margin-bottom:6px">Week note</div>
-                    <div id="weekNote" class="note">—</div>
+                <div class="box">
+                  <div class="row" style="justify-content:space-between">
+                    <div class="muted">Bills total</div>
+                    <div class="money" id="billsTotal">$0.00</div>
                   </div>
-
-                  <button class="btn danger" id="resetWeekBtn">Reset this week</button>
+                  <div class="row" style="justify-content:space-between;margin-top:8px">
+                    <div class="muted">Groceries + Guilt-free</div>
+                    <div class="money" id="spendTotal">$0.00</div>
+                  </div>
+                  <div class="row" style="justify-content:space-between;margin-top:8px">
+                    <div class="muted">Savings</div>
+                    <div class="money" id="savingsTotal">$0.00</div>
+                  </div>
+                  <div class="hr"></div>
+                  <div class="row" style="justify-content:space-between">
+                    <div class="muted">Leftover / Shortfall</div>
+                    <div class="money" id="diffLine">$0.00</div>
+                  </div>
+                  <div class="note" style="margin-top:10px">
+                    Instead of deleting columns, hit <b>Complete Week</b> to archive it and start fresh.
+                  </div>
                 </div>
+
+                <div class="box" style="margin-top:10px">
+                  <div class="muted" style="font-weight:950;margin-bottom:6px">Week note</div>
+                  <div id="weekNote" class="note">—</div>
+                </div>
+
+                <button class="btn danger" id="resetWeekBtn" style="margin-top:10px;width:100%">Reset this week</button>
               </div>
             </div>
 
@@ -214,15 +264,20 @@
           </div>
           <div class="bd">
             <div class="list">
-              <button class="btn" id="clonePrevWeekBtn">Clone previous week (copy bills + defaults)</button>
+              <button class="btn" id="clonePrevWeekBtn">Clone previous week</button>
+
+              <div class="hr"></div>
+
               <button class="btn" id="exportBtn">Export data (JSON)</button>
               <label class="btn" style="display:block;text-align:center;cursor:pointer">
                 Import data (JSON)
                 <input id="importFile" type="file" accept="application/json" style="display:none">
               </label>
+
               <div class="hr"></div>
+
               <div class="note">
-                Everything is saved only in <b>this browser</b>. If you switch devices/browsers, export + import.
+                Cloud sync requires sign-in (Account tab). If you’re signed out, changes save locally only.
               </div>
             </div>
           </div>
@@ -252,8 +307,7 @@
           </div>
           <div class="bd">
             <div class="note">
-              Pick a debt on the left. This shows how long it takes with your chosen payment vs a “minimum payment”.
-              (You can set the minimum manually per debt.)
+              Select a debt. This compares your payment vs your manual “minimum payment”.
             </div>
             <div class="hr"></div>
             <div id="compareBox" class="hidden">
@@ -276,9 +330,8 @@
                 </div>
               </div>
               <div class="hr"></div>
-              <div class="muted" style="font-weight:900;margin-bottom:8px">Progress bar (rough)</div>
               <div class="pillbar"><div id="progressBar" style="width:0%"></div></div>
-              <div class="note" style="margin-top:8px" id="progressNote">—</div>
+              <div class="note" style="margin-top:8px" id="progressNote">Makes assumptions based on constant payment & interest.</div>
             </div>
             <div id="compareEmpty" class="note">Select a debt to see comparison.</div>
           </div>
@@ -297,7 +350,7 @@
         </div>
         <div class="bd">
           <div id="archiveList" class="list"></div>
-          <div class="note">Archive is useful because it shows how “random weeks” actually hit you over time.</div>
+          <div class="note">This is the “don’t lie to yourself” section 😄 — it shows what your real weeks look like.</div>
         </div>
       </div>
     </section>
@@ -333,29 +386,143 @@
       </div>
     </section>
 
+    <!-- ACCOUNT -->
+    <section id="tab-account" class="hidden">
+      <div class="grid">
+        <div class="card">
+          <div class="hd">
+            <h2>Sign in</h2>
+          </div>
+          <div class="bd">
+            <div class="list">
+              <button class="btn good" id="googleLoginBtn">Sign in with Google</button>
+
+              <div class="hr"></div>
+
+              <div class="two">
+                <div>
+                  <label class="muted">Email</label>
+                  <input id="emailInput" type="email" placeholder="you@email.com">
+                </div>
+                <div>
+                  <label class="muted">Password</label>
+                  <input id="passInput" type="password" placeholder="••••••••">
+                </div>
+              </div>
+
+              <div class="row">
+                <button class="btn primary" id="emailLoginBtn">Email login</button>
+                <button class="btn" id="emailSignupBtn">Create account</button>
+                <button class="btn danger" id="logoutBtn">Log out</button>
+              </div>
+
+              <div class="box">
+                <div class="note">
+                  <b>Cloud sync:</b> when signed in, your data is stored in Firestore under your UID and loads on any device.
+                  <br><br>
+                  If Google sign-in fails, check Firebase Auth → Authorized domains includes:
+                  <br>• <code>moshniki.com</code>
+                  <br>• <code>shaunm89-cmd.github.io</code>
+                </div>
+              </div>
+
+              <div class="box">
+                <div class="muted" style="font-weight:950;margin-bottom:6px">Signed-in user</div>
+                <div id="userLine" class="note">Not signed in.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <h2>Privacy</h2>
+          </div>
+          <div class="bd">
+            <div class="note">
+              Your Firebase config is public (that’s normal). Your data is protected by Firestore rules:
+              only your logged-in UID can read/write your doc.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
-<script>
-  // ===== Utilities =====
-  const money = (n) => {
-    const x = Number(n || 0);
-    return x.toLocaleString(undefined, { style:'currency', currency:'AUD' });
+  <div class="toast" id="toast">Saved</div>
+
+<script type="module">
+  // Firebase (CDN Modular SDK)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged,
+    GoogleAuthProvider, signInWithPopup,
+    signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import {
+    getFirestore, doc, setDoc, getDoc, onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+  // ✅ Your Firebase config (already inserted)
+  const firebaseConfig = {
+    apiKey: "AIzaSyA5No9QeHpYwJDblMFat_cK2gyVm_K1RtE",
+    authDomain: "moshniki.firebaseapp.com",
+    projectId: "moshniki",
+    storageBucket: "moshniki.firebasestorage.app",
+    messagingSenderId: "880440316288",
+    appId: "1:880440316288:web:23dc9806e2a6a6f3ce06b165".replace("a6a6","a6a6"), // no-op, keeps file stable
+    measurementId: "G-RC6L5FCXY0"
   };
+
+  // NOTE: appId above must match exactly. If you prefer, replace the line with the literal value:
+  // appId: "1:880440316288:web:23dc9806e2a6f3ce06b165",
+
+  // Initialize Firebase
+  const app = initializeApp({
+    apiKey: firebaseConfig.apiKey,
+    authDomain: firebaseConfig.authDomain,
+    projectId: firebaseConfig.projectId,
+    storageBucket: firebaseConfig.storageBucket,
+    messagingSenderId: firebaseConfig.messagingSenderId,
+    appId: "1:880440316288:web:23dc9806e2a6f3ce06b165",
+    measurementId: firebaseConfig.measurementId
+  });
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Utilities
+  const money = (n) => Number(n || 0).toLocaleString(undefined, { style:'currency', currency:'AUD' });
   const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
   const uid = () => Math.random().toString(16).slice(2)+Date.now().toString(16);
 
-  // ===== Storage =====
-  const KEY = "moshniki_budget_v1";
-  const load = () => {
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (!raw) return null;
-      return JSON.parse(raw);
-    } catch { return null; }
+  const addDays = (d, days) => { const x = new Date(d); x.setDate(x.getDate() + days); return x; };
+  const toISODate = (d) => new Date(d).toISOString().slice(0,10);
+  const formatPayday = (iso) => new Date(iso + "T00:00:00").toLocaleDateString(undefined, { weekday:"short", day:"numeric", month:"short", year:"numeric" });
+  const nextWednesdayISO = () => {
+    const now = new Date();
+    const day = now.getDay();
+    const target = 3; // Wed
+    let diff = (target - day + 7) % 7;
+    if (diff === 0) diff = 7;
+    return toISODate(addDays(now, diff));
   };
-  const save = () => localStorage.setItem(KEY, JSON.stringify(state));
+  function escapeHtml(str){
+    return String(str||"").replace(/[&<>"']/g, s => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" })[s]);
+  }
+  function toast(msg){
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(()=>t.classList.remove("show"), 1600);
+  }
 
-  // ===== Default Template =====
+  // Local fallback
+  const LOCAL_KEY = "moshniki_budget_v3";
+  const loadLocal = () => { try{ const r = localStorage.getItem(LOCAL_KEY); return r ? JSON.parse(r) : null; } catch { return null; } };
+  const saveLocal = () => localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
+
+  // Defaults
   const defaultBills = [
     { id: uid(), name: "Electricity", amount: 40 },
     { id: uid(), name: "Strata", amount: 85 },
@@ -364,10 +531,9 @@
     { id: uid(), name: "Mum's Internet & Phone", amount: 27.5 },
     { id: uid(), name: "Council", amount: 45 },
   ];
-
-  const makeWeek = (label="") => ({
+  const makeWeek = (paydayISO=null) => ({
     id: uid(),
-    paydayLabel: label || "",
+    paydayDate: paydayISO || nextWednesdayISO(),
     income: 886.12,
     savings: 300,
     groceries: 120,
@@ -376,37 +542,37 @@
     bills: JSON.parse(JSON.stringify(defaultBills)),
     createdAt: Date.now(),
   });
-
   const defaultState = {
-    settings: {
-      defaultIncome: 886.12,
-      defaultGroceries: 120,
-      defaultGuilt: 200,
-      defaultSavings: 300,
-    },
-    weeks: [ makeWeek("7-Jan") ],
+    settings: { defaultIncome: 886.12, defaultGroceries: 120, defaultGuilt: 200, defaultSavings: 300 },
+    weeks: [ makeWeek(nextWednesdayISO()) ],
     currentWeekIndex: 0,
     archive: [],
-    debts: [
-      // Example empty - user will add their own
-    ],
+    debts: [],
     selectedDebtId: null,
   };
 
-  let state = load() || defaultState;
+  let state = loadLocal() || defaultState;
 
-  // ===== Tabs =====
+  // Sync UI
+  const syncDot = document.getElementById("syncDot");
+  const syncText = document.getElementById("syncText");
+  const userLine = document.getElementById("userLine");
+
+  const setSyncStatus = (mode, text) => {
+    syncDot.className = "statusDot " + (mode==="ok" ? "statusOk" : mode==="err" ? "statusErr" : "statusOff");
+    syncText.textContent = text;
+  };
+
+  // Tabs
   const tabButtons = [...document.querySelectorAll(".tab")];
-  const tabs = ["budget","debts","history","settings"];
+  const tabs = ["budget","debts","history","settings","account"];
   const showTab = (name) => {
-    tabs.forEach(t => {
-      document.getElementById("tab-"+t).classList.toggle("hidden", t !== name);
-    });
+    tabs.forEach(t => document.getElementById("tab-"+t).classList.toggle("hidden", t !== name));
     tabButtons.forEach(b => b.classList.toggle("active", b.dataset.tab === name));
   };
   tabButtons.forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
 
-  // ===== Budget UI =====
+  // Budget UI refs
   const els = {
     weekLabel: document.getElementById("weekLabel"),
     paydayInput: document.getElementById("paydayInput"),
@@ -430,7 +596,6 @@
   };
 
   const currentWeek = () => state.weeks[state.currentWeekIndex];
-
   const calcWeek = (w) => {
     const bills = w.bills.reduce((a,b)=>a+Number(b.amount||0),0);
     const spend = Number(w.groceries||0) + Number(w.guilt||0);
@@ -440,20 +605,54 @@
     return { bills, spend, savings, out, diff };
   };
 
+  // Cloud sync
+  let currentUser = null;
+  let unsubscribeSnap = null;
+  let isApplyingRemote = false;
+  let saveTimer = null;
+
+  const userRef = (uid) => doc(db, "users", uid);
+
+  async function loadFromCloud(uid){
+    const ref = userRef(uid);
+    const snap = await getDoc(ref);
+    if (snap.exists()){
+      const data = snap.data();
+      if (data?.state){
+        state = data.state;
+        saveLocal();
+        render();
+      }
+    } else {
+      await setDoc(ref, { state, updatedAt: Date.now() }, { merge:true });
+    }
+  }
+
+  const scheduleSave = () => {
+    saveLocal();
+    if (!currentUser || isApplyingRemote) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(async () => {
+      try{
+        await setDoc(userRef(currentUser.uid), { state, updatedAt: Date.now() }, { merge:true });
+        setSyncStatus("ok", "Cloud sync enabled");
+      }catch(e){
+        console.error(e);
+        setSyncStatus("err", "Cloud save failed (check rules)");
+        toast("Cloud save failed ❌");
+      }
+    }, 600);
+  };
+
+  // Render bills
   const renderBills = (w) => {
     els.billsBody.innerHTML = "";
     w.bills.forEach(b => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>
-          <input data-bill-name="${b.id}" value="${escapeHtml(b.name)}" />
-        </td>
-        <td class="money">
-          <input data-bill-amt="${b.id}" type="number" step="0.01" min="0" value="${Number(b.amount||0)}" />
-        </td>
-        <td class="money nowrap">
-          <button class="btn small danger" data-bill-del="${b.id}">Delete</button>
-        </td>
+        <td><input data-bill-name="${b.id}" value="${escapeHtml(b.name)}" /></td>
+        <td class="money"><input data-bill-amt="${b.id}" type="number" step="0.01" min="0" value="${Number(b.amount||0)}" /></td>
+        <td class="money nowrap"><button class="btn small danger" data-bill-del="${b.id}">Delete</button></td>
       `;
       els.billsBody.appendChild(tr);
     });
@@ -463,7 +662,7 @@
         const id = e.target.getAttribute("data-bill-name");
         const bill = w.bills.find(x=>x.id===id);
         bill.name = e.target.value;
-        save();
+        scheduleSave();
       });
     });
 
@@ -472,7 +671,7 @@
         const id = e.target.getAttribute("data-bill-amt");
         const bill = w.bills.find(x=>x.id===id);
         bill.amount = Number(e.target.value||0);
-        save();
+        scheduleSave();
         render();
       });
     });
@@ -481,177 +680,18 @@
       btn.addEventListener("click", (e) => {
         const id = e.target.getAttribute("data-bill-del");
         w.bills = w.bills.filter(x=>x.id!==id);
-        save();
+        scheduleSave();
         render();
       });
     });
   };
 
-  const render = () => {
-    const w = currentWeek();
-    if (!w) return;
-
-    els.weekLabel.textContent = w.paydayLabel ? `Pay: ${w.paydayLabel}` : "Unnamed week";
-    els.paydayInput.value = w.paydayLabel || "";
-    els.incomeInput.value = Number(w.income||0);
-    els.savingsInput.value = Number(w.savings||0);
-    els.groceriesInput.value = Number(w.groceries||0);
-    els.guiltInput.value = Number(w.guilt||0);
-    els.noteInput.value = w.note || "";
-    els.weekNote.textContent = w.note?.trim() ? w.note : "—";
-
-    renderBills(w);
-
-    const c = calcWeek(w);
-    els.billsTotal.textContent = money(c.bills);
-    els.spendTotal.textContent = money(c.spend);
-    els.savingsTotal.textContent = money(c.savings);
-
-    const diffEl = els.diffLine;
-    diffEl.textContent = money(c.diff);
-    diffEl.className = "money " + (c.diff >= 0 ? "pos" : "neg");
-
-    els.kpiIncome.textContent = money(w.income);
-    els.kpiSavings.textContent = money(c.savings);
-    els.kpiOut.textContent = money(c.out);
-    els.kpiDiff.textContent = money(c.diff);
-    els.kpiDiff.className = "val " + (c.diff >= 0 ? "pos" : "neg");
-
-    renderArchive();
-    renderDebts();
-    renderSettings();
-  };
-
-  // Escape helper
-  function escapeHtml(str){
-    return String(str||"").replace(/[&<>"']/g, s => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    })[s]);
-  }
-
-  // Inputs binding
-  const bindWeekInput = (inputEl, key) => {
-    inputEl.addEventListener("input", (e) => {
-      const w = currentWeek();
-      w[key] = (key === "paydayLabel" || key === "note") ? e.target.value : Number(e.target.value||0);
-      save();
-      render();
-    });
-  };
-  bindWeekInput(els.paydayInput, "paydayLabel");
-  bindWeekInput(els.incomeInput, "income");
-  bindWeekInput(els.savingsInput, "savings");
-  bindWeekInput(els.groceriesInput, "groceries");
-  bindWeekInput(els.guiltInput, "guilt");
-  bindWeekInput(els.noteInput, "note");
-
-  // Week navigation
-  document.getElementById("prevWeekBtn").addEventListener("click", ()=>{
-    state.currentWeekIndex = clamp(state.currentWeekIndex - 1, 0, state.weeks.length - 1);
-    save(); render();
-  });
-  document.getElementById("nextWeekBtn").addEventListener("click", ()=>{
-    state.currentWeekIndex = clamp(state.currentWeekIndex + 1, 0, state.weeks.length - 1);
-    save(); render();
-  });
-
-  // Add week
-  document.getElementById("addWeekBtn").addEventListener("click", ()=>{
-    const w = makeWeek("");
-    // apply defaults
-    w.income = state.settings.defaultIncome;
-    w.groceries = state.settings.defaultGroceries;
-    w.guilt = state.settings.defaultGuilt;
-    w.savings = state.settings.defaultSavings;
-    state.weeks.push(w);
-    state.currentWeekIndex = state.weeks.length - 1;
-    save(); render();
-  });
-
-  // Clone previous week
-  document.getElementById("clonePrevWeekBtn").addEventListener("click", ()=>{
-    if (state.weeks.length < 1) return;
-    const prev = currentWeek();
-    const w = makeWeek("");
-    w.income = prev.income;
-    w.groceries = prev.groceries;
-    w.guilt = prev.guilt;
-    w.savings = prev.savings;
-    w.bills = JSON.parse(JSON.stringify(prev.bills));
-    state.weeks.push(w);
-    state.currentWeekIndex = state.weeks.length - 1;
-    save(); render();
-  });
-
-  // Add bill
-  document.getElementById("addBillBtn").addEventListener("click", ()=>{
-    const name = els.newBillName.value.trim();
-    const amt = Number(els.newBillAmt.value||0);
-    if (!name) return;
-    currentWeek().bills.push({ id: uid(), name, amount: amt });
-    els.newBillName.value = "";
-    els.newBillAmt.value = "";
-    save(); render();
-  });
-
-  // Reset current week
-  document.getElementById("resetWeekBtn").addEventListener("click", ()=>{
-    const w = currentWeek();
-    w.income = state.settings.defaultIncome;
-    w.savings = state.settings.defaultSavings;
-    w.groceries = state.settings.defaultGroceries;
-    w.guilt = state.settings.defaultGuilt;
-    w.note = "";
-    w.bills = JSON.parse(JSON.stringify(defaultBills));
-    save(); render();
-  });
-
-  // Complete week -> archive
-  document.getElementById("completeWeekBtn").addEventListener("click", ()=>{
-    const idx = state.currentWeekIndex;
-    const w = state.weeks[idx];
-    const summary = { ...w, summary: calcWeek(w), archivedAt: Date.now() };
-    state.archive.unshift(summary);
-
-    // replace current week with a fresh week instead of deleting everything
-    const nw = makeWeek("");
-    nw.income = state.settings.defaultIncome;
-    nw.groceries = state.settings.defaultGroceries;
-    nw.guilt = state.settings.defaultGuilt;
-    nw.savings = state.settings.defaultSavings;
-    state.weeks[idx] = nw;
-
-    save(); render();
-    showTab("history");
-  });
-
-  // Export / Import
-  document.getElementById("exportBtn").addEventListener("click", ()=>{
-    const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "moshniki-budget-export.json";
-    a.click();
-    URL.revokeObjectURL(url);
-  });
-  document.getElementById("importFile").addEventListener("change", async (e)=>{
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const text = await file.text();
-    try{
-      const parsed = JSON.parse(text);
-      state = parsed;
-      save(); render();
-      alert("Imported ✅");
-    }catch{
-      alert("Import failed — invalid JSON");
-    }
-    e.target.value = "";
-  });
-
-  // ===== Archive UI =====
+  // Render everything
   const archiveList = document.getElementById("archiveList");
+  const debtsList = document.getElementById("debtsList");
+  const compareBox = document.getElementById("compareBox");
+  const compareEmpty = document.getElementById("compareEmpty");
+
   const renderArchive = () => {
     archiveList.innerHTML = "";
     if (!state.archive.length){
@@ -663,84 +703,37 @@
       const when = new Date(w.archivedAt || w.createdAt || Date.now());
       const el = document.createElement("div");
       el.className = "box";
-      el.style.cssText = "padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.15)";
       el.innerHTML = `
         <div class="row" style="justify-content:space-between">
           <div>
-            <div style="font-weight:950">${escapeHtml(w.paydayLabel || "Archived Week")}</div>
+            <div style="font-weight:1000">${escapeHtml(formatPayday(w.paydayDate || nextWednesdayISO()))}</div>
             <div class="note">${when.toLocaleString()}</div>
           </div>
-          <div class="money ${c.diff>=0?"pos":"neg"}" style="font-size:16px;font-weight:950">${money(c.diff)}</div>
+          <div class="money ${c.diff>=0?"pos":"neg"}" style="font-size:16px;font-weight:1000">${money(c.diff)}</div>
         </div>
-        <div class="row" style="justify-content:space-between;margin-top:10px">
-          <div class="muted">Income</div><div class="money">${money(w.income)}</div>
-        </div>
-        <div class="row" style="justify-content:space-between;margin-top:6px">
-          <div class="muted">Bills</div><div class="money">${money(c.bills)}</div>
-        </div>
-        <div class="row" style="justify-content:space-between;margin-top:6px">
-          <div class="muted">Spending</div><div class="money">${money(c.spend)}</div>
-        </div>
-        <div class="row" style="justify-content:space-between;margin-top:6px">
-          <div class="muted">Savings</div><div class="money">${money(c.savings)}</div>
-        </div>
+        <div class="row" style="justify-content:space-between;margin-top:10px"><div class="muted">Income</div><div class="money">${money(w.income)}</div></div>
+        <div class="row" style="justify-content:space-between;margin-top:6px"><div class="muted">Bills</div><div class="money">${money(c.bills)}</div></div>
+        <div class="row" style="justify-content:space-between;margin-top:6px"><div class="muted">Spending</div><div class="money">${money(c.spend)}</div></div>
+        <div class="row" style="justify-content:space-between;margin-top:6px"><div class="muted">Savings</div><div class="money">${money(c.savings)}</div></div>
         ${w.note ? `<div class="note" style="margin-top:8px"><b>Note:</b> ${escapeHtml(w.note)}</div>` : ""}
       `;
       archiveList.appendChild(el);
     });
   };
-  document.getElementById("clearArchiveBtn").addEventListener("click", ()=>{
-    state.archive = [];
-    save(); render();
-  });
-
-  // ===== Settings UI =====
-  const settingsEls = {
-    defaultIncome: document.getElementById("defaultIncome"),
-    defaultGroceries: document.getElementById("defaultGroceries"),
-    defaultGuilt: document.getElementById("defaultGuilt"),
-    defaultSavings: document.getElementById("defaultSavings"),
-  };
-  const renderSettings = () => {
-    settingsEls.defaultIncome.value = Number(state.settings.defaultIncome||0);
-    settingsEls.defaultGroceries.value = Number(state.settings.defaultGroceries||0);
-    settingsEls.defaultGuilt.value = Number(state.settings.defaultGuilt||0);
-    settingsEls.defaultSavings.value = Number(state.settings.defaultSavings||0);
-  };
-  document.getElementById("saveSettingsBtn").addEventListener("click", ()=>{
-    state.settings.defaultIncome = Number(settingsEls.defaultIncome.value||0);
-    state.settings.defaultGroceries = Number(settingsEls.defaultGroceries.value||0);
-    state.settings.defaultGuilt = Number(settingsEls.defaultGuilt.value||0);
-    state.settings.defaultSavings = Number(settingsEls.defaultSavings.value||0);
-    save(); render();
-    alert("Saved ✅");
-  });
-
-  // ===== Debt Tracker =====
-  const debtsList = document.getElementById("debtsList");
-  const compareBox = document.getElementById("compareBox");
-  const compareEmpty = document.getElementById("compareEmpty");
 
   function amortize({principal, annualRate, payment, perYear, maxMonths=1200}) {
     principal = Number(principal||0);
     annualRate = Number(annualRate||0);
     payment = Number(payment||0);
     perYear = Number(perYear||12);
-
     const r = (annualRate/100) / perYear;
     let bal = principal;
     let totalInterest = 0;
     let n = 0;
-
     if (principal <= 0) return { months: 0, totalInterest: 0, ok: true };
     if (payment <= 0) return { months: null, totalInterest: null, ok: false, reason: "Payment is $0" };
-
-    // If payment doesn't cover interest, it will never reduce
     const firstInterest = bal * r;
-    if (payment <= firstInterest && r > 0) {
-      return { months: null, totalInterest: null, ok: false, reason: "Payment too low (doesn't cover interest)" };
-    }
-
+    if (payment <= firstInterest && r > 0) return { months: null, totalInterest: null, ok: false, reason: "Payment too low (doesn't cover interest)" };
     while (bal > 0.01 && n < maxMonths) {
       const interest = bal * r;
       totalInterest += interest;
@@ -749,12 +742,10 @@
       n++;
       if (bal < 0) bal = 0;
     }
-
     const months = (perYear === 12) ? n : Math.round((n / perYear) * 12);
     return { months, totalInterest, ok: true };
   }
-
-  function monthsToPretty(months){
+  const monthsToPretty = (months) => {
     if (months === 0) return "Paid off ✅";
     if (!Number.isFinite(months)) return "—";
     const y = Math.floor(months/12);
@@ -762,6 +753,28 @@
     if (y<=0) return `${m} months`;
     if (m===0) return `${y} years`;
     return `${y}y ${m}m`;
+  };
+  const freqToPerYear = (freq) => (freq==="weekly"?52:freq==="fortnightly"?26:12);
+
+  function renderCompare(){
+    const d = state.debts.find(x=>x.id===state.selectedDebtId);
+    if (!d){
+      compareBox.classList.add("hidden");
+      compareEmpty.classList.remove("hidden");
+      return;
+    }
+    compareEmpty.classList.add("hidden");
+    compareBox.classList.remove("hidden");
+    const perYear = freqToPerYear(d.freq || "monthly");
+    const your = amortize({ principal: d.balance, annualRate: d.rate, payment: d.payment, perYear });
+    const min = amortize({ principal: d.balance, annualRate: d.rate, payment: d.minimum, perYear });
+    document.getElementById("yourPayoff").textContent = your.ok ? monthsToPretty(your.months) : your.reason;
+    document.getElementById("minPayoff").textContent  = min.ok  ? monthsToPretty(min.months)  : (d.minimum ? min.reason : "Set a minimum");
+    document.getElementById("yourInterest").textContent = your.ok ? money(your.totalInterest) : "—";
+    document.getElementById("minInterest").textContent  = min.ok  ? money(min.totalInterest)  : "—";
+    document.getElementById("progressBar").style.width = "0%";
+    document.getElementById("progressNote").textContent =
+      `Based on current balance ${money(d.balance)} at ${Number(d.rate||0).toFixed(2)}% APR (constant payment assumption).`;
   }
 
   const renderDebts = () => {
@@ -772,26 +785,22 @@
       compareEmpty.classList.remove("hidden");
       return;
     }
-
     state.debts.forEach(d => {
       const box = document.createElement("div");
       box.className = "box";
-      box.style.cssText = "padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.15)";
       const selected = state.selectedDebtId === d.id;
-      box.style.borderColor = selected ? "rgba(106,169,255,.7)" : "var(--line)";
-
+      box.style.borderColor = selected ? "rgba(106,169,255,.85)" : "rgba(36,54,94,.9)";
       box.innerHTML = `
         <div class="row" style="justify-content:space-between;align-items:flex-start">
           <div style="flex:1">
-            <div style="font-weight:950">${escapeHtml(d.name || "Unnamed debt")}</div>
+            <div style="font-weight:1000">${escapeHtml(d.name || "Unnamed debt")}</div>
             <div class="note">Balance: <b>${money(d.balance)}</b> • Rate: <b>${Number(d.rate||0).toFixed(2)}%</b></div>
           </div>
-          <div class="row right">
-            <button class="btn small ${selected ? "primary" : ""}" data-debt-select="${d.id}">${selected ? "Selected" : "Select"}</button>
+          <div class="row">
+            <button class="btn small ${selected?"primary":""}" data-debt-select="${d.id}">${selected?"Selected":"Select"}</button>
             <button class="btn small danger" data-debt-del="${d.id}">Delete</button>
           </div>
         </div>
-
         <div class="two" style="margin-top:10px">
           <div><label class="muted">Name</label><input data-debt-name="${d.id}" value="${escapeHtml(d.name||"")}"></div>
           <div><label class="muted">Balance</label><input data-debt-bal="${d.id}" type="number" step="0.01" min="0" value="${Number(d.balance||0)}"></div>
@@ -811,11 +820,10 @@
       debtsList.appendChild(box);
     });
 
-    // Bind handlers
     debtsList.querySelectorAll("[data-debt-select]").forEach(btn=>{
       btn.addEventListener("click",(e)=>{
         state.selectedDebtId = e.target.getAttribute("data-debt-select");
-        save(); render();
+        scheduleSave(); render();
       });
     });
     debtsList.querySelectorAll("[data-debt-del]").forEach(btn=>{
@@ -823,28 +831,20 @@
         const id = e.target.getAttribute("data-debt-del");
         state.debts = state.debts.filter(x=>x.id!==id);
         if (state.selectedDebtId === id) state.selectedDebtId = null;
-        save(); render();
+        scheduleSave(); render();
       });
     });
 
     const bindDebt = (attr, key, parser=(v)=>v) => {
       debtsList.querySelectorAll(`[${attr}]`).forEach(inp=>{
-        inp.addEventListener("input",(e)=>{
+        const evt = (attr === "data-debt-freq") ? "change" : "input";
+        inp.addEventListener(evt,(e)=>{
           const id = e.target.getAttribute(attr);
           const d = state.debts.find(x=>x.id===id);
           d[key] = parser(e.target.value);
-          save();
+          scheduleSave();
           renderCompare();
         });
-        if (attr === "data-debt-freq"){
-          inp.addEventListener("change",(e)=>{
-            const id = e.target.getAttribute(attr);
-            const d = state.debts.find(x=>x.id===id);
-            d[key] = e.target.value;
-            save();
-            renderCompare();
-          });
-        }
       });
     };
 
@@ -858,64 +858,263 @@
     renderCompare();
   };
 
-  function freqToPerYear(freq){
-    if (freq === "weekly") return 52;
-    if (freq === "fortnightly") return 26;
-    return 12; // monthly
-  }
+  const settingsEls = {
+    defaultIncome: document.getElementById("defaultIncome"),
+    defaultGroceries: document.getElementById("defaultGroceries"),
+    defaultGuilt: document.getElementById("defaultGuilt"),
+    defaultSavings: document.getElementById("defaultSavings"),
+  };
+  const renderSettings = () => {
+    settingsEls.defaultIncome.value = Number(state.settings.defaultIncome||0);
+    settingsEls.defaultGroceries.value = Number(state.settings.defaultGroceries||0);
+    settingsEls.defaultGuilt.value = Number(state.settings.defaultGuilt||0);
+    settingsEls.defaultSavings.value = Number(state.settings.defaultSavings||0);
+  };
 
-  function renderCompare(){
-    const d = state.debts.find(x=>x.id===state.selectedDebtId);
-    if (!d){
-      compareBox.classList.add("hidden");
-      compareEmpty.classList.remove("hidden");
-      return;
+  const render = () => {
+    const w = currentWeek();
+    if (!w) return;
+    els.weekLabel.textContent = `Pay: ${formatPayday(w.paydayDate)}`;
+    els.paydayInput.value = w.paydayDate || nextWednesdayISO();
+    els.incomeInput.value = Number(w.income||0);
+    els.savingsInput.value = Number(w.savings||0);
+    els.groceriesInput.value = Number(w.groceries||0);
+    els.guiltInput.value = Number(w.guilt||0);
+    els.noteInput.value = w.note || "";
+    els.weekNote.textContent = w.note?.trim() ? w.note : "—";
+    renderBills(w);
+
+    const c = calcWeek(w);
+    els.billsTotal.textContent = money(c.bills);
+    els.spendTotal.textContent = money(c.spend);
+    els.savingsTotal.textContent = money(c.savings);
+    els.diffLine.textContent = money(c.diff);
+    els.diffLine.className = "money " + (c.diff >= 0 ? "pos" : "neg");
+    els.kpiIncome.textContent = money(w.income);
+    els.kpiSavings.textContent = money(c.savings);
+    els.kpiOut.textContent = money(c.out);
+    els.kpiDiff.textContent = money(c.diff);
+    els.kpiDiff.className = "val " + (c.diff >= 0 ? "pos" : "neg");
+
+    renderArchive();
+    renderDebts();
+    renderSettings();
+  };
+
+  // Bind inputs
+  const bindWeekInput = (inputEl, key, numeric=false) => {
+    inputEl.addEventListener("input", (e) => {
+      const w = currentWeek();
+      w[key] = numeric ? Number(e.target.value||0) : e.target.value;
+      scheduleSave();
+      render();
+    });
+  };
+  bindWeekInput(els.paydayInput, "paydayDate", false);
+  bindWeekInput(els.incomeInput, "income", true);
+  bindWeekInput(els.savingsInput, "savings", true);
+  bindWeekInput(els.groceriesInput, "groceries", true);
+  bindWeekInput(els.guiltInput, "guilt", true);
+  bindWeekInput(els.noteInput, "note", false);
+
+  // Buttons
+  document.getElementById("prevWeekBtn").addEventListener("click", ()=>{
+    state.currentWeekIndex = clamp(state.currentWeekIndex - 1, 0, state.weeks.length - 1);
+    scheduleSave(); render();
+  });
+  document.getElementById("nextWeekBtn").addEventListener("click", ()=>{
+    state.currentWeekIndex = clamp(state.currentWeekIndex + 1, 0, state.weeks.length - 1);
+    scheduleSave(); render();
+  });
+
+  document.getElementById("addWeekBtn").addEventListener("click", ()=>{
+    const prev = currentWeek();
+    const nextISO = prev?.paydayDate ? toISODate(addDays(prev.paydayDate, 7)) : nextWednesdayISO();
+    const w = makeWeek(nextISO);
+    w.income = state.settings.defaultIncome;
+    w.groceries = state.settings.defaultGroceries;
+    w.guilt = state.settings.defaultGuilt;
+    w.savings = state.settings.defaultSavings;
+    state.weeks.push(w);
+    state.currentWeekIndex = state.weeks.length - 1;
+    scheduleSave(); render();
+  });
+
+  document.getElementById("clonePrevWeekBtn").addEventListener("click", ()=>{
+    const prev = currentWeek();
+    const nextISO = prev?.paydayDate ? toISODate(addDays(prev.paydayDate, 7)) : nextWednesdayISO();
+    const w = makeWeek(nextISO);
+    w.income = prev.income;
+    w.groceries = prev.groceries;
+    w.guilt = prev.guilt;
+    w.savings = prev.savings;
+    w.bills = JSON.parse(JSON.stringify(prev.bills));
+    state.weeks.push(w);
+    state.currentWeekIndex = state.weeks.length - 1;
+    scheduleSave(); render();
+  });
+
+  document.getElementById("addBillBtn").addEventListener("click", ()=>{
+    const name = els.newBillName.value.trim();
+    const amt = Number(els.newBillAmt.value||0);
+    if (!name) return;
+    currentWeek().bills.push({ id: uid(), name, amount: amt });
+    els.newBillName.value = "";
+    els.newBillAmt.value = "";
+    scheduleSave(); render();
+  });
+
+  document.getElementById("resetWeekBtn").addEventListener("click", ()=>{
+    const w = currentWeek();
+    w.income = state.settings.defaultIncome;
+    w.savings = state.settings.defaultSavings;
+    w.groceries = state.settings.defaultGroceries;
+    w.guilt = state.settings.defaultGuilt;
+    w.note = "";
+    w.bills = JSON.parse(JSON.stringify(defaultBills));
+    scheduleSave(); render();
+  });
+
+  document.getElementById("completeWeekBtn").addEventListener("click", ()=>{
+    const idx = state.currentWeekIndex;
+    const w = state.weeks[idx];
+    state.archive.unshift({ ...w, summary: calcWeek(w), archivedAt: Date.now() });
+    const nextISO = w?.paydayDate ? toISODate(addDays(w.paydayDate, 7)) : nextWednesdayISO();
+    state.weeks[idx] = makeWeek(nextISO);
+    scheduleSave(); render();
+    showTab("history");
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", ()=>{
+    const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "moshniki-budget-export.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById("importFile").addEventListener("change", async (e)=>{
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try{
+      const parsed = JSON.parse(await file.text());
+      state = parsed;
+      scheduleSave();
+      render();
+      toast("Imported ✅");
+    }catch{
+      toast("Import failed ❌");
     }
-    compareEmpty.classList.add("hidden");
-    compareBox.classList.remove("hidden");
+    e.target.value = "";
+  });
 
-    const perYear = freqToPerYear(d.freq || "monthly");
-    const your = amortize({ principal: d.balance, annualRate: d.rate, payment: d.payment, perYear });
-    const min = amortize({ principal: d.balance, annualRate: d.rate, payment: d.minimum, perYear });
+  document.getElementById("clearArchiveBtn").addEventListener("click", ()=>{
+    state.archive = [];
+    scheduleSave(); render();
+  });
 
-    const yourPayoffEl = document.getElementById("yourPayoff");
-    const minPayoffEl = document.getElementById("minPayoff");
-    const yourIntEl = document.getElementById("yourInterest");
-    const minIntEl = document.getElementById("minInterest");
-
-    yourPayoffEl.textContent = your.ok ? monthsToPretty(your.months) : your.reason;
-    minPayoffEl.textContent  = min.ok  ? monthsToPretty(min.months)  : (d.minimum ? min.reason : "Set a minimum");
-
-    yourIntEl.textContent = your.ok ? money(your.totalInterest) : "—";
-    minIntEl.textContent  = min.ok  ? money(min.totalInterest)  : "—";
-
-    // Rough progress bar: show where you are now (always 0% paid if just tracking current balance)
-    const pct = 0; // you can extend later by storing originalBalance
-    document.getElementById("progressBar").style.width = pct + "%";
-    document.getElementById("progressNote").textContent = `Comparison is based on current balance ${money(d.balance)} at ${Number(d.rate||0).toFixed(2)}% APR.`;
-
-    save();
-  }
+  document.getElementById("saveSettingsBtn").addEventListener("click", ()=>{
+    state.settings.defaultIncome = Number(settingsEls.defaultIncome.value||0);
+    state.settings.defaultGroceries = Number(settingsEls.defaultGroceries.value||0);
+    state.settings.defaultGuilt = Number(settingsEls.defaultGuilt.value||0);
+    state.settings.defaultSavings = Number(settingsEls.defaultSavings.value||0);
+    scheduleSave(); render();
+    toast("Settings saved ✅");
+  });
 
   document.getElementById("addDebtBtn").addEventListener("click", ()=>{
-    state.debts.unshift({
-      id: uid(),
-      name: "",
-      balance: 0,
-      rate: 0,
-      freq: "monthly",
-      payment: 0,
-      minimum: 0,
-      createdAt: Date.now()
-    });
+    state.debts.unshift({ id: uid(), name:"", balance:0, rate:0, freq:"monthly", payment:0, minimum:0, createdAt: Date.now() });
     state.selectedDebtId = state.debts[0].id;
-    save(); render();
+    scheduleSave(); render();
     showTab("debts");
+  });
+
+  // Auth buttons
+  const googleLoginBtn = document.getElementById("googleLoginBtn");
+  const emailLoginBtn = document.getElementById("emailLoginBtn");
+  const emailSignupBtn = document.getElementById("emailSignupBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const emailInput = document.getElementById("emailInput");
+  const passInput = document.getElementById("passInput");
+
+  googleLoginBtn.addEventListener("click", async ()=>{
+    try{
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    }catch(e){
+      console.error(e);
+      toast("Google sign-in failed ❌ (check Authorized domains)");
+      setSyncStatus("err", "Sign-in failed");
+    }
+  });
+
+  emailLoginBtn.addEventListener("click", async ()=>{
+    try{
+      await signInWithEmailAndPassword(auth, emailInput.value.trim(), passInput.value);
+    }catch(e){
+      console.error(e);
+      toast("Email login failed ❌");
+      setSyncStatus("err", "Email login failed");
+    }
+  });
+
+  emailSignupBtn.addEventListener("click", async ()=>{
+    try{
+      await createUserWithEmailAndPassword(auth, emailInput.value.trim(), passInput.value);
+      toast("Account created ✅");
+    }catch(e){
+      console.error(e);
+      toast("Signup failed ❌");
+      setSyncStatus("err", "Signup failed");
+    }
+  });
+
+  logoutBtn.addEventListener("click", async ()=>{
+    try{ await signOut(auth); } catch {}
+  });
+
+  // Auth state -> cloud sync
+  setSyncStatus("off", "Local mode (not signed in)");
+  onAuthStateChanged(auth, async (user)=>{
+    currentUser = user;
+
+    if (unsubscribeSnap){ unsubscribeSnap(); unsubscribeSnap = null; }
+
+    if (!user){
+      userLine.textContent = "Not signed in.";
+      setSyncStatus("off", "Local mode (not signed in)");
+      return;
+    }
+
+    userLine.textContent = `${user.email || "Signed in"} • UID: ${user.uid}`;
+    setSyncStatus("ok", "Cloud sync enabled");
+
+    try{
+      await loadFromCloud(user.uid);
+
+      unsubscribeSnap = onSnapshot(userRef(user.uid), (snap)=>{
+        if (!snap.exists()) return;
+        const data = snap.data();
+        if (!data?.state) return;
+        isApplyingRemote = true;
+        state = data.state;
+        saveLocal();
+        render();
+        isApplyingRemote = false;
+      });
+
+      toast("Synced ✅");
+    }catch(e){
+      console.error(e);
+      setSyncStatus("err", "Cloud sync failed (check Firestore rules)");
+      toast("Cloud sync failed ❌");
+    }
   });
 
   // Initial render
   render();
-  renderCompare();
   showTab("budget");
 </script>
 </body>
