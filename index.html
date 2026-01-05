@@ -1,562 +1,92 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.3">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Is This Worth Watching?</title>
+  <meta name="description" content="Short reviews. No fluff.">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: #0b0f14;
+      color: #e8eef7;
+    }
+    header {
+      max-width: 900px;
+      margin: 40px auto 20px;
+      padding: 0 20px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+    }
+    .sub {
+      color: #9aa7b6;
+      font-size: 14px;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: #121823;
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .yes { background: rgba(70,210,140,.2); }
+    .maybe { background: rgba(255,200,90,.2); }
+    .no { background: rgba(255,95,120,.2); }
+    .title {
+      font-weight: 700;
+      margin: 0 0 6px;
+    }
+    .blurb {
+      font-size: 14px;
+      line-height: 1.4;
+    }
   </style>
 </head>
+
 <body>
-<p class="p1">&lt;!doctype html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="utf-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Is This Worth Watching?&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="description" content="Short reviews. No fluff. Is it worth watching? Updated manually." /&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>:root{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg:#0b0f14;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--card:#121823;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--muted:#9aa7b6;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--text:#e8eef7;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--border:rgba(255,255,255,.10);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--shadow: 0 14px 40px rgba(0,0,0,.40);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--radius:18px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--accent: rgba(120,180,255,.22);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--accentBorder: rgba(120,180,255,.38);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>*{box-sizing:border-box}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:</p>
-<p class="p1"><span class="Apple-converted-space">        </span>radial-gradient(1200px 700px at 15% -10%, rgba(120,180,255,.20), transparent 60%),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>radial-gradient(900px 600px at 95% 0%, rgba(255,120,200,.12), transparent 55%),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>radial-gradient(900px 700px at 60% 120%, rgba(120,255,190,.07), transparent 60%),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>var(--bg);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>line-height:1.35;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>header{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width: 1040px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 34px auto 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 0 18px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>h1{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:0 0 8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 36px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: -0.6px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sub{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width: 78ch;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.bar{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width:1040px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 18px auto 8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 0 18px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap:wrap;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.search{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex:1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>min-width: 240px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(255,255,255,.05);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 11px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>outline: none;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.search::placeholder{ color: rgba(154,167,182,.75); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(255,255,255,.05);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 9px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>user-select:none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: transform .06s ease, background .2s ease, border-color .2s ease;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>white-space: nowrap;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn:hover{ background: rgba(255,255,255,.08); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn:active{ transform: scale(.98); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn.active{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: var(--accent);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-color: var(--accentBorder);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>main{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width:1040px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 12px auto 30px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 0 18px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: repeat(2, minmax(0, 1fr));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width: 820px){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>main{ grid-template-columns: 1fr; }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>h1{ font-size: 30px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.card{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: var(--radius);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 14px 14px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: var(--shadow);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.card:before{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>content:"";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position:absolute;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>inset:-40px -60px auto auto;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 160px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height: 160px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: radial-gradient(circle at 30% 30%, rgba(120,180,255,.22), transparent 60%);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>filter: blur(1px);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>pointer-events:none;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.toprow{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:flex-start;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content:space-between;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.title{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 850;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: -.2px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.meta{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:6px 0 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap:wrap;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.pill{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 4px 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px dashed rgba(255,255,255,.16);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(255,255,255,.02);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.badge{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 800;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 6px 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>white-space: nowrap;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.b-yes{ background: rgba(70, 210, 140, .14); border-color: rgba(70,210,140,.25); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.b-maybe{ background: rgba(255, 200, 90, .14); border-color: rgba(255,200,90,.25); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.b-no{ background: rgba(255, 95, 120, .14); border-color: rgba(255,95,120,.25); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.blurb{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 10px 0 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.footer{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content:space-between;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap:wrap;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.smallnote{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width:1040px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 auto 50px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 0 18px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kbd{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 11px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 2px 6px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid rgba(255,255,255,.14);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(255,255,255,.04);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: rgba(232,238,247,.92);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sep{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>opacity:.5;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 0 6px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>details{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width:1040px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 auto 40px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 0 18px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>summary{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: rgba(232,238,247,.92);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 750;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>user-select:none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>list-style:none;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>summary::-webkit-details-marker{ display:none; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.editor{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(255,255,255,.04);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>textarea{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width:100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>min-height: 200px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>resize: vertical;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(0,0,0,.28);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid rgba(255,255,255,.10);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>outline:none;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.row{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap:wrap;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.danger{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(255,95,120,.12);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-color: rgba(255,95,120,.22);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.ok{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(70,210,140,.12);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-color: rgba(70,210,140,.22);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;header&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Is This Worth Watching?&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;p class="sub"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>Short reviews. No fluff. If it’s boring, I’ll say it’s boring.</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="sep"&gt;•&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>Updated manually by &lt;strong&gt;Shaun&lt;/strong&gt;.</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/p&gt;</p>
-<p class="p1">&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="bar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;input id="q" class="search" placeholder="Search… (title, where, vibe, tags)" autocomplete="off" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="btn active" data-filter="all"&gt;All&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="btn" data-filter="yes"&gt;✅ Worth it&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="btn" data-filter="maybe"&gt;⚠️ Maybe&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="btn" data-filter="no"&gt;❌ Skip&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="btn" id="shuffle"&gt;🎲 Random pick&lt;/button&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;main id="grid"&gt;&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;p class="smallnote"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Tip: keep each entry to &lt;strong&gt;2–4 lines&lt;/strong&gt;. Add a “vibe” so it feels human.</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Keyboard: &lt;span class="kbd"&gt;/&lt;/span&gt; focuses search, &lt;span class="kbd"&gt;Esc&lt;/span&gt; clears.</p>
-<p class="p1">&lt;/p&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;details&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;summary&gt;Quick editor (optional): paste/backup your entries (stored in your browser)&lt;/summary&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="editor"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="sub" style="margin:0 0 10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>This lets you edit your list without touching code. It saves to &lt;strong&gt;this browser&lt;/strong&gt; (localStorage).</p>
-<p class="p1"><span class="Apple-converted-space">      </span>If you upload the site elsewhere, export/copy the JSON and paste it on the new device.</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;textarea id="jsonBox" spellcheck="false"&gt;&lt;/textarea&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn ok" id="loadDefault"&gt;Load default entries&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn" id="loadSaved"&gt;Load saved&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn ok" id="saveJson"&gt;Save&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn danger" id="resetSaved"&gt;Reset saved&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/details&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>// DEFAULT ENTRIES (edit these if you want, or use the editor below)</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const defaultEntries = [</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>title: "The Bear (Season 2)",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>verdict: "yes",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>where: "Disney+",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>type: "Series",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>vibe: "Needs attention",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>blurb: "Stressful, loud, brilliant. If you’ve worked hospitality you’ll feel personally attacked. In a good way.",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>updated: "2026-01-05",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>tags: ["drama", "kitchen", "intense", "character"]</p>
-<p class="p1"><span class="Apple-converted-space">    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>title: "Rebel Moon",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>verdict: "no",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>where: "Netflix",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>type: "Movie",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>vibe: "Looks expensive, feels empty",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>blurb: "It’s shiny but hollow. If you want sci-fi comfort food, pick something with actual flavour.",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>updated: "2026-01-05",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>tags: ["sci-fi", "action", "big budget"]</p>
-<p class="p1"><span class="Apple-converted-space">    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>title: "Jack Reacher (Season 1)",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>verdict: "yes",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>where: "Prime Video",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>type: "Series",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>vibe: "Easy binge",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>blurb: "Simple premise, satisfying payoffs. Not deep, but it knows what it is and doesn’t pretend.",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>updated: "2026-01-05",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>tags: ["action", "thriller", "binge"]</p>
-<p class="p1"><span class="Apple-converted-space">    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>title: "Saltburn",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>verdict: "maybe",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>where: "Prime Video",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>type: "Movie",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>vibe: "Unhinged",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>blurb: "A fever dream with style. You’ll either love the chaos or wonder why you didn’t just rewatch something normal.",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>updated: "2026-01-05",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>tags: ["dark", "weird", "thriller"]</p>
-<p class="p1"><span class="Apple-converted-space">    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>title: "Suits",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>verdict: "maybe",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>where: "Netflix",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>type: "Series",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>vibe: "Background TV",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>blurb: "Comfortable, talky, and very bingeable. Great while gaming. Don’t expect realism — expect vibes.",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>updated: "2026-01-05",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>tags: ["legal", "comfort", "background"]</p>
-<p class="p1"><span class="Apple-converted-space">    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>title: "True Detective (Season 1)",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>verdict: "yes",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>where: "Binge",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>type: "Series",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>vibe: "Dark masterpiece",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>blurb: "Top-tier television. It’s heavy, but it sticks the landing and then some.",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>updated: "2026-01-05",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>tags: ["crime", "mystery", "serious"]</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const STORAGE_KEY = "worthWatchingEntries_v1";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const grid = document.getElementById("grid");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const q = document.getElementById("q");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const buttons = [...document.querySelectorAll(".btn[data-filter]")];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const shuffleBtn = document.getElementById("shuffle");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const jsonBox = document.getElementById("jsonBox");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const loadDefaultBtn = document.getElementById("loadDefault");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const loadSavedBtn = document.getElementById("loadSaved");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const saveJsonBtn = document.getElementById("saveJson");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const resetSavedBtn = document.getElementById("resetSaved");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>let activeFilter = "all";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>let entries = loadSaved() || structuredClone(defaultEntries);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>function loadSaved(){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>try{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const raw = localStorage.getItem(STORAGE_KEY);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!raw) return null;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const parsed = JSON.parse(raw);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!Array.isArray(parsed)) return null;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return parsed;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}catch{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return null;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>function saveToStorage(list){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>localStorage.setItem(STORAGE_KEY, JSON.stringify(list, null, 2));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>function badgeClass(v){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (v === "yes") return "badge b-yes";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (v === "maybe") return "badge b-maybe";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return "badge b-no";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>function badgeText(v){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (v === "yes") return "✅ Worth it";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (v === "maybe") return "⚠️ Maybe";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return "❌ Skip";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>function escapeHtml(str){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return String(str)</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.replaceAll("&amp;", "&amp;amp;")</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.replaceAll("&lt;", "&amp;lt;")</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.replaceAll("&gt;", "&amp;gt;")</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.replaceAll('"', "&amp;quot;")</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.replaceAll("'", "&amp;#039;");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>function render(list){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>grid.innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (!list.length){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="title"&gt;No matches&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;p class="blurb"&gt;Try a different search, or remove the filter. Or accept that your taste is niche 😄&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>for (const e of list){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const card = document.createElement("div");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>card.className = "card";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>card.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="toprow"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="title"&gt;${escapeHtml(e.title)}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="meta"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="pill"&gt;${escapeHtml(e.type || "—")}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="pill"&gt;${escapeHtml(e.where || "—")}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="pill"&gt;${escapeHtml(e.vibe || "—")}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="${badgeClass(e.verdict)}"&gt;${badgeText(e.verdict)}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="blurb"&gt;${escapeHtml(e.blurb || "")}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="footer"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;span&gt;Updated: ${escapeHtml(e.updated || "")}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;span&gt;${(e.tags || []).slice(0,5).map(t =&gt; `#${escapeHtml(t)}`).join(" ")}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid.appendChild(card);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>function apply(){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const term = q.value.trim().toLowerCase();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// newest first</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let list = entries.slice().sort((a,b)=&gt; (b.updated||"").localeCompare(a.updated||""));</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (activeFilter !== "all"){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>list = list.filter(e =&gt; (e.verdict || "") === activeFilter);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (term){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>list = list.filter(e =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const hay = [</p>
-<p class="p1"><span class="Apple-converted-space">          </span>e.title, e.where, e.type, e.vibe, e.blurb, ...(e.tags||[])</p>
-<p class="p1"><span class="Apple-converted-space">        </span>].join(" ").toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return hay.includes(term);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>render(list);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>buttons.forEach(btn=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>btn.addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>buttons.forEach(b=&gt;b.classList.remove("active"));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.classList.add("active");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>activeFilter = btn.dataset.filter;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>apply();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>q.addEventListener("input", apply);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>shuffleBtn.addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const current = entries.filter(e =&gt; activeFilter === "all" ? true : e.verdict === activeFilter);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (!current.length) return;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const pick = current[Math.floor(Math.random() * current.length)];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>q.value = pick.title;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>apply();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>window.scrollTo({ top: 0, behavior: "smooth" });</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>// keyboard shortcuts</p>
-<p class="p1"><span class="Apple-converted-space">  </span>window.addEventListener("keydown", (e)=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (e.key === "/" &amp;&amp; document.activeElement !== q){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>e.preventDefault();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>q.focus();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (e.key === "Escape"){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>q.value = "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>q.blur();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>apply();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>// Editor tools</p>
-<p class="p1"><span class="Apple-converted-space">  </span>function refreshEditorBox(){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>jsonBox.value = JSON.stringify(entries, null, 2);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>loadDefaultBtn.addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>entries = structuredClone(defaultEntries);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>refreshEditorBox();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>apply();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>loadSavedBtn.addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const saved = loadSaved();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(saved){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>entries = saved;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>refreshEditorBox();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>apply();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>alert("No saved entries found in this browser yet.");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>saveJsonBtn.addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>try{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const parsed = JSON.parse(jsonBox.value);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!Array.isArray(parsed)) throw new Error("JSON must be an array.");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>entries = parsed;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>saveToStorage(entries);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>apply();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>alert("Saved to this browser ✅");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}catch(err){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>alert("Could not save. Check your JSON format.\n\n" + err.message);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>resetSavedBtn.addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>localStorage.removeItem(STORAGE_KEY);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>alert("Saved entries cleared from this browser.");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>// initial render</p>
-<p class="p1"><span class="Apple-converted-space">  </span>refreshEditorBox();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>apply();</p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+<header>
+  <h1>Is This Worth Watching?</h1>
+  <p class="sub">Short reviews. No fluff. Updated manually by Shaun.</p>
+</header>
+
+<main>
+  <div class="card">
+    <span class="badge yes">✅ Worth it</span>
+    <p class="title">The Bear (Season 2)</p>
+    <p class="blurb">Stressful, loud, brilliant. Hospitality PTSD in the best way.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge no">❌ Skip</span>
+    <p class="title">Rebel Moon</p>
+    <p class="blurb">Looks expensive. Feels empty. Better things to watch.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge maybe">⚠️ Maybe</span>
+    <p class="title">Suits</p>
+    <p class="blurb">Comfort TV. Great while gaming. Don’t expect realism.</p>
+  </div>
+</main>
+
 </body>
 </html>
