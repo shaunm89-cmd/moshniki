@@ -1,171 +1,286 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Moshniki • Budget</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Moshniki's Budget Planner</title>
+  <meta name="description" content="Weekly / Fortnightly personal budget planner with bills, archives, and debt payoff tracking."/>
   <style>
     :root{
-      --bg0:#070a12; --bg1:#0b1020; --panel:#111a2c; --panel2:#0f1627;
-      --text:#e9efff; --muted:#9fb0d0; --line:#24365e;
-      --good:#3be37f; --bad:#ff5c74; --warn:#ffcc66; --accent:#6aa9ff;
-      --chip:#15213a;
-      --radius:16px;
-      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --bg: #f7f9fc;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --line: #e2e8f0;
+      --soft: #f1f5f9;
+      --brand: #2563eb;
+      --brand2:#60a5fa;
+      --good: #16a34a;
+      --bad: #dc2626;
+      --warn:#f59e0b;
+
+      --r12: 12px;
+      --r16: 16px;
+      --shadow: 0 12px 30px rgba(2,6,23,.08);
+
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
+
     *{box-sizing:border-box}
     body{
       margin:0;
-      background: radial-gradient(1200px 800px at 20% 0%, #0e1a3a 0%, transparent 60%),
-                  radial-gradient(900px 700px at 90% 10%, #1b2d5f 0%, transparent 55%),
-                  linear-gradient(160deg,var(--bg0) 0%, var(--bg1) 55%, #060912 100%);
-      color:var(--text);
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 15% -10%, rgba(96,165,250,.25) 0%, transparent 60%),
+        radial-gradient(900px 600px at 85% 0%, rgba(37,99,235,.18) 0%, transparent 55%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 45%, var(--bg) 100%);
     }
-    .wrap{max-width:1240px;margin:0 auto;padding:22px;}
-    header{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;}
-    .title{display:flex;flex-direction:column;gap:6px}
-    h1{margin:0;font-size:22px;letter-spacing:.3px}
-    .sub{color:var(--muted);font-size:13px;line-height:1.35}
-    .tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+    .wrap{max-width:1200px; margin:0 auto; padding:22px;}
+    .topbar{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap;
+      padding:16px;
+      border:1px solid var(--line);
+      border-radius: var(--r16);
+      background: rgba(255,255,255,.7);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+
+    .brand{
+      display:flex; gap:12px; align-items:center;
+    }
+    .logo{
+      width:44px; height:44px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand2) 100%);
+      box-shadow: 0 10px 22px rgba(37,99,235,.25);
+      display:grid; place-items:center;
+      color:white; font-weight:1000;
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:before{
+      content:"";
+      position:absolute; inset:-30px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 55%);
+      transform: rotate(20deg);
+    }
+    .logo span{position:relative; font-size:18px; letter-spacing:.5px}
+    h1{margin:0; font-size:18px; font-weight:1000; letter-spacing:.2px}
+    .subtitle{margin-top:4px; color:var(--muted); font-size:12.5px; line-height:1.35}
+
+    .tabs{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    }
     .tab{
-      border:1px solid rgba(36,54,94,.9);
-      background:rgba(255,255,255,.02);
-      color:var(--text);
-      padding:10px 12px;border-radius:999px; cursor:pointer;
-      font-weight:900; font-size:13px;
-      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.9);
+      color:var(--ink);
+      padding:10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight:950;
+      font-size:13px;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
     }
-    .tab:hover{transform: translateY(-1px)}
-    .tab.active{background:rgba(106,169,255,.18); border-color:rgba(106,169,255,.7);}
-    .grid{display:grid;grid-template-columns:1.55fr .85fr;gap:14px;margin-top:14px}
+    .tab:hover{transform: translateY(-1px); box-shadow: 0 10px 20px rgba(2,6,23,.06)}
+    .tab.active{
+      border-color: rgba(37,99,235,.35);
+      background: rgba(37,99,235,.08);
+      box-shadow: inset 0 0 0 3px rgba(37,99,235,.10);
+    }
+
+    .grid{display:grid; grid-template-columns: 1.55fr .85fr; gap:14px; margin-top:14px;}
     @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+
     .card{
-      background:linear-gradient(180deg,rgba(17,26,44,.95) 0%, rgba(15,22,39,.95) 100%);
-      border:1px solid rgba(36,54,94,.9); border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      backdrop-filter: blur(8px);
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--r16);
+      box-shadow: var(--shadow);
+      overflow:hidden;
     }
-    .card .hd{
+    .hd{
       padding:14px 14px 10px;
-      border-bottom:1px solid rgba(36,54,94,.65);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      border-bottom:1px solid var(--line);
+      display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
     }
-    .card .hd h2{margin:0;font-size:16px}
-    .card .bd{padding:14px}
+    .hd h2{margin:0; font-size:14px; font-weight:1000; letter-spacing:.4px}
+    .bd{padding:14px;}
+
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      background: var(--soft);
+      border:1px solid var(--line);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:850;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px; background:#94a3b8;
+    }
+    .dot.ok{background: var(--good)}
+    .dot.off{background: var(--warn)}
+    .dot.err{background: var(--bad)}
+
     .btn{
-      border:1px solid rgba(36,54,94,.9);
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-      padding:10px 12px; border-radius:14px;
-      cursor:pointer; font-weight:950; font-size:13px;
-      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      border:1px solid var(--line);
+      background: white;
+      color: var(--ink);
+      padding:10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight:950;
+      font-size:13px;
+      transition: transform .08s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
     }
-    .btn:hover{transform: translateY(-1px)}
-    .btn.primary{border-color:rgba(106,169,255,.85); background:rgba(106,169,255,.16)}
-    .btn.danger{border-color:rgba(255,92,116,.85); background:rgba(255,92,116,.10)}
-    .btn.good{border-color:rgba(59,227,127,.75); background:rgba(59,227,127,.10)}
-    .btn.small{padding:8px 10px;border-radius:12px;font-size:12px}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .chip{background:var(--chip);border:1px solid rgba(36,54,94,.9);padding:8px 10px;border-radius:999px;color:var(--muted);font-size:12px}
-    input, select{
-      background:#0b1222; color:var(--text);
-      border:1px solid rgba(36,54,94,.9);
-      padding:10px 10px; border-radius:14px; outline:none; width:100%;
+    .btn:hover{transform: translateY(-1px); box-shadow: 0 10px 20px rgba(2,6,23,.08)}
+    .btn.primary{
+      border-color: rgba(37,99,235,.35);
+      background: linear-gradient(180deg, rgba(37,99,235,.10), rgba(37,99,235,.06));
     }
-    input:focus, select:focus{
-      border-color:rgba(106,169,255,.85);
-      box-shadow:0 0 0 4px rgba(106,169,255,.12)
+    .btn.good{
+      border-color: rgba(22,163,74,.30);
+      background: linear-gradient(180deg, rgba(22,163,74,.10), rgba(22,163,74,.05));
     }
-    label{display:block}
-    .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media (max-width: 540px){ .two{grid-template-columns:1fr} }
-    table{width:100%;border-collapse:collapse}
-    th, td{border-bottom:1px solid rgba(36,54,94,.55);padding:10px 8px;text-align:left;vertical-align:middle}
-    th{color:var(--muted);font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.7px}
-    .money{text-align:right;font-variant-numeric: tabular-nums;}
-    .muted{color:var(--muted)}
-    .pos{color:var(--good);font-weight:950}
-    .neg{color:var(--bad);font-weight:950}
+    .btn.danger{
+      border-color: rgba(220,38,38,.25);
+      background: linear-gradient(180deg, rgba(220,38,38,.08), rgba(220,38,38,.04));
+    }
+    .btn.small{padding:8px 10px; border-radius: 11px; font-size:12px}
+    .btn.ghost{background: transparent}
+
+    label{display:block; font-size:12px; color:var(--muted); font-weight:850; margin-bottom:6px}
+    input, select, textarea{
+      width:100%;
+      padding:10px 10px;
+      border-radius: 12px;
+      border:1px solid var(--line);
+      background: white;
+      color: var(--ink);
+      outline:none;
+      transition: box-shadow .15s ease, border-color .15s ease;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(37,99,235,.40);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+
+    /* remove number spinners */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number]{ -moz-appearance: textfield; appearance: textfield; }
+
+    .two{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    @media (max-width: 620px){ .two{grid-template-columns:1fr} }
+
+    .kpi{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    .kbox{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff, #fbfdff);
+      border-radius: var(--r16);
+      padding:12px;
+    }
+    .kbox .klabel{font-size:12px; color:var(--muted); font-weight:900}
+    .kbox .kvalue{margin-top:6px; font-size:18px; font-weight:1000}
+    .money{font-variant-numeric: tabular-nums;}
+    .pos{color: var(--good)}
+    .neg{color: var(--bad)}
+    .note{color: var(--muted); font-size:12.5px; line-height:1.45}
+    .hr{height:1px; background: var(--line); margin:12px 0}
+
+    table{width:100%; border-collapse:collapse}
+    th, td{border-bottom:1px solid var(--line); padding:10px 8px; text-align:left; vertical-align:middle}
+    th{font-size:12px; color:var(--muted); font-weight:950; text-transform:uppercase; letter-spacing:.6px}
+    .right{text-align:right}
+
     .hidden{display:none}
-    .kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .box{
-      padding:12px;border:1px solid rgba(36,54,94,.9);
-      border-radius:16px;background:rgba(0,0,0,.18)
+
+    canvas{
+      width:100%;
+      height:220px;
+      display:block;
+      border:1px solid var(--line);
+      border-radius: var(--r16);
+      background: #ffffff;
     }
-    .kpi .lbl{color:var(--muted);font-size:12px;font-weight:900}
-    .kpi .val{font-size:18px;font-weight:1000;margin-top:6px}
-    .list{display:flex;flex-direction:column;gap:10px}
-    .note{color:var(--muted);font-size:12px;line-height:1.45}
-    .hr{height:1px;background:rgba(36,54,94,.65);margin:12px 0}
-    .pillbar{height:10px;background:rgba(255,255,255,.06);border:1px solid rgba(36,54,94,.7);border-radius:999px;overflow:hidden}
-    .pillbar > div{height:100%;background:rgba(106,169,255,.65)}
-    .statusDot{width:9px;height:9px;border-radius:999px;display:inline-block;margin-right:8px;background:#666}
-    .statusOk{background:rgba(59,227,127,.95)}
-    .statusOff{background:rgba(255,204,102,.95)}
-    .statusErr{background:rgba(255,92,116,.95)}
+
     .toast{
       position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
-      background:rgba(15,22,39,.92); border:1px solid rgba(36,54,94,.9);
-      padding:10px 12px; border-radius:14px; box-shadow: var(--shadow);
-      color:var(--text); font-size:13px; font-weight:900;
-      opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;
+      background: rgba(255,255,255,.92);
+      border:1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding:10px 12px;
+      font-weight:950;
+      font-size:13px;
+      opacity:0; pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
     }
     .toast.show{opacity:1; transform:translateX(-50%) translateY(-6px)}
+    code{background: var(--soft); padding:2px 6px; border-radius:8px; border:1px solid var(--line)}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <div class="title">
-        <h1>Moshniki • Personal Budget</h1>
-        <div class="sub">
-          <span class="statusDot" id="syncDot"></span>
-          <span id="syncText">Local mode (not signed in)</span>
-          <div class="note">Sign in to sync across devices (home/work). Signed-out still works locally.</div>
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>M</span></div>
+        <div>
+          <h1>Moshniki’s Budget Planner</h1>
+          <div class="subtitle">
+            <span class="chip">
+              <span class="dot off" id="syncDot"></span>
+              <span id="syncText">Local mode (not signed in)</span>
+            </span>
+            <div class="note" style="margin-top:6px">Sign in to sync across devices. Updates won’t delete progress (schema migrations are built in).</div>
+          </div>
         </div>
       </div>
 
       <div class="tabs">
-        <button class="tab active" data-tab="budget">Weekly Budget</button>
-        <button class="tab" data-tab="debts">Debt Tracker</button>
-        <button class="tab" data-tab="history">Archived Weeks</button>
+        <button class="tab active" data-tab="budget">Budget</button>
+        <button class="tab" data-tab="debts">Debts</button>
+        <button class="tab" data-tab="history">Archive</button>
         <button class="tab" data-tab="settings">Settings</button>
         <button class="tab" data-tab="account">Account</button>
       </div>
-    </header>
+    </div>
 
     <!-- BUDGET -->
-    <section id="tab-budget">
+    <section id="tab-budget" style="margin-top:14px">
       <div class="grid">
         <div class="card">
           <div class="hd">
-            <h2>Current Week</h2>
+            <h2>Current Period</h2>
             <div class="row">
               <span class="chip" id="weekLabel">—</span>
               <button class="btn small" id="prevWeekBtn">◀</button>
               <button class="btn small" id="nextWeekBtn">▶</button>
-              <button class="btn primary" id="addWeekBtn">+ New Week</button>
-              <button class="btn" id="completeWeekBtn">Complete Week</button>
+              <button class="btn primary" id="addWeekBtn">+ New</button>
+              <button class="btn" id="completeWeekBtn">Complete</button>
             </div>
           </div>
           <div class="bd">
             <div class="kpi">
-              <div class="box">
-                <div class="lbl">Income</div>
-                <div class="val" id="kpiIncome">$0.00</div>
+              <div class="kbox">
+                <div class="klabel">Income</div>
+                <div class="kvalue money" id="kpiIncome">$0.00</div>
               </div>
-              <div class="box">
-                <div class="lbl">Difference</div>
-                <div class="val" id="kpiDiff">$0.00</div>
+              <div class="kbox">
+                <div class="klabel">Leftover / Shortfall</div>
+                <div class="kvalue money" id="kpiDiff">$0.00</div>
               </div>
-              <div class="box">
-                <div class="lbl">Bills + Spending</div>
-                <div class="val" id="kpiOut">$0.00</div>
+              <div class="kbox">
+                <div class="klabel">Bills + Spending</div>
+                <div class="kvalue money" id="kpiOut">$0.00</div>
               </div>
-              <div class="box">
-                <div class="lbl">Savings</div>
-                <div class="val" id="kpiSavings">$0.00</div>
+              <div class="kbox">
+                <div class="klabel">Savings</div>
+                <div class="kvalue money" id="kpiSavings">$0.00</div>
               </div>
             </div>
 
@@ -173,190 +288,206 @@
 
             <div class="two">
               <div>
-                <label class="muted">Payday (Wednesday)</label>
+                <label>Pay date (this period)</label>
                 <input id="paydayInput" type="date">
               </div>
               <div>
-                <label class="muted">Income</label>
-                <input id="incomeInput" type="number" step="0.01" min="0">
+                <label>Income</label>
+                <input id="incomeInput" type="number" step="0.01" min="0" placeholder="0.00">
               </div>
               <div>
-                <label class="muted">Savings</label>
-                <input id="savingsInput" type="number" step="0.01" min="0">
+                <label>Savings</label>
+                <input id="savingsInput" type="number" step="0.01" min="0" placeholder="0.00">
               </div>
               <div>
-                <label class="muted">Groceries</label>
-                <input id="groceriesInput" type="number" step="0.01" min="0">
+                <label>Groceries</label>
+                <input id="groceriesInput" type="number" step="0.01" min="0" placeholder="0.00">
               </div>
               <div>
-                <label class="muted">Guilt-free spending</label>
-                <input id="guiltInput" type="number" step="0.01" min="0">
+                <label>Guilt-free spending</label>
+                <input id="guiltInput" type="number" step="0.01" min="0" placeholder="0.00">
               </div>
               <div>
-                <label class="muted">Week note (optional)</label>
-                <input id="noteInput" placeholder="Birthday, bigger electricity bill, strata catch-up etc">
+                <label>Note (optional)</label>
+                <input id="noteInput" placeholder="Birthday, unexpected bill, catch-up payment…">
               </div>
             </div>
 
             <div class="hr"></div>
 
-            <div class="row" style="justify-content:space-between;align-items:flex-start">
-              <div style="flex:1;min-width:280px">
-                <h3 style="margin:0 0 8px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px">Utilities / Bills</h3>
+            <div class="row" style="align-items:flex-start; justify-content:space-between">
+              <div style="flex:1; min-width:280px">
+                <div class="row" style="justify-content:space-between; margin-bottom:8px">
+                  <h2 style="margin:0; font-size:13px; font-weight:1000; letter-spacing:.5px">Bills</h2>
+                  <span class="note">Typing won’t kick you out 😄</span>
+                </div>
+
                 <table>
                   <thead>
                     <tr>
                       <th>Item</th>
-                      <th class="money">Amount</th>
-                      <th class="money nowrap">Actions</th>
+                      <th class="right">Amount</th>
+                      <th class="right">Actions</th>
                     </tr>
                   </thead>
                   <tbody id="billsBody"></tbody>
                 </table>
+
                 <div class="row" style="margin-top:10px">
-                  <input id="newBillName" placeholder="Add bill name (e.g. Strata)">
-                  <input id="newBillAmt" type="number" step="0.01" min="0" placeholder="0.00" style="max-width:180px">
+                  <input id="newBillName" placeholder="Add item (e.g. Rent)" />
+                  <input id="newBillAmt" type="number" step="0.01" min="0" placeholder="0.00" style="max-width:180px"/>
                   <button class="btn primary" id="addBillBtn">Add</button>
                 </div>
               </div>
 
-              <div style="flex:0.95;min-width:260px">
-                <h3 style="margin:0 0 8px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px">Breakdown</h3>
+              <div style="flex:0.95; min-width:260px">
+                <h2 style="margin:0 0 8px; font-size:13px; font-weight:1000; letter-spacing:.5px">Summary</h2>
 
-                <div class="box">
+                <div class="kbox">
                   <div class="row" style="justify-content:space-between">
-                    <div class="muted">Bills total</div>
+                    <div class="note">Bills total</div>
                     <div class="money" id="billsTotal">$0.00</div>
                   </div>
-                  <div class="row" style="justify-content:space-between;margin-top:8px">
-                    <div class="muted">Groceries + Guilt-free</div>
+                  <div class="row" style="justify-content:space-between; margin-top:8px">
+                    <div class="note">Groceries + Guilt-free</div>
                     <div class="money" id="spendTotal">$0.00</div>
                   </div>
-                  <div class="row" style="justify-content:space-between;margin-top:8px">
-                    <div class="muted">Savings</div>
+                  <div class="row" style="justify-content:space-between; margin-top:8px">
+                    <div class="note">Savings</div>
                     <div class="money" id="savingsTotal">$0.00</div>
                   </div>
                   <div class="hr"></div>
                   <div class="row" style="justify-content:space-between">
-                    <div class="muted">Leftover / Shortfall</div>
+                    <div class="note">Leftover / Shortfall</div>
                     <div class="money" id="diffLine">$0.00</div>
                   </div>
-                  <div class="note" style="margin-top:10px">
-                    Instead of deleting columns, hit <b>Complete Week</b> to archive it and start fresh.
-                  </div>
                 </div>
 
-                <div class="box" style="margin-top:10px">
-                  <div class="muted" style="font-weight:950;margin-bottom:6px">Week note</div>
-                  <div id="weekNote" class="note">—</div>
+                <div class="kbox" style="margin-top:10px">
+                  <div class="note" style="font-weight:900; margin-bottom:6px">Note</div>
+                  <div class="note" id="weekNote">—</div>
                 </div>
 
-                <button class="btn danger" id="resetWeekBtn" style="margin-top:10px;width:100%">Reset this week</button>
+                <button class="btn danger" id="resetWeekBtn" style="margin-top:10px; width:100%">Reset this period</button>
               </div>
             </div>
-
           </div>
         </div>
 
         <div class="card">
           <div class="hd">
-            <h2>Quick Actions</h2>
+            <h2>Actions</h2>
           </div>
           <div class="bd">
-            <div class="list">
-              <button class="btn" id="clonePrevWeekBtn">Clone previous week</button>
-
-              <div class="hr"></div>
-
-              <button class="btn" id="exportBtn">Export data (JSON)</button>
-              <label class="btn" style="display:block;text-align:center;cursor:pointer">
-                Import data (JSON)
+            <div class="row">
+              <button class="btn" id="clonePrevWeekBtn">Clone previous</button>
+              <button class="btn" id="resetTemplateBtn">Reset bill template</button>
+            </div>
+            <div class="hr"></div>
+            <div class="row">
+              <button class="btn" id="exportBtn">Export JSON</button>
+              <label class="btn" style="cursor:pointer">
+                Import JSON
                 <input id="importFile" type="file" accept="application/json" style="display:none">
               </label>
-
-              <div class="hr"></div>
-
-              <div class="note">
-                Cloud sync requires sign-in (Account tab). If you’re signed out, changes save locally only.
-              </div>
+            </div>
+            <div class="hr"></div>
+            <div class="note">
+              Pro tip: use <b>Complete</b> to archive the period instead of deleting columns.
             </div>
           </div>
         </div>
-
       </div>
     </section>
 
     <!-- DEBTS -->
-    <section id="tab-debts" class="hidden">
+    <section id="tab-debts" class="hidden" style="margin-top:14px">
       <div class="grid">
         <div class="card">
           <div class="hd">
             <h2>Debt Tracker</h2>
-            <div class="row">
-              <button class="btn primary" id="addDebtBtn">+ Add Debt</button>
-            </div>
+            <button class="btn primary" id="addDebtBtn">+ Add debt</button>
           </div>
           <div class="bd">
-            <div id="debtsList" class="list"></div>
+            <div id="debtsList" style="display:flex; flex-direction:column; gap:10px"></div>
+            <div class="note" style="margin-top:10px">Tip: enter a manual minimum so you can compare payoff speed + interest.</div>
           </div>
         </div>
 
         <div class="card">
           <div class="hd">
-            <h2>Payoff Comparison</h2>
+            <h2>Payoff & Graph</h2>
           </div>
           <div class="bd">
-            <div class="note">
-              Select a debt. This compares your payment vs your manual “minimum payment”.
-            </div>
-            <div class="hr"></div>
+            <div id="compareEmpty" class="note">Select a debt to see payoff details.</div>
+
             <div id="compareBox" class="hidden">
               <div class="kpi">
-                <div class="box">
-                  <div class="lbl">Your payment payoff</div>
-                  <div class="val" id="yourPayoff">—</div>
+                <div class="kbox">
+                  <div class="klabel">Your payoff time</div>
+                  <div class="kvalue" id="yourPayoff">—</div>
                 </div>
-                <div class="box">
-                  <div class="lbl">Minimum payment payoff</div>
-                  <div class="val" id="minPayoff">—</div>
+                <div class="kbox">
+                  <div class="klabel">Minimum payoff time</div>
+                  <div class="kvalue" id="minPayoff">—</div>
                 </div>
-                <div class="box">
-                  <div class="lbl">Interest (your payment)</div>
-                  <div class="val" id="yourInterest">—</div>
+                <div class="kbox">
+                  <div class="klabel">Estimated payoff date (yours)</div>
+                  <div class="kvalue" id="yourDate">—</div>
                 </div>
-                <div class="box">
-                  <div class="lbl">Interest (minimum)</div>
-                  <div class="val" id="minInterest">—</div>
+                <div class="kbox">
+                  <div class="klabel">Interest saved vs minimum</div>
+                  <div class="kvalue" id="interestSaved">—</div>
                 </div>
               </div>
+
               <div class="hr"></div>
-              <div class="pillbar"><div id="progressBar" style="width:0%"></div></div>
-              <div class="note" style="margin-top:8px" id="progressNote">Makes assumptions based on constant payment & interest.</div>
+
+              <canvas id="debtCanvas" width="900" height="260"></canvas>
+              <div class="note" style="margin-top:8px">Blue = your payment, Red = minimum payment (balance over time).</div>
+
+              <div class="hr"></div>
+
+              <div class="kbox">
+                <div class="note" style="font-weight:900; margin-bottom:8px">Repayment simulator (doesn’t auto-change your saved payment)</div>
+                <div class="two">
+                  <div>
+                    <label>Extra payment every period</label>
+                    <input id="extraRecurring" type="number" step="0.01" min="0" placeholder="0.00">
+                  </div>
+                  <div>
+                    <label>One-off extra next payment</label>
+                    <input id="extraOneOff" type="number" step="0.01" min="0" placeholder="0.00">
+                  </div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                  <button class="btn primary" id="runSimBtn">Run</button>
+                  <button class="btn" id="clearSimBtn">Clear</button>
+                </div>
+                <div class="hr"></div>
+                <div class="note" id="simResult">Enter extras and run to see updated payoff estimate.</div>
+              </div>
             </div>
-            <div id="compareEmpty" class="note">Select a debt to see comparison.</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- HISTORY -->
-    <section id="tab-history" class="hidden">
+    <!-- ARCHIVE -->
+    <section id="tab-history" class="hidden" style="margin-top:14px">
       <div class="card">
         <div class="hd">
-          <h2>Archived Weeks</h2>
-          <div class="row">
-            <button class="btn danger" id="clearArchiveBtn">Clear archive</button>
-          </div>
+          <h2>Archive</h2>
+          <button class="btn danger" id="clearArchiveBtn">Clear archive</button>
         </div>
         <div class="bd">
-          <div id="archiveList" class="list"></div>
-          <div class="note">This is the “don’t lie to yourself” section 😄 — it shows what your real weeks look like.</div>
+          <div id="archiveList" style="display:flex; flex-direction:column; gap:10px"></div>
         </div>
       </div>
     </section>
 
     <!-- SETTINGS -->
-    <section id="tab-settings" class="hidden">
+    <section id="tab-settings" class="hidden" style="margin-top:14px">
       <div class="card">
         <div class="hd">
           <h2>Settings</h2>
@@ -364,96 +495,116 @@
         <div class="bd">
           <div class="two">
             <div>
-              <label class="muted">Default weekly income</label>
-              <input id="defaultIncome" type="number" step="0.01" min="0">
+              <label>Pay frequency</label>
+              <select id="payFrequency">
+                <option value="weekly">Weekly</option>
+                <option value="fortnightly">Fortnightly</option>
+              </select>
+              <div class="note" style="margin-top:6px">This controls how far “New” jumps: 7 or 14 days.</div>
             </div>
             <div>
-              <label class="muted">Default groceries</label>
-              <input id="defaultGroceries" type="number" step="0.01" min="0">
+              <label>Currency</label>
+              <select id="currency">
+                <option value="AUD">AUD (Australia)</option>
+                <option value="USD">USD (US)</option>
+                <option value="EUR">EUR (Europe)</option>
+                <option value="GBP">GBP (UK)</option>
+              </select>
+              <div class="note" style="margin-top:6px">Changes display formatting only.</div>
+            </div>
+
+            <div>
+              <label>Default income</label>
+              <input id="defaultIncome" type="number" step="0.01" min="0" placeholder="0.00">
             </div>
             <div>
-              <label class="muted">Default guilt-free spending</label>
-              <input id="defaultGuilt" type="number" step="0.01" min="0">
+              <label>Default groceries</label>
+              <input id="defaultGroceries" type="number" step="0.01" min="0" placeholder="0.00">
             </div>
             <div>
-              <label class="muted">Default savings</label>
-              <input id="defaultSavings" type="number" step="0.01" min="0">
+              <label>Default guilt-free spending</label>
+              <input id="defaultGuilt" type="number" step="0.01" min="0" placeholder="0.00">
+            </div>
+            <div>
+              <label>Default savings</label>
+              <input id="defaultSavings" type="number" step="0.01" min="0" placeholder="0.00">
             </div>
           </div>
+
           <div class="hr"></div>
+
           <button class="btn primary" id="saveSettingsBtn">Save settings</button>
+          <div class="note" style="margin-top:10px">
+            When we add new features, your saved data won’t disappear — the app migrates older data forward safely.
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ACCOUNT -->
-    <section id="tab-account" class="hidden">
+    <section id="tab-account" class="hidden" style="margin-top:14px">
       <div class="grid">
         <div class="card">
           <div class="hd">
             <h2>Sign in</h2>
           </div>
           <div class="bd">
-            <div class="list">
+            <div class="row">
               <button class="btn good" id="googleLoginBtn">Sign in with Google</button>
+              <button class="btn danger" id="logoutBtn">Log out</button>
+            </div>
 
-              <div class="hr"></div>
+            <div class="hr"></div>
 
-              <div class="two">
-                <div>
-                  <label class="muted">Email</label>
-                  <input id="emailInput" type="email" placeholder="you@email.com">
-                </div>
-                <div>
-                  <label class="muted">Password</label>
-                  <input id="passInput" type="password" placeholder="••••••••">
-                </div>
+            <div class="two">
+              <div>
+                <label>Email</label>
+                <input id="emailInput" type="email" placeholder="you@email.com">
               </div>
-
-              <div class="row">
-                <button class="btn primary" id="emailLoginBtn">Email login</button>
-                <button class="btn" id="emailSignupBtn">Create account</button>
-                <button class="btn danger" id="logoutBtn">Log out</button>
-              </div>
-
-              <div class="box">
-                <div class="note">
-                  <b>Cloud sync:</b> when signed in, your data is stored in Firestore under your UID and loads on any device.
-                  <br><br>
-                  If Google sign-in fails, check Firebase Auth → Authorized domains includes:
-                  <br>• <code>moshniki.com</code>
-                  <br>• <code>shaunm89-cmd.github.io</code>
-                </div>
-              </div>
-
-              <div class="box">
-                <div class="muted" style="font-weight:950;margin-bottom:6px">Signed-in user</div>
-                <div id="userLine" class="note">Not signed in.</div>
+              <div>
+                <label>Password</label>
+                <input id="passInput" type="password" placeholder="••••••••">
               </div>
             </div>
+
+            <div class="row" style="margin-top:10px">
+              <button class="btn primary" id="emailLoginBtn">Email login</button>
+              <button class="btn" id="emailSignupBtn">Create account</button>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="note">
+              If Google sign-in fails, add these in Firebase → Authentication → Settings → Authorized domains:
+              <br>• <code>moshniki.com</code>
+              <br>• <code>shaunm89-cmd.github.io</code>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="note"><b>Signed-in user:</b> <span id="userLine">Not signed in.</span></div>
           </div>
         </div>
 
         <div class="card">
           <div class="hd">
-            <h2>Privacy</h2>
+            <h2>Data & Privacy</h2>
           </div>
           <div class="bd">
             <div class="note">
-              Your Firebase config is public (that’s normal). Your data is protected by Firestore rules:
-              only your logged-in UID can read/write your doc.
+              Data saves locally when signed out. When signed in, it syncs to Firestore under your UID.
+              Firestore rules should restrict read/write to your UID only.
             </div>
           </div>
         </div>
       </div>
     </section>
-
   </div>
 
   <div class="toast" id="toast">Saved</div>
 
 <script type="module">
-  // Firebase (CDN Modular SDK)
+  // Firebase SDK (CDN)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
   import {
     getAuth, onAuthStateChanged,
@@ -464,287 +615,374 @@
     getFirestore, doc, setDoc, getDoc, onSnapshot
   } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-  // ✅ Your Firebase config (already inserted)
+  // ✅ Your Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyA5No9QeHpYwJDblMFat_cK2gyVm_K1RtE",
     authDomain: "moshniki.firebaseapp.com",
     projectId: "moshniki",
     storageBucket: "moshniki.firebasestorage.app",
     messagingSenderId: "880440316288",
-    appId: "1:880440316288:web:23dc9806e2a6a6f3ce06b165".replace("a6a6","a6a6"), // no-op, keeps file stable
+    appId: "1:880440316288:web:23dc9806e2a6f3ce06b165",
     measurementId: "G-RC6L5FCXY0"
   };
 
-  // NOTE: appId above must match exactly. If you prefer, replace the line with the literal value:
-  // appId: "1:880440316288:web:23dc9806e2a6f3ce06b165",
-
-  // Initialize Firebase
-  const app = initializeApp({
-    apiKey: firebaseConfig.apiKey,
-    authDomain: firebaseConfig.authDomain,
-    projectId: firebaseConfig.projectId,
-    storageBucket: firebaseConfig.storageBucket,
-    messagingSenderId: firebaseConfig.messagingSenderId,
-    appId: "1:880440316288:web:23dc9806e2a6f3ce06b165",
-    measurementId: firebaseConfig.measurementId
-  });
+  const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Utilities
-  const money = (n) => Number(n || 0).toLocaleString(undefined, { style:'currency', currency:'AUD' });
-  const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
+  // ---------- Helpers ----------
   const uid = () => Math.random().toString(16).slice(2)+Date.now().toString(16);
-
-  const addDays = (d, days) => { const x = new Date(d); x.setDate(x.getDate() + days); return x; };
+  const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
   const toISODate = (d) => new Date(d).toISOString().slice(0,10);
-  const formatPayday = (iso) => new Date(iso + "T00:00:00").toLocaleDateString(undefined, { weekday:"short", day:"numeric", month:"short", year:"numeric" });
-  const nextWednesdayISO = () => {
-    const now = new Date();
-    const day = now.getDay();
-    const target = 3; // Wed
-    let diff = (target - day + 7) % 7;
-    if (diff === 0) diff = 7;
-    return toISODate(addDays(now, diff));
+  const addDays = (isoOrDate, days) => {
+    const d = typeof isoOrDate === "string" ? new Date(isoOrDate + "T00:00:00") : new Date(isoOrDate);
+    d.setDate(d.getDate() + days);
+    return toISODate(d);
   };
-  function escapeHtml(str){
-    return String(str||"").replace(/[&<>"']/g, s => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" })[s]);
-  }
-  function toast(msg){
-    const t = document.getElementById("toast");
-    t.textContent = msg;
-    t.classList.add("show");
-    setTimeout(()=>t.classList.remove("show"), 1600);
+  const formatPayday = (iso) => new Date(iso + "T00:00:00").toLocaleDateString(undefined, { weekday:"short", day:"numeric", month:"short", year:"numeric" });
+  const escapeHtml = (str) => String(str||"").replace(/[&<>"']/g, s => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" })[s]);
+  const num = (v) => (v === null || v === "" || typeof v === "undefined") ? 0 : Number(v || 0);
+  const isNil = (v) => v === null || typeof v === "undefined";
+
+  const toastEl = document.getElementById("toast");
+  const toast = (msg) => {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    setTimeout(()=>toastEl.classList.remove("show"), 1400);
+  };
+
+  // Money formatting (configurable)
+  const moneyFmt = (currency) => new Intl.NumberFormat(undefined, { style:"currency", currency: currency || "AUD" });
+  const money = (n, currency) => moneyFmt(currency).format(Number(n||0));
+
+  // ---------- Schema + migration ----------
+  // Promise: updates won't delete user progress. We only ADD missing defaults.
+  const CURRENT_SCHEMA = 2;
+
+  function migrateState(s){
+    if (!s || typeof s !== "object") return null;
+
+    // v0 -> v1
+    if (!("schemaVersion" in s)) s.schemaVersion = 0;
+
+    // Ensure core containers exist
+    s.settings = s.settings || {};
+    s.weeks = Array.isArray(s.weeks) ? s.weeks : [];
+    s.archive = Array.isArray(s.archive) ? s.archive : [];
+    s.debts = Array.isArray(s.debts) ? s.debts : [];
+    if (typeof s.currentWeekIndex !== "number") s.currentWeekIndex = 0;
+
+    // v0/v1: add payFrequency + currency defaults
+    if (s.schemaVersion < 1){
+      if (!s.settings.payFrequency) s.settings.payFrequency = "weekly";
+      if (!s.settings.currency) s.settings.currency = "AUD";
+      s.schemaVersion = 1;
+    }
+
+    // v1 -> v2: ensure each week has bills + id + paydayDate + createdAt and bills have ids
+    if (s.schemaVersion < 2){
+      for (const w of s.weeks){
+        if (!w.id) w.id = uid();
+        if (!w.paydayDate) w.paydayDate = toISODate(new Date());
+        if (!w.createdAt) w.createdAt = Date.now();
+        if (!Array.isArray(w.bills)) w.bills = [];
+        for (const b of w.bills){
+          if (!b.id) b.id = uid();
+          if (!("amount" in b)) b.amount = null;
+        }
+      }
+      for (const w of s.archive){
+        if (!w.id) w.id = uid();
+        if (!Array.isArray(w.bills)) w.bills = [];
+        for (const b of w.bills){
+          if (!b.id) b.id = uid();
+          if (!("amount" in b)) b.amount = null;
+        }
+      }
+      // debts
+      for (const d of s.debts){
+        if (!d.id) d.id = uid();
+        if (!d.freq) d.freq = "monthly";
+      }
+      s.schemaVersion = 2;
+    }
+
+    // Guard indexes
+    if (s.currentWeekIndex < 0) s.currentWeekIndex = 0;
+    if (s.currentWeekIndex > s.weeks.length-1) s.currentWeekIndex = Math.max(0, s.weeks.length-1);
+
+    // Fill missing settings defaults (non-destructive)
+    if (!s.settings.payFrequency) s.settings.payFrequency = "weekly";
+    if (!s.settings.currency) s.settings.currency = "AUD";
+    if (!("defaultIncome" in s.settings)) s.settings.defaultIncome = null;
+    if (!("defaultGroceries" in s.settings)) s.settings.defaultGroceries = null;
+    if (!("defaultGuilt" in s.settings)) s.settings.defaultGuilt = null;
+    if (!("defaultSavings" in s.settings)) s.settings.defaultSavings = null;
+
+    return s;
   }
 
-  // Local fallback
-  const LOCAL_KEY = "moshniki_budget_v3";
+  // ---------- Templates (blank amounts) ----------
+  const BILL_TEMPLATE = [
+    "Rent",
+    "Home Loan",
+    "Strata Rates",
+    "Council Rates",
+    "Electricity",
+    "Gas",
+    "Water",
+    "Internet",
+    "Mobile Phone",
+    "Insurance",
+    "Personal Loan",
+    "Credit Card",
+  ].map(name => ({ id: uid(), name, amount: null }));
+
+  const makeWeek = (paydayISO) => ({
+    id: uid(),
+    paydayDate: paydayISO,
+    income: null,
+    savings: null,
+    groceries: null,
+    guilt: null,
+    note: "",
+    bills: JSON.parse(JSON.stringify(BILL_TEMPLATE)),
+    createdAt: Date.now(),
+  });
+
+  // ---------- Local storage ----------
+  const LOCAL_KEY = "moshniki_budget_planner_state";
   const loadLocal = () => { try{ const r = localStorage.getItem(LOCAL_KEY); return r ? JSON.parse(r) : null; } catch { return null; } };
   const saveLocal = () => localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
 
-  // Defaults
-  const defaultBills = [
-    { id: uid(), name: "Electricity", amount: 40 },
-    { id: uid(), name: "Strata", amount: 85 },
-    { id: uid(), name: "Sydney Water", amount: 17.5 },
-    { id: uid(), name: "Optus Internet", amount: 47.5 },
-    { id: uid(), name: "Mum's Internet & Phone", amount: 27.5 },
-    { id: uid(), name: "Council", amount: 45 },
-  ];
-  const makeWeek = (paydayISO=null) => ({
-    id: uid(),
-    paydayDate: paydayISO || nextWednesdayISO(),
-    income: 886.12,
-    savings: 300,
-    groceries: 120,
-    guilt: 200,
-    note: "",
-    bills: JSON.parse(JSON.stringify(defaultBills)),
-    createdAt: Date.now(),
-  });
-  const defaultState = {
-    settings: { defaultIncome: 886.12, defaultGroceries: 120, defaultGuilt: 200, defaultSavings: 300 },
-    weeks: [ makeWeek(nextWednesdayISO()) ],
+  // Create default state (first-time users)
+  const todayISO = toISODate(new Date());
+  let state = migrateState(loadLocal()) || {
+    schemaVersion: CURRENT_SCHEMA,
+    settings: {
+      payFrequency: "weekly",
+      currency: "AUD",
+      defaultIncome: null,
+      defaultGroceries: null,
+      defaultGuilt: null,
+      defaultSavings: null
+    },
+    weeks: [ makeWeek(todayISO) ],
     currentWeekIndex: 0,
     archive: [],
     debts: [],
-    selectedDebtId: null,
+    selectedDebtId: null
   };
 
-  let state = loadLocal() || defaultState;
+  // Apply migration immediately and persist (safe)
+  state = migrateState(state);
+  saveLocal();
 
-  // Sync UI
+  // ---------- DOM refs ----------
   const syncDot = document.getElementById("syncDot");
   const syncText = document.getElementById("syncText");
   const userLine = document.getElementById("userLine");
 
-  const setSyncStatus = (mode, text) => {
-    syncDot.className = "statusDot " + (mode==="ok" ? "statusOk" : mode==="err" ? "statusErr" : "statusOff");
-    syncText.textContent = text;
-  };
+  const weekLabel = document.getElementById("weekLabel");
+  const paydayInput = document.getElementById("paydayInput");
+  const incomeInput = document.getElementById("incomeInput");
+  const savingsInput = document.getElementById("savingsInput");
+  const groceriesInput = document.getElementById("groceriesInput");
+  const guiltInput = document.getElementById("guiltInput");
+  const noteInput = document.getElementById("noteInput");
+  const weekNote = document.getElementById("weekNote");
 
-  // Tabs
+  const billsBody = document.getElementById("billsBody");
+  const newBillName = document.getElementById("newBillName");
+  const newBillAmt = document.getElementById("newBillAmt");
+
+  const billsTotalEl = document.getElementById("billsTotal");
+  const spendTotalEl = document.getElementById("spendTotal");
+  const savingsTotalEl = document.getElementById("savingsTotal");
+  const diffLineEl = document.getElementById("diffLine");
+
+  const kpiIncome = document.getElementById("kpiIncome");
+  const kpiDiff = document.getElementById("kpiDiff");
+  const kpiOut = document.getElementById("kpiOut");
+  const kpiSavings = document.getElementById("kpiSavings");
+
+  const archiveList = document.getElementById("archiveList");
+
+  const debtsList = document.getElementById("debtsList");
+  const compareBox = document.getElementById("compareBox");
+  const compareEmpty = document.getElementById("compareEmpty");
+  const yourPayoff = document.getElementById("yourPayoff");
+  const minPayoff = document.getElementById("minPayoff");
+  const yourDate = document.getElementById("yourDate");
+  const interestSaved = document.getElementById("interestSaved");
+  const debtCanvas = document.getElementById("debtCanvas");
+  const extraRecurring = document.getElementById("extraRecurring");
+  const extraOneOff = document.getElementById("extraOneOff");
+  const simResult = document.getElementById("simResult");
+
+  const payFrequencySel = document.getElementById("payFrequency");
+  const currencySel = document.getElementById("currency");
+  const defaultIncome = document.getElementById("defaultIncome");
+  const defaultGroceries = document.getElementById("defaultGroceries");
+  const defaultGuilt = document.getElementById("defaultGuilt");
+  const defaultSavings = document.getElementById("defaultSavings");
+
+  // ---------- Tabs ----------
   const tabButtons = [...document.querySelectorAll(".tab")];
   const tabs = ["budget","debts","history","settings","account"];
   const showTab = (name) => {
-    tabs.forEach(t => document.getElementById("tab-"+t).classList.toggle("hidden", t !== name));
+    for (const t of tabs) document.getElementById("tab-"+t).classList.toggle("hidden", t !== name);
     tabButtons.forEach(b => b.classList.toggle("active", b.dataset.tab === name));
   };
   tabButtons.forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
 
-  // Budget UI refs
-  const els = {
-    weekLabel: document.getElementById("weekLabel"),
-    paydayInput: document.getElementById("paydayInput"),
-    incomeInput: document.getElementById("incomeInput"),
-    savingsInput: document.getElementById("savingsInput"),
-    groceriesInput: document.getElementById("groceriesInput"),
-    guiltInput: document.getElementById("guiltInput"),
-    noteInput: document.getElementById("noteInput"),
-    weekNote: document.getElementById("weekNote"),
-    billsBody: document.getElementById("billsBody"),
-    newBillName: document.getElementById("newBillName"),
-    newBillAmt: document.getElementById("newBillAmt"),
-    billsTotal: document.getElementById("billsTotal"),
-    spendTotal: document.getElementById("spendTotal"),
-    savingsTotal: document.getElementById("savingsTotal"),
-    diffLine: document.getElementById("diffLine"),
-    kpiIncome: document.getElementById("kpiIncome"),
-    kpiDiff: document.getElementById("kpiDiff"),
-    kpiOut: document.getElementById("kpiOut"),
-    kpiSavings: document.getElementById("kpiSavings"),
-  };
-
+  // ---------- Budget logic ----------
   const currentWeek = () => state.weeks[state.currentWeekIndex];
+
   const calcWeek = (w) => {
-    const bills = w.bills.reduce((a,b)=>a+Number(b.amount||0),0);
-    const spend = Number(w.groceries||0) + Number(w.guilt||0);
-    const savings = Number(w.savings||0);
+    const bills = w.bills.reduce((a,b)=>a + num(b.amount), 0);
+    const spend = num(w.groceries) + num(w.guilt);
+    const savings = num(w.savings);
     const out = bills + spend;
-    const diff = Number(w.income||0) - savings - out;
+    const diff = num(w.income) - savings - out;
     return { bills, spend, savings, out, diff };
   };
 
-  // Cloud sync
-  let currentUser = null;
-  let unsubscribeSnap = null;
-  let isApplyingRemote = false;
-  let saveTimer = null;
-
-  const userRef = (uid) => doc(db, "users", uid);
-
-  async function loadFromCloud(uid){
-    const ref = userRef(uid);
-    const snap = await getDoc(ref);
-    if (snap.exists()){
-      const data = snap.data();
-      if (data?.state){
-        state = data.state;
-        saveLocal();
-        render();
-      }
-    } else {
-      await setDoc(ref, { state, updatedAt: Date.now() }, { merge:true });
-    }
-  }
-
-  const scheduleSave = () => {
-    saveLocal();
-    if (!currentUser || isApplyingRemote) return;
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(async () => {
-      try{
-        await setDoc(userRef(currentUser.uid), { state, updatedAt: Date.now() }, { merge:true });
-        setSyncStatus("ok", "Cloud sync enabled");
-      }catch(e){
-        console.error(e);
-        setSyncStatus("err", "Cloud save failed (check rules)");
-        toast("Cloud save failed ❌");
-      }
-    }, 600);
+  const setSyncUI = (mode, text) => {
+    syncDot.className = "dot " + (mode==="ok" ? "ok" : mode==="err" ? "err" : "off");
+    syncText.textContent = text;
   };
 
-  // Render bills
-  const renderBills = (w) => {
-    els.billsBody.innerHTML = "";
-    w.bills.forEach(b => {
+  // ---------- Render split (no focus loss while typing) ----------
+  function updateSummary(){
+    const w = currentWeek();
+    const c = calcWeek(w);
+    const cur = state.settings.currency || "AUD";
+
+    billsTotalEl.textContent = money(c.bills, cur);
+    spendTotalEl.textContent = money(c.spend, cur);
+    savingsTotalEl.textContent = money(c.savings, cur);
+
+    diffLineEl.textContent = money(c.diff, cur);
+    diffLineEl.className = "money " + (c.diff >= 0 ? "pos" : "neg");
+
+    kpiIncome.textContent = money(num(w.income), cur);
+    kpiSavings.textContent = money(c.savings, cur);
+    kpiOut.textContent = money(c.out, cur);
+    kpiDiff.textContent = money(c.diff, cur);
+    kpiDiff.className = "kvalue money " + (c.diff >= 0 ? "pos" : "neg");
+  }
+
+  function renderWeekHeaderInputs(){
+    const w = currentWeek();
+    weekLabel.textContent = `${formatPayday(w.paydayDate)}`;
+    paydayInput.value = w.paydayDate;
+
+    incomeInput.value = (w.income ?? "");
+    savingsInput.value = (w.savings ?? "");
+    groceriesInput.value = (w.groceries ?? "");
+    guiltInput.value = (w.guilt ?? "");
+    noteInput.value = w.note || "";
+    weekNote.textContent = w.note?.trim() ? w.note : "—";
+
+    updateSummary();
+  }
+
+  // Bills table renders only when needed (week change / add-delete / template reset)
+  function renderBillsTable(){
+    const w = currentWeek();
+    billsBody.innerHTML = "";
+
+    for (const b of w.bills){
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td><input data-bill-name="${b.id}" value="${escapeHtml(b.name)}" /></td>
-        <td class="money"><input data-bill-amt="${b.id}" type="number" step="0.01" min="0" value="${Number(b.amount||0)}" /></td>
-        <td class="money nowrap"><button class="btn small danger" data-bill-del="${b.id}">Delete</button></td>
+        <td><input data-bill-name="${b.id}" value="${escapeHtml(b.name)}"></td>
+        <td class="right"><input data-bill-amt="${b.id}" type="number" step="0.01" min="0" placeholder="0.00" value="${b.amount ?? ""}"></td>
+        <td class="right"><button class="btn small danger" data-bill-del="${b.id}">Delete</button></td>
       `;
-      els.billsBody.appendChild(tr);
-    });
+      billsBody.appendChild(tr);
+    }
 
-    els.billsBody.querySelectorAll("[data-bill-name]").forEach(inp => {
-      inp.addEventListener("input", (e) => {
+    // name typing (no re-render)
+    billsBody.querySelectorAll("[data-bill-name]").forEach(inp=>{
+      inp.addEventListener("input",(e)=>{
         const id = e.target.getAttribute("data-bill-name");
-        const bill = w.bills.find(x=>x.id===id);
+        const bill = currentWeek().bills.find(x=>x.id===id);
+        if (!bill) return;
         bill.name = e.target.value;
         scheduleSave();
       });
     });
 
-    els.billsBody.querySelectorAll("[data-bill-amt]").forEach(inp => {
-      inp.addEventListener("input", (e) => {
+    // amount typing (no re-render => fixes “click off”)
+    billsBody.querySelectorAll("[data-bill-amt]").forEach(inp=>{
+      inp.addEventListener("input",(e)=>{
         const id = e.target.getAttribute("data-bill-amt");
-        const bill = w.bills.find(x=>x.id===id);
-        bill.amount = Number(e.target.value||0);
+        const bill = currentWeek().bills.find(x=>x.id===id);
+        if (!bill) return;
+        const raw = e.target.value;
+        bill.amount = (raw === "" ? null : Number(raw));
         scheduleSave();
-        render();
+        updateSummary();
       });
     });
 
-    els.billsBody.querySelectorAll("[data-bill-del]").forEach(btn => {
-      btn.addEventListener("click", (e) => {
+    // delete (re-render table)
+    billsBody.querySelectorAll("[data-bill-del]").forEach(btn=>{
+      btn.addEventListener("click",(e)=>{
         const id = e.target.getAttribute("data-bill-del");
-        w.bills = w.bills.filter(x=>x.id!==id);
+        const w2 = currentWeek();
+        w2.bills = w2.bills.filter(x=>x.id!==id);
         scheduleSave();
-        render();
+        renderBillsTable();
+        updateSummary();
       });
     });
-  };
+  }
 
-  // Render everything
-  const archiveList = document.getElementById("archiveList");
-  const debtsList = document.getElementById("debtsList");
-  const compareBox = document.getElementById("compareBox");
-  const compareEmpty = document.getElementById("compareEmpty");
-
-  const renderArchive = () => {
+  function renderArchive(){
     archiveList.innerHTML = "";
     if (!state.archive.length){
-      archiveList.innerHTML = `<div class="note">No archived weeks yet. Hit <b>Complete Week</b> to store one.</div>`;
+      archiveList.innerHTML = `<div class="note">No archived periods yet.</div>`;
       return;
     }
-    state.archive.slice(0, 40).forEach((w)=>{
+    const cur = state.settings.currency || "AUD";
+    state.archive.slice(0,60).forEach(w=>{
       const c = w.summary || calcWeek(w);
-      const when = new Date(w.archivedAt || w.createdAt || Date.now());
       const el = document.createElement("div");
-      el.className = "box";
+      el.className = "card";
+      el.style.boxShadow = "none";
+      el.style.borderRadius = "14px";
       el.innerHTML = `
-        <div class="row" style="justify-content:space-between">
-          <div>
-            <div style="font-weight:1000">${escapeHtml(formatPayday(w.paydayDate || nextWednesdayISO()))}</div>
-            <div class="note">${when.toLocaleString()}</div>
+        <div class="bd">
+          <div class="row" style="justify-content:space-between">
+            <div>
+              <div style="font-weight:1000">${escapeHtml(formatPayday(w.paydayDate))}</div>
+              <div class="note">${new Date(w.archivedAt || w.createdAt || Date.now()).toLocaleString()}</div>
+            </div>
+            <div class="money ${c.diff>=0?"pos":"neg"}" style="font-weight:1000">${money(c.diff, cur)}</div>
           </div>
-          <div class="money ${c.diff>=0?"pos":"neg"}" style="font-size:16px;font-weight:1000">${money(c.diff)}</div>
+          <div class="row" style="justify-content:space-between;margin-top:10px">
+            <div class="note">Income</div><div class="money">${money(num(w.income), cur)}</div>
+          </div>
+          <div class="row" style="justify-content:space-between;margin-top:6px">
+            <div class="note">Bills</div><div class="money">${money(c.bills, cur)}</div>
+          </div>
+          <div class="row" style="justify-content:space-between;margin-top:6px">
+            <div class="note">Spending</div><div class="money">${money(c.spend, cur)}</div>
+          </div>
+          <div class="row" style="justify-content:space-between;margin-top:6px">
+            <div class="note">Savings</div><div class="money">${money(c.savings, cur)}</div>
+          </div>
+          ${w.note ? `<div class="note" style="margin-top:8px"><b>Note:</b> ${escapeHtml(w.note)}</div>` : ""}
         </div>
-        <div class="row" style="justify-content:space-between;margin-top:10px"><div class="muted">Income</div><div class="money">${money(w.income)}</div></div>
-        <div class="row" style="justify-content:space-between;margin-top:6px"><div class="muted">Bills</div><div class="money">${money(c.bills)}</div></div>
-        <div class="row" style="justify-content:space-between;margin-top:6px"><div class="muted">Spending</div><div class="money">${money(c.spend)}</div></div>
-        <div class="row" style="justify-content:space-between;margin-top:6px"><div class="muted">Savings</div><div class="money">${money(c.savings)}</div></div>
-        ${w.note ? `<div class="note" style="margin-top:8px"><b>Note:</b> ${escapeHtml(w.note)}</div>` : ""}
       `;
       archiveList.appendChild(el);
     });
-  };
-
-  function amortize({principal, annualRate, payment, perYear, maxMonths=1200}) {
-    principal = Number(principal||0);
-    annualRate = Number(annualRate||0);
-    payment = Number(payment||0);
-    perYear = Number(perYear||12);
-    const r = (annualRate/100) / perYear;
-    let bal = principal;
-    let totalInterest = 0;
-    let n = 0;
-    if (principal <= 0) return { months: 0, totalInterest: 0, ok: true };
-    if (payment <= 0) return { months: null, totalInterest: null, ok: false, reason: "Payment is $0" };
-    const firstInterest = bal * r;
-    if (payment <= firstInterest && r > 0) return { months: null, totalInterest: null, ok: false, reason: "Payment too low (doesn't cover interest)" };
-    while (bal > 0.01 && n < maxMonths) {
-      const interest = bal * r;
-      totalInterest += interest;
-      const principalPaid = payment - interest;
-      bal = bal - principalPaid;
-      n++;
-      if (bal < 0) bal = 0;
-    }
-    const months = (perYear === 12) ? n : Math.round((n / perYear) * 12);
-    return { months, totalInterest, ok: true };
   }
+
+  // ---------- Debt engine + graph ----------
+  const freqToPerYear = (freq) => (freq==="weekly"?52:freq==="fortnightly"?26:12);
   const monthsToPretty = (months) => {
     if (months === 0) return "Paid off ✅";
     if (!Number.isFinite(months)) return "—";
@@ -754,84 +992,166 @@
     if (m===0) return `${y} years`;
     return `${y}y ${m}m`;
   };
-  const freqToPerYear = (freq) => (freq==="weekly"?52:freq==="fortnightly"?26:12);
+  const addMonths = (date, months) => { const d = new Date(date); d.setMonth(d.getMonth()+months); return d; };
 
-  function renderCompare(){
-    const d = state.debts.find(x=>x.id===state.selectedDebtId);
-    if (!d){
-      compareBox.classList.add("hidden");
-      compareEmpty.classList.remove("hidden");
-      return;
+  function amortizeSeries({principal, annualRate, payment, perYear, oneOff=0, extraRecurring=0, maxPeriods=6000}){
+    principal = Number(principal||0);
+    annualRate = Number(annualRate||0);
+    payment = Number(payment||0);
+    perYear = Number(perYear||12);
+    oneOff = Number(oneOff||0);
+    extraRecurring = Number(extraRecurring||0);
+
+    const r = (annualRate/100) / perYear;
+    let bal = principal;
+    let totalInterest = 0;
+    let periods = 0;
+
+    if (principal <= 0) return { ok:true, periods:0, months:0, totalInterest:0, series:[0] };
+    if (payment <= 0) return { ok:false, reason:"Payment is $0" };
+
+    bal = Math.max(0, bal - oneOff);
+
+    const firstInterest = bal * r;
+    const effectivePayment = payment + extraRecurring;
+    if (r > 0 && effectivePayment <= firstInterest){
+      return { ok:false, reason:"Payment too low (doesn't cover interest)" };
     }
-    compareEmpty.classList.add("hidden");
-    compareBox.classList.remove("hidden");
-    const perYear = freqToPerYear(d.freq || "monthly");
-    const your = amortize({ principal: d.balance, annualRate: d.rate, payment: d.payment, perYear });
-    const min = amortize({ principal: d.balance, annualRate: d.rate, payment: d.minimum, perYear });
-    document.getElementById("yourPayoff").textContent = your.ok ? monthsToPretty(your.months) : your.reason;
-    document.getElementById("minPayoff").textContent  = min.ok  ? monthsToPretty(min.months)  : (d.minimum ? min.reason : "Set a minimum");
-    document.getElementById("yourInterest").textContent = your.ok ? money(your.totalInterest) : "—";
-    document.getElementById("minInterest").textContent  = min.ok  ? money(min.totalInterest)  : "—";
-    document.getElementById("progressBar").style.width = "0%";
-    document.getElementById("progressNote").textContent =
-      `Based on current balance ${money(d.balance)} at ${Number(d.rate||0).toFixed(2)}% APR (constant payment assumption).`;
+
+    const series = [bal];
+
+    while (bal > 0.01 && periods < maxPeriods){
+      const interest = bal * r;
+      totalInterest += interest;
+      const principalPaid = (effectivePayment - interest);
+      bal = bal - principalPaid;
+      if (bal < 0) bal = 0;
+      periods++;
+      if (series.length < 260) series.push(bal);
+      else if (periods % Math.ceil(maxPeriods/260) === 0) series.push(bal);
+    }
+
+    const months = (perYear === 12) ? periods : Math.round((periods / perYear) * 12);
+    return { ok:true, periods, months, totalInterest, series };
   }
 
-  const renderDebts = () => {
+  function drawDebtGraph(seriesYour, seriesMin){
+    const ctx = debtCanvas.getContext("2d");
+    const W = debtCanvas.width, H = debtCanvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    const pad = 30;
+    const x0 = pad, y0 = pad, x1 = W-pad, y1 = H-pad;
+
+    // grid
+    ctx.strokeStyle = "rgba(226,232,240,1)";
+    ctx.lineWidth = 1;
+    for (let i=0;i<=4;i++){
+      const y = y0 + (i*(y1-y0)/4);
+      ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1,y); ctx.stroke();
+    }
+
+    const all = [...seriesYour, ...seriesMin].filter(n=>Number.isFinite(n));
+    const maxVal = Math.max(...all, 1);
+    const toX = (i, n) => x0 + (i*(x1-x0)/Math.max(1, n-1));
+    const toY = (v) => y1 - (v/maxVal)*(y1-y0);
+
+    const plot = (series, stroke) => {
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = 2.25;
+      ctx.beginPath();
+      series.forEach((v,i)=>{
+        const x = toX(i, series.length);
+        const y = toY(v);
+        if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      });
+      ctx.stroke();
+    };
+
+    plot(seriesMin, "rgba(220,38,38,.85)");
+    plot(seriesYour, "rgba(37,99,235,.95)");
+
+    // legend
+    ctx.fillStyle = "rgba(37,99,235,.95)";
+    ctx.fillRect(x0, y1+10, 10, 10);
+    ctx.fillStyle = "rgba(15,23,42,.95)";
+    ctx.font = "12px system-ui";
+    ctx.fillText("Your payment", x0+16, y1+19);
+
+    ctx.fillStyle = "rgba(220,38,38,.85)";
+    ctx.fillRect(x0+130, y1+10, 10, 10);
+    ctx.fillStyle = "rgba(15,23,42,.95)";
+    ctx.fillText("Minimum", x0+146, y1+19);
+  }
+
+  function renderDebts(){
     debtsList.innerHTML = "";
+    const cur = state.settings.currency || "AUD";
+
     if (!state.debts.length){
-      debtsList.innerHTML = `<div class="note">No debts added yet. Hit <b>Add Debt</b> and enter the details.</div>`;
+      debtsList.innerHTML = `<div class="note">No debts yet. Click <b>+ Add debt</b>.</div>`;
       compareBox.classList.add("hidden");
       compareEmpty.classList.remove("hidden");
       return;
     }
-    state.debts.forEach(d => {
-      const box = document.createElement("div");
-      box.className = "box";
+
+    state.debts.forEach(d=>{
       const selected = state.selectedDebtId === d.id;
-      box.style.borderColor = selected ? "rgba(106,169,255,.85)" : "rgba(36,54,94,.9)";
-      box.innerHTML = `
-        <div class="row" style="justify-content:space-between;align-items:flex-start">
-          <div style="flex:1">
-            <div style="font-weight:1000">${escapeHtml(d.name || "Unnamed debt")}</div>
-            <div class="note">Balance: <b>${money(d.balance)}</b> • Rate: <b>${Number(d.rate||0).toFixed(2)}%</b></div>
+      const el = document.createElement("div");
+      el.className = "card";
+      el.style.boxShadow = "none";
+      el.style.borderRadius = "14px";
+      el.style.borderColor = selected ? "rgba(37,99,235,.35)" : "var(--line)";
+      el.innerHTML = `
+        <div class="bd">
+          <div class="row" style="justify-content:space-between; align-items:flex-start">
+            <div style="flex:1">
+              <div style="font-weight:1000">${escapeHtml(d.name || "Unnamed debt")}</div>
+              <div class="note">Balance: <b>${money(num(d.balance), cur)}</b> • Rate: <b>${Number(num(d.rate)).toFixed(2)}%</b></div>
+            </div>
+            <div class="row">
+              <button class="btn small ${selected?"primary":""}" data-debt-select="${d.id}">${selected?"Selected":"Select"}</button>
+              <button class="btn small danger" data-debt-del="${d.id}">Delete</button>
+            </div>
           </div>
-          <div class="row">
-            <button class="btn small ${selected?"primary":""}" data-debt-select="${d.id}">${selected?"Selected":"Select"}</button>
-            <button class="btn small danger" data-debt-del="${d.id}">Delete</button>
+
+          <div class="two" style="margin-top:10px">
+            <div><label>Name</label><input data-debt-name="${d.id}" value="${escapeHtml(d.name||"")}"></div>
+            <div><label>Balance</label><input data-debt-bal="${d.id}" type="number" step="0.01" min="0" placeholder="0.00" value="${d.balance ?? ""}"></div>
+            <div><label>Interest % (APR)</label><input data-debt-rate="${d.id}" type="number" step="0.01" min="0" placeholder="0.00" value="${d.rate ?? ""}"></div>
+            <div>
+              <label>Payment frequency</label>
+              <select data-debt-freq="${d.id}">
+                <option value="weekly" ${d.freq==="weekly"?"selected":""}>Weekly</option>
+                <option value="fortnightly" ${d.freq==="fortnightly"?"selected":""}>Fortnightly</option>
+                <option value="monthly" ${d.freq==="monthly"?"selected":""}>Monthly</option>
+              </select>
+            </div>
+            <div><label>Your payment</label><input data-debt-pay="${d.id}" type="number" step="0.01" min="0" placeholder="0.00" value="${d.payment ?? ""}"></div>
+            <div><label>Minimum payment</label><input data-debt-min="${d.id}" type="number" step="0.01" min="0" placeholder="0.00" value="${d.minimum ?? ""}"></div>
           </div>
-        </div>
-        <div class="two" style="margin-top:10px">
-          <div><label class="muted">Name</label><input data-debt-name="${d.id}" value="${escapeHtml(d.name||"")}"></div>
-          <div><label class="muted">Balance</label><input data-debt-bal="${d.id}" type="number" step="0.01" min="0" value="${Number(d.balance||0)}"></div>
-          <div><label class="muted">Interest % (APR)</label><input data-debt-rate="${d.id}" type="number" step="0.01" min="0" value="${Number(d.rate||0)}"></div>
-          <div>
-            <label class="muted">Payment frequency</label>
-            <select data-debt-freq="${d.id}">
-              <option value="weekly" ${d.freq==="weekly"?"selected":""}>Weekly</option>
-              <option value="fortnightly" ${d.freq==="fortnightly"?"selected":""}>Fortnightly</option>
-              <option value="monthly" ${d.freq==="monthly"?"selected":""}>Monthly</option>
-            </select>
-          </div>
-          <div><label class="muted">Your payment</label><input data-debt-pay="${d.id}" type="number" step="0.01" min="0" value="${Number(d.payment||0)}"></div>
-          <div><label class="muted">Minimum payment (manual)</label><input data-debt-min="${d.id}" type="number" step="0.01" min="0" value="${Number(d.minimum||0)}"></div>
         </div>
       `;
-      debtsList.appendChild(box);
+      debtsList.appendChild(el);
     });
 
     debtsList.querySelectorAll("[data-debt-select]").forEach(btn=>{
       btn.addEventListener("click",(e)=>{
         state.selectedDebtId = e.target.getAttribute("data-debt-select");
-        scheduleSave(); render();
+        scheduleSave();
+        renderCompare();
+        toast("Selected");
       });
     });
+
     debtsList.querySelectorAll("[data-debt-del]").forEach(btn=>{
       btn.addEventListener("click",(e)=>{
         const id = e.target.getAttribute("data-debt-del");
         state.debts = state.debts.filter(x=>x.id!==id);
         if (state.selectedDebtId === id) state.selectedDebtId = null;
-        scheduleSave(); render();
+        scheduleSave();
+        renderDebts();
+        renderCompare();
       });
     });
 
@@ -841,6 +1161,7 @@
         inp.addEventListener(evt,(e)=>{
           const id = e.target.getAttribute(attr);
           const d = state.debts.find(x=>x.id===id);
+          if (!d) return;
           d[key] = parser(e.target.value);
           scheduleSave();
           renderCompare();
@@ -848,149 +1169,290 @@
       });
     };
 
-    bindDebt("data-debt-name","name",(v)=>v);
-    bindDebt("data-debt-bal","balance",(v)=>Number(v||0));
-    bindDebt("data-debt-rate","rate",(v)=>Number(v||0));
-    bindDebt("data-debt-freq","freq",(v)=>v);
-    bindDebt("data-debt-pay","payment",(v)=>Number(v||0));
-    bindDebt("data-debt-min","minimum",(v)=>Number(v||0));
+    bindDebt("data-debt-name", "name", v=>v);
+    bindDebt("data-debt-bal", "balance", v=> (v===""?null:Number(v)));
+    bindDebt("data-debt-rate","rate", v=> (v===""?null:Number(v)));
+    bindDebt("data-debt-freq","freq", v=>v);
+    bindDebt("data-debt-pay","payment", v=> (v===""?null:Number(v)));
+    bindDebt("data-debt-min","minimum", v=> (v===""?null:Number(v)));
+  }
 
-    renderCompare();
-  };
+  function renderCompare(simExtras=null){
+    const d = state.debts.find(x=>x.id===state.selectedDebtId);
+    if (!d){
+      compareBox.classList.add("hidden");
+      compareEmpty.classList.remove("hidden");
+      return;
+    }
+    compareEmpty.classList.add("hidden");
+    compareBox.classList.remove("hidden");
 
-  const settingsEls = {
-    defaultIncome: document.getElementById("defaultIncome"),
-    defaultGroceries: document.getElementById("defaultGroceries"),
-    defaultGuilt: document.getElementById("defaultGuilt"),
-    defaultSavings: document.getElementById("defaultSavings"),
-  };
-  const renderSettings = () => {
-    settingsEls.defaultIncome.value = Number(state.settings.defaultIncome||0);
-    settingsEls.defaultGroceries.value = Number(state.settings.defaultGroceries||0);
-    settingsEls.defaultGuilt.value = Number(state.settings.defaultGuilt||0);
-    settingsEls.defaultSavings.value = Number(state.settings.defaultSavings||0);
-  };
+    const perYear = freqToPerYear(d.freq || "monthly");
+    const yourExtra = simExtras?.extraRecurring ?? 0;
+    const oneOff = simExtras?.oneOff ?? 0;
 
-  const render = () => {
-    const w = currentWeek();
-    if (!w) return;
-    els.weekLabel.textContent = `Pay: ${formatPayday(w.paydayDate)}`;
-    els.paydayInput.value = w.paydayDate || nextWednesdayISO();
-    els.incomeInput.value = Number(w.income||0);
-    els.savingsInput.value = Number(w.savings||0);
-    els.groceriesInput.value = Number(w.groceries||0);
-    els.guiltInput.value = Number(w.guilt||0);
-    els.noteInput.value = w.note || "";
-    els.weekNote.textContent = w.note?.trim() ? w.note : "—";
-    renderBills(w);
+    const your = amortizeSeries({
+      principal: d.balance,
+      annualRate: d.rate,
+      payment: d.payment,
+      perYear,
+      oneOff,
+      extraRecurring: yourExtra
+    });
 
-    const c = calcWeek(w);
-    els.billsTotal.textContent = money(c.bills);
-    els.spendTotal.textContent = money(c.spend);
-    els.savingsTotal.textContent = money(c.savings);
-    els.diffLine.textContent = money(c.diff);
-    els.diffLine.className = "money " + (c.diff >= 0 ? "pos" : "neg");
-    els.kpiIncome.textContent = money(w.income);
-    els.kpiSavings.textContent = money(c.savings);
-    els.kpiOut.textContent = money(c.out);
-    els.kpiDiff.textContent = money(c.diff);
-    els.kpiDiff.className = "val " + (c.diff >= 0 ? "pos" : "neg");
+    const min = amortizeSeries({
+      principal: d.balance,
+      annualRate: d.rate,
+      payment: d.minimum,
+      perYear
+    });
 
+    const cur = state.settings.currency || "AUD";
+
+    if (!your.ok){
+      yourPayoff.textContent = your.reason;
+      yourDate.textContent = "—";
+    } else {
+      yourPayoff.textContent = monthsToPretty(your.months);
+      yourDate.textContent = addMonths(new Date(), your.months).toLocaleDateString(undefined, { year:"numeric", month:"short", day:"numeric" });
+    }
+
+    if (!min.ok){
+      minPayoff.textContent = d.minimum ? min.reason : "Set a minimum";
+      interestSaved.textContent = "—";
+      interestSaved.className = "kvalue";
+    } else {
+      minPayoff.textContent = monthsToPretty(min.months);
+      if (your.ok){
+        const saved = (min.totalInterest - your.totalInterest);
+        interestSaved.textContent = money(saved, cur);
+        interestSaved.className = "kvalue " + (saved >= 0 ? "pos" : "neg");
+      } else {
+        interestSaved.textContent = "—";
+        interestSaved.className = "kvalue";
+      }
+    }
+
+    drawDebtGraph(your.ok ? your.series : [0], min.ok ? min.series : [0]);
+
+    if (!simExtras){
+      simResult.textContent = "Enter extras and run to see updated payoff estimate.";
+    }
+  }
+
+  // ---------- Settings render ----------
+  function renderSettings(){
+    payFrequencySel.value = state.settings.payFrequency || "weekly";
+    currencySel.value = state.settings.currency || "AUD";
+    defaultIncome.value = state.settings.defaultIncome ?? "";
+    defaultGroceries.value = state.settings.defaultGroceries ?? "";
+    defaultGuilt.value = state.settings.defaultGuilt ?? "";
+    defaultSavings.value = state.settings.defaultSavings ?? "";
+  }
+
+  // ---------- Full render ----------
+  function renderAll(){
+    state = migrateState(state);
+    if (!state.weeks.length) state.weeks.push(makeWeek(toISODate(new Date())));
+    if (state.currentWeekIndex > state.weeks.length-1) state.currentWeekIndex = state.weeks.length-1;
+
+    renderSettings();
+    renderWeekHeaderInputs();
+    renderBillsTable();
     renderArchive();
     renderDebts();
-    renderSettings();
+    renderCompare();
+  }
+
+  // ---------- Save (local + cloud) ----------
+  let currentUser = null;
+  let unsubscribeSnap = null;
+  let saveTimer = null;
+  let isApplyingRemote = false;
+
+  const userRef = (uid) => doc(db, "users", uid);
+
+  const scheduleSave = () => {
+    state = migrateState(state);
+    saveLocal();
+
+    if (!currentUser || isApplyingRemote) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(async ()=>{
+      try{
+        await setDoc(userRef(currentUser.uid), { state, updatedAt: Date.now() }, { merge:true });
+        setSyncUI("ok", "Cloud sync enabled");
+      }catch(e){
+        console.error(e);
+        setSyncUI("err", "Cloud save failed");
+        toast("Cloud save failed ❌");
+      }
+    }, 450);
   };
 
-  // Bind inputs
-  const bindWeekInput = (inputEl, key, numeric=false) => {
-    inputEl.addEventListener("input", (e) => {
-      const w = currentWeek();
-      w[key] = numeric ? Number(e.target.value||0) : e.target.value;
+  async function loadFromCloud(uid){
+    const ref = userRef(uid);
+    const snap = await getDoc(ref);
+    if (snap.exists()){
+      const data = snap.data();
+      if (data?.state){
+        state = migrateState(data.state);
+        saveLocal();
+        renderAll();
+      }
+    } else {
+      await setDoc(ref, { state, updatedAt: Date.now() }, { merge:true });
+    }
+  }
+
+  // ---------- Bind budget inputs ----------
+  paydayInput.addEventListener("input",(e)=>{
+    currentWeek().paydayDate = e.target.value;
+    scheduleSave();
+    renderWeekHeaderInputs(); // lightweight
+  });
+
+  const bindWeekNumber = (el, key) => {
+    el.addEventListener("input",(e)=>{
+      const raw = e.target.value;
+      currentWeek()[key] = (raw === "" ? null : Number(raw));
       scheduleSave();
-      render();
+      updateSummary();
     });
   };
-  bindWeekInput(els.paydayInput, "paydayDate", false);
-  bindWeekInput(els.incomeInput, "income", true);
-  bindWeekInput(els.savingsInput, "savings", true);
-  bindWeekInput(els.groceriesInput, "groceries", true);
-  bindWeekInput(els.guiltInput, "guilt", true);
-  bindWeekInput(els.noteInput, "note", false);
+  bindWeekNumber(incomeInput, "income");
+  bindWeekNumber(savingsInput, "savings");
+  bindWeekNumber(groceriesInput, "groceries");
+  bindWeekNumber(guiltInput, "guilt");
 
-  // Buttons
-  document.getElementById("prevWeekBtn").addEventListener("click", ()=>{
-    state.currentWeekIndex = clamp(state.currentWeekIndex - 1, 0, state.weeks.length - 1);
-    scheduleSave(); render();
-  });
-  document.getElementById("nextWeekBtn").addEventListener("click", ()=>{
-    state.currentWeekIndex = clamp(state.currentWeekIndex + 1, 0, state.weeks.length - 1);
-    scheduleSave(); render();
-  });
-
-  document.getElementById("addWeekBtn").addEventListener("click", ()=>{
-    const prev = currentWeek();
-    const nextISO = prev?.paydayDate ? toISODate(addDays(prev.paydayDate, 7)) : nextWednesdayISO();
-    const w = makeWeek(nextISO);
-    w.income = state.settings.defaultIncome;
-    w.groceries = state.settings.defaultGroceries;
-    w.guilt = state.settings.defaultGuilt;
-    w.savings = state.settings.defaultSavings;
-    state.weeks.push(w);
-    state.currentWeekIndex = state.weeks.length - 1;
-    scheduleSave(); render();
-  });
-
-  document.getElementById("clonePrevWeekBtn").addEventListener("click", ()=>{
-    const prev = currentWeek();
-    const nextISO = prev?.paydayDate ? toISODate(addDays(prev.paydayDate, 7)) : nextWednesdayISO();
-    const w = makeWeek(nextISO);
-    w.income = prev.income;
-    w.groceries = prev.groceries;
-    w.guilt = prev.guilt;
-    w.savings = prev.savings;
-    w.bills = JSON.parse(JSON.stringify(prev.bills));
-    state.weeks.push(w);
-    state.currentWeekIndex = state.weeks.length - 1;
-    scheduleSave(); render();
+  noteInput.addEventListener("input",(e)=>{
+    currentWeek().note = e.target.value;
+    weekNote.textContent = e.target.value?.trim() ? e.target.value : "—";
+    scheduleSave();
   });
 
   document.getElementById("addBillBtn").addEventListener("click", ()=>{
-    const name = els.newBillName.value.trim();
-    const amt = Number(els.newBillAmt.value||0);
+    const name = newBillName.value.trim();
     if (!name) return;
+    const amtRaw = newBillAmt.value;
+    const amt = (amtRaw === "" ? null : Number(amtRaw));
     currentWeek().bills.push({ id: uid(), name, amount: amt });
-    els.newBillName.value = "";
-    els.newBillAmt.value = "";
-    scheduleSave(); render();
+    newBillName.value = "";
+    newBillAmt.value = "";
+    scheduleSave();
+    renderBillsTable();
+    updateSummary();
   });
 
   document.getElementById("resetWeekBtn").addEventListener("click", ()=>{
     const w = currentWeek();
-    w.income = state.settings.defaultIncome;
-    w.savings = state.settings.defaultSavings;
-    w.groceries = state.settings.defaultGroceries;
-    w.guilt = state.settings.defaultGuilt;
+    w.income = state.settings.defaultIncome ?? null;
+    w.savings = state.settings.defaultSavings ?? null;
+    w.groceries = state.settings.defaultGroceries ?? null;
+    w.guilt = state.settings.defaultGuilt ?? null;
     w.note = "";
-    w.bills = JSON.parse(JSON.stringify(defaultBills));
-    scheduleSave(); render();
+    w.bills = JSON.parse(JSON.stringify(BILL_TEMPLATE));
+    scheduleSave();
+    renderAll();
+    toast("Reset");
+  });
+
+  document.getElementById("resetTemplateBtn").addEventListener("click", ()=>{
+    currentWeek().bills = JSON.parse(JSON.stringify(BILL_TEMPLATE));
+    scheduleSave();
+    renderBillsTable();
+    updateSummary();
+    toast("Template reset");
+  });
+
+  document.getElementById("prevWeekBtn").addEventListener("click", ()=>{
+    state.currentWeekIndex = clamp(state.currentWeekIndex - 1, 0, state.weeks.length - 1);
+    scheduleSave();
+    renderAll();
+  });
+  document.getElementById("nextWeekBtn").addEventListener("click", ()=>{
+    state.currentWeekIndex = clamp(state.currentWeekIndex + 1, 0, state.weeks.length - 1);
+    scheduleSave();
+    renderAll();
+  });
+
+  function periodStepDays(){
+    return (state.settings.payFrequency === "fortnightly") ? 14 : 7;
+  }
+
+  document.getElementById("addWeekBtn").addEventListener("click", ()=>{
+    const w = currentWeek();
+    const step = periodStepDays();
+    const nextISO = addDays(w.paydayDate, step);
+    const nw = makeWeek(nextISO);
+    // apply defaults (if set)
+    nw.income = state.settings.defaultIncome ?? null;
+    nw.groceries = state.settings.defaultGroceries ?? null;
+    nw.guilt = state.settings.defaultGuilt ?? null;
+    nw.savings = state.settings.defaultSavings ?? null;
+
+    state.weeks.push(nw);
+    state.currentWeekIndex = state.weeks.length - 1;
+    scheduleSave();
+    renderAll();
+    toast("New period");
+  });
+
+  document.getElementById("clonePrevWeekBtn").addEventListener("click", ()=>{
+    const w = currentWeek();
+    const step = periodStepDays();
+    const nextISO = addDays(w.paydayDate, step);
+    const nw = makeWeek(nextISO);
+
+    nw.income = w.income;
+    nw.savings = w.savings;
+    nw.groceries = w.groceries;
+    nw.guilt = w.guilt;
+    nw.note = "";
+    nw.bills = JSON.parse(JSON.stringify(w.bills));
+
+    state.weeks.push(nw);
+    state.currentWeekIndex = state.weeks.length - 1;
+    scheduleSave();
+    renderAll();
+    toast("Cloned");
   });
 
   document.getElementById("completeWeekBtn").addEventListener("click", ()=>{
-    const idx = state.currentWeekIndex;
-    const w = state.weeks[idx];
+    const w = currentWeek();
     state.archive.unshift({ ...w, summary: calcWeek(w), archivedAt: Date.now() });
-    const nextISO = w?.paydayDate ? toISODate(addDays(w.paydayDate, 7)) : nextWednesdayISO();
-    state.weeks[idx] = makeWeek(nextISO);
-    scheduleSave(); render();
+
+    const step = periodStepDays();
+    const nextISO = addDays(w.paydayDate, step);
+    state.weeks[state.currentWeekIndex] = makeWeek(nextISO);
+
+    // Apply defaults to fresh period
+    const fresh = currentWeek();
+    fresh.income = state.settings.defaultIncome ?? null;
+    fresh.groceries = state.settings.defaultGroceries ?? null;
+    fresh.guilt = state.settings.defaultGuilt ?? null;
+    fresh.savings = state.settings.defaultSavings ?? null;
+
+    scheduleSave();
+    renderAll();
     showTab("history");
+    toast("Archived");
   });
 
+  document.getElementById("clearArchiveBtn").addEventListener("click", ()=>{
+    state.archive = [];
+    scheduleSave();
+    renderArchive();
+    toast("Cleared");
+  });
+
+  // Export / Import
   document.getElementById("exportBtn").addEventListener("click", ()=>{
     const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "moshniki-budget-export.json";
+    a.download = "moshniki-budget-planner.json";
     a.click();
     URL.revokeObjectURL(url);
   });
@@ -1000,53 +1462,104 @@
     if (!file) return;
     try{
       const parsed = JSON.parse(await file.text());
-      state = parsed;
+      state = migrateState(parsed);
       scheduleSave();
-      render();
-      toast("Imported ✅");
+      renderAll();
+      toast("Imported");
     }catch{
-      toast("Import failed ❌");
+      toast("Import failed");
     }
     e.target.value = "";
   });
 
-  document.getElementById("clearArchiveBtn").addEventListener("click", ()=>{
-    state.archive = [];
-    scheduleSave(); render();
-  });
-
+  // ---------- Settings bindings ----------
   document.getElementById("saveSettingsBtn").addEventListener("click", ()=>{
-    state.settings.defaultIncome = Number(settingsEls.defaultIncome.value||0);
-    state.settings.defaultGroceries = Number(settingsEls.defaultGroceries.value||0);
-    state.settings.defaultGuilt = Number(settingsEls.defaultGuilt.value||0);
-    state.settings.defaultSavings = Number(settingsEls.defaultSavings.value||0);
-    scheduleSave(); render();
-    toast("Settings saved ✅");
+    state.settings.payFrequency = payFrequencySel.value;
+    state.settings.currency = currencySel.value;
+
+    const toNullOrNum = (v) => (v === "" ? null : Number(v));
+    state.settings.defaultIncome = toNullOrNum(defaultIncome.value);
+    state.settings.defaultGroceries = toNullOrNum(defaultGroceries.value);
+    state.settings.defaultGuilt = toNullOrNum(defaultGuilt.value);
+    state.settings.defaultSavings = toNullOrNum(defaultSavings.value);
+
+    scheduleSave();
+    renderAll();
+    toast("Saved");
   });
 
+  // ---------- Debts actions ----------
   document.getElementById("addDebtBtn").addEventListener("click", ()=>{
-    state.debts.unshift({ id: uid(), name:"", balance:0, rate:0, freq:"monthly", payment:0, minimum:0, createdAt: Date.now() });
+    state.debts.unshift({
+      id: uid(),
+      name: "",
+      balance: null,
+      rate: null,
+      freq: "monthly",
+      payment: null,
+      minimum: null,
+      createdAt: Date.now()
+    });
     state.selectedDebtId = state.debts[0].id;
-    scheduleSave(); render();
+    scheduleSave();
+    renderDebts();
+    renderCompare();
     showTab("debts");
+    toast("Added");
   });
 
-  // Auth buttons
+  document.getElementById("runSimBtn").addEventListener("click", ()=>{
+    const d = state.debts.find(x=>x.id===state.selectedDebtId);
+    if (!d) return;
+
+    const extraR = extraRecurring.value === "" ? 0 : Number(extraRecurring.value);
+    const oneOff = extraOneOff.value === "" ? 0 : Number(extraOneOff.value);
+
+    renderCompare({ extraRecurring: extraR, oneOff });
+
+    // Show sim result as text
+    const perYear = freqToPerYear(d.freq || "monthly");
+    const sim = amortizeSeries({
+      principal: d.balance,
+      annualRate: d.rate,
+      payment: d.payment,
+      perYear,
+      extraRecurring: extraR,
+      oneOff
+    });
+
+    if (!sim.ok){
+      simResult.textContent = sim.reason;
+      return;
+    }
+    const payoffDate = addMonths(new Date(), sim.months);
+    simResult.textContent =
+      `With extras: payoff in ${monthsToPretty(sim.months)} (≈ ${payoffDate.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"})}).`;
+  });
+
+  document.getElementById("clearSimBtn").addEventListener("click", ()=>{
+    extraRecurring.value = "";
+    extraOneOff.value = "";
+    simResult.textContent = "Enter extras and run to see updated payoff estimate.";
+    renderCompare();
+    toast("Cleared");
+  });
+
+  // ---------- Auth ----------
   const googleLoginBtn = document.getElementById("googleLoginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
   const emailLoginBtn = document.getElementById("emailLoginBtn");
   const emailSignupBtn = document.getElementById("emailSignupBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
   const emailInput = document.getElementById("emailInput");
   const passInput = document.getElementById("passInput");
 
   googleLoginBtn.addEventListener("click", async ()=>{
     try{
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      await signInWithPopup(auth, new GoogleAuthProvider());
     }catch(e){
       console.error(e);
-      toast("Google sign-in failed ❌ (check Authorized domains)");
-      setSyncStatus("err", "Sign-in failed");
+      setSyncUI("err", "Sign-in failed");
+      toast("Sign-in failed (check Authorized domains)");
     }
   });
 
@@ -1055,28 +1568,28 @@
       await signInWithEmailAndPassword(auth, emailInput.value.trim(), passInput.value);
     }catch(e){
       console.error(e);
-      toast("Email login failed ❌");
-      setSyncStatus("err", "Email login failed");
+      setSyncUI("err", "Email login failed");
+      toast("Email login failed");
     }
   });
 
   emailSignupBtn.addEventListener("click", async ()=>{
     try{
       await createUserWithEmailAndPassword(auth, emailInput.value.trim(), passInput.value);
-      toast("Account created ✅");
+      toast("Account created");
     }catch(e){
       console.error(e);
-      toast("Signup failed ❌");
-      setSyncStatus("err", "Signup failed");
+      setSyncUI("err", "Signup failed");
+      toast("Signup failed");
     }
   });
 
   logoutBtn.addEventListener("click", async ()=>{
-    try{ await signOut(auth); } catch {}
+    try{ await signOut(auth); }catch{}
   });
 
-  // Auth state -> cloud sync
-  setSyncStatus("off", "Local mode (not signed in)");
+  // ---------- Auth state -> cloud sync ----------
+  setSyncUI("off", "Local mode (not signed in)");
   onAuthStateChanged(auth, async (user)=>{
     currentUser = user;
 
@@ -1084,12 +1597,12 @@
 
     if (!user){
       userLine.textContent = "Not signed in.";
-      setSyncStatus("off", "Local mode (not signed in)");
+      setSyncUI("off", "Local mode (not signed in)");
       return;
     }
 
-    userLine.textContent = `${user.email || "Signed in"} • UID: ${user.uid}`;
-    setSyncStatus("ok", "Cloud sync enabled");
+    userLine.textContent = (user.email || "Signed in");
+    setSyncUI("ok", "Cloud sync enabled");
 
     try{
       await loadFromCloud(user.uid);
@@ -1098,23 +1611,24 @@
         if (!snap.exists()) return;
         const data = snap.data();
         if (!data?.state) return;
+
         isApplyingRemote = true;
-        state = data.state;
+        state = migrateState(data.state);
         saveLocal();
-        render();
+        renderAll();
         isApplyingRemote = false;
       });
 
-      toast("Synced ✅");
+      toast("Synced");
     }catch(e){
       console.error(e);
-      setSyncStatus("err", "Cloud sync failed (check Firestore rules)");
-      toast("Cloud sync failed ❌");
+      setSyncUI("err", "Cloud sync failed");
+      toast("Cloud sync failed");
     }
   });
 
-  // Initial render
-  render();
+  // ---------- Start ----------
+  renderAll();
   showTab("budget");
 </script>
 </body>
