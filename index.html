@@ -8,14 +8,15 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
 
   <style>
     :root {
-      --bg: #0f172a;
-      --sidebar: #020617;
-      --card: #1e293b;
-      --accent: #38bdf8;
-      --success: #10b981;
+      --bg: #0f172a;       /* Deep Navy Background */
+      --sidebar: #020617;  /* Darker Sidebar */
+      --card: #1e293b;     /* Card Background */
+      --accent: #38bdf8;   /* Light Blue Highlight */
+      --success: #10b981;  /* Green for Money/Savings */
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --border: #334155;
@@ -23,7 +24,7 @@
 
     body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text-main); height: 100vh; overflow: hidden; }
 
-    /* LAYOUT */
+    /* --- LAYOUT --- */
     .app { display: grid; grid-template-columns: 280px 1fr; height: 100vh; }
     
     /* SIDEBAR (Timeline) */
@@ -42,10 +43,10 @@
       align-items: center;
       color: var(--text-muted);
       border: 1px solid transparent;
+      transition: all 0.2s;
     }
     .timeline-item:hover { background: #1e293b88; }
-    .timeline-item.active { background: var(--accent); color: #000; font-weight: bold; }
-    .timeline-item.completed { opacity: 0.5; text-decoration: line-through; }
+    .timeline-item.active { background: var(--accent); color: #000; font-weight: bold; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
 
     .history-section { padding: 20px; border-top: 1px solid var(--border); background: #0f172a; }
 
@@ -61,20 +62,23 @@
 
     /* SPLIT VIEW */
     .split-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+    @media (max-width: 900px) { .split-layout { grid-template-columns: 1fr; } .app { grid-template-columns: 1fr; } aside { display:none; } }
 
     /* BILL ROWS */
     .bill-row { display: grid; grid-template-columns: 2fr 1fr 1fr 40px; gap: 10px; padding: 10px; background: #0f172a; border-radius: 8px; margin-bottom: 8px; align-items: center; }
     
     /* INPUTS */
     input, select { background: var(--bg); border: 1px solid var(--border); color: white; padding: 8px; border-radius: 6px; width: 100%; box-sizing: border-box;}
+    input:focus, select:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
     
     /* BUTTONS */
-    .btn { background: var(--accent); color: black; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
+    .btn { background: var(--accent); color: black; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.9; }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
     .btn-complete { background: var(--success); color: white; }
+    .btn-google { background: white; color: #333; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
     /* HELPERS */
-    .badge { background: #334155; padding: 2px 6px; border-radius: 4px; font-size: 11px; margin-left: 8px; }
     .saving-breakdown { font-size: 14px; color: var(--accent); margin-top: 5px; }
   </style>
 </head>
@@ -84,31 +88,37 @@
   <aside>
     <div class="logo-area">
       <h1>Moshniki Cashflow</h1>
-      <button id="authBtn" class="btn" style="margin-top:10px; font-size:12px; padding:8px;">Sign In</button>
+      <div id="authContainer" style="margin-top:15px;">
+        <button id="authBtn" class="btn btn-google">Sign In</button>
+      </div>
     </div>
     
-    <div style="padding:10px 20px 0; color:var(--text-muted); font-size:12px; font-weight:bold;">FUTURE WEEKS</div>
+    <div style="padding:15px 20px 5px; color:var(--text-muted); font-size:11px; font-weight:bold; letter-spacing:1px;">FUTURE WEEKS</div>
     <div class="timeline" id="timelineList">
-      </div>
+      <div style="padding:20px; text-align:center; color:var(--text-muted); font-size:13px;">Sign in to see timeline</div>
+    </div>
 
     <div class="history-section">
       <h3 style="margin:0 0 10px; font-size:12px; color:var(--text-muted)">HISTORY TOTALS</h3>
-      <div style="font-size:13px; display:flex; justify-content:space-between; margin-bottom:5px;">
+      <div style="font-size:13px; display:flex; justify-content:space-between; margin-bottom:8px;">
         <span>Paid to Strata:</span>
-        <span id="histStrata" style="color:var(--accent)">$0</span>
+        <span id="histStrata" style="color:var(--accent); font-weight:bold;">$0</span>
       </div>
       <div style="font-size:13px; display:flex; justify-content:space-between;">
         <span>Total Saved:</span>
-        <span id="histSaved" style="color:var(--success)">$0</span>
+        <span id="histSaved" style="color:var(--success); font-weight:bold;">$0</span>
       </div>
     </div>
   </aside>
 
   <main>
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h2 id="viewTitle" style="margin:0">Planning Mode</h2>
+      <div>
+        <h2 id="viewTitle" style="margin:0">Planning Mode</h2>
+        <div style="font-size:13px; color:var(--text-muted); margin-top:4px;">Manage your cashflow week by week</div>
+      </div>
       <div style="text-align:right">
-        <label style="font-size:12px; color:var(--text-muted)">Projected Bank Balance by this date</label>
+        <label style="font-size:12px; color:var(--text-muted)">Projected Bank Balance</label>
         <div id="accumulatedSavings" style="font-size:24px; color:var(--success); font-weight:bold;">$0.00</div>
       </div>
     </div>
@@ -132,17 +142,20 @@
 
     <div class="split-layout">
       <div class="card">
-        <h3>Expenses & Savings for <span id="currentDateLabel">...</span></h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+           <h3>Expenses for <span id="currentDateLabel" style="color:white">...</span></h3>
+           <span style="font-size:11px; color:var(--text-muted)">Changes auto-save</span>
+        </div>
         <div id="billContainer"></div>
         <button class="btn btn-outline" onclick="addBill()">+ Add Expense</button>
       </div>
 
       <div style="display:flex; flex-direction:column; gap:20px;">
         
-        <div class="card" style="border-color: var(--accent);">
+        <div class="card" style="border: 1px solid var(--accent);">
           <h3 style="color:var(--accent)">Bill Splitter</h3>
-          <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">
-            Here is exactly what you need to put away <b>this pay cycle</b> to cover your larger bills.
+          <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px; line-height:1.4;">
+            This calculator tells you exactly what to put away <b>this pay cycle</b> to afford your Monthly/Quarterly bills later.
           </p>
           <div id="savingsBreakdownList" style="font-size:13px; display:flex; flex-direction:column; gap:8px;"></div>
         </div>
@@ -150,15 +163,13 @@
         <div class="card">
           <h3>Settings</h3>
           <label style="font-size:12px; color:var(--text-muted)">Next Pay Date</label>
-          <input type="date" id="payDate" onchange="renderTimeline()">
+          <input type="date" id="payDate" onchange="renderTimeline(); saveTemplate();"/>
           
           <label style="font-size:12px; color:var(--text-muted); margin-top:10px; display:block">Frequency</label>
-          <select id="frequency" onchange="renderTimeline()">
+          <select id="frequency" onchange="renderTimeline(); saveTemplate();">
             <option value="weekly">Weekly</option>
             <option value="fortnightly">Fortnightly</option>
           </select>
-
-          <button class="btn" onclick="saveTemplate()" style="margin-top:15px;">Save Template</button>
         </div>
 
         <button class="btn btn-complete" onclick="completeWeek()">✔ Mark Week Complete</button>
@@ -168,16 +179,21 @@
 </div>
 
 <script>
-  // --- FIREBASE CONFIG (Put your keys here) ---
+  // --- 1. FIREBASE CONFIG (YOUR REAL KEYS) ---
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID"
+    apiKey: "AIzaSyA5No9QeHpYwJDblMFat_cK2gyVm_K1RtE",
+    authDomain: "moshniki.firebaseapp.com",
+    projectId: "moshniki",
+    storageBucket: "moshniki.firebasestorage.app",
+    messagingSenderId: "880440316288",
+    appId: "1:880440316288:web:23dc9806e2a6f3ce06b165",
+    measurementId: "G-RC6L5FCXY0"
   };
 
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.firestore();
+  const analytics = firebase.analytics();
   let userId = null;
 
   // --- STATE ---
@@ -188,27 +204,35 @@
     frequency: 'weekly' 
   };
   
-  let history = []; // Stores completed weeks
+  let history = []; 
   let selectedOffset = 0; // 0 = next pay, 1 = pay after that...
 
   // --- AUTH ---
   auth.onAuthStateChanged(user => {
     if (user) {
       userId = user.uid;
-      document.getElementById("authBtn").innerText = "Signed In";
+      document.getElementById("authContainer").innerHTML = `
+        <div style="font-size:12px; color:var(--text-muted)">Welcome,</div>
+        <div style="font-weight:bold; color:white; margin-bottom:10px;">${user.displayName}</div>
+        <button class="btn btn-outline" style="padding:6px; font-size:11px;" onclick="firebase.auth().signOut()">Sign Out</button>
+      `;
       loadData();
+    } else {
+      document.getElementById("authContainer").innerHTML = `<button id="authBtn" class="btn btn-google">Sign In with Google</button>`;
+      document.getElementById("authBtn").onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      document.getElementById("timelineList").innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-muted); font-size:13px;">Please sign in to view your budget</div>`;
     }
   });
-  document.getElementById("authBtn").onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
 
   // --- CORE LOGIC ---
 
   function addBill(name="", amount=0, freq="weekly") {
     template.bills.push({ name, amount, freq });
     renderBills();
+    saveTemplate(); // Auto-save on add
   }
 
-  // 1. Render the Bill Inputs
+  // Render the Bill Inputs
   function renderBills() {
     const container = document.getElementById("billContainer");
     container.innerHTML = "";
@@ -217,24 +241,24 @@
       const div = document.createElement("div");
       div.className = "bill-row";
       div.innerHTML = `
-        <input value="${bill.name}" placeholder="Name (e.g. Strata)" onchange="template.bills[${i}].name=this.value; updateCalculations()">
-        <input type="number" value="${bill.amount}" placeholder="$" onchange="template.bills[${i}].amount=+this.value; updateCalculations()">
-        <select onchange="template.bills[${i}].freq=this.value; updateCalculations()">
+        <input value="${bill.name}" placeholder="Name (e.g. Strata)" onchange="template.bills[${i}].name=this.value; updateCalculations(); saveTemplate()">
+        <input type="number" value="${bill.amount}" placeholder="$" onchange="template.bills[${i}].amount=+this.value; updateCalculations(); saveTemplate()">
+        <select onchange="template.bills[${i}].freq=this.value; updateCalculations(); saveTemplate()">
           <option value="weekly" ${bill.freq==='weekly'?'selected':''}>Weekly</option>
           <option value="fortnightly" ${bill.freq==='fortnightly'?'selected':''}>Fortnightly</option>
           <option value="monthly" ${bill.freq==='monthly'?'selected':''}>Monthly</option>
           <option value="quarterly" ${bill.freq==='quarterly'?'selected':''}>Quarterly</option>
         </select>
-        <button style="color:red; background:none; border:none; cursor:pointer;" onclick="template.bills.splice(${i},1);renderBills()">x</button>
+        <button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold;" onclick="template.bills.splice(${i},1);renderBills();saveTemplate()">✕</button>
       `;
       container.appendChild(div);
     });
     updateCalculations();
   }
 
-  // 2. The "Brains" - Calculate what to save THIS week based on Bill Freq vs Pay Freq
+  // The "Brains" - Calculate what to save THIS week based on Bill Freq vs Pay Freq
   function updateCalculations() {
-    const payFreq = document.getElementById("frequency").value; // 'weekly' or 'fortnightly'
+    const payFreq = document.getElementById("frequency").value;
     const income = parseFloat(document.getElementById("weekIncome").value) || 0;
     template.income = income;
 
@@ -245,24 +269,28 @@
       let costPerPay = 0;
       let note = "";
 
-      // LOGIC: Convert Bill Freq to Annual, then divide by Pay Freq
+      // Convert Bill Freq to Annual, then divide by Pay Freq
       const annualCost = getAnnualCost(bill.amount, bill.freq);
       const paysPerYear = payFreq === 'weekly' ? 52 : 26;
       costPerPay = annualCost / paysPerYear;
 
       // Formatting logic for the "Bill Splitter" Box
+      let highlightClass = "";
       if(bill.freq !== payFreq) {
-        note = `(Save <b>$${costPerPay.toFixed(2)}</b> / pay)`;
+        // If mismatch (e.g. Monthly bill vs Weekly pay), highlight it
+        note = `<span style="color:var(--accent)">(Save <b>$${costPerPay.toFixed(2)}</b> / pay)</span>`;
+        highlightClass = "color:var(--text-main); font-weight:bold;";
       } else {
-        note = `(Pay full amount)`;
+        note = `<span style="color:var(--text-muted)">(Pay full amount)</span>`;
+        highlightClass = "color:var(--text-muted);";
       }
       
       totalRequiredSavings += costPerPay;
       
       if(costPerPay > 0) {
         savingsListHTML += `
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid #334155; padding-bottom:4px;">
-            <span>${bill.name}</span>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid #334155; padding-bottom:6px;">
+            <span style="${highlightClass}">${bill.name}</span>
             <span>$${costPerPay.toFixed(2)}</span>
           </div>
         `;
@@ -274,9 +302,8 @@
     // Update UI
     document.getElementById("weekLeftover").innerText = "$" + leftover.toFixed(2);
     document.getElementById("weekSavingsReq").innerText = "$" + totalRequiredSavings.toFixed(2);
-    document.getElementById("savingsBreakdownList").innerHTML = savingsListHTML;
+    document.getElementById("savingsBreakdownList").innerHTML = savingsListHTML || "<div style='color:var(--text-muted)'>No bills added yet.</div>";
     
-    // Update Forecast based on selected offset
     updateForecast(totalRequiredSavings);
   }
 
@@ -288,7 +315,7 @@
     return 0;
   }
 
-  // 3. Render the Left Sidebar (Timeline)
+  // Render the Left Sidebar (Timeline)
   function renderTimeline() {
     const list = document.getElementById("timelineList");
     list.innerHTML = "";
@@ -312,7 +339,7 @@
       div.onclick = () => {
         selectedOffset = i;
         renderTimeline(); // re-render to update active class
-        document.getElementById("viewTitle").innerText = "Planning: " + dateStr;
+        document.getElementById("viewTitle").innerText = i===0 ? "Current Pay" : `Future: ${dateStr}`;
         document.getElementById("currentDateLabel").innerText = dateStr;
         updateCalculations();
       };
@@ -323,17 +350,13 @@
     if(selectedOffset === 0) {
         const d = new Date(startDate);
         const s = d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
-        document.getElementById("viewTitle").innerText = "Next Pay: " + s;
+        document.getElementById("viewTitle").innerText = "Current Pay: " + s;
         document.getElementById("currentDateLabel").innerText = s;
     }
   }
 
-  // 4. Forecast Logic
+  // Forecast Logic
   function updateForecast(weeklySavings) {
-    // Simple logic: If I save $X every week, how much will I have by selected week?
-    // In a real app, this would query accumulated history + future projections
-    // Here we project: (Current History Total) + (Weekly Savings * (selectedOffset + 1))
-    
     const historyTotal = history.reduce((acc, week) => acc + (week.saved || 0), 0);
     const futureAccumulation = weeklySavings * (selectedOffset + 1);
     const total = historyTotal + futureAccumulation;
@@ -341,12 +364,24 @@
     document.getElementById("accumulatedSavings").innerText = "$" + total.toFixed(2);
   }
 
-  // 5. Complete Week Logic
+  // Complete Week Logic
   function completeWeek() {
-    if(!confirm("Mark this week as done? This will add totals to your history.")) return;
+    if(!confirm("Mark this week as done? This will save your totals to history and cannot be undone easily.")) return;
     
     const income = template.income;
+    const payFreq = document.getElementById("frequency").value;
+
+    // Find Strata specific bills (case insensitive)
     const strataBill = template.bills.find(b => b.name.toLowerCase().includes('strata'));
+    let strataPaidAmount = 0;
+    
+    if(strataBill) {
+        // Calculate the theoretical amount contributed to strata this week
+        const annual = getAnnualCost(strataBill.amount, strataBill.freq);
+        const paysPerYear = payFreq === 'weekly' ? 52 : 26;
+        strataPaidAmount = annual / paysPerYear;
+    }
+
     const saved = parseFloat(document.getElementById("weekSavingsReq").innerText.replace('$',''));
 
     // Save to History
@@ -354,23 +389,25 @@
       date: new Date().toISOString(),
       income: income,
       saved: saved,
-      paidStrata: strataBill ? (strataBill.amount / (strataBill.freq === 'weekly'?1:4)) : 0 // Rough logic, can be refined
+      paidStrata: strataPaidAmount
     };
 
     if(userId) {
       db.collection("users").doc(userId).collection("history").add(entry).then(() => {
-        alert("Week saved!");
+        alert("Week saved! Check the sidebar for updated totals.");
         loadHistory();
       });
     }
   }
 
-  // 6. Save/Load
+  // Save/Load
   function saveTemplate() {
     if(!userId) return;
     template.payDate = document.getElementById("payDate").value;
     template.frequency = document.getElementById("frequency").value;
-    db.collection("users").doc(userId).set(template);
+    template.income = parseFloat(document.getElementById("weekIncome").value);
+    // Debounce simple save
+    db.collection("users").doc(userId).set(template, { merge: true });
   }
 
   function loadData() {
@@ -378,11 +415,19 @@
     db.collection("users").doc(userId).get().then(doc => {
       if(doc.exists) {
         const d = doc.data();
-        template = d;
+        if(d.bills) template.bills = d.bills;
+        if(d.payDate) template.payDate = d.payDate;
+        if(d.frequency) template.frequency = d.frequency;
+        if(d.income) template.income = d.income;
+
         document.getElementById("weekIncome").value = template.income || 0;
-        document.getElementById("payDate").value = template.payDate || new Date().toISOString().split('T')[0];
-        document.getElementById("frequency").value = template.frequency || 'weekly';
+        document.getElementById("payDate").value = template.payDate;
+        document.getElementById("frequency").value = template.frequency;
         renderBills();
+        renderTimeline();
+      } else {
+        // Init new user
+        saveTemplate();
         renderTimeline();
       }
     });
@@ -398,14 +443,13 @@
       snap.forEach(doc => {
         const data = doc.data();
         history.push(data);
-        // Simple string match for "Strata" tracking
-        // In real app, we'd look at specific bill IDs
         if(data.paidStrata) totalStrata += data.paidStrata; 
         totalSaved += (data.saved || 0);
       });
 
       document.getElementById("histStrata").innerText = "$" + totalStrata.toFixed(0);
       document.getElementById("histSaved").innerText = "$" + totalSaved.toFixed(0);
+      updateCalculations(); // Update forecast with new history
     });
   }
 
