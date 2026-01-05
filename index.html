@@ -1,303 +1,251 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Moshniki’s Budget Planner</title>
+  <meta charset="UTF-8" />
+  <title>Moshniki’s Budget Planner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<!-- Firebase (CDN – safe for GitHub Pages) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-<style>
-:root{
-  --bg:#0f172a;
-  --panel:#111827;
-  --card:#1f2933;
-  --border:#334155;
-  --ink:#e5e7eb;
-  --muted:#9ca3af;
-  --accent:#60a5fa;
-  --good:#22c55e;
-  --bad:#ef4444;
-  --warn:#f59e0b;
-  --radius:14px;
-  --shadow:0 20px 40px rgba(0,0,0,.35);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:linear-gradient(180deg,#020617,#0f172a);
-  color:var(--ink);
-}
-.app{
-  display:grid;
-  grid-template-columns:260px 1fr;
-  min-height:100vh;
-}
-aside{
-  background:var(--panel);
-  border-right:1px solid var(--border);
-  padding:16px;
-}
-main{
-  padding:18px;
-  overflow:auto;
-}
-.logo{
-  display:flex;align-items:center;gap:10px;
-  font-weight:900;font-size:16px;
-}
-.logo .icon{
-  width:38px;height:38px;border-radius:10px;
-  background:linear-gradient(135deg,#2563eb,#60a5fa);
-  display:grid;place-items:center;
-}
-.logo .icon span{font-weight:1000}
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      color: #e5e7eb;
+    }
 
-.section{margin-top:20px}
-.section h3{
-  font-size:12px;text-transform:uppercase;
-  letter-spacing:.1em;color:var(--muted);
-  margin-bottom:10px;
-}
+    .app {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      height: 100vh;
+    }
 
-.period{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px;border-radius:12px;
-  border:1px solid var(--border);
-  cursor:pointer;
-}
-.period.active{border-color:var(--accent);background:#020617}
-.period .date{font-weight:800}
-.period .delta.good{color:var(--good)}
-.period .delta.bad{color:var(--bad)}
+    aside {
+      background: linear-gradient(180deg, #020617, #020617dd);
+      padding: 20px;
+      border-right: 1px solid #1e293b;
+    }
 
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:14px;
-  margin-bottom:16px;
-}
+    h1 {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
 
-.grid{
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:16px;
-}
-@media(max-width:1000px){
-  .app{grid-template-columns:1fr}
-  aside{display:none}
-  .grid{grid-template-columns:1fr}
-}
+    button {
+      background: #0ea5e9;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: black;
+      font-weight: 600;
+      cursor: pointer;
+    }
 
-input,select,textarea{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:#020617;
-  color:var(--ink);
-}
-label{font-size:12px;color:var(--muted);margin-bottom:4px;display:block}
+    button.secondary {
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid #1e293b;
+    }
 
-.row{display:grid;grid-template-columns:1fr 120px 60px;gap:8px;margin-bottom:8px}
-.row input[type=number]{text-align:right}
-.btn{
-  background:#020617;border:1px solid var(--border);
-  color:var(--ink);padding:10px 12px;
-  border-radius:10px;font-weight:800;
-  cursor:pointer;
-}
-.btn.primary{border-color:var(--accent);color:var(--accent)}
-.btn.danger{border-color:var(--bad);color:var(--bad)}
-.btn.small{padding:6px 8px;font-size:12px}
+    main {
+      padding: 30px;
+      overflow-y: auto;
+    }
 
-.tabs{display:flex;gap:8px;margin-bottom:12px}
-.tab{padding:8px 12px;border-radius:999px;border:1px solid var(--border);cursor:pointer}
-.tab.active{border-color:var(--accent);color:var(--accent)}
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
 
-.kpis{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:10px
-}
-.kpi{
-  background:#020617;border:1px solid var(--border);
-  padding:12px;border-radius:12px
-}
-.kpi .label{font-size:12px;color:var(--muted)}
-.kpi .value{font-size:18px;font-weight:900;margin-top:4px}
-.good{color:var(--good)}
-.bad{color:var(--bad)}
-</style>
+    .card {
+      background: linear-gradient(180deg, #020617, #020617cc);
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    .card .value {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    .bill-row {
+      display: grid;
+      grid-template-columns: 1fr 120px 80px;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .bill-row button {
+      background: #ef4444;
+      color: white;
+    }
+
+    .muted {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+  </style>
 </head>
 
 <body>
 <div class="app">
+  <aside>
+    <h1>Moshniki’s Budget</h1>
+    <button id="authBtn">Sign in with Google</button>
+  </aside>
 
-<aside>
-  <div class="logo">
-    <div class="icon"><span>M</span></div>
-    Moshniki’s Budget
-  </div>
+  <main>
+    <div class="cards">
+      <div class="card"><h3>Income</h3><div class="value" id="incomeTotal">$0</div></div>
+      <div class="card"><h3>Bills</h3><div class="value" id="billsTotal">$0</div></div>
+      <div class="card"><h3>Savings</h3><div class="value" id="savingsTotal">$0</div></div>
+      <div class="card"><h3>Leftover</h3><div class="value" id="leftoverTotal">$0</div></div>
+    </div>
 
-  <div class="section">
-    <h3>Pay Periods</h3>
-    <div id="periodList"></div>
-    <button class="btn small primary" onclick="newPeriod()">+ New Period</button>
-  </div>
+    <div class="layout">
+      <div class="card">
+        <h3>Bills</h3>
+        <div id="bills"></div>
+        <button onclick="addBill()">+ Add bill</button>
+      </div>
 
-  <div class="section">
-    <h3>Account</h3>
-    <button class="btn small" onclick="signIn()">Sign in with Google</button>
-  </div>
-</aside>
+      <div class="card">
+        <h3>Summary</h3>
+        <label class="muted">Pay date</label>
+        <input type="date" id="payDate"/>
 
-<main>
+        <label class="muted">Pay frequency</label>
+        <select id="frequency">
+          <option value="weekly">Weekly</option>
+          <option value="fortnightly">Fortnightly</option>
+        </select>
 
-<div class="tabs">
-  <div class="tab active" onclick="showTab('budget')">Budget</div>
-  <div class="tab" onclick="showTab('debts')">Debts</div>
-  <div class="tab" onclick="showTab('archive')">Archive</div>
-  <div class="tab" onclick="showTab('settings')">Settings</div>
-</div>
+        <label class="muted">Income</label>
+        <input type="number" id="income"/>
 
-<!-- BUDGET -->
-<div id="tab-budget">
+        <label class="muted">Savings</label>
+        <input type="number" id="savings"/>
 
-<div class="kpis">
-  <div class="kpi"><div class="label">Income</div><div class="value" id="kIncome">$0</div></div>
-  <div class="kpi"><div class="label">Bills + Spend</div><div class="value" id="kBills">$0</div></div>
-  <div class="kpi"><div class="label">Savings</div><div class="value" id="kSavings">$0</div></div>
-  <div class="kpi"><div class="label">Leftover</div><div class="value" id="kLeft">$0</div></div>
-</div>
-
-<div class="grid">
-
-<div class="card">
-  <h3>Bills</h3>
-  <div id="bills"></div>
-  <button class="btn small primary" onclick="addBill()">+ Add bill</button>
-</div>
-
-<div class="card">
-  <h3>Summary</h3>
-  <label>Pay date</label>
-  <input type="date" id="payDate">
-  <label>Income</label>
-  <input type="number" id="income">
-  <label>Savings</label>
-  <input type="number" id="savings">
-  <label>Groceries</label>
-  <input type="number" id="groceries">
-  <label>Guilt-free</label>
-  <input type="number" id="guilt">
-  <button class="btn primary" onclick="save()">Save</button>
-</div>
-
-</div>
-</div>
-
-<!-- DEBTS -->
-<div id="tab-debts" style="display:none">
-  <div class="card">
-    <h3>Debt Tracker</h3>
-    <p class="muted">Add debts, then record payments as transactions.</p>
-    <button class="btn primary">+ Add Debt (next)</button>
-  </div>
-</div>
-
-<!-- ARCHIVE -->
-<div id="tab-archive" style="display:none">
-  <div class="card">
-    <h3>Archived Periods</h3>
-    <div id="archiveList"></div>
-  </div>
-</div>
-
-<!-- SETTINGS -->
-<div id="tab-settings" style="display:none">
-  <div class="card">
-    <h3>Pay Settings</h3>
-    <label>Pay frequency</label>
-    <select id="frequency">
-      <option value="weekly">Weekly</option>
-      <option value="fortnightly">Fortnightly</option>
-    </select>
-  </div>
-</div>
-
-</main>
+        <button style="margin-top:12px" onclick="saveBudget()">Save</button>
+      </div>
+    </div>
+  </main>
 </div>
 
 <script>
-/* Firebase */
-firebase.initializeApp({
-  apiKey: "AIzaSyA5No9QeHpYwJDblMFat_cK2gyVm_K1RtE",
-  authDomain: "moshniki.firebaseapp.com",
-  projectId: "moshniki"
-});
-const auth = firebase.auth();
-const db = firebase.firestore();
+  // 🔥 FIREBASE CONFIG — REPLACE WITH YOUR REAL KEYS
+  const firebaseConfig = {
+    apiKey: "YOUR_KEY",
+    authDomain: "YOUR_DOMAIN",
+    projectId: "YOUR_PROJECT_ID"
+  };
 
-let user=null;
-let state={schema:1,settings:{frequency:"weekly"},periods:[]};
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-function signIn(){
-  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-}
-auth.onAuthStateChanged(u=>{
-  if(!u)return;
-  user=u;
-  db.collection("users").doc(u.uid).onSnapshot(s=>{
-    if(s.exists) state=s.data();
-    if(!state.periods.length)newPeriod();
-    render();
+  let userId = null;
+  let bills = [];
+
+  auth.onAuthStateChanged(user => {
+    if (!user) return;
+    userId = user.uid;
+    document.getElementById("authBtn").innerText = "Signed in as " + user.displayName.split(" ")[0];
+    document.getElementById("authBtn").disabled = true;
+    loadBudget();
   });
-});
 
-function save(){ if(!user)return;
-  db.collection("users").doc(user.uid).set(state);
-}
+  document.getElementById("authBtn").onclick = () => {
+    auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  };
 
-function newPeriod(){
-  const last=state.periods.at(-1);
-  const base= last ? new Date(last.date) : new Date();
-  const step= state.settings.frequency==="weekly"?7:14;
-  const d=new Date(base); d.setDate(d.getDate()+step);
-  state.periods.push({date:d.toISOString().slice(0,10),income:0,savings:0,groceries:0,guilt:0,bills:[]});
-  save();
-}
+  function addBill(name = "", amount = 0) {
+    bills.push({ name, amount });
+    renderBills();
+  }
 
-function addBill(){
-  state.periods.at(-1).bills.push({name:"",amount:0});
-  save();
-}
+  function renderBills() {
+    const container = document.getElementById("bills");
+    container.innerHTML = "";
+    bills.forEach((b, i) => {
+      const row = document.createElement("div");
+      row.className = "bill-row";
+      row.innerHTML = `
+        <input value="${b.name}" onchange="bills[${i}].name=this.value">
+        <input type="number" value="${b.amount}" onchange="bills[${i}].amount=+this.value">
+        <button onclick="bills.splice(${i},1);renderBills()">X</button>
+      `;
+      container.appendChild(row);
+    });
+    updateTotals();
+  }
 
-function render(){
-  document.getElementById("periodList").innerHTML=
-    state.periods.map((p,i)=>`
-      <div class="period ${i===state.periods.length-1?"active":""}">
-        <div class="date">${p.date}</div>
-      </div>`).join("");
+  function updateTotals() {
+    const income = +incomeInput.value || 0;
+    const savings = +savingsInput.value || 0;
+    const billsTotal = bills.reduce((t,b)=>t+(+b.amount||0),0);
+    document.getElementById("incomeTotal").innerText = `$${income}`;
+    document.getElementById("billsTotal").innerText = `$${billsTotal}`;
+    document.getElementById("savingsTotal").innerText = `$${savings}`;
+    document.getElementById("leftoverTotal").innerText = `$${income - billsTotal - savings}`;
+  }
 
-  const p=state.periods.at(-1);
-  document.getElementById("bills").innerHTML=
-    p.bills.map((b,i)=>`
-      <div class="row">
-        <input value="${b.name}" oninput="p.bills[${i}].name=this.value;save()">
-        <input type="number" value="${b.amount}" oninput="p.bills[${i}].amount=+this.value;save()">
-        <button class="btn danger small" onclick="p.bills.splice(${i},1);save()">✕</button>
-      </div>`).join("");
-}
-function showTab(t){
-  ["budget","debts","archive","settings"].forEach(x=>{
-    document.getElementById("tab-"+x).style.display= x===t?"block":"none";
-  });
-}
+  const incomeInput = document.getElementById("income");
+  const savingsInput = document.getElementById("savings");
+  incomeInput.oninput = savingsInput.oninput = updateTotals;
+
+  function saveBudget() {
+    if (!userId) return;
+    db.collection("users").doc(userId).set({
+      payDate: payDate.value,
+      frequency: frequency.value,
+      income: +incomeInput.value,
+      savings: +savingsInput.value,
+      bills
+    });
+    alert("Saved 👍");
+  }
+
+  function loadBudget() {
+    db.collection("users").doc(userId).get().then(doc => {
+      if (!doc.exists) return;
+      const d = doc.data();
+      payDate.value = d.payDate || "";
+      frequency.value = d.frequency || "weekly";
+      incomeInput.value = d.income || 0;
+      savingsInput.value = d.savings || 0;
+      bills = d.bills || [];
+      renderBills();
+    });
+  }
 </script>
 </body>
 </html>
