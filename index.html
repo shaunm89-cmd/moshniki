@@ -3,273 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moshniki Arcade Writer</title>
+    <title>Moshniki Optical Vault</title>
     <style>
+        :root {
+            --bg: #050505;
+            --panel: #111;
+            --accent: #ff0055; /* Cyberpunk Red */
+            --text: #eee;
+        }
         body {
-            margin: 0;
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-            font-family: 'Courier New', Courier, monospace;
-            overflow: hidden;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
-            height: 100vh;
-        }
-
-        /* The Header / Toolbar */
-        header {
-            padding: 15px 30px;
-            background: #111;
-            border-bottom: 2px solid #333;
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            z-index: 10;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
         }
 
         h1 {
-            margin: 0;
-            font-size: 1.2rem;
-            color: #00bcd4;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-bottom: 10px;
         }
 
-        .actions button {
-            background: #333;
-            color: #fff;
-            border: 1px solid #555;
-            padding: 8px 15px;
-            margin-left: 10px;
-            cursor: pointer;
-            font-family: inherit;
+        p.subtitle {
+            color: #777;
+            margin-bottom: 40px;
             font-size: 0.9rem;
-            transition: all 0.2s;
         }
 
-        .actions button:hover {
-            background: #00bcd4;
-            color: #000;
-            border-color: #00bcd4;
-        }
-
-        /* The Typing Area */
-        #editor-container {
-            flex-grow: 1;
-            position: relative;
-            padding: 40px;
-            overflow-y: auto;
-            max-width: 800px;
-            margin: 0 auto;
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
             width: 100%;
+            max-width: 1000px;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 30px;
+            width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+        }
+
+        h2 { margin-top: 0; font-size: 1.2rem; }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+            color: #aaa;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        input[type="file"] {
+            margin-bottom: 15px;
+            color: #777;
+        }
+
+        textarea {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            color: var(--accent);
+            padding: 10px;
             box-sizing: border-box;
+            resize: vertical;
+            min-height: 100px;
+            font-family: monospace;
         }
 
-        #editor {
-            width: 100%;
-            min-height: 80vh;
+        button {
+            margin-top: 20px;
+            background: var(--accent);
+            color: white;
             border: none;
-            outline: none;
-            background: transparent;
-            color: #eee;
-            font-size: 1.2rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            z-index: 5;
-            position: relative;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: opacity 0.2s;
         }
 
-        #editor:empty:before {
-            content: "Start typing... (Sound on for best experience)";
-            color: #555;
+        button:hover { opacity: 0.8; }
+        
+        .result-area {
+            margin-top: 20px;
+            text-align: center;
+            min-height: 20px;
+            color: #fff;
+            word-break: break-all;
         }
 
-        /* Canvas for Particle Effects */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 100;
-        }
+        .hidden { display: none; }
+        
+        canvas { display: none; } /* We process invisible logic on canvas */
 
-        /* Screen Shake Animation */
-        .shake {
-            animation: shake 0.1s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-2px, 0, 0); }
-            40%, 60% { transform: translate3d(2px, 0, 0); }
+        .download-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--accent);
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            padding: 5px 10px;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Moshniki Writer</h1>
-        <div class="actions">
-            <button onclick="toggleSound()">Mute Sound</button>
-            <button onclick="copyText()">Copy Text</button>
-            <button onclick="downloadText()">Save as .txt</button>
-        </div>
-    </header>
+    <h1>Moshniki Optical Vault</h1>
+    <p class="subtitle">Steganography Tool: Hide secrets inside pixels.</p>
 
-    <div id="editor-container">
-        <div id="editor" contenteditable="true" spellcheck="false"></div>
+    <div class="container">
+        <div class="card">
+            <h2>1. Hide Message (Encrypt)</h2>
+            <label>Upload Image (PNG/JPG)</label>
+            <input type="file" id="upload-enc" accept="image/*">
+            
+            <label>Secret Message</label>
+            <textarea id="message-enc" placeholder="Type secrets here..."></textarea>
+
+            <button onclick="encode()">Hide Data & Download</button>
+            <div class="result-area" id="result-enc"></div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid #00d4ff;">
+            <h2 style="color: #00d4ff;">2. Reveal Message (Decrypt)</h2>
+            <label>Upload Image with Secrets</label>
+            <input type="file" id="upload-dec" accept="image/*">
+
+            <button onclick="decode()" style="background: #00d4ff; color: #000;">Reveal Secrets</button>
+            
+            <label>Decoded Message:</label>
+            <div class="result-area" style="color: #00d4ff; font-family: monospace; font-size: 1.1rem;" id="result-dec">
+                Waiting for image...
+            </div>
+        </div>
     </div>
 
-    <canvas id="particle-canvas"></canvas>
+    <canvas id="canvas"></canvas>
 
     <script>
-        const editor = document.getElementById('editor');
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        
-        let width = window.innerWidth;
-        let height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
+        // --- ENCODING LOGIC ---
+        function encode() {
+            const fileInput = document.getElementById('upload-enc');
+            const message = document.getElementById('message-enc').value;
+            const resultDiv = document.getElementById('result-enc');
 
-        let particles = [];
-        let soundEnabled = true;
-
-        // --- Audio Context for Synthetic Sounds ---
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioCtx = new AudioContext();
-
-        function playClickSound() {
-            if (!soundEnabled) return;
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-
-            // Create a short, sharp "click" or "thock" sound
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(Math.random() * 50 + 300, audioCtx.currentTime); // variation
-            
-            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.1);
-        }
-
-        function toggleSound() {
-            soundEnabled = !soundEnabled;
-            document.querySelector("button").innerText = soundEnabled ? "Mute Sound" : "Enable Sound";
-        }
-
-        // --- Particle System ---
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 4 - 2;
-                this.speedY = Math.random() * 4 - 2;
-                // Random neon colors
-                const colors = ['#00bcd4', '#ff4081', '#76ff03', '#ffffff'];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-                this.life = 1.0;
+            if (!fileInput.files[0] || !message) {
+                alert("Please select an image and type a message.");
+                return;
             }
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.life -= 0.05;
-                this.size *= 0.95;
-            }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.getElementById('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
 
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.life;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+                    // Get Pixel Data
+                    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imgData.data;
+
+                    // Convert message to binary string
+                    let binaryMessage = "";
+                    for (let i = 0; i < message.length; i++) {
+                        let binaryChar = message.charCodeAt(i).toString(2);
+                        // Pad with 0s to ensure 8 bits
+                        binaryMessage += "00000000".substring(binaryChar.length) + binaryChar;
+                    }
+                    // Add a "Null Terminator" (00000000) so we know when to stop reading
+                    binaryMessage += "00000000";
+
+                    if (binaryMessage.length > data.length / 4) {
+                        alert("Message is too long for this image size!");
+                        return;
+                    }
+
+                    // Embed the binary into the Least Significant Bit of the R, G, B channels
+                    for (let i = 0; i < binaryMessage.length; i++) {
+                        // We modify the data array at index i * 4 (Red channel of pixel i)
+                        // This simplistic approach uses 1 pixel per bit (using the Red channel)
+                        // If current Red value is odd and bit is 0, make it even.
+                        // If current Red value is even and bit is 1, make it odd.
+                        let pixelIndex = i * 4; 
+                        
+                        // Clear the last bit
+                        data[pixelIndex] = (data[pixelIndex] & 254); 
+                        
+                        // Set the last bit to our message bit
+                        if (binaryMessage[i] === '1') {
+                            data[pixelIndex] += 1;
+                        }
+                    }
+
+                    ctx.putImageData(imgData, 0, 0);
+                    
+                    // Create download
+                    const encodedUrl = canvas.toDataURL("image/png");
+                    resultDiv.innerHTML = `<a href="${encodedUrl}" download="moshniki_secret.png" class="download-link">Download Secret Image</a>`;
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(fileInput.files[0]);
         }
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                if (particles[i].life <= 0) {
-                    particles.splice(i, 1);
-                    i--;
-                }
-            }
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
+        // --- DECODING LOGIC ---
+        function decode() {
+            const fileInput = document.getElementById('upload-dec');
+            const resultDiv = document.getElementById('result-dec');
 
-        // --- Typing Logic ---
-        // Helper to get caret coordinates
-        function getCaretCoordinates() {
-            let x = 0, y = 0;
-            const selection = window.getSelection();
-            if (selection.rangeCount !== 0) {
-                const range = selection.getRangeAt(0).cloneRange();
-                range.collapse(true);
-                const rect = range.getClientRects()[0];
-                if (rect) {
-                    x = rect.left;
-                    y = rect.top;
-                }
-            }
-            return { x, y };
-        }
-
-        editor.addEventListener('input', (e) => {
-            playClickSound();
-            
-            // Spawn particles
-            const { x, y } = getCaretCoordinates();
-            if (x && y) {
-                for (let i = 0; i < 5; i++) {
-                    particles.push(new Particle(x, y + 10));
-                }
+            if (!fileInput.files[0]) {
+                alert("Please upload an image first.");
+                return;
             }
 
-            // Screen Shake
-            document.body.classList.add('shake');
-            setTimeout(() => {
-                document.body.classList.remove('shake');
-            }, 100);
-        });
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.getElementById('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
 
-        // Resize handler
-        window.addEventListener('resize', () => {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        });
+                    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imgData.data;
+                    
+                    let binaryMessage = "";
+                    let decodedMessage = "";
 
-        // --- Toolbar Functions ---
-        function copyText() {
-            const text = editor.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Text copied to clipboard!');
-            });
-        }
-
-        function downloadText() {
-            const text = editor.innerText;
-            const element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-            element.setAttribute('download', 'moshniki_notes.txt');
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
+                    // Extract bits
+                    for (let i = 0; i < data.length; i += 4) {
+                        // Get the LSB of the Red channel
+                        const bit = data[i] & 1;
+                        binaryMessage += bit;
+                        
+                        // Every 8 bits, convert to character
+                        if (binaryMessage.length === 8) {
+                            const charCode = parseInt(binaryMessage, 2);
+                            if (charCode === 0) break; // Found the terminator
+                            decodedMessage += String.fromCharCode(charCode);
+                            binaryMessage = "";
+                        }
+                    }
+                    
+                    resultDiv.innerText = decodedMessage;
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(fileInput.files[0]);
         }
     </script>
 </body>
