@@ -16,7 +16,7 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            user-select: none; /* Prevents text highlighting on double tap */
+            user-select: none;
         }
 
         h1 {
@@ -46,8 +46,8 @@
             background-color: white;
             border: 4px solid #B2EBF2;
             border-radius: 12px;
-            padding: 15px 5px;
-            font-size: 0.9rem; /* Slightly smaller to fit longer words */
+            padding: 10px 2px;
+            font-size: 0.85rem; 
             font-weight: 600;
             cursor: pointer;
             text-align: center;
@@ -58,12 +58,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 50px;
+            min-height: 55px;
+            word-wrap: break-word;
         }
 
         /* Mobile adjustments */
         @media (max-width: 500px) {
-            .tile { font-size: 0.75rem; padding: 10px 2px; }
+            .tile { font-size: 0.7rem; min-height: 50px; }
             h1 { font-size: 2rem; }
         }
 
@@ -108,28 +109,27 @@
             background-color: #FF7043;
             color: white;
             border: none;
-            padding: 12px 25px;
-            font-size: 1.1rem;
+            padding: 12px 20px;
+            font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-family: 'Fredoka', sans-serif;
             box-shadow: 0 4px #D84315;
             transition: filter 0.2s;
+            min-width: 100px;
         }
         
         button.action-btn:hover { filter: brightness(1.1); }
         button.action-btn:active { transform: translateY(4px); box-shadow: none; }
 
-        button.secondary-btn {
-            background-color: #78909C;
-            box-shadow: 0 4px #455A64;
-        }
-
-        button.new-game-btn {
-            background-color: #7E57C2;
+        /* Different colors for different buttons */
+        button.submit-btn { background-color: #FF7043; box-shadow: 0 4px #D84315; }
+        button.clear-btn { background-color: #78909C; box-shadow: 0 4px #455A64; }
+        
+        /* The NEW Puzzle Button Style */
+        button.new-game-btn { 
+            background-color: #7E57C2; 
             box-shadow: 0 4px #512DA8;
-            margin-top: 20px;
-            display: none; /* Hidden until game over */
         }
 
         #message {
@@ -159,16 +159,13 @@
     <div id="message"></div>
 
     <div class="controls">
-        <button class="action-btn" onclick="checkSelection()">Submit</button>
-        <button class="action-btn secondary-btn" onclick="deselectAll()">Clear</button>
+        <button class="action-btn submit-btn" onclick="checkSelection()">Submit</button>
+        <button class="action-btn clear-btn" onclick="deselectAll()">Clear</button>
+        <button class="action-btn new-game-btn" onclick="confirmNewGame()">New Puzzle 🔄</button>
     </div>
-    
-    <button id="new-game-btn" class="action-btn new-game-btn" onclick="initGame()">Play Another!</button>
 
 <script>
     // --- THE BIG DATABASE OF WORDS ---
-    // You can add as many rows here as you want. 
-    // Just make sure there are exactly 4 words per theme.
     const database = [
         { theme: "Playground", words: ["SLIDE", "SWING", "SANDBOX", "SEESAW"] },
         { theme: "School Subjects", words: ["MATH", "SCIENCE", "ART", "MUSIC"] },
@@ -197,17 +194,13 @@
         { theme: "In the Sky", words: ["CLOUD", "BIRD", "PLANE", "KITE"] }
     ];
 
-    // --- GAME LOGIC ---
-
     const board = document.getElementById('game-board');
     const msg = document.getElementById('message');
-    const newGameBtn = document.getElementById('new-game-btn');
     
     let currentGroups = [];
     let selectedTiles = [];
     let solvedCount = 0;
 
-    // Helper to shuffle any array
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -222,18 +215,17 @@
         msg.innerText = '';
         selectedTiles = [];
         solvedCount = 0;
-        newGameBtn.style.display = 'none';
 
-        // 1. Shuffle the database and pick the first 4 categories
+        // 1. Shuffle and pick 4 themes
         const shuffledDB = shuffleArray([...database]);
         const selectedCategories = shuffledDB.slice(0, 4);
 
-        // 2. Assign them IDs (0-3) for coloring later
+        // 2. Assign IDs
         currentGroups = selectedCategories.map((group, index) => {
             return { ...group, id: index };
         });
 
-        // 3. Flatten into a list of words with their Group IDs
+        // 3. Flatten words
         let gameWords = [];
         currentGroups.forEach(g => {
             g.words.forEach(w => {
@@ -241,10 +233,10 @@
             });
         });
 
-        // 4. Shuffle the words for the board
+        // 4. Shuffle board words
         gameWords = shuffleArray(gameWords);
 
-        // 5. Render the board
+        // 5. Render
         gameWords.forEach((item) => {
             const tile = document.createElement('div');
             tile.classList.add('tile');
@@ -254,6 +246,14 @@
             tile.onclick = () => toggleTile(tile);
             board.appendChild(tile);
         });
+    }
+
+    // Safety check so kids don't accidentally reset a good game
+    function confirmNewGame() {
+        if(solvedCount > 0 && solvedCount < 4) {
+            if(!confirm("Start a new puzzle? You will lose your current game!")) return;
+        }
+        initGame();
     }
 
     function toggleTile(tile) {
@@ -273,7 +273,7 @@
     function checkSelection() {
         if (selectedTiles.length !== 4) {
             msg.innerText = "Pick 4 words first!";
-            setTimeout(() => msg.innerText = "", 2000);
+            setTimeout(() => { if(msg.innerText.includes("Pick")) msg.innerText = ""; }, 2000);
             return;
         }
 
@@ -281,7 +281,6 @@
         const isMatch = selectedTiles.every(tile => tile.dataset.groupId === firstId);
 
         if (isMatch) {
-            // Find the theme name
             const themeName = currentGroups.find(g => g.id == firstId).theme;
             msg.innerText = "Correct! " + themeName;
             msg.style.color = "#2E7D32";
@@ -295,10 +294,7 @@
             solvedCount++;
             
             if (solvedCount === 4) {
-                setTimeout(() => {
-                    msg.innerText = "🎉 YOU WON! 🎉";
-                    newGameBtn.style.display = 'block';
-                }, 500);
+                setTimeout(() => msg.innerText = "🎉 YOU WON! 🎉", 500);
             }
         } else {
             msg.innerText = "Try again!";
@@ -320,7 +316,6 @@
         selectedTiles = [];
     }
 
-    // Start the game on load
     initGame();
 
 </script>
