@@ -3,272 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moshniki Artifact Generator</title>
+    <title>Junior Connections</title>
     <style>
-        body {
-            margin: 0;
-            background-color: #080808;
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
 
-        /* Sidebar Controls */
-        aside {
-            width: 300px;
-            background: #111;
-            padding: 20px;
-            border-right: 1px solid #333;
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #E0F7FA;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            box-shadow: 5px 0 20px rgba(0,0,0,0.5);
-            z-index: 10;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
         }
 
         h1 {
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            margin: 0;
-            background: linear-gradient(90deg, #ff00cc, #333399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #006064;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px #4DD0E1;
         }
 
-        .control-group {
-            background: #1a1a1a;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #333;
+        .instructions {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #00838F;
         }
 
-        label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #aaa;
-            margin-bottom: 8px;
-        }
-
-        input[type="range"] {
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            max-width: 600px;
             width: 100%;
-            cursor: pointer;
-            accent-color: #ff00cc;
         }
 
-        .btn {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 12px;
-            font-family: inherit;
-            font-weight: bold;
+        .tile {
+            background-color: white;
+            border: 4px solid #B2EBF2;
+            border-radius: 15px;
+            padding: 20px 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.1s, background-color 0.2s;
+            color: #333;
+            box-shadow: 0 4px #80DEEA;
             text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.2s;
-            text-align: center;
         }
 
-        .btn:hover {
-            background: #ff00cc;
-            color: #fff;
-            box-shadow: 0 0 15px #ff00cc;
+        .tile:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 #80DEEA;
         }
 
-        .file-input {
-            display: none;
+        .tile.selected {
+            background-color: #4DD0E1;
+            color: white;
+            border-color: #0097A7;
+            box-shadow: 0 4px #006064;
         }
 
-        /* Main Canvas Area */
-        main {
-            flex-grow: 1;
+        .tile.solved {
+            cursor: default;
+            transform: none;
+            box-shadow: none;
+            color: white;
+            border: none;
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 30px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            background-image: 
-                radial-gradient(#222 1px, transparent 1px);
-            background-size: 20px 20px;
-            position: relative;
+            gap: 15px;
         }
 
-        canvas {
-            max-width: 90%;
-            max-height: 90%;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            border: 1px solid #333;
+        button.action-btn {
+            background-color: #FF7043;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            box-shadow: 0 5px #D84315;
+            transition: transform 0.1s;
         }
 
-        .empty-state {
-            color: #444;
-            text-align: center;
+        button.action-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 #D84315;
         }
+
+        #message {
+            margin-top: 20px;
+            height: 30px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #D84315;
+        }
+
+        /* Solved Group Colors */
+        .group-0 { background-color: #FFD54F; /* Yellow */ color: #5D4037;}
+        .group-1 { background-color: #81C784; /* Green */ }
+        .group-2 { background-color: #64B5F6; /* Blue */ }
+        .group-3 { background-color: #BA68C8; /* Purple */ }
+
     </style>
 </head>
 <body>
 
-    <aside>
-        <h1>Moshniki Artifact</h1>
+    <h1>🧩 Junior Match</h1>
+    <div class="instructions">Tap 4 words that go together!</div>
+
+    <div id="game-board" class="game-board">
+        </div>
+
+    <div id="message"></div>
+
+    <div class="controls">
+        <button class="action-btn" onclick="checkSelection()">Submit!</button>
+        <button class="action-btn" style="background-color: #90A4AE; box-shadow: 0 5px #546E7A;" onclick="deselectAll()">Clear</button>
+    </div>
+
+<script>
+    // The Data from the previous response
+    const groups = [
+        { theme: "Playground", words: ["SLIDE", "SWING", "SANDBOX", "SEESAW"], id: 0 },
+        { theme: "School Classes", words: ["MATH", "SCIENCE", "ART", "MUSIC"], id: 1 },
+        { theme: "Pizza Toppings", words: ["CHEESE", "PEPPERONI", "MUSHROOM", "SAUSAGE"], id: 2 },
+        { theme: "___ Ball", words: ["BASE", "BASKET", "FOOT", "SNOW"], id: 3 }
+    ];
+
+    let allWords = [];
+    groups.forEach(g => {
+        g.words.forEach(w => allWords.push({ word: w, groupId: g.id }));
+    });
+
+    // Shuffle words
+    allWords.sort(() => Math.random() - 0.5);
+
+    const board = document.getElementById('game-board');
+    let selectedTiles = [];
+    let solvedCount = 0;
+
+    // Render Board
+    allWords.forEach((item, index) => {
+        const tile = document.createElement('div');
+        tile.classList.add('tile');
+        tile.innerText = item.word;
+        tile.dataset.id = index;
+        tile.dataset.groupId = item.groupId;
         
-        <button class="btn" onclick="document.getElementById('upload').click()">1. Upload Image</button>
-        <input type="file" id="upload" class="file-input" accept="image/*">
+        tile.onclick = () => toggleTile(tile);
+        board.appendChild(tile);
+    });
 
-        <div class="control-group">
-            <label>RGB Shift Amount <span id="val-shift">0</span></label>
-            <input type="range" id="shift" min="0" max="100" value="0">
-        </div>
+    function toggleTile(tile) {
+        if (tile.classList.contains('solved')) return;
 
-        <div class="control-group">
-            <label>Scanline Slice <span id="val-slice">0</span></label>
-            <input type="range" id="slice" min="0" max="50" value="0">
-        </div>
+        if (selectedTiles.includes(tile)) {
+            tile.classList.remove('selected');
+            selectedTiles = selectedTiles.filter(t => t !== tile);
+        } else {
+            if (selectedTiles.length < 4) {
+                tile.classList.add('selected');
+                selectedTiles.push(tile);
+            }
+        }
+    }
 
-        <div class="control-group">
-            <label>Digital Noise <span id="val-noise">0</span></label>
-            <input type="range" id="noise" min="0" max="100" value="0">
-        </div>
+    function checkSelection() {
+        const msg = document.getElementById('message');
+        if (selectedTiles.length !== 4) {
+            msg.innerText = "Pick 4 words first!";
+            setTimeout(() => msg.innerText = "", 2000);
+            return;
+        }
 
-        <button class="btn" onclick="downloadImage()">2. Download Art</button>
-    </aside>
+        const firstId = selectedTiles[0].dataset.groupId;
+        const isMatch = selectedTiles.every(tile => tile.dataset.groupId === firstId);
 
-    <main>
-        <div id="empty-state" class="empty-state">
-            [ NO SIGNAL INPUT ]<br>
-            Upload an image to begin moshing.
-        </div>
-        <canvas id="canvas"></canvas>
-    </main>
-
-    <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        const fileInput = document.getElementById('upload');
-        const emptyState = document.getElementById('empty-state');
-        
-        let originalImage = null;
-        
-        // Sliders
-        const shiftInput = document.getElementById('shift');
-        const sliceInput = document.getElementById('slice');
-        const noiseInput = document.getElementById('noise');
-
-        // Update Labels
-        [shiftInput, sliceInput, noiseInput].forEach(input => {
-            input.addEventListener('input', (e) => {
-                document.getElementById('val-' + e.target.id).innerText = e.target.value;
-                if (originalImage) render();
-            });
-        });
-
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                originalImage = new Image();
-                originalImage.onload = () => {
-                    // Fit canvas to window while maintaining aspect ratio
-                    canvas.width = originalImage.width;
-                    canvas.height = originalImage.height;
-                    
-                    emptyState.style.display = 'none';
-                    render();
-                };
-                originalImage.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
-
-        function render() {
-            if (!originalImage) return;
-
-            const w = canvas.width;
-            const h = canvas.height;
+        if (isMatch) {
+            msg.innerText = "Great Job! 🎉";
+            msg.style.color = "#2E7D32";
             
-            // Draw original first
-            ctx.drawImage(originalImage, 0, 0);
-
-            const shiftAmt = parseInt(shiftInput.value);
-            const sliceAmt = parseInt(sliceInput.value);
-            const noiseAmt = parseInt(noiseInput.value);
-
-            // Optimization: If all zero, stop here
-            if (shiftAmt === 0 && sliceAmt === 0 && noiseAmt === 0) return;
-
-            // Get raw pixel data
-            const imgData = ctx.getImageData(0, 0, w, h);
-            const data = imgData.data; // The big array of [r, g, b, a, r, g, b, a...]
-
-            // 1. SCRAMBLE / SLICE
-            // We want to shift rows of pixels left/right randomly
-            if (sliceAmt > 0) {
-                for (let y = 0; y < h; y++) {
-                    // Only slice some rows based on probability
-                    if (Math.random() * 100 < sliceAmt) {
-                        const rowOffset = Math.floor((Math.random() - 0.5) * shiftAmt * 10);
-                        // This logic simulates moving the row by modifying the loop index
-                        // It is complex to do in a single array pass, so we do a visual trick
-                        // inside the RGB loop below instead.
-                    }
-                }
+            selectedTiles.forEach(tile => {
+                tile.classList.remove('selected');
+                tile.classList.add('solved', `group-${firstId}`);
+            });
+            
+            selectedTiles = [];
+            solvedCount++;
+            
+            if (solvedCount === 4) {
+                msg.innerText = "YOU WON! 🏆 Refresh to play again.";
             }
-
-            // Create a copy of the buffer to read from while writing to the main one
-            const copy = new Uint8ClampedArray(data);
-
-            for (let i = 0; i < data.length; i += 4) {
-                // Determine x and y from index i
-                const pixelIdx = i / 4;
-                const x = pixelIdx % w;
-                const y = Math.floor(pixelIdx / w);
-
-                // --- NOISE ---
-                let noise = 0;
-                if (noiseAmt > 0 && Math.random() * 100 < noiseAmt) {
-                    noise = (Math.random() - 0.5) * noiseAmt * 2;
-                }
-
-                // --- RGB SHIFT ---
-                // We grab the Red channel from a pixel to the LEFT
-                // We grab the Blue channel from a pixel to the RIGHT
-                
-                let rOffset = -shiftAmt * 4; 
-                let bOffset = shiftAmt * 4;
-                
-                // Add slice jitter (horizontal tearing)
-                if (sliceAmt > 0 && Math.random() * 50 < sliceAmt) {
-                    const tear = Math.floor((Math.random() - 0.5) * 100) * 4;
-                    rOffset += tear;
-                    bOffset += tear;
-                }
-
-                // Apply Red Channel (Shifted)
-                if (i + rOffset >= 0 && i + rOffset < data.length) {
-                    data[i] = copy[i + rOffset] + noise;
-                }
-
-                // Apply Green Channel (Stationary + Noise)
-                data[i + 1] = copy[i + 1] + noise;
-
-                // Apply Blue Channel (Shifted)
-                if (i + bOffset >= 0 && i + bOffset < data.length) {
-                    data[i + 2] = copy[i + bOffset] + noise;
-                }
-            }
-
-            ctx.putImageData(imgData, 0, 0);
+        } else {
+            msg.innerText = "Not quite... try again! 🤔";
+            msg.style.color = "#D84315";
+            
+            // Shake animation effect
+            selectedTiles.forEach(tile => {
+                tile.style.backgroundColor = "#FFCDD2";
+                setTimeout(() => {
+                    tile.classList.remove('selected');
+                    tile.style.backgroundColor = "";
+                }, 500);
+            });
+            selectedTiles = [];
         }
+        
+        setTimeout(() => { if(solvedCount < 4) msg.innerText = ""; }, 2000);
+    }
 
-        function downloadImage() {
-            if (!originalImage) return;
-            const link = document.createElement('a');
-            link.download = 'moshniki_glitch.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        }
-    </script>
+    function deselectAll() {
+        selectedTiles.forEach(tile => tile.classList.remove('selected'));
+        selectedTiles = [];
+    }
+</script>
+
 </body>
 </html>
