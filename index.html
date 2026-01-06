@@ -2,82 +2,94 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Junior Connections Infinite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tiny Connections</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
 
         body {
             font-family: 'Fredoka', sans-serif;
-            background-color: #E0F7FA;
+            background-color: #FFF3E0; /* Warm background */
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         h1 {
-            color: #006064;
-            font-size: 2.5rem;
+            color: #FF6F00;
+            font-size: 2rem;
             margin: 10px 0;
             text-align: center;
-            text-shadow: 2px 2px #4DD0E1;
+            letter-spacing: 1px;
         }
 
         .instructions {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            color: #00838F;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #5D4037;
             text-align: center;
+            font-weight: bold;
         }
 
+        /* The Grid */
         .game-board {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            max-width: 600px;
+            gap: 10px;
+            max-width: 500px;
             width: 100%;
+            touch-action: manipulation;
         }
 
+        /* The Tile - optimized for images/emojis */
         .tile {
             background-color: white;
-            border: 4px solid #B2EBF2;
-            border-radius: 12px;
-            padding: 10px 2px;
-            font-size: 0.85rem; 
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: transform 0.1s, background-color 0.2s;
-            color: #333;
-            box-shadow: 0 4px #80DEEA;
-            text-transform: uppercase;
+            border: 4px solid #FFCC80;
+            border-radius: 20px;
+            aspect-ratio: 1 / 1; /* Makes them perfectly square */
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 55px;
-            word-wrap: break-word;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            box-shadow: 0 6px #FFB74D;
         }
 
-        /* Mobile adjustments */
-        @media (max-width: 500px) {
-            .tile { font-size: 0.7rem; min-height: 50px; }
-            h1 { font-size: 2rem; }
+        .emoji-icon {
+            font-size: 2.5rem; /* BIG ICONS */
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .word-label {
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Mobile adjustments for small screens */
+        @media (max-width: 400px) {
+            .emoji-icon { font-size: 2rem; }
+            .word-label { font-size: 0.6rem; }
+            .game-board { gap: 8px; }
         }
 
         .tile:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 #80DEEA;
+            transform: translateY(6px);
+            box-shadow: 0 0 #FFB74D;
         }
 
         .tile.selected {
-            background-color: #26C6DA;
-            color: white;
-            border-color: #0097A7;
-            box-shadow: 0 4px #006064;
+            background-color: #81D4FA; /* Bright Blue */
+            border-color: #039BE5;
+            box-shadow: 0 6px #0277BD;
             transform: translateY(-2px);
         }
 
@@ -85,113 +97,118 @@
             cursor: default;
             transform: none;
             box-shadow: none;
-            color: white;
             border: none;
-            animation: popIn 0.3s ease-out;
+            animation: bounce 0.6s;
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0.8); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
         }
 
         /* Controls */
         .controls {
-            margin-top: 25px;
+            margin-top: 20px;
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
             justify-content: center;
         }
 
         button.action-btn {
-            background-color: #FF7043;
             color: white;
             border: none;
-            padding: 12px 20px;
-            font-size: 1rem;
-            border-radius: 50px;
+            padding: 15px;
+            font-size: 1.5rem; /* Big text for buttons */
+            border-radius: 20px;
             cursor: pointer;
             font-family: 'Fredoka', sans-serif;
-            box-shadow: 0 4px #D84315;
-            transition: filter 0.2s;
-            min-width: 100px;
+            flex: 1;
+            box-shadow: 0 6px rgba(0,0,0,0.2);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
-        button.action-btn:hover { filter: brightness(1.1); }
-        button.action-btn:active { transform: translateY(4px); box-shadow: none; }
+        button.action-btn:active { transform: translateY(6px); box-shadow: none; }
 
-        /* Different colors for different buttons */
-        button.submit-btn { background-color: #FF7043; box-shadow: 0 4px #D84315; }
-        button.clear-btn { background-color: #78909C; box-shadow: 0 4px #455A64; }
-        
-        /* The NEW Puzzle Button Style */
-        button.new-game-btn { 
-            background-color: #7E57C2; 
-            box-shadow: 0 4px #512DA8;
-        }
+        .btn-go { background-color: #66BB6A; } /* Green */
+        .btn-new { background-color: #AB47BC; } /* Purple */
 
         #message {
             margin-top: 15px;
-            height: 25px;
+            height: 30px;
             font-weight: bold;
-            font-size: 1.2rem;
-            color: #D84315;
+            font-size: 1.3rem;
+            color: #E65100;
             text-align: center;
         }
 
-        /* Solved Group Colors */
-        .group-0 { background-color: #FBC02D; color: #3E2723; } /* Yellow */
-        .group-1 { background-color: #66BB6A; } /* Green */
-        .group-2 { background-color: #42A5F5; } /* Blue */
-        .group-3 { background-color: #AB47BC; } /* Purple */
+        /* Fun Group Colors */
+        .group-0 { background-color: #FFECB3; color: #333; } 
+        .group-1 { background-color: #C8E6C9; color: #333; } 
+        .group-2 { background-color: #BBDEFB; color: #333; } 
+        .group-3 { background-color: #E1BEE7; color: #333; }
 
     </style>
 </head>
 <body>
 
-    <h1>🧩 Junior Match</h1>
-    <div class="instructions">Find 4 groups of 4 words!</div>
+    <h1>🧸 Tiny Match</h1>
+    <div class="instructions">Match the pictures!</div>
 
     <div id="game-board" class="game-board"></div>
-
     <div id="message"></div>
 
     <div class="controls">
-        <button class="action-btn submit-btn" onclick="checkSelection()">Submit</button>
-        <button class="action-btn clear-btn" onclick="deselectAll()">Clear</button>
-        <button class="action-btn new-game-btn" onclick="confirmNewGame()">New Puzzle 🔄</button>
+        <button class="action-btn btn-new" onclick="confirmNewGame()">🔄</button>
+        <button class="action-btn btn-go" onclick="checkSelection()">GO! ✅</button>
     </div>
 
 <script>
-    // --- THE BIG DATABASE OF WORDS ---
+    // --- EMOJI DATABASE FOR AGES 2-6 ---
+    // Simple concepts: Animals, Food, Weather, Vehicles
     const database = [
-        { theme: "Playground", words: ["SLIDE", "SWING", "SANDBOX", "SEESAW"] },
-        { theme: "School Subjects", words: ["MATH", "SCIENCE", "ART", "MUSIC"] },
-        { theme: "Pizza Toppings", words: ["CHEESE", "PEPPERONI", "MUSHROOM", "SAUSAGE"] },
-        { theme: "___ Ball", words: ["BASE", "BASKET", "FOOT", "SNOW"] },
-        { theme: "Pets", words: ["DOG", "CAT", "HAMSTER", "GOLDFISH"] },
-        { theme: "Fruits", words: ["APPLE", "BANANA", "GRAPE", "ORANGE"] },
-        { theme: "Colors", words: ["RED", "BLUE", "GREEN", "YELLOW"] },
-        { theme: "Disney Characters", words: ["MICKEY", "MINNIE", "DONALD", "GOOFY"] },
-        { theme: "Frozen (Movie)", words: ["ELSA", "ANNA", "OLAF", "SVEN"] },
-        { theme: "Minecraft", words: ["DIRT", "WOOD", "STONE", "DIAMOND"] },
-        { theme: "Superheroes", words: ["BATMAN", "HULK", "SPIDERMAN", "THOR"] },
-        { theme: "Farm Animals", words: ["COW", "PIG", "CHICKEN", "SHEEP"] },
-        { theme: "Ocean Life", words: ["SHARK", "WHALE", "CRAB", "OCTOPUS"] },
-        { theme: "Weather", words: ["RAIN", "SNOW", "SUN", "WIND"] },
-        { theme: "Furniture", words: ["CHAIR", "TABLE", "BED", "SOFA"] },
-        { theme: "Cutlery", words: ["FORK", "SPOON", "KNIFE", "PLATE"] },
-        { theme: "Sports", words: ["SOCCER", "TENNIS", "GOLF", "HOCKEY"] },
-        { theme: "Body Parts", words: ["HAND", "FOOT", "HEAD", "NOSE"] },
-        { theme: "Vehicles", words: ["CAR", "BUS", "TRUCK", "BIKE"] },
-        { theme: "Ice Cream Flavors", words: ["VANILLA", "CHOCOLATE", "STRAWBERRY", "MINT"] },
-        { theme: "Solar System", words: ["EARTH", "MARS", "VENUS", "JUPITER"] },
-        { theme: "Clothing", words: ["SHIRT", "PANTS", "HAT", "SHOE"] },
-        { theme: "Spongebob", words: ["SPONGEBOB", "PATRICK", "SANDY", "MR KRABS"] },
-        { theme: "Harry Potter", words: ["HARRY", "RON", "HERMIONE", "HAGRID"] },
-        { theme: "In the Sky", words: ["CLOUD", "BIRD", "PLANE", "KITE"] }
+        { theme: "Animals", words: [
+            {t:"DOG", e:"🐶"}, {t:"CAT", e:"🐱"}, {t:"PIG", e:"🐷"}, {t:"COW", e:"🐮"}
+        ]},
+        { theme: "Fruits", words: [
+            {t:"APPLE", e:"🍎"}, {t:"BANANA", e:"🍌"}, {t:"GRAPE", e:"🍇"}, {t:"MELON", e:"🍉"}
+        ]},
+        { theme: "Vehicles", words: [
+            {t:"CAR", e:"🚗"}, {t:"BUS", e:"🚌"}, {t:"POLICE", e:"🚓"}, {t:"TRUCK", e:"🚛"}
+        ]},
+        { theme: "Balls", words: [
+            {t:"SOCCER", e:"⚽"}, {t:"BASKET", e:"🏀"}, {t:"FOOTBALL", e:"🏈"}, {t:"TENNIS", e:"🎾"}
+        ]},
+        { theme: "Weather", words: [
+            {t:"SUN", e:"☀️"}, {t:"RAIN", e:"🌧️"}, {t:"SNOW", e:"❄️"}, {t:"STORM", e:"⚡"}
+        ]},
+        { theme: "Fast Food", words: [
+            {t:"BURGER", e:"🍔"}, {t:"FRIES", e:"🍟"}, {t:"PIZZA", e:"🍕"}, {t:"HOTDOG", e:"🌭"}
+        ]},
+        { theme: "Faces", words: [
+            {t:"HAPPY", e:"😀"}, {t:"SAD", e:"😢"}, {t:"ANGRY", e:"😡"}, {t:"SLEEPY", e:"😴"}
+        ]},
+        { theme: "Bugs", words: [
+            {t:"BUG", e:"🐛"}, {t:"ANT", e:"🐜"}, {t:"BEE", e:"🐝"}, {t:"SPIDER", e:"🕷️"}
+        ]},
+        { theme: "Space", words: [
+            {t:"ROCKET", e:"🚀"}, {t:"ALIEN", e:"👽"}, {t:"MOON", e:"🌙"}, {t:"STAR", e:"⭐"}
+        ]},
+        { theme: "Ocean", words: [
+            {t:"FISH", e:"🐠"}, {t:"WHALE", e:"🐳"}, {t:"OCTOPUS", e:"🐙"}, {t:"DOLPHIN", e:"🐬"}
+        ]},
+        { theme: "Clothes", words: [
+            {t:"SHIRT", e:"👕"}, {t:"PANTS", e:"👖"}, {t:"DRESS", e:"👗"}, {t:"SHOE", e:"👟"}
+        ]},
+        { theme: "Sweets", words: [
+            {t:"CANDY", e:"🍬"}, {t:"COOKIE", e:"🍪"}, {t:"DONUT", e:"🍩"}, {t:"CAKE", e:"🍰"}
+        ]}
     ];
 
     const board = document.getElementById('game-board');
@@ -210,54 +227,57 @@
     }
 
     function initGame() {
-        // Reset state
         board.innerHTML = '';
         msg.innerText = '';
         selectedTiles = [];
         solvedCount = 0;
 
-        // 1. Shuffle and pick 4 themes
+        // Shuffle DB and pick 4 themes
         const shuffledDB = shuffleArray([...database]);
         const selectedCategories = shuffledDB.slice(0, 4);
 
-        // 2. Assign IDs
         currentGroups = selectedCategories.map((group, index) => {
             return { ...group, id: index };
         });
 
-        // 3. Flatten words
-        let gameWords = [];
+        let gameItems = [];
         currentGroups.forEach(g => {
             g.words.forEach(w => {
-                gameWords.push({ word: w, groupId: g.id, theme: g.theme });
+                // We store the object {t: text, e: emoji}
+                gameItems.push({ text: w.t, emoji: w.e, groupId: g.id, theme: g.theme });
             });
         });
 
-        // 4. Shuffle board words
-        gameWords = shuffleArray(gameWords);
+        gameItems = shuffleArray(gameItems);
 
-        // 5. Render
-        gameWords.forEach((item) => {
+        gameItems.forEach((item) => {
             const tile = document.createElement('div');
             tile.classList.add('tile');
-            tile.innerText = item.word;
-            tile.dataset.groupId = item.groupId;
             
+            // HTML structure for Emoji on top, Text on bottom
+            tile.innerHTML = `
+                <span class="emoji-icon">${item.emoji}</span>
+                <span class="word-label">${item.text}</span>
+            `;
+            
+            tile.dataset.groupId = item.groupId;
             tile.onclick = () => toggleTile(tile);
             board.appendChild(tile);
         });
     }
 
-    // Safety check so kids don't accidentally reset a good game
     function confirmNewGame() {
         if(solvedCount > 0 && solvedCount < 4) {
-            if(!confirm("Start a new puzzle? You will lose your current game!")) return;
+            // Simple confirm for parents helping out
+            if(!confirm("Start new game?")) return;
         }
         initGame();
     }
 
     function toggleTile(tile) {
         if (tile.classList.contains('solved')) return;
+
+        // Play a tiny pop sound here if you add audio later
 
         if (selectedTiles.includes(tile)) {
             tile.classList.remove('selected');
@@ -272,8 +292,7 @@
 
     function checkSelection() {
         if (selectedTiles.length !== 4) {
-            msg.innerText = "Pick 4 words first!";
-            setTimeout(() => { if(msg.innerText.includes("Pick")) msg.innerText = ""; }, 2000);
+            // Visual wiggle for "incomplete"
             return;
         }
 
@@ -281,9 +300,7 @@
         const isMatch = selectedTiles.every(tile => tile.dataset.groupId === firstId);
 
         if (isMatch) {
-            const themeName = currentGroups.find(g => g.id == firstId).theme;
-            msg.innerText = "Correct! " + themeName;
-            msg.style.color = "#2E7D32";
+            msg.innerText = "YAY! 🎉";
             
             selectedTiles.forEach(tile => {
                 tile.classList.remove('selected');
@@ -294,14 +311,16 @@
             solvedCount++;
             
             if (solvedCount === 4) {
-                setTimeout(() => msg.innerText = "🎉 YOU WON! 🎉", 500);
+                setTimeout(() => {
+                    msg.innerText = "YOU WIN! ⭐⭐⭐";
+                    // Confetti effect could go here
+                }, 500);
             }
         } else {
-            msg.innerText = "Try again!";
-            msg.style.color = "#D84315";
+            msg.innerText = "Uh oh, try again!";
             
             selectedTiles.forEach(tile => {
-                tile.style.backgroundColor = "#FFCDD2";
+                tile.style.backgroundColor = "#FFCCBC"; // Light red warning
                 setTimeout(() => {
                     tile.classList.remove('selected');
                     tile.style.backgroundColor = "";
@@ -309,11 +328,9 @@
             });
             selectedTiles = [];
         }
-    }
-
-    function deselectAll() {
-        selectedTiles.forEach(tile => tile.classList.remove('selected'));
-        selectedTiles = [];
+        
+        // Clear message after 2 seconds
+        setTimeout(() => { if(solvedCount < 4) msg.innerText = ""; }, 2000);
     }
 
     initGame();
