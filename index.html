@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tiny Connections</title>
+    <title>Mila's Tiny Match</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
 
         body {
             font-family: 'Fredoka', sans-serif;
-            background-color: #FFF3E0; /* Warm background */
+            background-color: #FFF3E0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -36,7 +36,6 @@
             font-weight: bold;
         }
 
-        /* The Grid */
         .game-board {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -46,12 +45,11 @@
             touch-action: manipulation;
         }
 
-        /* The Tile - optimized for images/emojis */
         .tile {
             background-color: white;
             border: 4px solid #FFCC80;
             border-radius: 20px;
-            aspect-ratio: 1 / 1; /* Makes them perfectly square */
+            aspect-ratio: 1 / 1;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -62,7 +60,7 @@
         }
 
         .emoji-icon {
-            font-size: 2.5rem; /* BIG ICONS */
+            font-size: 2.5rem;
             line-height: 1;
             margin-bottom: 5px;
         }
@@ -74,20 +72,16 @@
             text-transform: uppercase;
         }
 
-        /* Mobile adjustments for small screens */
         @media (max-width: 400px) {
             .emoji-icon { font-size: 2rem; }
             .word-label { font-size: 0.6rem; }
             .game-board { gap: 8px; }
         }
 
-        .tile:active {
-            transform: translateY(6px);
-            box-shadow: 0 0 #FFB74D;
-        }
+        .tile:active { transform: translateY(6px); box-shadow: 0 0 #FFB74D; }
 
         .tile.selected {
-            background-color: #81D4FA; /* Bright Blue */
+            background-color: #81D4FA;
             border-color: #039BE5;
             box-shadow: 0 6px #0277BD;
             transform: translateY(-2px);
@@ -98,12 +92,12 @@
             transform: none;
             box-shadow: none;
             border: none;
-            animation: bounce 0.6s;
+            animation: littleBounce 0.6s;
         }
 
-        @keyframes bounce {
+        @keyframes littleBounce {
             0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-20px);}
+            40% {transform: translateY(-15px);}
             60% {transform: translateY(-10px);}
         }
 
@@ -121,7 +115,7 @@
             color: white;
             border: none;
             padding: 15px;
-            font-size: 1.5rem; /* Big text for buttons */
+            font-size: 1.5rem;
             border-radius: 20px;
             cursor: pointer;
             font-family: 'Fredoka', sans-serif;
@@ -135,11 +129,10 @@
         }
         
         button.action-btn:active { transform: translateY(6px); box-shadow: none; }
+        .btn-go { background-color: #66BB6A; }
+        .btn-new { background-color: #AB47BC; }
 
-        .btn-go { background-color: #66BB6A; } /* Green */
-        .btn-new { background-color: #AB47BC; } /* Purple */
-
-        #message {
+        #error-message {
             margin-top: 15px;
             height: 30px;
             font-weight: bold;
@@ -148,71 +141,101 @@
             text-align: center;
         }
 
-        /* Fun Group Colors */
+        /* Solved Group Colors */
         .group-0 { background-color: #FFECB3; color: #333; } 
         .group-1 { background-color: #C8E6C9; color: #333; } 
         .group-2 { background-color: #BBDEFB; color: #333; } 
         .group-3 { background-color: #E1BEE7; color: #333; }
 
+        /* --- NEW HUGE CELEBRATION OVERLAY --- */
+        #celebration-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(255, 243, 224, 0.9); /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100; /* sits on top of everything */
+            pointer-events: none; /* lets clicks pass through when hidden */
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        #celebration-overlay.show {
+            opacity: 1;
+            pointer-events: auto; /* blocks clicks when showing */
+        }
+
+        #celebration-text {
+            font-size: 4rem;
+            color: #FF6F00;
+            text-align: center;
+            text-shadow: 3px 3px 0px #FFD54F, 6px 6px 0px #FFA000;
+            transform: scale(0.5);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+        }
+
+        #celebration-overlay.show #celebration-text {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        @media (max-width: 500px) {
+            #celebration-text { font-size: 2.5rem; }
+        }
+
     </style>
 </head>
 <body>
 
-    <h1>🧸 Tiny Match</h1>
-    <div class="instructions">Match the pictures!</div>
+    <h1>💖 Mila's Tiny Match</h1>
+    <div class="instructions">Match 4 pictures, Mila!</div>
 
     <div id="game-board" class="game-board"></div>
-    <div id="message"></div>
+    <div id="error-message"></div>
 
     <div class="controls">
         <button class="action-btn btn-new" onclick="confirmNewGame()">🔄</button>
         <button class="action-btn btn-go" onclick="checkSelection()">GO! ✅</button>
     </div>
 
+    <div id="celebration-overlay">
+        <div id="celebration-text">YAY!</div>
+    </div>
+
 <script>
-    // --- EMOJI DATABASE FOR AGES 2-6 ---
-    // Simple concepts: Animals, Food, Weather, Vehicles
+    // --- THE LIST OF PRAISE FOR MILA ---
+    const celebrations = [
+        "YAY! 🎉",
+        "Good work Mila! 💖",
+        "AWESOME! 🌟",
+        "Super Smart! 🧠",
+        "Way to go Mila! 🚀",
+        "FANTASTIC! ✨",
+        "You did it! 🌈"
+    ];
+
     const database = [
-        { theme: "Animals", words: [
-            {t:"DOG", e:"🐶"}, {t:"CAT", e:"🐱"}, {t:"PIG", e:"🐷"}, {t:"COW", e:"🐮"}
-        ]},
-        { theme: "Fruits", words: [
-            {t:"APPLE", e:"🍎"}, {t:"BANANA", e:"🍌"}, {t:"GRAPE", e:"🍇"}, {t:"MELON", e:"🍉"}
-        ]},
-        { theme: "Vehicles", words: [
-            {t:"CAR", e:"🚗"}, {t:"BUS", e:"🚌"}, {t:"POLICE", e:"🚓"}, {t:"TRUCK", e:"🚛"}
-        ]},
-        { theme: "Balls", words: [
-            {t:"SOCCER", e:"⚽"}, {t:"BASKET", e:"🏀"}, {t:"FOOTBALL", e:"🏈"}, {t:"TENNIS", e:"🎾"}
-        ]},
-        { theme: "Weather", words: [
-            {t:"SUN", e:"☀️"}, {t:"RAIN", e:"🌧️"}, {t:"SNOW", e:"❄️"}, {t:"STORM", e:"⚡"}
-        ]},
-        { theme: "Fast Food", words: [
-            {t:"BURGER", e:"🍔"}, {t:"FRIES", e:"🍟"}, {t:"PIZZA", e:"🍕"}, {t:"HOTDOG", e:"🌭"}
-        ]},
-        { theme: "Faces", words: [
-            {t:"HAPPY", e:"😀"}, {t:"SAD", e:"😢"}, {t:"ANGRY", e:"😡"}, {t:"SLEEPY", e:"😴"}
-        ]},
-        { theme: "Bugs", words: [
-            {t:"BUG", e:"🐛"}, {t:"ANT", e:"🐜"}, {t:"BEE", e:"🐝"}, {t:"SPIDER", e:"🕷️"}
-        ]},
-        { theme: "Space", words: [
-            {t:"ROCKET", e:"🚀"}, {t:"ALIEN", e:"👽"}, {t:"MOON", e:"🌙"}, {t:"STAR", e:"⭐"}
-        ]},
-        { theme: "Ocean", words: [
-            {t:"FISH", e:"🐠"}, {t:"WHALE", e:"🐳"}, {t:"OCTOPUS", e:"🐙"}, {t:"DOLPHIN", e:"🐬"}
-        ]},
-        { theme: "Clothes", words: [
-            {t:"SHIRT", e:"👕"}, {t:"PANTS", e:"👖"}, {t:"DRESS", e:"👗"}, {t:"SHOE", e:"👟"}
-        ]},
-        { theme: "Sweets", words: [
-            {t:"CANDY", e:"🍬"}, {t:"COOKIE", e:"🍪"}, {t:"DONUT", e:"🍩"}, {t:"CAKE", e:"🍰"}
-        ]}
+        { theme: "Animals", words: [{t:"DOG", e:"🐶"}, {t:"CAT", e:"🐱"}, {t:"PIG", e:"🐷"}, {t:"COW", e:"🐮"}]},
+        { theme: "Fruits", words: [{t:"APPLE", e:"🍎"}, {t:"BANANA", e:"🍌"}, {t:"GRAPE", e:"🍇"}, {t:"MELON", e:"🍉"}]},
+        { theme: "Vehicles", words: [{t:"CAR", e:"🚗"}, {t:"BUS", e:"🚌"}, {t:"POLICE", e:"🚓"}, {t:"TRUCK", e:"🚛"}]},
+        { theme: "Balls", words: [{t:"SOCCER", e:"⚽"}, {t:"BASKET", e:"🏀"}, {t:"FOOTBALL", e:"🏈"}, {t:"TENNIS", e:"🎾"}]},
+        { theme: "Weather", words: [{t:"SUN", e:"☀️"}, {t:"RAIN", e:"🌧️"}, {t:"SNOW", e:"❄️"}, {t:"STORM", e:"⚡"}]},
+        { theme: "Fast Food", words: [{t:"BURGER", e:"🍔"}, {t:"FRIES", e:"🍟"}, {t:"PIZZA", e:"🍕"}, {t:"HOTDOG", e:"🌭"}]},
+        { theme: "Faces", words: [{t:"HAPPY", e:"😀"}, {t:"SAD", e:"😢"}, {t:"ANGRY", e:"😡"}, {t:"SLEEPY", e:"😴"}]},
+        { theme: "Bugs", words: [{t:"BUG", e:"🐛"}, {t:"ANT", e:"🐜"}, {t:"BEE", e:"🐝"}, {t:"SPIDER", e:"🕷️"}]},
+        { theme: "Space", words: [{t:"ROCKET", e:"🚀"}, {t:"ALIEN", e:"👽"}, {t:"MOON", e:"🌙"}, {t:"STAR", e:"⭐"}]},
+        { theme: "Ocean", words: [{t:"FISH", e:"🐠"}, {t:"WHALE", e:"🐳"}, {t:"OCTOPUS", e:"🐙"}, {t:"DOLPHIN", e:"🐬"}]},
+        { theme: "Clothes", words: [{t:"SHIRT", e:"👕"}, {t:"PANTS", e:"👖"}, {t:"DRESS", e:"👗"}, {t:"SHOE", e:"👟"}]},
+        { theme: "Sweets", words: [{t:"CANDY", e:"🍬"}, {t:"COOKIE", e:"🍪"}, {t:"DONUT", e:"🍩"}, {t:"CAKE", e:"🍰"}]}
     ];
 
     const board = document.getElementById('game-board');
-    const msg = document.getElementById('message');
+    const errorMsg = document.getElementById('error-message');
+    // Get the new celebration elements
+    const overlay = document.getElementById('celebration-overlay');
+    const celebText = document.getElementById('celebration-text');
     
     let currentGroups = [];
     let selectedTiles = [];
@@ -228,11 +251,10 @@
 
     function initGame() {
         board.innerHTML = '';
-        msg.innerText = '';
+        errorMsg.innerText = '';
         selectedTiles = [];
         solvedCount = 0;
 
-        // Shuffle DB and pick 4 themes
         const shuffledDB = shuffleArray([...database]);
         const selectedCategories = shuffledDB.slice(0, 4);
 
@@ -243,7 +265,6 @@
         let gameItems = [];
         currentGroups.forEach(g => {
             g.words.forEach(w => {
-                // We store the object {t: text, e: emoji}
                 gameItems.push({ text: w.t, emoji: w.e, groupId: g.id, theme: g.theme });
             });
         });
@@ -253,13 +274,7 @@
         gameItems.forEach((item) => {
             const tile = document.createElement('div');
             tile.classList.add('tile');
-            
-            // HTML structure for Emoji on top, Text on bottom
-            tile.innerHTML = `
-                <span class="emoji-icon">${item.emoji}</span>
-                <span class="word-label">${item.text}</span>
-            `;
-            
+            tile.innerHTML = `<span class="emoji-icon">${item.emoji}</span><span class="word-label">${item.text}</span>`;
             tile.dataset.groupId = item.groupId;
             tile.onclick = () => toggleTile(tile);
             board.appendChild(tile);
@@ -268,7 +283,6 @@
 
     function confirmNewGame() {
         if(solvedCount > 0 && solvedCount < 4) {
-            // Simple confirm for parents helping out
             if(!confirm("Start new game?")) return;
         }
         initGame();
@@ -276,9 +290,6 @@
 
     function toggleTile(tile) {
         if (tile.classList.contains('solved')) return;
-
-        // Play a tiny pop sound here if you add audio later
-
         if (selectedTiles.includes(tile)) {
             tile.classList.remove('selected');
             selectedTiles = selectedTiles.filter(t => t !== tile);
@@ -290,18 +301,38 @@
         }
     }
 
-    function checkSelection() {
-        if (selectedTiles.length !== 4) {
-            // Visual wiggle for "incomplete"
-            return;
+    // --- NEW FUNCTION TO TRIGGER CELEBRATION ---
+    function triggerCelebration(isFinalWin) {
+        // 1. Pick a random message
+        let msg;
+        if (isFinalWin) {
+            msg = "🎉 YOU WON MILA! 🎉";
+        } else {
+            msg = celebrations[Math.floor(Math.random() * celebrations.length)];
         }
+
+        // 2. Set text and show overlay
+        celebText.innerText = msg;
+        overlay.classList.add('show');
+
+        // 3. Hide after 2 seconds
+        setTimeout(() => {
+             overlay.classList.remove('show');
+        }, 2000);
+    }
+
+
+    function checkSelection() {
+        if (selectedTiles.length !== 4) return;
 
         const firstId = selectedTiles[0].dataset.groupId;
         const isMatch = selectedTiles.every(tile => tile.dataset.groupId === firstId);
 
         if (isMatch) {
-            msg.innerText = "YAY! 🎉";
-            
+            // Clear any old errors
+            errorMsg.innerText = "";
+
+            // Mark tiles as solved
             selectedTiles.forEach(tile => {
                 tile.classList.remove('selected');
                 tile.classList.add('solved', `group-${firstId}`);
@@ -309,28 +340,22 @@
             
             selectedTiles = [];
             solvedCount++;
+
+            // TRIGGER THE BIG CELEBRATION!
+            triggerCelebration(solvedCount === 4);
             
-            if (solvedCount === 4) {
-                setTimeout(() => {
-                    msg.innerText = "YOU WIN! ⭐⭐⭐";
-                    // Confetti effect could go here
-                }, 500);
-            }
         } else {
-            msg.innerText = "Uh oh, try again!";
-            
+            errorMsg.innerText = "Uh oh, try again!";
             selectedTiles.forEach(tile => {
-                tile.style.backgroundColor = "#FFCCBC"; // Light red warning
+                tile.style.backgroundColor = "#FFCCBC"; 
                 setTimeout(() => {
                     tile.classList.remove('selected');
                     tile.style.backgroundColor = "";
                 }, 500);
             });
             selectedTiles = [];
+            setTimeout(() => { errorMsg.innerText = ""; }, 2000);
         }
-        
-        // Clear message after 2 seconds
-        setTimeout(() => { if(solvedCount < 4) msg.innerText = ""; }, 2000);
     }
 
     initGame();
