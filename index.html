@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Junior Connections</title>
+    <title>Junior Connections Infinite</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
 
@@ -16,25 +16,28 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
+            user-select: none; /* Prevents text highlighting on double tap */
         }
 
         h1 {
             color: #006064;
-            font-size: 3rem;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            margin: 10px 0;
+            text-align: center;
             text-shadow: 2px 2px #4DD0E1;
         }
 
         .instructions {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 20px;
             color: #00838F;
+            text-align: center;
         }
 
         .game-board {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            gap: 12px;
             max-width: 600px;
             width: 100%;
         }
@@ -42,9 +45,9 @@
         .tile {
             background-color: white;
             border: 4px solid #B2EBF2;
-            border-radius: 15px;
-            padding: 20px 5px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            padding: 15px 5px;
+            font-size: 0.9rem; /* Slightly smaller to fit longer words */
             font-weight: 600;
             cursor: pointer;
             text-align: center;
@@ -52,6 +55,16 @@
             color: #333;
             box-shadow: 0 4px #80DEEA;
             text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 500px) {
+            .tile { font-size: 0.75rem; padding: 10px 2px; }
+            h1 { font-size: 2rem; }
         }
 
         .tile:active {
@@ -60,10 +73,11 @@
         }
 
         .tile.selected {
-            background-color: #4DD0E1;
+            background-color: #26C6DA;
             color: white;
             border-color: #0097A7;
             box-shadow: 0 4px #006064;
+            transform: translateY(-2px);
         }
 
         .tile.solved {
@@ -72,96 +86,175 @@
             box-shadow: none;
             color: white;
             border: none;
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         /* Controls */
         .controls {
-            margin-top: 30px;
+            margin-top: 25px;
             display: flex;
-            gap: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         button.action-btn {
             background-color: #FF7043;
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 12px 25px;
+            font-size: 1.1rem;
             border-radius: 50px;
             cursor: pointer;
             font-family: 'Fredoka', sans-serif;
-            box-shadow: 0 5px #D84315;
-            transition: transform 0.1s;
+            box-shadow: 0 4px #D84315;
+            transition: filter 0.2s;
+        }
+        
+        button.action-btn:hover { filter: brightness(1.1); }
+        button.action-btn:active { transform: translateY(4px); box-shadow: none; }
+
+        button.secondary-btn {
+            background-color: #78909C;
+            box-shadow: 0 4px #455A64;
         }
 
-        button.action-btn:active {
-            transform: translateY(5px);
-            box-shadow: 0 0 #D84315;
+        button.new-game-btn {
+            background-color: #7E57C2;
+            box-shadow: 0 4px #512DA8;
+            margin-top: 20px;
+            display: none; /* Hidden until game over */
         }
 
         #message {
-            margin-top: 20px;
-            height: 30px;
+            margin-top: 15px;
+            height: 25px;
             font-weight: bold;
             font-size: 1.2rem;
             color: #D84315;
+            text-align: center;
         }
 
         /* Solved Group Colors */
-        .group-0 { background-color: #FFD54F; /* Yellow */ color: #5D4037;}
-        .group-1 { background-color: #81C784; /* Green */ }
-        .group-2 { background-color: #64B5F6; /* Blue */ }
-        .group-3 { background-color: #BA68C8; /* Purple */ }
+        .group-0 { background-color: #FBC02D; color: #3E2723; } /* Yellow */
+        .group-1 { background-color: #66BB6A; } /* Green */
+        .group-2 { background-color: #42A5F5; } /* Blue */
+        .group-3 { background-color: #AB47BC; } /* Purple */
 
     </style>
 </head>
 <body>
 
     <h1>🧩 Junior Match</h1>
-    <div class="instructions">Tap 4 words that go together!</div>
+    <div class="instructions">Find 4 groups of 4 words!</div>
 
-    <div id="game-board" class="game-board">
-        </div>
+    <div id="game-board" class="game-board"></div>
 
     <div id="message"></div>
 
     <div class="controls">
-        <button class="action-btn" onclick="checkSelection()">Submit!</button>
-        <button class="action-btn" style="background-color: #90A4AE; box-shadow: 0 5px #546E7A;" onclick="deselectAll()">Clear</button>
+        <button class="action-btn" onclick="checkSelection()">Submit</button>
+        <button class="action-btn secondary-btn" onclick="deselectAll()">Clear</button>
     </div>
+    
+    <button id="new-game-btn" class="action-btn new-game-btn" onclick="initGame()">Play Another!</button>
 
 <script>
-    // The Data from the previous response
-    const groups = [
-        { theme: "Playground", words: ["SLIDE", "SWING", "SANDBOX", "SEESAW"], id: 0 },
-        { theme: "School Classes", words: ["MATH", "SCIENCE", "ART", "MUSIC"], id: 1 },
-        { theme: "Pizza Toppings", words: ["CHEESE", "PEPPERONI", "MUSHROOM", "SAUSAGE"], id: 2 },
-        { theme: "___ Ball", words: ["BASE", "BASKET", "FOOT", "SNOW"], id: 3 }
+    // --- THE BIG DATABASE OF WORDS ---
+    // You can add as many rows here as you want. 
+    // Just make sure there are exactly 4 words per theme.
+    const database = [
+        { theme: "Playground", words: ["SLIDE", "SWING", "SANDBOX", "SEESAW"] },
+        { theme: "School Subjects", words: ["MATH", "SCIENCE", "ART", "MUSIC"] },
+        { theme: "Pizza Toppings", words: ["CHEESE", "PEPPERONI", "MUSHROOM", "SAUSAGE"] },
+        { theme: "___ Ball", words: ["BASE", "BASKET", "FOOT", "SNOW"] },
+        { theme: "Pets", words: ["DOG", "CAT", "HAMSTER", "GOLDFISH"] },
+        { theme: "Fruits", words: ["APPLE", "BANANA", "GRAPE", "ORANGE"] },
+        { theme: "Colors", words: ["RED", "BLUE", "GREEN", "YELLOW"] },
+        { theme: "Disney Characters", words: ["MICKEY", "MINNIE", "DONALD", "GOOFY"] },
+        { theme: "Frozen (Movie)", words: ["ELSA", "ANNA", "OLAF", "SVEN"] },
+        { theme: "Minecraft", words: ["DIRT", "WOOD", "STONE", "DIAMOND"] },
+        { theme: "Superheroes", words: ["BATMAN", "HULK", "SPIDERMAN", "THOR"] },
+        { theme: "Farm Animals", words: ["COW", "PIG", "CHICKEN", "SHEEP"] },
+        { theme: "Ocean Life", words: ["SHARK", "WHALE", "CRAB", "OCTOPUS"] },
+        { theme: "Weather", words: ["RAIN", "SNOW", "SUN", "WIND"] },
+        { theme: "Furniture", words: ["CHAIR", "TABLE", "BED", "SOFA"] },
+        { theme: "Cutlery", words: ["FORK", "SPOON", "KNIFE", "PLATE"] },
+        { theme: "Sports", words: ["SOCCER", "TENNIS", "GOLF", "HOCKEY"] },
+        { theme: "Body Parts", words: ["HAND", "FOOT", "HEAD", "NOSE"] },
+        { theme: "Vehicles", words: ["CAR", "BUS", "TRUCK", "BIKE"] },
+        { theme: "Ice Cream Flavors", words: ["VANILLA", "CHOCOLATE", "STRAWBERRY", "MINT"] },
+        { theme: "Solar System", words: ["EARTH", "MARS", "VENUS", "JUPITER"] },
+        { theme: "Clothing", words: ["SHIRT", "PANTS", "HAT", "SHOE"] },
+        { theme: "Spongebob", words: ["SPONGEBOB", "PATRICK", "SANDY", "MR KRABS"] },
+        { theme: "Harry Potter", words: ["HARRY", "RON", "HERMIONE", "HAGRID"] },
+        { theme: "In the Sky", words: ["CLOUD", "BIRD", "PLANE", "KITE"] }
     ];
 
-    let allWords = [];
-    groups.forEach(g => {
-        g.words.forEach(w => allWords.push({ word: w, groupId: g.id }));
-    });
-
-    // Shuffle words
-    allWords.sort(() => Math.random() - 0.5);
+    // --- GAME LOGIC ---
 
     const board = document.getElementById('game-board');
+    const msg = document.getElementById('message');
+    const newGameBtn = document.getElementById('new-game-btn');
+    
+    let currentGroups = [];
     let selectedTiles = [];
     let solvedCount = 0;
 
-    // Render Board
-    allWords.forEach((item, index) => {
-        const tile = document.createElement('div');
-        tile.classList.add('tile');
-        tile.innerText = item.word;
-        tile.dataset.id = index;
-        tile.dataset.groupId = item.groupId;
-        
-        tile.onclick = () => toggleTile(tile);
-        board.appendChild(tile);
-    });
+    // Helper to shuffle any array
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function initGame() {
+        // Reset state
+        board.innerHTML = '';
+        msg.innerText = '';
+        selectedTiles = [];
+        solvedCount = 0;
+        newGameBtn.style.display = 'none';
+
+        // 1. Shuffle the database and pick the first 4 categories
+        const shuffledDB = shuffleArray([...database]);
+        const selectedCategories = shuffledDB.slice(0, 4);
+
+        // 2. Assign them IDs (0-3) for coloring later
+        currentGroups = selectedCategories.map((group, index) => {
+            return { ...group, id: index };
+        });
+
+        // 3. Flatten into a list of words with their Group IDs
+        let gameWords = [];
+        currentGroups.forEach(g => {
+            g.words.forEach(w => {
+                gameWords.push({ word: w, groupId: g.id, theme: g.theme });
+            });
+        });
+
+        // 4. Shuffle the words for the board
+        gameWords = shuffleArray(gameWords);
+
+        // 5. Render the board
+        gameWords.forEach((item) => {
+            const tile = document.createElement('div');
+            tile.classList.add('tile');
+            tile.innerText = item.word;
+            tile.dataset.groupId = item.groupId;
+            
+            tile.onclick = () => toggleTile(tile);
+            board.appendChild(tile);
+        });
+    }
 
     function toggleTile(tile) {
         if (tile.classList.contains('solved')) return;
@@ -178,7 +271,6 @@
     }
 
     function checkSelection() {
-        const msg = document.getElementById('message');
         if (selectedTiles.length !== 4) {
             msg.innerText = "Pick 4 words first!";
             setTimeout(() => msg.innerText = "", 2000);
@@ -189,7 +281,9 @@
         const isMatch = selectedTiles.every(tile => tile.dataset.groupId === firstId);
 
         if (isMatch) {
-            msg.innerText = "Great Job! 🎉";
+            // Find the theme name
+            const themeName = currentGroups.find(g => g.id == firstId).theme;
+            msg.innerText = "Correct! " + themeName;
             msg.style.color = "#2E7D32";
             
             selectedTiles.forEach(tile => {
@@ -201,13 +295,15 @@
             solvedCount++;
             
             if (solvedCount === 4) {
-                msg.innerText = "YOU WON! 🏆 Refresh to play again.";
+                setTimeout(() => {
+                    msg.innerText = "🎉 YOU WON! 🎉";
+                    newGameBtn.style.display = 'block';
+                }, 500);
             }
         } else {
-            msg.innerText = "Not quite... try again! 🤔";
+            msg.innerText = "Try again!";
             msg.style.color = "#D84315";
             
-            // Shake animation effect
             selectedTiles.forEach(tile => {
                 tile.style.backgroundColor = "#FFCDD2";
                 setTimeout(() => {
@@ -217,14 +313,16 @@
             });
             selectedTiles = [];
         }
-        
-        setTimeout(() => { if(solvedCount < 4) msg.innerText = ""; }, 2000);
     }
 
     function deselectAll() {
         selectedTiles.forEach(tile => tile.classList.remove('selected'));
         selectedTiles = [];
     }
+
+    // Start the game on load
+    initGame();
+
 </script>
 
 </body>
