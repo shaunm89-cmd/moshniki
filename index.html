@@ -39,7 +39,7 @@
 
         /* --- LAYOUT --- */
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 25px;
         }
@@ -48,13 +48,13 @@
         section {
             background: var(--cream-paper);
             padding: 80px 0;
-            margin: 60px 0; /* Gaps to see the background */
+            margin: 60px 0;
             box-shadow: 0 5px 25px rgba(0,0,0,0.05);
             border-top: 1px solid rgba(0,0,0,0.05);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* Hero is transparent to show the wallpaper */
+        /* Hero is transparent */
         .hero-section {
             background: transparent;
             margin: 0;
@@ -85,7 +85,7 @@
             position: relative;
         }
 
-        /* Gold underline for headers */
+        /* Gold underline */
         h2::after {
             content: '';
             display: block;
@@ -117,15 +117,11 @@
 
         /* --- HEADER --- */
         header {
-            /* Crisp white with slight transparency */
             background: rgba(255, 255, 255, 0.95); 
-            
             position: sticky;
             top: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            
-            /* Gold border to make it feel premium */
             border-bottom: 2px solid var(--gold-accent); 
         }
 
@@ -136,7 +132,6 @@
             height: 90px;
         }
 
-        /* Logo Stacking */
         .logo {
             display: flex;
             flex-direction: column;
@@ -208,6 +203,13 @@
         }
 
         /* --- SERVICES GRID --- */
+        .services-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            font-size: 1.1rem;
+        }
+
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -223,7 +225,7 @@
         }
         
         .service-list li {
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px solid #f0f0f0;
             display: flex;
             align-items: flex-start;
@@ -268,7 +270,7 @@
             font-size: 1.1rem;
         }
 
-        /* --- FOOTER (Dark Green GLASS Effect) --- */
+        /* --- FOOTER (3 Column Layout) --- */
         footer {
             background: rgba(27, 46, 27, 0.95);
             backdrop-filter: blur(5px);
@@ -280,26 +282,37 @@
         
         footer a { color: var(--white); border-bottom: 1px dotted rgba(255,255,255,0.5); }
         
-        /* Footer Headers */
         footer h2 { 
             color: var(--white); 
             text-align: left; 
             margin-bottom: 5px;
         }
-        /* No underline for footer h2 */
         footer h2::after { display: none; } 
         
         .footer-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 60px;
-            align-items: flex-start;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* 3 Columns: Photo | Info | Map */
+            gap: 40px;
+            align-items: center;
         }
 
-        .footer-info { flex: 1; min-width: 250px; }
+        /* Footer Photo Styling */
+        .footer-photo img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 4px;
+            border: 2px solid var(--gold-accent);
+            display: block;
+            margin: 0 auto;
+        }
+
+        .footer-info { 
+            padding: 0 20px;
+        }
+
         .footer-map { 
-            flex: 1; 
-            min-width: 300px; 
+            width: 100%;
             height: 300px; 
             border: 1px solid rgba(255,255,255,0.2); 
             border-radius: 4px; 
@@ -313,7 +326,7 @@
             text-transform: uppercase; 
             letter-spacing: 1px; 
             opacity: 0.6; 
-            color: #C5A059; /* Gold Labels */
+            color: #C5A059;
             margin-bottom: 5px; 
         }
 
@@ -333,9 +346,11 @@
             .hero-box { flex-direction: column-reverse; text-align: center; gap: 30px; padding: 40px 20px; }
             .hero-photo { width: 280px; height: 280px; }
             h1 { font-size: 2.2rem; }
-            .footer-grid { flex-direction: column; }
+            
+            /* Stack footer columns on mobile */
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
             footer h2 { text-align: center; }
-            .footer-info { text-align: center; }
+            
             .nav-links { display: none; }
             nav { justify-content: center; }
             .logo { align-items: center; }
@@ -397,18 +412,23 @@
     <section id="services">
         <div class="container">
             <h2>Individual Therapy</h2>
+            
+            <div class="services-intro">
+                <p>I offer a calm, supportive space where you can talk openly about what’s been feeling heavy, overwhelming, or hard to put into words. Whether you’re seeking support for yourself or your child, you don’t have to navigate this alone.</p>
+            </div>
+
             <div class="services-grid">
                 
                 <div class="service-card">
                     <h3>Who I Support</h3>
-                    <ul class="service-list">
-                        <li>Children and young people aged 5–18</li>
-                        <li>University students needing support with academic pressure, anxiety, and overall wellbeing</li>
-                    </ul>
+                    <p style="margin-bottom: 20px;">I work with children and adolescents (ages 5–18), as well as university students, supporting concerns such as anxiety, academic stress, emotional regulation, grief, and self-esteem.</p>
+                    <p>Please feel free to get in touch to explore whether I may be the right fit for you.</p>
                 </div>
 
                 <div class="service-card">
                     <h3>Areas of Special Interest</h3>
+                    <p style="margin-bottom: 20px; font-style: italic;">I believe meaningful therapy happens when people feel safe, understood, and able to be themselves. I offer a warm, compassionate approach grounded in evidence-based practice.</p>
+                    
                     <ul class="service-list">
                         <li>Anxiety</li>
                         <li>Depression</li>
@@ -487,6 +507,10 @@
         <div class="container">
             <div class="footer-grid">
                 
+                <div class="footer-photo">
+                    <img src="rhonda2.png" alt="Rhonda Blackadder">
+                </div>
+
                 <div class="footer-info">
                     <h2>Rhonda Blackadder</h2>
                     <h3 style="font-size: 1.1rem; color: #C5A059; margin-bottom: 30px; margin-top: 0;">Psychologist</h3>
