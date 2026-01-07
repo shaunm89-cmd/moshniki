@@ -11,11 +11,11 @@
         :root {
             --primary-sage: #6B8E6B;      /* Main sage green */
             --dark-sage: #3A4F3A;         /* Darker green for text */
+            --footer-bg: #2C3E2C;         /* Very dark green for footer */
             --white: #ffffff;
             --text-color: #444;
             
-            /* THIS IS THE BACKGROUND IMAGE */
-            /* It expects the file to be named 'bg-floral.png' in the same folder */
+            /* BACKGROUND IMAGE */
             --bg-image: url('bg-floral.png'); 
         }
 
@@ -27,13 +27,12 @@
             color: var(--text-color);
             line-height: 1.6;
             
-            /* BACKGROUND CONFIGURATION */
-            /* This makes the wallpaper cover the whole page and stay fixed while scrolling */
+            /* FIXED WALLPAPER BACKGROUND */
             background-image: var(--bg-image);
             background-attachment: fixed; 
-            background-size: cover; 
-            background-position: center;
-            background-repeat: no-repeat;
+            background-size: 500px; /* Adjusted size for better look */
+            background-repeat: repeat;
+            background-position: top center;
         }
 
         a { text-decoration: none; transition: 0.3s; }
@@ -65,10 +64,9 @@
             text-align: center;
             margin-bottom: 40px;
             position: relative;
-            text-shadow: 2px 2px 0px #fff; /* Helps text pop off background */
+            text-shadow: 1px 1px 0px #fff; 
         }
         
-        /* Little flower under titles */
         h2::after {
             content: '❀';
             display: block;
@@ -80,7 +78,7 @@
 
         h3 { font-size: 1.3rem; margin-bottom: 15px; }
 
-        /* --- ICONS (SVG) --- */
+        /* --- ICONS --- */
         .section-icon {
             display: block;
             margin: 0 auto 15px auto;
@@ -110,7 +108,7 @@
 
         /* --- HEADER --- */
         header {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98); /* Solid white background for contrast */
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -129,7 +127,7 @@
             font-family: 'Cinzel Decorative', serif;
             font-size: 1.3rem;
             font-weight: bold;
-            color: var(--dark-sage);
+            color: var(--dark-sage); /* Dark green text on white header */
             display: flex;
             align-items: center;
         }
@@ -148,7 +146,7 @@
             font-size: 0.85rem;
             font-weight: 700;
             letter-spacing: 1px;
-            color: var(--dark-sage);
+            color: var(--dark-sage); /* Dark green links */
             text-transform: uppercase;
         }
         .nav-links a:hover { color: var(--primary-sage); }
@@ -158,7 +156,6 @@
             min-height: 85vh;
             display: flex;
             align-items: center;
-            /* No background image here, it's on the body now */
         }
 
         .hero-content {
@@ -166,11 +163,9 @@
             align-items: center;
             justify-content: space-between;
             gap: 50px;
-            /* White box behind hero content for readability */
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9); /* High opacity for readability */
             padding: 50px;
             border-radius: 30px;
-            backdrop-filter: blur(5px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
@@ -213,7 +208,6 @@
         }
 
         /* --- CONTENT BOXES --- */
-        /* Used to make text readable over the floral background */
         .content-box {
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
@@ -282,31 +276,60 @@
             margin-bottom: 5px;
         }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER (FIXED CONTRAST) --- */
         footer {
-            background: var(--dark-sage);
-            color: #e0e0e0;
+            background: var(--footer-bg); /* Dark Green Background */
+            color: #ffffff; /* FORCE WHITE TEXT */
             padding: 60px 0 30px;
             text-align: center;
             position: relative;
             z-index: 10;
         }
-        footer a { color: var(--white); font-weight: bold; text-decoration: underline; }
         
+        /* Ensure all links and headers in footer are WHITE */
+        footer a { color: #ffffff; font-weight: bold; text-decoration: underline; }
+        footer h2 { color: #ffffff; text-shadow: none; }
+        footer h2::after { display: none; } /* Remove flower from footer */
+        
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
         .map-container {
-            margin: 0 auto 30px auto;
-            max-width: 600px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            border: 4px solid rgba(255,255,255,0.1);
+            border: 3px solid rgba(255,255,255,0.2);
         }
+
+        .address-container {
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+            text-align: left;
+            background: rgba(255,255,255,0.1); /* Slight white box for contrast */
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .address-container p { margin-bottom: 15px; font-size: 1.1rem; }
+        .address-label { font-weight: bold; text-transform: uppercase; opacity: 0.7; font-size: 0.85rem; display: block; margin-bottom: 5px;}
         
         .footer-abn {
             margin-top: 30px;
             font-size: 0.8rem;
-            opacity: 0.6;
+            opacity: 0.5;
             letter-spacing: 1px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
         }
 
         /* --- MOBILE --- */
@@ -318,10 +341,12 @@
                 padding: 30px 20px;
             }
             .hero-subtitle { margin: 0 auto 30px auto; }
-            .nav-links { display: none; } /* Mobile menu hidden for simplicity */
+            .nav-links { display: none; }
             nav { justify-content: center; }
             h1 { font-size: 2rem; }
             .hero-photo { width: 250px; height: 250px; }
+            .footer-grid { flex-direction: column; align-items: center; text-align: center; }
+            .address-container { text-align: center; }
         }
     </style>
 </head>
@@ -423,7 +448,7 @@
         <div class="container">
             <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c-1.1 0-2 .9-2 2v14c-1.1 0-2 .9-2 2h4c0-1.1-.9-2-2-2V5c0-1.1-.9-2-2-2zm6 4c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zm-12 4c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/></svg>
             <h2>First Session</h2>
-            <p style="text-align: center; max-width: 600px; margin: 0 auto 30px auto; background: rgba(255,255,255,0.8); padding: 10px; border-radius: 10px;">The first session focuses on understanding presenting concerns and gathering developmental background to guide treatment.</p>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto 30px auto; background: rgba(255,255,255,0.95); padding: 15px; border-radius: 10px; border: 1px solid #ddd;">The first session focuses on understanding presenting concerns and gathering developmental background to guide treatment.</p>
             
             <div class="session-grid">
                 <div class="session-card">
@@ -440,7 +465,7 @@
                     </ul>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 20px; font-style: italic; opacity: 0.8; font-size: 0.9rem; color: #333;">Clients may also complete assessments or questionnaires to support treatment planning.</p>
+            <p style="text-align: center; margin-top: 20px; font-style: italic; opacity: 0.8; font-size: 0.9rem; color: #333; background: rgba(255,255,255,0.9); display: inline-block; padding: 5px 15px; border-radius: 20px;">Clients may also complete assessments or questionnaires to support treatment planning.</p>
         </div>
     </section>
 
@@ -472,14 +497,22 @@
     <footer id="contact">
         <div class="container">
             <h2>Contact</h2>
-
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3320.720886561569!2d150.8175519768394!3d-33.66442117326493!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b0d7d9a5b5b5b5b%3A0x1c00f3e3e3e3e3e3!2s3%20Baker%20St%2C%20Windsor%20NSW%202756!5e0!3m2!1sen!2sau!4v1700000000000!5m2!1sen!2sau" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
             
-            <div style="font-size: 1.1rem; margin-top: 20px;">
-                <p style="margin-bottom: 10px;">Email: <a href="mailto:rhondablackadder@gmail.com">rhondablackadder@gmail.com</a></p>
-                <p>Mobile: <a href="tel:0421140107">0421 140 107</a></p>
+            <div class="footer-grid">
+                <div class="address-container">
+                    <span class="address-label">Address</span>
+                    <p>Uralla Cottage<br>3 Baker Street, Windsor, NSW 2756</p>
+                    
+                    <span class="address-label">Email</span>
+                    <p><a href="mailto:rhondablackadder@gmail.com">rhondablackadder@gmail.com</a></p>
+                    
+                    <span class="address-label">Phone</span>
+                    <p><a href="tel:0421140107">0421 140 107</a></p>
+                </div>
+
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.507351706874!2d150.8208047542544!3d-33.60472819271055!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b0d625d95c85de7%3A0x5b7694e2afb7e9f5!2s3%20Baker%20St%2C%20Windsor%20NSW%202756!5e1!3m2!1sen!2sau!4v1767788600536!5m2!1sen!2sau" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
             </div>
 
             <div class="footer-abn">
