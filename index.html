@@ -4,15 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rhonda Blackadder | Psychologist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- CSS VARIABLES & RESET --- */
+        /* --- CSS VARIABLES & THEME --- */
         :root {
-            --primary-color: #5D7A84; /* Calming Teal/Slate */
-            --secondary-color: #F4F7F6; /* Off-white background */
-            --accent-color: #D6E4E7; /* Light blue accent */
-            --text-color: #333333;
+            --primary-color: #6B8E6B; /* Soft Sage Green */
+            --primary-dark: #4A634A; /* Darker Sage for text headers */
+            --secondary-color: #F9FBF8; /* Creamy off-white background */
+            --accent-soft: #E0EBE0; /* Very pale green accent box background */
+            --accent-warm: #F4EEE8; /* Soft blush/creamy accent */
+            --text-color: #555D55; /* Softer charcoal text */
             --white: #ffffff;
-            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            
+            /* Font Stacks */
+            --font-headers: 'Cinzel Decorative', cursive, serif;
+            --font-body: 'Lato', sans-serif;
+
+            /* Background Images (Royalty Free sourced) */
+            --bg-hero-floral: url('https://images.unsplash.com/photo-1490750967868-88dd44862943?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            --bg-bird-accent: url('https://img.freepik.com/free-vector/watercolor-birds-flowers_23-2148329376.jpg?w=996&t=st=1706090000~exp=1706090600~hmac=a8158484c4256444313008880090055615552052061850425451801545');
         }
 
         * {
@@ -21,262 +32,320 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: var(--font-main);
-            color: var(--text-color);
-            line-height: 1.6;
-            background-color: var(--secondary-color);
+        html {
+            scroll-behavior: smooth;
         }
 
-        a { text-decoration: none; color: inherit; }
+        body {
+            font-family: var(--font-body);
+            color: var(--text-color);
+            line-height: 1.7;
+            background-color: var(--secondary-color);
+            background-image: linear-gradient(to bottom, #fff, var(--secondary-color));
+        }
+
+        a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
         ul { list-style: none; }
 
-        /* --- LAYOUT UTILITIES --- */
+        /* --- TYPOGRAPHY & UTILITIES --- */
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 25px;
         }
 
         section {
-            padding: 60px 0;
-        }
-
-        h1, h2, h3 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        h2 {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 40px;
+            padding: 80px 0;
             position: relative;
         }
 
+        h1, h2, h3 {
+            font-family: var(--font-headers);
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        h1 { font-size: 2.8rem; line-height: 1.2; margin-bottom: 20px; }
+        h2 { font-size: 2.2rem; text-align: center; margin-bottom: 50px; position: relative; padding-bottom: 15px; }
+        h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--primary-color); }
+
+        /* Subtle decorative line under headers */
         h2::after {
-            content: '';
+            content: '❀'; /* Small floral text icon */
             display: block;
-            width: 60px;
-            height: 3px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-top: 10px;
+            opacity: 0.7;
+        }
+
+        .btn {
+            display: inline-block;
             background: var(--primary-color);
-            margin: 10px auto 0;
+            color: var(--white);
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(107, 142, 107, 0.3);
+        }
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* decorative bird element before sections */
+        .bird-divider {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 100px;
+            height: auto;
+            opacity: 0.8;
+            mix-blend-mode: multiply;
         }
 
         /* --- HEADER --- */
         header {
-            background: var(--white);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.04);
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 3px solid var(--accent-soft);
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 70px;
+            height: 80px;
         }
 
         .logo {
-            font-size: 1.2rem;
+            font-family: var(--font-headers);
+            font-size: 1.4rem;
             font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .nav-links {
+            color: var(--primary-dark);
             display: flex;
-            gap: 20px;
+            align-items: center;
         }
+        .logo::before { content: '✾'; margin-right: 10px; color: var(--primary-color); font-size: 1.8rem;}
 
+        .nav-links { display: flex; gap: 25px; }
         .nav-links a {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-color);
-            transition: color 0.3s;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-dark);
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
         }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
+        .nav-links a:hover { color: var(--primary-color); border-color: var(--primary-color); }
 
         /* --- HERO SECTION --- */
         .hero {
-            background-color: var(--white);
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.9)), var(--bg-hero-floral);
+            background-size: cover;
+            background-position: center;
+            border-bottom-left-radius: 50% 20%;
+            border-bottom-right-radius: 50% 20%;
+            box-shadow: 0 10px 30px -10px rgba(107, 142, 107, 0.2);
+            margin-bottom: 50px;
+        }
+
+        .hero-content-wrapper {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 80px 0;
-            flex-wrap: wrap;
+            gap: 50px;
         }
 
-        .hero-text {
-            flex: 1;
-            min-width: 300px;
-            padding-right: 40px;
-        }
+        .hero-text { flex: 1; }
+        .hero-text p { font-size: 1.2rem; margin-bottom: 30px; color: var(--primary-dark); }
 
-        .hero-text h1 {
-            font-size: 2.5rem;
-            line-height: 1.2;
-            margin-bottom: 20px;
-        }
-
-        .hero-image {
-            flex: 1;
-            min-width: 300px;
-            text-align: center;
-        }
-
+        .hero-image { flex: 1; text-align: center; position: relative; }
         .hero-image img {
-            width: 100%;
-            max-width: 350px;
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
             border-radius: 50%;
-            box-shadow: 10px 10px 0px var(--accent-color);
-            border: 5px solid var(--white);
+            border: 8px solid var(--white);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+        /* Floral circle behind image */
+        .hero-image::after {
+            content: '';
+            position: absolute;
+            top: -20px; left: 50%; transform: translateX(-50%);
+            width: 390px; height: 390px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            z-index: 1;
+            opacity: 0.7;
         }
 
-        /* --- ABOUT SECTION --- */
-        .about-content {
+        /* --- Content Box Styling (Shared) --- */
+        .content-box {
             background: var(--white);
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border-radius: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            border: 1px solid var(--accent-soft);
+            position: relative;
+            overflow: hidden;
         }
+        /* Subtle floral corner accent */
+        .content-box::before {
+            content: '❀';
+            position: absolute;
+            top: -10px; right: 10px;
+            font-size: 4rem;
+            color: var(--accent-soft);
+            opacity: 0.4;
+            font-family: var(--font-headers);
+            z-index: 0;
+        }
+        .content-box > * { position: relative; z-index: 1; }
 
-        /* --- SERVICES (Individual Therapy) --- */
+        /* --- SERVICES --- */
+        .services-section { background-color: var(--accent-soft); }
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
         }
-
         .service-card {
             background: var(--white);
-            padding: 30px;
-            border-radius: 8px;
-            border-left: 5px solid var(--primary-color);
+            padding: 35px;
+            border-radius: 20px;
+            border-top: 5px solid var(--primary-color);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            transition: transform 0.3s;
         }
-
+        .service-card:hover { transform: translateY(-5px); }
         .interest-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            border-bottom: 1px dotted var(--accent-soft);
+            display: flex;
+            align-items: flex-start;
         }
-
-        .interest-list li:last-child {
-            border-bottom: none;
+        .interest-list li::before {
+            content: '🌿'; /* Leaf icon */
+            margin-right: 10px;
+            font-size: 0.9rem;
+            color: var(--primary-color);
         }
 
         /* --- APPROACH --- */
-        .approach {
-            background-color: var(--primary-color);
-            color: var(--white);
-        }
-
-        .approach h2 {
-            color: var(--white);
-        }
-        
-        .approach h2::after {
-            background: var(--white);
-        }
-
         .approach-text {
-            max-width: 800px;
-            margin: 0 auto;
             text-align: center;
             font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         /* --- FIRST SESSION --- */
+        .session-section {
+             background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), var(--bg-bird-accent);
+             background-size: cover;
+             background-attachment: fixed;
+        }
         .session-grid {
             display: flex;
-            flex-wrap: wrap;
             gap: 30px;
             justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
         }
-
         .session-card {
-            background: var(--white);
+            background: rgba(255,255,255,0.95);
             flex: 1;
             min-width: 300px;
-            max-width: 500px;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .session-intro {
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 25px;
+            border: 2px solid var(--accent-soft);
             text-align: center;
-            max-width: 700px;
-            margin: 0 auto 40px auto;
+        }
+        .session-card h3 { color: var(--primary-dark); }
+        .session-card ul { text-align: left; display: inline-block; margin-top: 20px; }
+        .session-card li { margin-bottom: 10px; position: relative; padding-left: 25px;}
+        .session-card li::before {
+             content: '✓';
+             position: absolute; left: 0; color: var(--primary-color);
         }
 
         /* --- REFERRALS --- */
-        .referrals {
-            background-color: var(--accent-color);
-        }
-        
-        .referral-box {
-            background: var(--white);
-            padding: 30px;
-            border-radius: 8px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .referral-box p {
-            margin-bottom: 15px;
+        .referral-box hr { border: none; height: 2px; background: var(--accent-soft); margin: 25px 0; }
+        .referral-item { display: flex; margin-bottom: 15px; }
+        .referral-icon {
+            flex-shrink: 0;
+            width: 40px; height: 40px;
+            background: var(--accent-soft);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 15px; font-size: 1.2rem;
         }
 
-        /* --- CONTACT / FOOTER --- */
+        /* --- FOOTER --- */
         footer {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 60px 0;
+            background: var(--primary-dark);
+            color: var(--accent-soft);
+            padding: 80px 0 40px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
+        /* Floral overlay on footer */
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: var(--bg-hero-floral);
+            opacity: 0.1;
+            mix-blend-mode: overlay;
+        }
+        footer h2 { color: var(--white); }
+        footer h2::after { color: var(--accent-soft); opacity: 0.5; }
 
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            font-size: 1.1rem;
-        }
-
-        .contact-link {
-            color: #ecf0f1;
-            text-decoration: underline;
-        }
-        
+        .footer-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 30px;}
         .address-box {
-            margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 20px;
-            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 25px 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
         }
+        .contact-link {
+            color: var(--white);
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-bottom: 1px dotted var(--accent-soft);
+        }
+        .contact-link:hover { color: var(--accent-soft); border-bottom-style: solid;}
 
         /* --- MOBILE RESPONSIVE --- */
-        @media (max-width: 768px) {
-            .hero {
-                flex-direction: column-reverse;
-                text-align: center;
-                gap: 30px;
-            }
-            
-            .hero-text {
-                padding-right: 0;
-            }
+        @media (max-width: 900px) {
+            .hero-content-wrapper { flex-direction: column-reverse; text-align: center; gap: 30px; }
+            .hero-image::after { width: 300px; height: 300px; }
+            .hero-image img { width: 280px; height: 280px; }
+            h1 { font-size: 2.2rem; }
+        }
 
-            .nav-links {
-                display: none; /* Hidden on very small screens for simplicity in this single-file version */
-            }
-            
-            nav {
-                justify-content: center;
-            }
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* Simplified mobile nav for single file */
+            nav { justify-content: center; }
+            .container { padding: 0 20px; }
+            section { padding: 60px 0; }
+            .content-box { padding: 25px; }
         }
     </style>
 </head>
@@ -298,12 +367,11 @@
     </header>
 
     <section class="hero">
-        <div class="container" style="display: flex; flex-wrap: wrap; align-items: center;">
+        <div class="container hero-content-wrapper">
             <div class="hero-text">
                 <h1>Supporting the emotional wellbeing of children, young people, and their families.</h1>
-                <p>A warm and approachable psychologist grounded in a person-centred approach.</p>
-                <br>
-                <a href="#contact" style="background: var(--primary-color); color: white; padding: 12px 25px; border-radius: 5px; font-weight: bold;">Get in Touch</a>
+                <p>A warm and approachable psychologist grounded in a person-centred approach, creating a safe space for growth.</p>
+                <a href="#contact" class="btn">Get in Touch</a>
             </div>
             <div class="hero-image">
                 <img src="https://static.wixstatic.com/media/8d1054_ee7df96c9df8426c91fea3979c1ba28a~mv2.jpeg/v1/fill/w_371,h_335,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rhonda.jpeg" alt="Rhonda Blackadder">
@@ -313,8 +381,9 @@
 
     <section id="about">
         <div class="container">
+             <img src="https://cdn-icons-png.flaticon.com/512/7377/7377630.png" alt="decorative bird" class="bird-divider" style="width: 60px;">
             <h2>About Me</h2>
-            <div class="about-content">
+            <div class="content-box">
                 <p>I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported. I tailor each session to the individual, recognising the unique experiences, strengths, and needs that every young person brings.</p>
                 <br>
                 <p>My career has taken me across a range of clinical and educational settings. I have supported university students managing both academic pressures and personal challenges, and I have worked as a psychologist within primary and secondary schools. These experiences have deepened my understanding of child and adolescent development, learning needs, and the emotional hurdles young people may encounter. This background allows me to provide sensitive, practical, and well-informed guidance to those I work with.</p>
@@ -322,7 +391,7 @@
         </div>
     </section>
 
-    <section id="services" style="background-color: #fafafa;">
+    <section id="services" class="services-section">
         <div class="container">
             <h2>Individual Therapy</h2>
             <div class="services-grid">
@@ -351,10 +420,11 @@
         </div>
     </section>
 
-    <section id="approach" class="approach">
+    <section id="approach">
         <div class="container">
+             <img src="https://cdn-icons-png.flaticon.com/512/7377/7377630.png" alt="decorative bird" class="bird-divider" style="width: 60px; transform: scaleX(-1);">
             <h2>Therapeutic Approach</h2>
-            <div class="approach-text">
+            <div class="content-box approach-text">
                 <p>My practice is informed by positive psychology and a strengths-focused perspective. I use evidence-based therapies, including <strong>Acceptance and Commitment Therapy (ACT)</strong> and <strong>Cognitive Behavioural Therapy (CBT)</strong>, to help young people build resilience, develop emotional regulation skills, and learn strategies that support their overall wellbeing.</p>
                 <br>
                 <p>I value collaboration and believe that effective support often involves the wider network surrounding a young person. When appropriate, I work alongside families, educators, and other health professionals to ensure care is consistent, holistic, and responsive to each client’s needs.</p>
@@ -362,10 +432,10 @@
         </div>
     </section>
 
-    <section id="session">
+    <section id="session" class="session-section">
         <div class="container">
             <h2>First Session</h2>
-            <p class="session-intro">The first session focuses on understanding the presenting concerns and gathering important developmental, family, and background information to guide treatment planning.</p>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto;">The first session focuses on understanding the presenting concerns and gathering important developmental, family, and background information to guide treatment planning.</p>
             
             <div class="session-grid">
                 <div class="session-card">
@@ -376,43 +446,55 @@
                 <div class="session-card">
                     <h3>For young people aged 14+</h3>
                     <p>The session is divided into:</p>
-                    <ul style="margin-top: 10px; margin-left: 20px; list-style: disc;">
+                    <ul>
                         <li>30 minutes with the young person</li>
                         <li>30 minutes with parents or caregivers to gain perspectives from both.</li>
                     </ul>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 30px; font-style: italic;">Clients may also complete assessments or questionnaires to help clarify the presenting issues and support the development of an individualised treatment plan.</p>
+            <p style="text-align: center; margin-top: 30px; font-style: italic; color: var(--primary-color);">Clients may also complete assessments or questionnaires to help clarify the presenting issues and support the development of an individualised treatment plan.</p>
         </div>
     </section>
 
-    <section id="referrals" class="referrals">
+    <section id="referrals">
         <div class="container">
             <h2>Pathways to Referral</h2>
-            <div class="referral-box">
-                <p>I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.</p>
-                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
-                <p><strong>Mental Health Care Plans (MHCPs):</strong> For children and young people seeking psychological support through Medicare.</p>
-                <p><strong>NDIS Referrals:</strong> I see both self-managed and plan-managed clients.</p>
-                <p><strong>Private Referrals:</strong> No formal referral is required—parents, caregivers, and students may self-refer.</p>
+            <div class="content-box referral-box" style="max-width: 800px; margin: 0 auto;">
+                <p style="font-size: 1.1rem; text-align: center;">I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.</p>
+                <hr>
+                
+                <div class="referral-item">
+                    <div class="referral-icon">📋</div>
+                    <div><strong>Mental Health Care Plans (MHCPs):</strong> For children and young people seeking psychological support through Medicare.</div>
+                </div>
+                 <div class="referral-item">
+                    <div class="referral-icon">🤝</div>
+                    <div><strong>NDIS Referrals:</strong> I see both self-managed and plan-managed clients.</div>
+                </div>
+                 <div class="referral-item">
+                    <div class="referral-icon">👤</div>
+                    <div><strong>Private Referrals:</strong> No formal referral is required—parents, caregivers, and students may self-refer.</div>
+                </div>
             </div>
         </div>
     </section>
 
     <footer id="contact">
-        <div class="container">
-            <h2 style="color: #fff; margin-bottom: 20px;">Contact</h2>
+        <div class="container footer-content">
+            <h2>Contact</h2>
             
             <div class="address-box">
-                <p>Uralla Cottage</p>
+                <p style="font-weight: bold; font-size: 1.2rem; margin-bottom: 10px;">Uralla Cottage</p>
                 <p>3 Baker Street, Windsor</p>
                 <p>NSW 2756</p>
             </div>
 
-            <div class="contact-info">
+            <div style="text-align: center;">
                 <p>Email: <a href="mailto:rhondablackadder@gmail.com" class="contact-link">rhondablackadder@gmail.com</a></p>
-                <p>Mobile: <a href="tel:0421140107" class="contact-link">0421 140 107</a></p>
+                <p style="margin-top: 10px;">Mobile: <a href="tel:0421140107" class="contact-link">0421 140 107</a></p>
             </div>
+            
+            <p style="margin-top: 40px; font-size: 0.9rem; opacity: 0.7;">© 2023 Rhonda Blackadder Psychologist</p>
         </div>
     </footer>
 
