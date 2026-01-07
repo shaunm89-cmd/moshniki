@@ -3,401 +3,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEON VORTEX</title>
+    <title>Neon Striker League</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #000;
+            background-color: #050505;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
-            cursor: crosshair;
+            font-family: 'Arial Black', sans-serif;
         }
         canvas {
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 50px rgba(0, 255, 100, 0.1);
+            border: 5px solid #222;
         }
         #ui {
             position: absolute;
             top: 20px;
-            left: 20px;
+            width: 100%;
+            text-align: center;
             pointer-events: none;
+            z-index: 10;
         }
-        #score { font-size: 2rem; color: #0ff; text-shadow: 0 0 10px #0ff; }
-        #wave { font-size: 1.2rem; color: #f0f; }
-        #start-screen, #game-over {
+        .score { font-size: 4rem; margin: 0 20px; text-shadow: 0 0 20px currentColor; }
+        #p-score { color: #00ffff; }
+        #ai-score { color: #ff0055; }
+        #message {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
+            color: white;
+            font-size: 3rem;
+            text-shadow: 0 0 20px white;
+            display: none;
             text-align: center;
-            z-index: 10;
         }
-        h1 { font-size: 4rem; margin: 0; color: #0ff; text-shadow: 0 0 20px #0ff, 0 0 40px #f0f; }
-        p { font-size: 1.5rem; }
-        .hidden { display: none !important; }
-        #dash-cooldown {
+        #stamina-container {
             position: absolute;
-            bottom: 20px; left: 50%;
-            transform: translateX(-50%);
-            width: 200px; height: 10px;
+            bottom: 20px;
+            left: 20px;
+            width: 200px;
+            height: 10px;
             background: #333;
+            transform: skewX(-20deg);
             border: 2px solid #555;
         }
-        #dash-fill { height: 100%; background: #f0f; width: 100%; box-shadow: 0 0 10px #f0f; transition: width 0.1s linear; }
+        #stamina-bar {
+            height: 100%;
+            width: 100%;
+            background: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+        }
     </style>
 </head>
 <body>
 
     <div id="ui">
-        <div id="score">SCORE: 0</div>
-        <div id="wave">WAVE: 1</div>
+        <span id="p-score" class="score">0</span>
+        <span style="color:white; font-size: 2rem;">-</span>
+        <span id="ai-score" class="score">0</span>
     </div>
 
-    <div id="dash-cooldown"><div id="dash-fill"></div></div>
-
-    <div id="start-screen">
-        <h1>NEON VORTEX</h1>
-        <p>WASD to move // MOUSE to aim & shoot<br>SPACE to Dash</p>
-        <p style="color: #f0f; font-size: 1.2rem; margin-top: 30px;">CLICK TO ENGAGE</p>
-    </div>
-
-    <div id="game-over" class="hidden">
-        <h1 style="color: #f00; text-shadow: 0 0 20px #f00;">SYSTEM FAILURE</h1>
-        <p id="final-score">Score: 0</p>
-        <p style="color: #0ff; margin-top: 30px;">CLICK TO REBOOT</p>
-    </div>
+    <div id="stamina-container"><div id="stamina-bar"></div></div>
+    <div id="message">GOAL!</div>
 
     <canvas id="gameCanvas"></canvas>
 
 <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    const scoreEl = document.getElementById('score');
-    const waveEl = document.getElementById('wave');
-    const startScreen = document.getElementById('start-screen');
-    const gameOverScreen = document.getElementById('game-over');
-    const finalScoreEl = document.getElementById('final-score');
-    const dashFill = document.getElementById('dash-fill');
+    const pScoreEl = document.getElementById('p-score');
+    const aiScoreEl = document.getElementById('ai-score');
+    const msgEl = document.getElementById('message');
+    const staminaBar = document.getElementById('stamina-bar');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Setup Dimensions (Landscape Pitch)
+    canvas.width = Math.min(window.innerWidth - 40, 1000);
+    canvas.height = Math.min(window.innerHeight - 40, 600);
 
-    let gameRunning = false;
-    let score = 0;
-    let wave = 1;
-    let frame = 0;
-    let difficultyMultiplier = 1;
-
-    // Camera Shake
-    let screenshake = 0;
-
-    // --- AUDIO SYNTHESIS (No files required) ---
+    // Audio Context
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+    // Game State
+    let playerScore = 0;
+    let aiScore = 0;
+    let gameActive = true;
+    let slowMoTimer = 0;
+    let particles = [];
+
+    // Inputs
+    const keys = { w: false, a: false, s: false, d: false, space: false };
+    window.addEventListener('keydown', e => {
+        if(e.key === 'w' || e.key === 'ArrowUp') keys.w = true;
+        if(e.key === 'a' || e.key === 'ArrowLeft') keys.a = true;
+        if(e.key === 's' || e.key === 'ArrowDown') keys.s = true;
+        if(e.key === 'd' || e.key === 'ArrowRight') keys.d = true;
+        if(e.key === ' ') keys.space = true;
+    });
+    window.addEventListener('keyup', e => {
+        if(e.key === 'w' || e.key === 'ArrowUp') keys.w = false;
+        if(e.key === 'a' || e.key === 'ArrowLeft') keys.a = false;
+        if(e.key === 's' || e.key === 'ArrowDown') keys.s = false;
+        if(e.key === 'd' || e.key === 'ArrowRight') keys.d = false;
+        if(e.key === ' ') keys.space = false;
+    });
+
+    // Sound Synth
     function playSound(type) {
         if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.connect(gain);
         gain.connect(audioCtx.destination);
-
         const now = audioCtx.currentTime;
-        if (type === 'shoot') {
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(800, now);
-            osc.frequency.exponentialRampToValueAtTime(100, now + 0.15);
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-            osc.start(now); osc.stop(now + 0.15);
-        } else if (type === 'hit') {
-            osc.type = 'sawtooth';
+
+        if (type === 'kick') {
+            osc.frequency.setValueAtTime(150, now);
+            osc.frequency.exponentialRampToValueAtTime(0.01, now + 0.1);
+            gain.gain.setValueAtTime(0.5, now);
+            gain.gain.linearRampToValueAtTime(0, now + 0.1);
+            osc.start(now); osc.stop(now + 0.1);
+        } else if (type === 'goal') {
+            osc.type = 'triangle';
             osc.frequency.setValueAtTime(200, now);
-            osc.frequency.exponentialRampToValueAtTime(50, now + 0.2);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-            osc.start(now); osc.stop(now + 0.3);
-        } else if (type === 'dash') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(1200, now);
-            osc.frequency.exponentialRampToValueAtTime(400, now + 0.3);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.linearRampToValueAtTime(0, now + 0.3);
-            osc.start(now); osc.stop(now + 0.3);
+            osc.frequency.linearRampToValueAtTime(600, now + 0.5);
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.linearRampToValueAtTime(0, now + 2);
+            osc.start(now); osc.stop(now + 2);
         }
     }
 
-    // --- GAME ENTITIES ---
-    const player = {
-        x: canvas.width / 2, y: canvas.height / 2,
-        radius: 15, color: '#0ff', angle: 0, speed: 5,
-        dx: 0, dy: 0,
-        isDashing: false, dashCooldown: 0, dashDuration: 15
-    };
+    // --- ENTITIES ---
 
-    let bullets = [];
-    let enemies = [];
-    let particles = [];
-
-    const keys = { w: false, a: false, s: false, d: false, space: false };
-    const mouse = { x: canvas.width / 2, y: canvas.height / 2, down: false };
-
-    // --- INPUT HANDLING ---
-    window.addEventListener('keydown', e => {
-        if(e.key === 'w') keys.w = true;
-        if(e.key === 'a') keys.a = true;
-        if(e.key === 's') keys.s = true;
-        if(e.key === 'd') keys.d = true;
-        if(e.key === ' ' && !keys.space) { keys.space = true; tryDash(); }
-    });
-    window.addEventListener('keyup', e => {
-        if(e.key === 'w') keys.w = false;
-        if(e.key === 'a') keys.a = false;
-        if(e.key === 's') keys.s = false;
-        if(e.key === 'd') keys.d = false;
-        if(e.key === ' ') keys.space = false;
-    });
-    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-    window.addEventListener('mousedown', () => mouse.down = true);
-    window.addEventListener('mouseup', () => mouse.down = false);
-    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
-    window.addEventListener('click', () => {
-        if (!gameRunning) startGame();
-    });
-
-    // --- CORE MECHANICS ---
-    function tryDash() {
-        if (player.dashCooldown <= 0 && gameRunning) {
-            player.isDashing = true;
-            player.dashCooldown = 60; // Frames until next dash
-            playSound('dash');
-            screenshake = 10;
-            // Create dash particles
-            for(let i=0; i<10; i++) {
-                 particles.push(new Particle(player.x, player.y, player.color, Math.random()*2, (Math.random()-0.5)*10, (Math.random()-0.5)*10));
-            }
+    class Entity {
+        constructor(x, y, radius, color, mass) {
+            this.x = x; this.y = y; this.radius = radius;
+            this.color = color; this.mass = mass;
+            this.dx = 0; this.dy = 0;
+            this.friction = 0.96;
+            this.speed = 0.5;
+            this.maxSpeed = 6;
         }
-    }
 
-    function spawnEnemy() {
-        const size = Math.random() * 15 + 10;
-        let x, y;
-        // Spawn on edge of screen
-        if (Math.random() < 0.5) {
-            x = Math.random() < 0.5 ? 0 - size : canvas.width + size;
-            y = Math.random() * canvas.height;
-        } else {
-            x = Math.random() * canvas.width;
-            y = Math.random() < 0.5 ? 0 - size : canvas.height + size;
-        }
-        const color = `hsl(${Math.random() * 60 + 300}, 100%, 50%)`; // Pinks and Purples
-        const speed = (Math.random() * 2 + 1) * difficultyMultiplier;
-        enemies.push({ x, y, size, color, speed });
-    }
+        update() {
+            this.x += this.dx;
+            this.y += this.dy;
+            
+            // Friction
+            this.dx *= this.friction;
+            this.dy *= this.friction;
 
-    function fireBullet() {
-        if(frame % 5 === 0) { // Fire rate limiter
-            const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
-            const velocity = { x: Math.cos(angle) * 12, y: Math.sin(angle) * 12 };
-            bullets.push({ x: player.x, y: player.y, dx: velocity.x, dy: velocity.y, radius: 5, color: '#ff0' });
-            playSound('shoot');
-            screenshake = 2;
+            // Wall Collisions
+            if (this.x - this.radius < 0) { this.x = this.radius; this.dx *= -0.8; }
+            if (this.x + this.radius > canvas.width) { this.x = canvas.width - this.radius; this.dx *= -0.8; }
+            if (this.y - this.radius < 0) { this.y = this.radius; this.dy *= -0.8; }
+            if (this.y + this.radius > canvas.height) { this.y = canvas.height - this.radius; this.dy *= -0.8; }
         }
-    }
 
-    // Particle System for explosions
-    class Particle {
-        constructor(x, y, color, radius, dx, dy) {
-            this.x = x; this.y = y; this.color = color; this.radius = radius || Math.random() * 3;
-            this.dx = dx || (Math.random() - 0.5) * 15; this.dy = dy || (Math.random() - 0.5) * 15;
-            this.alpha = 1; this.friction = 0.95;
-        }
         draw() {
-            ctx.save();
-            ctx.globalAlpha = this.alpha;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = this.color; ctx.fill();
-            ctx.restore();
-        }
-        update() {
-            this.dx *= this.friction; this.dy *= this.friction;
-            this.x += this.dx; this.y += this.dy;
-            this.alpha -= 0.02;
-        }
-    }
-
-    function createExplosion(x, y, color, count = 20) {
-        screenshake = 15;
-        playSound('hit');
-        for (let i = 0; i < count; i++) {
-            particles.push(new Particle(x, y, color));
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = this.color;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = "#fff";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.closePath();
         }
     }
 
-    function startGame() {
-        if(gameOverScreen.classList.contains('hidden') && startScreen.classList.contains('hidden')) return;
-        gameRunning = true;
-        score = 0; wave = 1; difficultyMultiplier = 1; frame = 0;
-        scoreEl.innerText = "SCORE: " + score;
-        waveEl.innerText = "WAVE: " + wave;
-        player.x = canvas.width/2; player.y = canvas.height/2;
-        bullets = []; enemies = []; particles = [];
-        startScreen.classList.add('hidden');
-        gameOverScreen.classList.add('hidden');
-        audioCtx.resume();
-        animate();
+    // Player & AI extend Entity
+    class Player extends Entity {
+        constructor(x, y, color) {
+            super(x, y, 25, color, 10);
+            this.stamina = 100;
+        }
+        
+        control() {
+            let speed = this.speed;
+            
+            // Turbo
+            if (keys.space && this.stamina > 0) {
+                speed *= 2.5;
+                this.stamina -= 2;
+            } else if (this.stamina < 100) {
+                this.stamina += 0.5;
+            }
+            staminaBar.style.width = this.stamina + "%";
+
+            if (keys.w) this.dy -= speed;
+            if (keys.s) this.dy += speed;
+            if (keys.a) this.dx -= speed;
+            if (keys.d) this.dx += speed;
+        }
+
+        aiControl(ball) {
+            // Simple AI logic
+            let targetX = ball.x;
+            let targetY = ball.y;
+
+            // If ball is behind AI, rush back to goal
+            if (ball.x > this.x) {
+                targetX = canvas.width - 50; 
+                targetY = canvas.height / 2;
+            }
+
+            const angle = Math.atan2(targetY - this.y, targetX - this.x);
+            this.dx += Math.cos(angle) * (this.speed * 0.8);
+            this.dy += Math.sin(angle) * (this.speed * 0.8);
+        }
     }
 
-    function endGame() {
-        gameRunning = false;
-        finalScoreEl.innerText = "Final Score: " + score;
-        gameOverScreen.classList.remove('hidden');
-        createExplosion(player.x, player.y, '#0ff', 50);
+    // Initialize
+    const player = new Player(100, canvas.height/2, '#00ffff');
+    const ai = new Player(canvas.width - 100, canvas.height/2, '#ff0055');
+    const ball = new Entity(canvas.width/2, canvas.height/2, 12, '#ffffff', 1);
+    ball.friction = 0.985; // Ball rolls longer
+
+    // --- PHYSICS ---
+
+    function resolveCollision(p1, p2) {
+        const dx = p2.x - p1.x;
+        const dy = p2.y - p1.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < p1.radius + p2.radius) {
+            playSound('kick');
+
+            // Normalize
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            // Minimum translation to unstuck
+            const overlap = (p1.radius + p2.radius - dist) / 2;
+            p1.x -= nx * overlap; p1.y -= ny * overlap;
+            p2.x += nx * overlap; p2.y += ny * overlap;
+
+            // Velocity swap based on mass
+            // Simple elastic collision approx for game feel
+            const speed1 = Math.sqrt(p1.dx*p1.dx + p1.dy*p1.dy);
+            const speed2 = Math.sqrt(p2.dx*p2.dx + p2.dy*p2.dy);
+
+            // Add "Kick" force
+            const force = 1.5; 
+            
+            p2.dx += nx * force * 5; 
+            p2.dy += ny * force * 5;
+            p1.dx -= nx * force;
+            p1.dy -= ny * force;
+        }
     }
 
-    // --- MAIN GAME LOOP ---
-    function animate() {
-        if (!gameRunning) return;
-        requestAnimationFrame(animate);
-        frame++;
+    // --- GAME LOOP ---
 
-        // Clear Canvas with trailing effect
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    function drawPitch() {
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 4;
+        
+        // Center Line
+        ctx.beginPath();
+        ctx.moveTo(canvas.width/2, 0);
+        ctx.lineTo(canvas.width/2, canvas.height);
+        ctx.stroke();
+
+        // Center Circle
+        ctx.beginPath();
+        ctx.arc(canvas.width/2, canvas.height/2, 70, 0, Math.PI*2);
+        ctx.stroke();
+
+        // Goals
+        ctx.shadowBlur = 20;
+        // Left Goal (Player)
+        ctx.shadowColor = '#00ffff';
+        ctx.strokeRect(0, canvas.height/2 - 70, 40, 140);
+        // Right Goal (AI)
+        ctx.shadowColor = '#ff0055';
+        ctx.strokeRect(canvas.width - 40, canvas.height/2 - 70, 40, 140);
+        ctx.shadowBlur = 0;
+    }
+
+    function resetPositions() {
+        ball.x = canvas.width/2; ball.y = canvas.height/2;
+        ball.dx = 0; ball.dy = 0;
+        player.x = 100; player.y = canvas.height/2; player.dx=0; player.dy=0;
+        ai.x = canvas.width - 100; ai.y = canvas.height/2; ai.dx=0; ai.dy=0;
+    }
+
+    function checkGoal() {
+        const goalTop = canvas.height/2 - 70;
+        const goalBottom = canvas.height/2 + 70;
+
+        // Player Scored (Right side)
+        if (ball.x > canvas.width - 20 && ball.y > goalTop && ball.y < goalBottom) {
+            playerScore++;
+            goalEffect("GOAL!", '#00ffff');
+        }
+        // AI Scored (Left side)
+        else if (ball.x < 20 && ball.y > goalTop && ball.y < goalBottom) {
+            aiScore++;
+            goalEffect("ENEMY SCORED", '#ff0055');
+        }
+    }
+
+    function goalEffect(text, color) {
+        pScoreEl.innerText = playerScore;
+        aiScoreEl.innerText = aiScore;
+        
+        msgEl.innerText = text;
+        msgEl.style.color = color;
+        msgEl.style.textShadow = `0 0 30px ${color}`;
+        msgEl.style.display = 'block';
+        
+        playSound('goal');
+        slowMoTimer = 60; // 1 second of slow mo
+        
+        // Explosion
+        for(let i=0; i<50; i++) {
+            particles.push({
+                x: ball.x, y: ball.y,
+                dx: (Math.random()-0.5)*10, dy: (Math.random()-0.5)*10,
+                color: color, life: 1.0
+            });
+        }
+
+        setTimeout(() => {
+            msgEl.style.display = 'none';
+            resetPositions();
+        }, 1500);
+    }
+
+    function update() {
+        if (!gameActive) return;
+        requestAnimationFrame(update);
+
+        // SLOW MOTION LOGIC
+        if (slowMoTimer > 0) {
+            slowMoTimer--;
+            // Skip every other frame to simulate slow motion
+            if (slowMoTimer % 2 !== 0) return; 
+        }
+
+        ctx.fillStyle = 'rgba(5, 5, 5, 0.4)'; // Trails
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Screenshake application
-        let shakeX = 0, shakeY = 0;
-        if (screenshake > 0) {
-            shakeX = (Math.random() - 0.5) * screenshake;
-            shakeY = (Math.random() - 0.5) * screenshake;
-            screenshake *= 0.9; // damping
-            if(screenshake < 0.5) screenshake = 0;
-        }
-        ctx.save();
-        ctx.translate(shakeX, shakeY);
+        drawPitch();
 
-        // Player Logic
-        if (keys.w) player.y -= player.speed;
-        if (keys.s) player.y += player.speed;
-        if (keys.a) player.x -= player.speed;
-        if (keys.d) player.x += player.speed;
-        // Clamp player to screen
-        player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
-        player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y));
+        // Update Physics
+        player.control();
+        player.update();
+        
+        ai.aiControl(ball);
+        ai.update();
+        
+        ball.update();
 
-        player.angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+        // Collisions
+        resolveCollision(player, ball);
+        resolveCollision(ai, ball);
+        resolveCollision(player, ai); // Players can bump each other
 
-        // Dash logic
-        if(player.dashCooldown > 0) player.dashCooldown--;
-        dashFill.style.width = (1 - (player.dashCooldown / 60)) * 100 + "%";
-
-        if(player.isDashing) {
-            player.dashDuration--;
-            // Dashing visual
-            ctx.shadowBlur = 30; ctx.shadowColor = '#f0f';
-            player.x += Math.cos(player.angle) * 10; // Dash movement
-            if(player.dashDuration <= 0) {
-                player.isDashing = false; player.dashDuration = 15;
-            }
-        } else {
-            ctx.shadowBlur = 15; ctx.shadowColor = '#0ff';
-        }
-
-        // Draw Player
-        ctx.save();
-        ctx.translate(player.x, player.y);
-        ctx.rotate(player.angle);
-        ctx.beginPath();
-        ctx.moveTo(20, 0); // Nose
-        ctx.lineTo(-15, -15); // Back left
-        ctx.lineTo(-5, 0); // Inner back
-        ctx.lineTo(-15, 15); // Back right
-        ctx.closePath();
-        ctx.fillStyle = player.isDashing ? '#f0f' : player.color;
-        ctx.fill();
-        ctx.restore();
-        ctx.shadowBlur = 0; // Reset glow for other elements
-
-        // Fire mechanism
-        if (mouse.down && !player.isDashing) fireBullet();
-
-        // Projectiles
-        bullets.forEach((b, i) => {
-            b.x += b.dx; b.y += b.dy;
-            ctx.shadowBlur = 10; ctx.shadowColor = b.color;
-            ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI*2);
-            ctx.fillStyle = b.color; ctx.fill();
-            // Remove offscreen bullets
-            if (b.x+b.radius<0 || b.x-b.radius>canvas.width || b.y+b.radius<0 || b.y-b.radius>canvas.height) {
-                bullets.splice(i, 1);
-            }
-        });
-        ctx.shadowBlur = 0;
-
-        // Enemies
-        // Wave management: increase difficulty every 500 frames
-        if(frame % 500 === 0) {
-            wave++; difficultyMultiplier += 0.2;
-            waveEl.innerText = "WAVE: " + wave;
-        }
-        // Spawn rate depends on difficulty
-        if(frame % Math.max(20, Math.floor(60 - difficultyMultiplier*5)) === 0) spawnEnemy();
-
-        enemies.forEach((e, eIndex) => {
-            // Move towards player
-            const angle = Math.atan2(player.y - e.y, player.x - e.x);
-            e.x += Math.cos(angle) * e.speed;
-            e.y += Math.sin(angle) * e.speed;
-
-            // Draw Enemy
-            ctx.shadowBlur = 20; ctx.shadowColor = e.color;
-            ctx.save();
-            ctx.translate(e.x, e.y);
-            ctx.rotate(frame * 0.05); // Spin em
-            ctx.beginPath();
-            ctx.rect(-e.size/2, -e.size/2, e.size, e.size);
-            ctx.fillStyle = e.color; ctx.fill();
-            ctx.restore();
-
-            // Collision: Enemy vs Player
-            const distToPlayer = Math.hypot(player.x - e.x, player.y - e.y);
-            if (distToPlayer - e.size/2 - player.radius < 1) {
-                if(player.isDashing) {
-                    // Dash kill!
-                    createExplosion(e.x, e.y, e.color, 40);
-                    enemies.splice(eIndex, 1);
-                    score += 50;
-                    scoreEl.innerText = "SCORE: " + score;
-                } else {
-                    endGame();
-                }
-            }
-
-            // Collision: Enemy vs Bullets
-            bullets.forEach((b, bIndex) => {
-                const dist = Math.hypot(b.x - e.x, b.y - e.y);
-                if (dist - e.size/2 - b.radius < 1) {
-                    // Kill!
-                    createExplosion(e.x, e.y, e.color);
-                    enemies.splice(eIndex, 1);
-                    bullets.splice(bIndex, 1);
-                    score += 10;
-                    scoreEl.innerText = "SCORE: " + score;
-                }
-            });
-        });
-        ctx.shadowBlur = 0;
+        // Draw Entities
+        player.draw();
+        ai.draw();
+        ball.draw();
 
         // Particles
         particles.forEach((p, i) => {
-            if (p.alpha <= 0) particles.splice(i, 1); else p.update(); p.draw();
+            p.x += p.dx; p.y += p.dy;
+            p.life -= 0.02;
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.life;
+            ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI*2); ctx.fill();
+            ctx.globalAlpha = 1.0;
+            if(p.life <= 0) particles.splice(i, 1);
         });
 
-        ctx.restore(); // End Screenshake transform
+        // Check Goal
+        if (slowMoTimer === 0) checkGoal();
+
+        // End Game Check
+        if (playerScore >= 5 || aiScore >= 5) {
+            gameActive = false;
+            msgEl.innerText = playerScore >= 5 ? "YOU WIN! 🏆" : "GAME OVER 💀";
+            msgEl.style.display = 'block';
+        }
     }
+
+    resetPositions();
+    update();
+
 </script>
 </body>
 </html>
