@@ -3,406 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mila's World</title>
+    <title>Mila's Pop Party</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap');
 
         body {
-            font-family: 'Fredoka', sans-serif;
-            background-color: #E0F7FA;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
-            padding: 10px;
+            overflow: hidden; /* Stop scrolling */
+            background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+            font-family: 'Fredoka', sans-serif;
+            touch-action: none; /* Crucial for fast tapping */
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* The Scoreboard */
+        #ui-layer {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            pointer-events: none; /* Let clicks pass through */
+            z-index: 10;
+        }
+
+        #score {
+            font-size: 4rem;
+            color: #fff;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            margin: 0;
+        }
+
+        #label {
+            font-size: 1.5rem;
+            color: #0277BD;
+            margin-top: -10px;
+        }
+
+        /* The Bubbles */
+        .bubble {
+            position: absolute;
+            bottom: -100px; /* Start below screen */
+            width: 90px;
+            height: 90px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            cursor: pointer;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5);
+            animation: floatUp linear forwards;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            overflow-x: hidden;
+        }
+        
+        /* Different speeds for bubbles */
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-120vh) rotate(20deg); }
+        }
+
+        /* The Start Screen */
+        #start-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(255,255,255,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
         }
 
         h1 {
-            color: #006064;
-            font-size: 2rem;
-            margin: 10px 0;
-            text-align: center;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 0px #4DD0E1;
-        }
-
-        .instructions {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            color: #00838F;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .game-board {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            max-width: 500px;
-            width: 100%;
-        }
-
-        .tile {
-            background-color: white;
-            border: 3px solid #B2EBF2;
-            border-radius: 15px;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.1s, background-color 0.2s;
-            box-shadow: 0 4px #80DEEA;
-            position: relative;
-            padding: 5px;
-            overflow: hidden;
-        }
-
-        /* STYLES FOR REAL IMAGES */
-        .tile img {
-            width: 70%;
-            height: 70%;
-            object-fit: contain; /* Keeps the image shape correct */
-            margin-bottom: 5px;
-            pointer-events: none; /* Clicks pass through to the tile */
-            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
-        }
-
-        .word-label {
-            font-size: 0.7rem;
-            color: #555;
-            font-weight: 700;
-            text-transform: uppercase;
+            color: #FF6F00;
+            font-size: 3rem;
+            text-shadow: 2px 2px #FFD54F;
+            margin-bottom: 20px;
             text-align: center;
         }
 
-        @media (max-width: 400px) {
-            .tile img { width: 65%; height: 65%; }
-            .word-label { font-size: 0.6rem; }
-            .game-board { gap: 6px; }
-        }
-
-        .tile:active { transform: translateY(4px); box-shadow: 0 0 #80DEEA; }
-
-        .tile.selected {
-            background-color: #4DD0E1;
-            border-color: #0097A7;
-            box-shadow: 0 4px #006064;
-            transform: translateY(-2px);
-        }
-        .tile.selected .word-label { color: white; }
-
-        .tile.solved {
-            cursor: default;
-            transform: none;
-            box-shadow: none;
-            border: none;
-            animation: littleBounce 0.6s;
-        }
-
-        @keyframes littleBounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-15px);}
-            60% {transform: translateY(-10px);}
-        }
-
-        /* Controls */
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-            width: 100%;
-            max-width: 400px;
-            justify-content: center;
-        }
-
-        button.action-btn {
+        button {
+            background-color: #7E57C2;
             color: white;
             border: none;
-            padding: 15px;
-            font-size: 1.5rem;
-            border-radius: 20px;
-            cursor: pointer;
+            padding: 20px 50px;
+            font-size: 2rem;
+            border-radius: 50px;
             font-family: 'Fredoka', sans-serif;
-            flex: 1;
-            box-shadow: 0 6px rgba(0,0,0,0.2);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        button.action-btn:active { transform: translateY(6px); box-shadow: none; }
-        .btn-go { background-color: #FF7043; }
-        .btn-new { background-color: #7E57C2; }
-
-        #error-message {
-            margin-top: 15px;
-            height: 30px;
-            font-weight: bold;
-            font-size: 1.3rem;
-            color: #D84315;
-            text-align: center;
+            box-shadow: 0 8px #512DA8;
+            cursor: pointer;
         }
 
-        /* Solved Group Colors */
-        .group-0 { background-color: #FFF59D; } /* Yellow */
-        .group-1 { background-color: #A5D6A7; } /* Green */
-        .group-2 { background-color: #90CAF9; } /* Blue */
-        .group-3 { background-color: #CE93D8; } /* Purple */
+        button:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 #512DA8;
+        }
 
-        /* CELEBRATION OVERLAY */
-        #celebration-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(255, 255, 255, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            pointer-events: none;
+        /* Pop animation class */
+        .popped {
+            transition: transform 0.1s;
+            transform: scale(1.5);
             opacity: 0;
-            transition: opacity 0.3s;
         }
-
-        #celebration-overlay.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        #celebration-text {
-            font-size: 3.5rem;
-            color: #00BCD4;
-            text-align: center;
-            text-shadow: 3px 3px 0px #0097A7;
-            transform: scale(0.5);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            padding: 20px;
-        }
-
-        #celebration-overlay.show #celebration-text {
-            transform: scale(1);
-            opacity: 1;
-        }
-
     </style>
 </head>
 <body>
 
-    <h1>💖 Mila's Game</h1>
-    <div class="instructions">Match the pictures!</div>
-
-    <div id="game-board" class="game-board"></div>
-    <div id="error-message"></div>
-
-    <div class="controls">
-        <button class="action-btn btn-new" onclick="confirmNewGame()">🔄</button>
-        <button class="action-btn btn-go" onclick="checkSelection()">GO! ✅</button>
+    <div id="ui-layer">
+        <div id="score">0</div>
+        <div id="label">Mila's Points</div>
     </div>
 
-    <div id="celebration-overlay">
-        <div id="celebration-text">YAY!</div>
+    <div id="game-area"></div>
+
+    <div id="start-screen">
+        <h1>Mila's<br>Pop Party! 🎈</h1>
+        <button onclick="startGame()">PLAY ▶️</button>
     </div>
 
 <script>
-    // --- IMAGE DATABASE ---
-    // We use "img" instead of "e" for the image address.
-    // I have found stable links for Toy Story and Labubu figures.
-    
-    const database = [
-        // 1. Toy Story Theme (Using character renders)
-        { theme: "Toy Story", words: [
-            {t:"WOODY", img:"https://upload.wikimedia.org/wikipedia/en/0/01/Sheriff_Woody.png"}, 
-            {t:"BUZZ", img:"https://upload.wikimedia.org/wikipedia/en/b/b4/Buzz_Lightyear.png"}, 
-            {t:"JESSIE", img:"https://upload.wikimedia.org/wikipedia/en/8/87/Jessie_%28Toy_Story_character%29.png"}, 
-            {t:"REX", img:"https://upload.wikimedia.org/wikipedia/en/c/c5/Rex_%28Toy_Story_character%29.png"}
-        ]},
-        // 2. Labubu / The Monsters (Using Pop Mart figure images)
-        { theme: "The Monsters", words: [
-            {t:"LABUBU", img:"https://i.imgur.com/4c71VvH.png"}, 
-            {t:"TYCOCO", img:"https://i.imgur.com/e1fW0A3.png"}, 
-            {t:"ZIMOMO", img:"https://i.imgur.com/X9YgUaD.png"}, 
-            {t:"SPOOKY", img:"https://i.imgur.com/5yD2CqL.png"}
-        ]},
-        // 3. Generic Themes using high-quality clipart icons
-        { theme: "Fruits", words: [
-            {t:"APPLE", img:"https://cdn-icons-png.flaticon.com/512/415/415733.png"}, 
-            {t:"BANANA", img:"https://cdn-icons-png.flaticon.com/512/2909/2909761.png"}, 
-            {t:"GRAPE", img:"https://cdn-icons-png.flaticon.com/512/3194/3194695.png"}, 
-            {t:"MELON", img:"https://cdn-icons-png.flaticon.com/512/2836/2836653.png"}
-        ]},
-        { theme: "Animals", words: [
-            {t:"DOG", img:"https://cdn-icons-png.flaticon.com/512/616/616408.png"}, 
-            {t:"CAT", img:"https://cdn-icons-png.flaticon.com/512/616/616430.png"}, 
-            {t:"PIG", img:"https://cdn-icons-png.flaticon.com/512/1998/1998749.png"}, 
-            {t:"COW", img:"https://cdn-icons-png.flaticon.com/512/1998/1998610.png"}
-        ]},
-        { theme: "Vehicles", words: [
-            {t:"CAR", img:"https://cdn-icons-png.flaticon.com/512/2554/2554936.png"}, 
-            {t:"BUS", img:"https://cdn-icons-png.flaticon.com/512/3066/3066259.png"}, 
-            {t:"POLICE", img:"https://cdn-icons-png.flaticon.com/512/2554/2554978.png"}, 
-            {t:"TRUCK", img:"https://cdn-icons-png.flaticon.com/512/2554/2554927.png"}
-        ]},
-        { theme: "Space", words: [
-            {t:"ROCKET", img:"https://cdn-icons-png.flaticon.com/512/3209/3209983.png"}, 
-            {t:"ALIEN", img:"https://cdn-icons-png.flaticon.com/512/3069/3069176.png"}, 
-            {t:"MOON", img:"https://cdn-icons-png.flaticon.com/512/3209/3209962.png"}, 
-            {t:"STAR", img:"https://cdn-icons-png.flaticon.com/512/3209/3209936.png"}
-        ]}
+    // --- SETTINGS ---
+    let score = 0;
+    let gameActive = false;
+    let spawnRate = 1000; // New bubble every 1 second (decreases over time)
+
+    // EMOJI DATABASE (Labubu stand-ins + Toy Story)
+    const characters = [
+        "🤠", // Woody
+        "🚀", // Buzz
+        "👽", // Alien
+        "🦖", // Rex
+        "🐰", // Labubu (Bunny ears)
+        "👹", // Monster
+        "💀", // Tycoco
+        "👻", // Spooky
+        "🐷", // Hamm
+        "⭐", // Star
+        "💖"  // Heart
     ];
 
-    const celebrations = [
-        "Good job Mila! 💖",
-        "You are so smart! 🧠",
-        "WOW! ✨",
-        "Labubu loves it! 🐰",
-        "To Infinity! 🚀",
-        "Super Star! ⭐"
-    ];
-
-    const board = document.getElementById('game-board');
-    const errorMsg = document.getElementById('error-message');
-    const overlay = document.getElementById('celebration-overlay');
-    const celebText = document.getElementById('celebration-text');
-    
-    let currentGroups = [];
-    let selectedTiles = [];
-    let solvedCount = 0;
-
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
+    function startGame() {
+        document.getElementById('start-screen').style.display = 'none';
+        score = 0;
+        document.getElementById('score').innerText = score;
+        gameActive = true;
+        gameLoop();
     }
 
-    function initGame() {
-        board.innerHTML = '';
-        errorMsg.innerText = '';
-        selectedTiles = [];
-        solvedCount = 0;
+    function gameLoop() {
+        if (!gameActive) return;
 
-        const shuffledDB = shuffleArray([...database]);
-        const selectedCategories = shuffledDB.slice(0, 4);
+        spawnBubble();
 
-        currentGroups = selectedCategories.map((group, index) => {
-            return { ...group, id: index };
+        // Randomize spawn time between 600ms and 1400ms
+        let nextSpawn = Math.random() * 800 + 600;
+        setTimeout(gameLoop, nextSpawn);
+    }
+
+    function spawnBubble() {
+        const gameArea = document.getElementById('game-area');
+        const bubble = document.createElement('div');
+        
+        // Pick random character
+        const char = characters[Math.floor(Math.random() * characters.length)];
+        bubble.innerText = char;
+        bubble.classList.add('bubble');
+
+        // Random Position (Left to Right)
+        // We subtract 90px (width of bubble) to keep it on screen
+        const randomLeft = Math.random() * (window.innerWidth - 100);
+        bubble.style.left = randomLeft + 'px';
+
+        // Random Speed (3s to 6s)
+        const duration = Math.random() * 3 + 3;
+        bubble.style.animationDuration = duration + 's';
+
+        // CLICK EVENT
+        bubble.onpointerdown = function(e) {
+            popBubble(bubble, e);
+        };
+
+        // Remove bubble when animation ends (it floats off screen)
+        bubble.addEventListener('animationend', () => {
+            bubble.remove();
         });
 
-        let gameItems = [];
-        currentGroups.forEach(g => {
-            g.words.forEach(w => {
-                // Passing the image URL here
-                gameItems.push({ text: w.t, img: w.img, groupId: g.id, theme: g.theme });
-            });
+        gameArea.appendChild(bubble);
+    }
+
+    function popBubble(element, event) {
+        if (element.classList.contains('popped')) return; // Prevent double taps
+        element.classList.add('popped');
+        
+        // Play Pop Sound (Synthesized so no audio files needed!)
+        playPopSound();
+
+        // Increment Score
+        score++;
+        document.getElementById('score').innerText = score;
+
+        // Visual Explosion (Confetti)
+        // We calculate where the click happened to center the confetti
+        const x = event.clientX / window.innerWidth;
+        const y = event.clientY / window.innerHeight;
+
+        confetti({
+            particleCount: 15,
+            spread: 60,
+            origin: { x: x, y: y },
+            colors: ['#FFD54F', '#81D4FA', '#FF8A65', '#9575CD'],
+            disableForReducedMotion: true,
+            zIndex: 100
         });
 
-        gameItems = shuffleArray(gameItems);
-
-        gameItems.forEach((item) => {
-            const tile = document.createElement('div');
-            tile.classList.add('tile');
-            // USING IMG TAG INSTEAD OF EMOJI
-            tile.innerHTML = `<img src="${item.img}" alt="${item.text}"><span class="word-label">${item.text}</span>`;
-            tile.dataset.groupId = item.groupId;
-            tile.onclick = () => toggleTile(tile);
-            board.appendChild(tile);
-        });
+        // Remove element quickly after visual pop
+        setTimeout(() => element.remove(), 100);
     }
 
-    function confirmNewGame() {
-        if(solvedCount > 0 && solvedCount < 4) {
-            if(!confirm("Start new game?")) return;
-        }
-        initGame();
+    // Audio Context for Beeps/Boops (No external files needed)
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+
+    function playPopSound() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.type = 'sine';
+        // Random pitch for fun
+        oscillator.frequency.setValueAtTime(400 + Math.random() * 200, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.1);
     }
-
-    function toggleTile(tile) {
-        if (tile.classList.contains('solved')) return;
-        if (selectedTiles.includes(tile)) {
-            tile.classList.remove('selected');
-            selectedTiles = selectedTiles.filter(t => t !== tile);
-        } else {
-            if (selectedTiles.length < 4) {
-                tile.classList.add('selected');
-                selectedTiles.push(tile);
-            }
-        }
-    }
-
-    function triggerCelebration(isFinalWin) {
-        let msg;
-        if (isFinalWin) {
-            msg = "🎉 YAY MILA! 🎉";
-            var duration = 3000;
-            var end = Date.now() + duration;
-            (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
-        } else {
-            msg = celebrations[Math.floor(Math.random() * celebrations.length)];
-            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-        }
-
-        celebText.innerText = msg;
-        overlay.classList.add('show');
-        setTimeout(() => { overlay.classList.remove('show'); }, 2000);
-    }
-
-    function checkSelection() {
-        if (selectedTiles.length !== 4) return;
-
-        const firstId = selectedTiles[0].dataset.groupId;
-        const isMatch = selectedTiles.every(tile => tile.dataset.groupId === firstId);
-
-        if (isMatch) {
-            errorMsg.innerText = "";
-            selectedTiles.forEach(tile => {
-                tile.classList.remove('selected');
-                tile.classList.add('solved', `group-${firstId}`);
-            });
-            selectedTiles = [];
-            solvedCount++;
-            triggerCelebration(solvedCount === 4);
-        } else {
-            errorMsg.innerText = "Try again!";
-            selectedTiles.forEach(tile => {
-                tile.style.backgroundColor = "#FFAB91"; 
-                setTimeout(() => {
-                    tile.classList.remove('selected');
-                    tile.style.backgroundColor = "";
-                }, 500);
-            });
-            selectedTiles = [];
-            setTimeout(() => { errorMsg.innerText = ""; }, 2000);
-        }
-    }
-
-    // Preload images so they don't pop in late
-    function preloadImages() {
-        database.forEach(group => {
-            group.words.forEach(word => {
-                const img = new Image();
-                img.src = word.img;
-            });
-        });
-    }
-
-    preloadImages();
-    initGame();
 
 </script>
-
 </body>
 </html>
