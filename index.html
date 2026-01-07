@@ -115,17 +115,13 @@
             transform: translateY(-2px);
         }
 
-        /* --- HEADER (UPDATED: BRIGHTER) --- */
+        /* --- HEADER --- */
         header {
-            /* Crisp white with slight transparency */
             background: rgba(255, 255, 255, 0.95); 
-            
             position: sticky;
             top: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            
-            /* Gold border to make it feel premium, not "sad" */
             border-bottom: 2px solid var(--gold-accent); 
         }
 
@@ -202,7 +198,7 @@
             padding: 40px;
             border: 1px solid #f0f0f0;
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-            border-top: 4px solid var(--gold-accent); /* Nice accent on top of cards */
+            border-top: 4px solid var(--gold-accent); 
         }
         
         .service-list li {
@@ -251,17 +247,28 @@
             font-size: 1.1rem;
         }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER (Dark Green GLASS Effect) --- */
         footer {
-            background: var(--deep-forest);
+            /* Semi-transparent dark green allows the flowers to be faintly seen behind it */
+            background: rgba(27, 46, 27, 0.95);
+            backdrop-filter: blur(5px);
+            
             color: var(--white);
             padding: 80px 0 40px;
-            margin-top: 40px;
+            margin-top: 60px;
+            border-top: 4px solid var(--gold-accent); /* Nice gold finish on top */
         }
         
         footer a { color: var(--white); border-bottom: 1px dotted rgba(255,255,255,0.5); }
-        footer h2 { color: var(--white); text-align: left; }
-        footer h2::after { margin: 15px 0 0 0; background: var(--gold-accent); }
+        
+        /* Footer Headers */
+        footer h2 { 
+            color: var(--white); 
+            text-align: left; 
+            margin-bottom: 10px;
+        }
+        /* Remove the standard gold underline for footer, use spacing instead */
+        footer h2::after { display: none; } 
         
         .footer-grid {
             display: flex;
@@ -275,8 +282,9 @@
             flex: 1; 
             min-width: 300px; 
             height: 300px; 
-            border: 5px solid rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255,255,255,0.2); 
             border-radius: 4px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .contact-item { margin-bottom: 25px; font-size: 1.1rem; }
@@ -286,6 +294,7 @@
             text-transform: uppercase; 
             letter-spacing: 1px; 
             opacity: 0.6; 
+            color: #C5A059; /* Gold Labels */
             margin-bottom: 5px; 
         }
 
@@ -307,7 +316,7 @@
             h1 { font-size: 2.2rem; }
             .footer-grid { flex-direction: column; }
             footer h2 { text-align: center; }
-            footer h2::after { margin: 15px auto 0 auto; }
+            .footer-info { text-align: center; }
             .nav-links { display: none; }
             nav { justify-content: center; }
         }
@@ -395,7 +404,7 @@
             <div style="max-width: 800px; margin: 0 auto; text-align: center;">
                 <p>My practice is informed by positive psychology and a strengths-focused perspective. I use evidence-based therapies, including <strong>Acceptance and Commitment Therapy (ACT)</strong> and <strong>Cognitive Behavioural Therapy (CBT)</strong>, to help young people build resilience and emotional regulation.</p>
                 <br>
-                <p>I value collaboration and work alongside families, educators, and other health professionals to ensure care is consistent, holistic and responsive to each client’s needs.</p>
+                <p>I value collaboration and work alongside families, educators, and other health professionals to ensure care is consistent and holistic.</p>
             </div>
         </div>
     </section>
@@ -453,7 +462,8 @@
             <div class="footer-grid">
                 
                 <div class="footer-info">
-                    <h2>Contact</h2>
+                    <h2>Rhonda Blackadder</h2>
+                    <h3 style="font-size: 1.1rem; color: #C5A059; margin-bottom: 30px; margin-top: 0;">Psychologist</h3>
                     
                     <div class="contact-item">
                         <span class="contact-label">Address</span>
