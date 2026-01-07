@@ -7,338 +7,317 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-    /* CORPORATE PALETTE */
-    --c-black: #111111;
-    --c-dark-grey: #1a1a1a;
+    /* PANTHERS CORPORATE THEME */
+    --c-black: #050505;
+    --c-panel: #111111;
     --c-border: #333333;
-    --c-red: #e31837; /* Panthers Red */
+    --c-red: #e31837;
     --c-white: #ffffff;
-    --c-text-grey: #999999;
+    --c-text-mute: #888888;
     
     /* STATUS COLORS */
-    --s-vip: #fbbf24;   /* Gold */
-    --s-main: #22c55e;  /* Green */
+    --s-vip: #fbbf24;
+    --s-main: #22c55e;
     
-    --header-h: 80px;
-    --sidebar-w: 320px;
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
 
 body {
-    margin: 0; background-color: #000; color: var(--c-white);
+    margin: 0; background-color: var(--c-black); color: var(--c-white);
     font-family: 'Roboto', sans-serif; height: 100vh; overflow: hidden;
     display: flex; flex-direction: column;
 }
 
 /* --- BACKGROUND --- */
-.bg-hero {
+.bg-layer {
     position: fixed; inset: 0; z-index: -2;
     background-image: url('panthers_bg.jpg');
     background-size: cover; background-position: center;
-    opacity: 0.25; filter: grayscale(100%) contrast(1.2);
+    opacity: 0.15; filter: grayscale(100%) contrast(1.2);
 }
-.bg-overlay {
-    position: fixed; inset: 0; z-index: -1;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, #000 90%);
+.bg-vignette {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(circle at center, transparent 0%, #000 100%);
 }
 
-/* --- HEADER --- */
-.corp-header {
-    height: var(--header-h); background: rgba(17, 17, 17, 0.95);
-    border-bottom: 1px solid var(--c-border); display: flex; align-items: center;
-    padding: 0 30px; justify-content: space-between; z-index: 50;
+/* --- HEADER (Top Bar) --- */
+.top-nav {
+    height: 60px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 30px; position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    transition: background 0.3s;
+}
+/* Only show background when searching */
+body.is-searching .top-nav {
+    background: rgba(10, 10, 10, 0.95); border-bottom: 1px solid var(--c-border);
     backdrop-filter: blur(10px);
 }
-.logo-section { display: flex; align-items: center; gap: 15px; }
-.logo-img {
-    width: 50px; height: 50px; object-fit: contain;
-    filter: drop-shadow(0 0 5px rgba(255,255,255,0.1));
+
+.nav-brand {
+    display: flex; align-items: center; gap: 12px; opacity: 0; 
+    transform: translateY(-10px); transition: all 0.5s var(--ease-smooth);
+    pointer-events: none;
 }
-.site-title {
-    font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px; color: #fff;
+body.is-searching .nav-brand { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.mini-logo { width: 32px; height: 32px; object-fit: contain; }
+.mini-title { font-family: 'Oswald'; font-weight: 700; text-transform: uppercase; font-size: 18px; letter-spacing: 1px; }
+
+.nav-controls { display: flex; gap: 15px; }
+
+.btn-home {
+    background: transparent; border: 1px solid var(--c-border); color: var(--c-text-mute);
+    padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px;
+    display: flex; align-items: center; gap: 6px;
+}
+.btn-home:hover { border-color: var(--c-white); color: var(--c-white); }
+
+
+/* --- MAIN APP CONTAINER --- */
+.app-layout {
+    flex: 1; display: flex; flex-direction: column;
+    padding-top: 60px; /* Space for header */
+    height: 100%; position: relative;
 }
 
-.map-toggle-btn {
-    background: transparent; border: 1px solid var(--c-white);
-    color: var(--c-white); padding: 8px 20px; font-family: 'Oswald';
-    font-weight: 500; text-transform: uppercase; font-size: 14px;
-    cursor: pointer; transition: 0.2s; letter-spacing: 1px;
-}
-.map-toggle-btn:hover { background: var(--c-white); color: #000; }
-.map-toggle-btn.active { background: var(--c-red); border-color: var(--c-red); color: #fff; }
-
-/* --- MAIN CONTAINER --- */
-.main-body {
-    flex: 1; display: grid; 
-    grid-template-columns: 1fr var(--sidebar-w);
-    overflow: hidden;
+/* --- SEARCH HERO (The "Google" Part) --- */
+.search-container {
+    width: 100%; max-width: 700px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: all 0.6s var(--ease-smooth);
+    height: 60vh; /* Centered initially */
+    padding: 0 20px; z-index: 50;
 }
 
-/* --- LEFT CONTENT AREA --- */
-.content-area {
-    display: flex; flex-direction: column; position: relative;
-    border-right: 1px solid var(--c-border);
+/* Transition to Top */
+body.is-searching .search-container {
+    height: auto; padding: 20px 40px; max-width: 100%; 
+    flex-direction: row; justify-content: center;
+    background: transparent; margin: 0;
 }
 
-/* SEARCH HERO SECTION */
-.search-hero {
-    padding: 40px 50px; display: flex; flex-direction: column; gap: 20px;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+.hero-logo {
+    width: 140px; height: 140px; margin-bottom: 25px;
+    transition: all 0.5s var(--ease-smooth);
+    filter: drop-shadow(0 0 20px rgba(0,0,0,0.5));
+}
+.hero-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+body.is-searching .hero-logo {
+    width: 0; height: 0; margin: 0; opacity: 0; overflow: hidden;
 }
 
-.search-input-group { position: relative; width: 100%; max-width: 800px; }
-.search-input {
-    width: 100%; background: #fff; border: none;
-    padding: 18px 25px; font-size: 18px; font-family: 'Roboto';
-    color: #000; border-radius: 2px; /* Sharp corners like corporate site */
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+.search-bar-wrap {
+    width: 100%; position: relative; transition: all 0.5s;
 }
-.search-input::placeholder { color: #666; }
+body.is-searching .search-bar-wrap { max-width: 600px; }
+
+.main-input {
+    width: 100%; background: #fff; border: 2px solid transparent;
+    padding: 18px 25px 18px 50px; border-radius: 30px;
+    font-size: 18px; color: #000; font-family: 'Roboto';
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    transition: all 0.3s;
+}
+.main-input:focus {
+    box-shadow: 0 0 0 4px rgba(227, 24, 55, 0.3); outline: none;
+}
 .search-icon {
+    position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+    color: #666; font-size: 20px;
+}
+.clear-search {
     position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-    color: #000; font-size: 20px;
+    color: #999; font-size: 18px; cursor: pointer; display: none;
+}
+.clear-search:hover { color: var(--c-red); }
+
+body.is-searching .clear-search { display: block; }
+
+
+/* --- QUICK CHIPS (Under search bar) --- */
+.quick-links {
+    display: flex; gap: 10px; margin-top: 25px; transition: 0.4s;
+    justify-content: center; flex-wrap: wrap;
+}
+body.is-searching .quick-links {
+    height: 0; margin: 0; opacity: 0; pointer-events: none; overflow: hidden;
 }
 
-/* FILTER TABS */
-.filter-tabs { display: flex; gap: 2px; margin-top: 10px; }
-.f-tab {
-    padding: 10px 20px; background: rgba(255,255,255,0.1); 
-    color: #fff; font-family: 'Oswald'; font-size: 13px; text-transform: uppercase;
-    cursor: pointer; transition: 0.2s; letter-spacing: 1px;
+.chip {
+    background: rgba(255,255,255,0.08); padding: 10px 18px; border-radius: 20px;
+    color: #ccc; font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid transparent; transition: 0.2s;
 }
-.f-tab:hover { background: rgba(255,255,255,0.2); }
-.f-tab.active { background: var(--c-red); color: #fff; font-weight: 700; }
+.chip:hover { background: rgba(255,255,255,0.15); color: #fff; }
 
-/* RESULTS GRID */
-.results-viewport {
-    flex: 1; overflow-y: auto; padding: 0 50px 50px;
-    position: relative;
+
+/* --- CONTENT GRID (Results + Sidebar) --- */
+.content-grid {
+    display: none; /* Hidden on load */
+    flex: 1; overflow: hidden;
+    grid-template-columns: 1fr 340px; /* Main Results | Sidebar */
+    opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s;
+    border-top: 1px solid var(--c-border);
 }
-.results-viewport::-webkit-scrollbar { width: 8px; }
-.results-viewport::-webkit-scrollbar-thumb { background: var(--c-border); }
-
-.grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;
+body.is-searching .content-grid {
+    display: grid; opacity: 1; transform: translateY(0);
 }
 
-/* CARDS (Clean Corporate Look) */
+/* RESULTS AREA */
+.results-pane {
+    padding: 30px 50px; overflow-y: auto; background: rgba(0,0,0,0.3);
+}
+.results-pane::-webkit-scrollbar { width: 8px; }
+.results-pane::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+
+.result-count {
+    font-size: 13px; color: var(--c-text-mute); margin-bottom: 20px;
+    font-family: 'Oswald'; text-transform: uppercase; letter-spacing: 1px;
+}
+
+.cards-container {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 15px;
+}
+
+/* THE CARD STYLE */
 .corp-card {
-    background: #111; border: 1px solid var(--c-border); border-left: 4px solid var(--c-border);
-    padding: 20px; cursor: pointer; transition: 0.2s;
-    display: flex; flex-direction: column; gap: 10px;
+    background: #111; border: 1px solid var(--c-border); border-left: 3px solid var(--c-border);
+    padding: 20px; border-radius: 4px; cursor: pointer; transition: all 0.2s ease;
+    display: flex; flex-direction: column; gap: 8px;
 }
 .corp-card:hover {
-    background: #161616; border-color: #444; border-left-color: var(--c-red);
-    transform: translateX(5px);
+    background: #181818; border-color: #444; border-left-color: var(--c-red);
+    transform: translateX(4px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .cc-header { display: flex; justify-content: space-between; align-items: flex-start; }
-.cc-title { font-family: 'Oswald'; font-size: 18px; font-weight: 700; color: #fff; line-height: 1.2; text-transform: uppercase;}
-.cc-mach { font-family: 'Oswald'; font-size: 24px; font-weight: 700; color: #666; }
+.cc-name { font-size: 18px; font-weight: 700; color: #fff; font-family: 'Oswald'; text-transform: uppercase; line-height: 1.2; }
+.cc-mach { font-size: 22px; font-weight: 700; color: var(--s-vip); font-family: 'Oswald'; }
 
-.cc-meta { display: flex; gap: 10px; font-size: 12px; color: var(--c-text-grey); align-items: center; }
-.cc-tag { 
-    padding: 2px 6px; border: 1px solid var(--c-border); text-transform: uppercase; font-weight: 600;
+.cc-meta { display: flex; gap: 10px; align-items: center; margin-top: 5px; }
+.cc-badge { 
+    font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; 
+    border-radius: 2px; border: 1px solid #444; color: #aaa;
 }
-.cc-tag.vip { color: var(--s-vip); border-color: var(--s-vip); }
-.cc-tag.main { color: var(--s-main); border-color: var(--s-main); }
+.cc-badge.vip { color: var(--s-vip); border-color: var(--s-vip); background: rgba(251, 191, 36, 0.1); }
+.cc-badge.main { color: var(--s-main); border-color: var(--s-main); background: rgba(34, 197, 94, 0.1); }
 
-.cc-link { 
-    margin-top: 5px; font-size: 12px; color: var(--c-red); font-weight: 700; 
-    text-transform: uppercase; letter-spacing: 0.5px;
-}
+.cc-link { font-size: 12px; color: var(--c-red); font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 5px; }
 
+/* Pack Expander inside Card */
 .pack-toggle {
-    margin-top: 10px; font-size: 11px; text-transform: uppercase; 
-    color: #fff; cursor: pointer; display: flex; justify-content: space-between;
-    padding: 8px; background: rgba(255,255,255,0.05);
+    margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.03); 
+    border: 1px dashed #333; cursor: pointer; color: #ccc; font-size: 11px; text-transform: uppercase;
+    display: flex; justify-content: space-between; transition: 0.2s;
 }
-.pack-toggle:hover { background: rgba(255,255,255,0.1); }
-.pack-list { display: none; padding: 10px; background: #000; border: 1px solid var(--c-border); border-top: none; }
-.pack-list div { padding: 4px 0; font-size: 12px; color: #999; border-bottom: 1px solid #222; }
-.pack-list div:hover { color: #fff; padding-left: 5px; cursor: pointer; }
+.pack-toggle:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.pack-games { display: none; background: #000; padding: 10px; border: 1px solid #222; border-top: none; }
+.pack-game-item {
+    font-size: 12px; color: #888; padding: 4px 0; border-bottom: 1px solid #151515; cursor: pointer;
+}
+.pack-game-item:hover { color: #fff; padding-left: 5px; }
 
 
-/* --- RIGHT SIDEBAR (Mimicking the Screenshot) --- */
-.corp-sidebar {
-    background: #000; border-left: 1px solid var(--c-border);
-    display: flex; flex-direction: column;
+/* SIDEBAR (Right) */
+.sidebar {
+    background: #0a0a0a; border-left: 1px solid var(--c-border);
+    display: flex; flex-direction: column; overflow: hidden;
 }
+.sidebar-header {
+    padding: 20px 25px; border-bottom: 1px solid var(--c-border);
+    font-family: 'Oswald'; font-size: 16px; font-weight: 700; color: #fff; text-transform: uppercase;
+    background: rgba(255,255,255,0.02);
+}
+.sidebar-content {
+    flex: 1; overflow-y: auto; padding: 0;
+}
+.sidebar-content::-webkit-scrollbar { width: 6px; }
+.sidebar-content::-webkit-scrollbar-thumb { background: #333; }
 
-/* The Red Button Area */
-.sb-action-area {
-    padding: 25px; border-bottom: 1px solid var(--c-border);
-    display: flex; justify-content: flex-end;
+/* Sidebar Accordion */
+.acc-btn {
+    width: 100%; text-align: left; padding: 15px 25px;
+    background: transparent; border: none; border-bottom: 1px solid #222;
+    color: #ddd; font-family: 'Oswald'; font-size: 13px; text-transform: uppercase; font-weight: 500;
+    cursor: pointer; display: flex; justify-content: space-between; transition: 0.2s;
 }
-.btn-moves {
-    background: transparent; border: 1px solid var(--c-red);
-    color: var(--c-red); padding: 12px 24px;
-    font-family: 'Oswald'; font-weight: 700; font-size: 14px;
-    text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
-    transition: 0.2s; width: 100%; text-align: center;
-}
-.btn-moves:hover { background: var(--c-red); color: #fff; }
+.acc-btn:hover { background: #111; color: #fff; padding-left: 30px; }
+.acc-btn span { font-size: 10px; color: var(--c-red); }
 
-/* The Menu List */
-.sb-menu { flex: 1; overflow-y: auto; padding: 20px 0; }
-.sb-header {
-    padding: 10px 25px; color: #fff; font-family: 'Oswald'; 
-    font-size: 14px; font-weight: 700; text-transform: uppercase; 
-    letter-spacing: 1px; margin-top: 10px;
+.acc-panel { display: none; background: #000; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+.acc-link {
+    display: block; padding: 10px 30px; font-size: 12px; color: #777; 
+    border-bottom: 1px solid #111; cursor: pointer; transition: 0.2s;
 }
-
-.sb-item {
-    padding: 15px 25px; border-bottom: 1px solid #1a1a1a;
-    display: flex; justify-content: space-between; align-items: center;
-    cursor: pointer; transition: 0.2s;
-}
-.sb-item:hover { background: #111; }
-.sb-label {
-    font-family: 'Oswald'; font-size: 14px; font-weight: 500; 
-    color: var(--c-red); text-transform: uppercase; letter-spacing: 1px;
-}
-.sb-arrow { color: var(--c-red); font-size: 10px; transform: rotate(0deg); transition: 0.2s; }
-.sb-item.active .sb-arrow { transform: rotate(180deg); }
-
-.sb-sub-list {
-    background: #0a0a0a; display: none; padding: 5px 0;
-    box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);
-}
-.sb-sub-item {
-    padding: 10px 35px; font-size: 13px; color: #888; cursor: pointer;
-    border-bottom: 1px solid #151515; display: block;
-}
-.sb-sub-item:hover { color: #fff; background: #111; }
+.acc-link:hover { color: #fff; background: #050505; padding-left: 35px; border-left: 2px solid var(--c-red); }
 
 
-/* --- MAP VIEW --- */
-.map-container {
-    position: absolute; inset: 0; background: #080808; z-index: 20;
-    display: none; align-items: center; justify-content: center;
-}
-.map-container.show { display: flex; }
-.map-content {
-    position: relative; border: 1px solid var(--c-border); max-width: 95%; max-height: 90%; overflow: auto;
-    background: #000; box-shadow: 0 0 50px rgba(0,0,0,0.5);
-}
-/* Blueprint Filter */
-.blueprint {
-    display: block;
-    /* Invert White->Black, Tint Lines Greenish/White */
-    filter: invert(100%) grayscale(100%) contrast(150%) brightness(0.9);
-}
-.pin {
-    position: absolute; width: 16px; height: 16px; background: var(--c-red);
-    border: 2px solid #fff; border-radius: 50%; transform: translate(-50%, -50%);
-    cursor: pointer; box-shadow: 0 0 10px var(--c-red);
-}
-.pin:hover { transform: translate(-50%, -50%) scale(1.5); }
-
-
-/* --- MOVES MODAL --- */
-.modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100;
-    display: none; justify-content: center; align-items: center;
-}
-.modal-overlay.open { display: flex; }
-.modal-box {
-    width: 600px; max-width: 90%; background: #111; border: 1px solid var(--c-border);
-    display: flex; flex-direction: column; max-height: 80vh;
-}
-.modal-header {
-    padding: 20px; border-bottom: 1px solid var(--c-border); display: flex; justify-content: space-between;
-    align-items: center; background: #151515;
-}
-.modal-title { font-family: 'Oswald'; font-size: 20px; text-transform: uppercase; color: #fff; }
-.modal-close { cursor: pointer; color: var(--c-red); font-weight: bold; font-size: 20px; }
-.modal-body { overflow-y: auto; padding: 20px; }
-
-.move-entry {
-    padding: 15px; border-bottom: 1px solid #222; display: flex; justify-content: space-between;
-}
-.move-id { font-family: 'Oswald'; color: var(--s-vip); font-size: 18px; }
-.move-info { text-align: right; font-size: 13px; color: #888; }
-.move-arrow { margin: 0 8px; color: #444; }
-.move-new { color: #fff; font-weight: bold; }
-
-
-/* Responsive */
-@media (max-width: 1000px) {
-    .main-body { grid-template-columns: 1fr; }
-    .corp-sidebar { display: none; }
+/* MOBILE RESPONSIVE */
+@media (max-width: 900px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .results-pane { padding: 20px; }
+    body.is-searching .search-container { padding: 10px 20px; }
 }
 </style>
 </head>
 <body>
 
-<div class="bg-hero"></div>
-<div class="bg-overlay"></div>
+<div class="bg-layer"></div>
+<div class="bg-vignette"></div>
 
-<header class="corp-header">
-    <div class="logo-section">
-        <img src="panther_icon.png" class="logo-img" alt="Panthers">
-        <div class="site-title">Game Finder</div>
+<header class="top-nav">
+    <div class="nav-brand">
+        <img src="panther_icon.png" class="mini-logo">
+        <span class="mini-title">Game Finder</span>
     </div>
-    <button class="map-toggle-btn" id="btnMap" onclick="toggleMap()">View Floor Map</button>
+    <div class="nav-controls">
+        <button class="btn-home" onclick="resetApp()">
+            <span>🏠</span> Home
+        </button>
+    </div>
 </header>
 
-<div class="main-body">
-    <main class="content-area">
-        
-        <div class="search-hero">
-            <div class="search-input-group">
-                <input type="text" class="search-input" id="searchBox" placeholder="Search for a Game, Machine, or Link..." autocomplete="off">
-                <span class="search-icon">🔍</span>
-            </div>
-            <div class="filter-tabs">
-                <div class="f-tab active" onclick="setZone('all', this)">All Areas</div>
-                <div class="f-tab" onclick="setZone('VIP Room Black Panther', this)">VIP Room</div>
-                <div class="f-tab" onclick="setZone('Main Floor', this)">Main Floor</div>
-                <div class="f-tab" onclick="setZone('Kelly\'s Gaming', this)">Kelly's</div>
-                <div class="f-tab" onclick="setZone('Basement', this)">Basement</div>
-            </div>
+<div class="app-layout">
+    
+    <div class="search-container">
+        <div class="hero-logo">
+            <img src="panther_icon.png" alt="Panthers">
         </div>
 
-        <div class="results-viewport" id="gridView">
-            <div style="margin-top:20px; font-size:14px; color:#666; margin-bottom:15px;" id="resultCount">Start typing to search...</div>
-            <div class="grid" id="cardGrid"></div>
+        <div class="search-bar-wrap">
+            <input type="text" class="main-input" id="searchBox" placeholder="Search Game Name, Link, or Machine #..." autocomplete="off">
+            <span class="search-icon">🔍</span>
+            <span class="clear-search" onclick="resetApp()">✕</span>
         </div>
 
-        <div class="map-container" id="mapView">
-            <div class="map-content">
-                <img src="image_e40346.png" class="blueprint" alt="Floor Map">
-                <div class="pin" style="top:15%; left:91.5%;" onclick="quickSearch('1059')"></div>
-                <div class="pin" style="top:15%; left:38%;" onclick="quickSearch('1051')"></div>
-                <div class="pin" style="top:70%; left:9.5%;" onclick="quickSearch('1091')"></div>
-            </div>
+        <div class="quick-links">
+            <div class="chip" onclick="runSearch('VIP')">VIP Room</div>
+            <div class="chip" onclick="runSearch('Main Floor')">Main Floor</div>
+            <div class="chip" onclick="runSearch('Kelly\'s')">Kelly's Gaming</div>
+            <div class="chip" onclick="runSearch('Basement')">Basement</div>
         </div>
-
-    </main>
-
-    <aside class="corp-sidebar">
-        
-        <div class="sb-action-area">
-            <button class="btn-moves" onclick="toggleMoves()">Conversions & Moves</button>
-        </div>
-
-        <div class="sb-menu" id="sidebarMenu">
-            <div class="sb-header">Floor Overview</div>
-            </div>
-
-    </aside>
-</div>
-
-<div class="modal-overlay" id="movesModal">
-    <div class="modal-box">
-        <div class="modal-header">
-            <div class="modal-title">Recent Floor Changes</div>
-            <div class="modal-close" onclick="toggleMoves()">✕</div>
-        </div>
-        <div class="modal-body" id="movesList">
-            </div>
     </div>
+
+    <div class="content-grid">
+        
+        <div class="results-pane">
+            <div class="result-count" id="resultCount">Results</div>
+            <div class="cards-container" id="resultsGrid">
+                </div>
+        </div>
+
+        <aside class="sidebar">
+            <div class="sidebar-header">Browse Floor</div>
+            <div class="sidebar-content" id="sidebarList">
+                </div>
+        </aside>
+
+    </div>
+
 </div>
 
 <script>
@@ -347,7 +326,6 @@ const data = {"game_packs":{"5 Dragons":["5 DRAGONS EMPIRE","5 Dragons Legends",
 
 // --- LOGIC ---
 
-// Pack Index
 const packMap = {};
 for(const [game, packs] of Object.entries(data.game_packs)){
     packs.forEach(p => {
@@ -356,7 +334,6 @@ for(const [game, packs] of Object.entries(data.game_packs)){
     });
 }
 
-// Area Logic
 const getArea = (loc) => {
     const n = parseInt(loc);
     if(n>=1051 && n<=1095) return "Basement";
@@ -377,89 +354,90 @@ const getZoneClass = (area) => {
 let currentZone = 'all';
 const searchBox = document.getElementById('searchBox');
 const resultCount = document.getElementById('resultCount');
-const grid = document.getElementById('cardGrid');
+const resultsList = document.getElementById('resultsGrid');
+const clearBtn = document.querySelector('.clear-search');
 
-// --- GRID RENDER ---
-function updateGrid(){
-    const query = searchBox.value.toLowerCase();
-    grid.innerHTML = '';
-    
-    // Default Empty State
-    if(!query && currentZone === 'all') {
-        grid.innerHTML = ''; 
-        resultCount.textContent = "Enter a game name to begin search.";
-        return;
+// --- SEARCH ENGINE ---
+function runSearch(query) {
+    // 1. Manage State Classes
+    if(query || currentZone !== 'all') {
+        document.body.classList.add('is-searching');
+    } else {
+        document.body.classList.remove('is-searching');
+        return; 
     }
 
-    const fragment = document.createDocumentFragment();
-    let count = 0;
-    const limit = query ? 500 : 50;
+    // 2. Filter Data
+    let matches = [];
+    const limit = 100;
+    const qLower = query.toLowerCase().trim();
 
     for(const m of data.machines){
-        if(count >= limit) break;
+        if(matches.length >= limit) break;
 
         const area = getArea(m.location);
-        
-        // Filter
+        const desc = (m.description || "").toLowerCase();
+        const link = (m.link || "").toLowerCase();
+        const loc = m.location;
+
+        // Zone Filter
         if(currentZone !== 'all' && area !== currentZone) continue;
 
-        // Search
-        let match = false;
-        if(!query) match = true;
+        // Text Search
+        let isMatch = false;
+        if(!qLower) isMatch = true; // Show all in zone
         else {
-            if(m.location.includes(query)) match = true;
-            if((m.description||"").toLowerCase().includes(query)) match = true;
-            if((m.link||"").toLowerCase().includes(query)) match = true;
+            if(desc.includes(qLower)) isMatch = true;
+            if(loc.includes(qLower)) isMatch = true;
+            if(link.includes(qLower)) isMatch = true;
             if(packMap[m.description]){
-                if(packMap[m.description].some(g => g.toLowerCase().includes(query))) match = true;
+                if(packMap[m.description].some(g => g.toLowerCase().includes(qLower))) isMatch = true;
             }
         }
 
-        if(match){
-            count++;
-            fragment.appendChild(createCard(m, area));
-        }
+        if(isMatch) matches.push({ ...m, area });
     }
 
-    if(count === 0){
-        resultCount.textContent = "No results found.";
-    } else {
-        resultCount.textContent = `${count} machines found.`;
-        grid.appendChild(fragment);
-    }
-}
+    // 3. Render
+    resultCount.textContent = matches.length > 0 ? `${matches.length} Results Found` : "No results found.";
+    resultsList.innerHTML = '';
 
-function createCard(m, area){
-    const el = document.createElement('div');
-    el.className = 'corp-card';
-    
-    const games = packMap[m.description] || [];
-    const hasPack = games.length > 0;
-    const linkStr = m.link ? m.link.replace(/PEN /g, '').replace(/,/g, ' | ') : '';
+    if(matches.length === 0) return;
 
-    el.innerHTML = `
-        <div class="cc-header">
-            <div class="cc-title">${m.description}</div>
-            <div class="cc-mach">#${m.location}</div>
-        </div>
-        <div class="cc-meta">
-            <span class="cc-tag ${getZoneClass(area)}">${area.replace(" Black Panther","")}</span>
-            <span>${m.manufacturer}</span>
-        </div>
-        ${linkStr ? `<div class="cc-link">⚡ ${linkStr}</div>` : ''}
+    const frag = document.createDocumentFragment();
+    matches.forEach(m => {
+        const el = document.createElement('div');
+        el.className = 'corp-card';
         
-        ${hasPack ? `
-            <div class="pack-wrapper">
-                <div class="pack-toggle" onclick="togglePack(this)">
-                    <span>View Included Games</span> <span>+</span>
-                </div>
-                <div class="pack-list">
-                    ${games.map(g => `<div onclick="quickSearch('${g}')">${g}</div>`).join('')}
-                </div>
+        const games = packMap[m.description] || [];
+        const hasPack = games.length > 0;
+        const linkStr = m.link ? m.link.replace(/PEN /g, '').replace(/,/g, ' | ') : '';
+
+        el.innerHTML = `
+            <div class="cc-header">
+                <div class="cc-name">${m.description}</div>
+                <div class="cc-mach">#${m.location}</div>
             </div>
-        ` : ''}
-    `;
-    return el;
+            <div class="cc-meta">
+                <span class="cc-badge ${getZoneClass(m.area)}">${m.area.replace(" Black Panther","")}</span>
+                <span style="color:#666; font-size:12px;">${m.manufacturer}</span>
+            </div>
+            ${linkStr ? `<div class="cc-link">⚡ ${linkStr}</div>` : ''}
+            
+            ${hasPack ? `
+                <div class="pack-wrapper">
+                    <div class="pack-toggle" onclick="togglePack(this)">
+                        <span>View ${games.length} Games</span> <span>+</span>
+                    </div>
+                    <div class="pack-games">
+                        ${games.map(g => `<div class="pack-game-item" onclick="quickSearch('${g}')">› ${g}</div>`).join('')}
+                    </div>
+                </div>
+            ` : ''}
+        `;
+        frag.appendChild(el);
+    });
+    resultsList.appendChild(frag);
 }
 
 window.togglePack = (btn) => {
@@ -472,36 +450,37 @@ window.togglePack = (btn) => {
     } else {
         list.style.display = 'none';
         btn.querySelector('span:last-child').textContent = '+';
-        btn.style.backgroundColor = 'rgba(255,255,255,0.05)';
+        btn.style.backgroundColor = 'rgba(255,255,255,0.03)';
     }
 };
 
 window.quickSearch = (term) => {
-    toggleMap(false);
-    searchBox.value = term;
-    updateGrid();
+    searchBox.value = term; 
+    if(['VIP Room Black Panther','Main Floor','Kelly\'s Gaming','Basement'].includes(term)){
+        currentZone = term;
+        searchBox.value = ""; 
+    } else {
+        currentZone = 'all';
+    }
+    runSearch(searchBox.value);
 };
 
-function setZone(zone, el){
-    currentZone = zone;
-    document.querySelectorAll('.f-tab').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-    toggleMap(false);
-    updateGrid();
-}
+window.resetApp = () => {
+    searchBox.value = '';
+    currentZone = 'all';
+    document.body.classList.remove('is-searching');
+};
 
-// --- SIDEBAR (Accordion) ---
+// --- SIDEBAR (ACCORDION) ---
 function renderSidebar(){
-    const sidebar = document.getElementById('sidebarMenu');
-    
-    // 1. Links
+    const sidebar = document.getElementById('sidebarList');
     const links = new Set();
     data.machines.forEach(m => {
         if(m.link) m.link.split(',').forEach(l => links.add(l.trim().replace('PEN ', '')));
     });
-    createSbGroup(sidebar, "FLOOR LINKS", Array.from(links).sort());
 
-    // 2. Packs by Manu
+    createAccordion(sidebar, "Floor Links", Array.from(links).sort());
+
     const manuMap = {};
     for(const [game, info] of Object.entries(data.game_info || {})){
         const m = info.manufacturer || "Other";
@@ -509,86 +488,31 @@ function renderSidebar(){
         manuMap[m].push(game);
     }
     for(const manu in manuMap){
-        createSbGroup(sidebar, `${manu} PACKS`, manuMap[manu].sort());
+        createAccordion(sidebar, `${manu} Packs`, manuMap[manu].sort());
     }
 }
 
-function createSbGroup(parent, title, items){
-    const itemDiv = document.createElement('div');
-    
-    itemDiv.innerHTML = `
-        <div class="sb-item" onclick="toggleSb(this)">
-            <div class="sb-label">${title}</div>
-            <div class="sb-arrow">▼</div>
-        </div>
-        <div class="sb-sub-list">
-            ${items.map(i => `<span class="sb-sub-item" onclick="quickSearch('${i}')">${i}</span>`).join('')}
+function createAccordion(parent, title, items){
+    const div = document.createElement('div');
+    div.innerHTML = `
+        <button class="acc-btn" onclick="toggleAcc(this)">${title} <span>▼</span></button>
+        <div class="acc-panel">
+            ${items.map(i => `<span class="acc-link" onclick="quickSearch('${i}')">${i}</span>`).join('')}
         </div>
     `;
-    parent.appendChild(itemDiv);
+    parent.appendChild(div);
 }
 
-window.toggleSb = (btn) => {
-    btn.classList.toggle('active');
-    const sub = btn.nextElementSibling;
-    if(sub.style.display === 'block'){
-        sub.style.display = 'none';
-    } else {
-        sub.style.display = 'block';
-    }
+window.toggleAcc = (btn) => {
+    const panel = btn.nextElementSibling;
+    const isVisible = panel.style.display === 'block';
+    panel.style.display = isVisible ? 'none' : 'block';
+    btn.querySelector('span').textContent = isVisible ? '▼' : '▲';
 };
-
-// --- MAP & MOVES ---
-const mapContainer = document.getElementById('mapView');
-const gridView = document.getElementById('gridView');
-const btnMap = document.getElementById('btnMap');
-
-function toggleMap(force){
-    const isMap = mapContainer.classList.contains('show');
-    const showMap = force !== undefined ? force : !isMap;
-
-    if(showMap){
-        mapContainer.classList.add('show');
-        gridView.style.display = 'none';
-        btnMap.classList.add('active');
-        btnMap.textContent = "Back to List";
-    } else {
-        mapContainer.classList.remove('show');
-        gridView.style.display = 'block';
-        btnMap.classList.remove('active');
-        btnMap.textContent = "View Floor Map";
-    }
-}
-
-const movesModal = document.getElementById('movesModal');
-window.toggleMoves = () => {
-    movesModal.classList.toggle('open');
-};
-
-// Render Moves
-const movesList = document.getElementById('movesList');
-data.retired_moves.forEach(g => {
-    const d = document.createElement('div');
-    d.innerHTML = `<div style="background:#222; color:#fff; padding:10px; font-weight:bold; font-family:'Oswald'; margin-top:15px;">${g.date} - ${g.type}</div>`;
-    g.moves.forEach(m => {
-        const row = document.createElement('div');
-        row.className = 'move-entry';
-        row.innerHTML = `
-            <div class="move-id">#${m.mach}</div>
-            <div class="move-info">
-                <div>WAS: ${m.was}</div>
-                <div class="move-new">NOW: ${m.now}</div>
-            </div>
-        `;
-        d.appendChild(row);
-    });
-    movesList.appendChild(d);
-});
 
 // INIT
-searchBox.addEventListener('input', updateGrid);
+searchBox.addEventListener('input', (e) => runSearch(e.target.value));
 renderSidebar();
-updateGrid();
 
 </script>
 </body>
