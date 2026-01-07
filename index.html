@@ -1,742 +1,420 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Panthers Game Finder | Ultimate Edition</title>
-<style>
-    /* --- VARIABLES & RESET --- */
-    :root {
-        --bg-core: #030305;
-        --bg-glass: rgba(20, 20, 23, 0.65);
-        --bg-glass-heavy: rgba(10, 10, 12, 0.85);
-        --border-glass: rgba(255, 255, 255, 0.08);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhonda Blackadder | Psychologist</title>
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-color: #5D7A84; /* Calming Teal/Slate */
+            --secondary-color: #F4F7F6; /* Off-white background */
+            --accent-color: #D6E4E7; /* Light blue accent */
+            --text-color: #333333;
+            --white: #ffffff;
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--secondary-color);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- LAYOUT UTILITIES --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 10px auto 0;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background-color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 80px 0;
+            flex-wrap: wrap;
+        }
+
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 40px;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 50%;
+            box-shadow: 10px 10px 0px var(--accent-color);
+            border: 5px solid var(--white);
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about-content {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        /* --- SERVICES (Individual Therapy) --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .interest-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .interest-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* --- APPROACH --- */
+        .approach {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .approach h2 {
+            color: var(--white);
+        }
         
-        --primary-red: #ff0f43; /* Neon Red */
-        --primary-green: #00ff9d; /* Neon Green */
-        --text-main: #ffffff;
-        --text-muted: #8b9bb4;
+        .approach h2::after {
+            background: var(--white);
+        }
+
+        .approach-text {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* --- FIRST SESSION --- */
+        .session-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .session-card {
+            background: var(--white);
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .session-intro {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+        }
+
+        /* --- REFERRALS --- */
+        .referrals {
+            background-color: var(--accent-color);
+        }
         
-        --glow-red: 0 0 25px rgba(255, 15, 67, 0.4);
-        --glow-green: 0 0 20px rgba(0, 255, 157, 0.3);
+        .referral-box {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
         
-        --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
+        .referral-box p {
+            margin-bottom: 15px;
+        }
 
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    
-    body {
-        margin: 0; padding: 0;
-        font-family: var(--font-stack);
-        background-color: var(--bg-core);
-        color: var(--text-main);
-        overflow-x: hidden;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
+        /* --- CONTACT / FOOTER --- */
+        footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 60px 0;
+            text-align: center;
+        }
 
-    /* --- BACKGROUNDS --- */
-    #wallpaper {
-        position: fixed; inset: 0;
-        background-image: url('panthers_bg.jpg');
-        background-size: cover;
-        background-position: center;
-        opacity: 0.25; /* Faded per request */
-        z-index: -3;
-        filter: saturate(0.8) contrast(1.2);
-    }
-    
-    #vignette {
-        position: fixed; inset: 0;
-        background: radial-gradient(circle at center, transparent 0%, var(--bg-core) 120%);
-        z-index: -2;
-        pointer-events: none;
-    }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            font-size: 1.1rem;
+        }
 
-    #particles {
-        position: fixed; inset: 0;
-        z-index: -1;
-        pointer-events: none;
-    }
+        .contact-link {
+            color: #ecf0f1;
+            text-decoration: underline;
+        }
+        
+        .address-box {
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 20px;
+            display: inline-block;
+        }
 
-    /* --- SCROLLBARS --- */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                gap: 30px;
+            }
+            
+            .hero-text {
+                padding-right: 0;
+            }
 
-    /* --- LAYOUT --- */
-    .app-shell {
-        width: 100%;
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 40px 20px 80px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-        z-index: 1;
-    }
-
-    /* --- HERO SECTION --- */
-    .hero {
-        text-align: center;
-        margin-bottom: 40px;
-        width: 100%;
-    }
-
-    .panther-wrapper {
-        position: relative;
-        width: 180px;
-        height: 180px;
-        margin: 0 auto 20px;
-        animation: float 6s ease-in-out infinite;
-    }
-
-    .panther-wrapper::before {
-        content: '';
-        position: absolute;
-        inset: 10px;
-        background: radial-gradient(circle, var(--primary-red) 0%, transparent 70%);
-        opacity: 0.4;
-        filter: blur(30px);
-        animation: pulseRed 4s ease-in-out infinite alternate;
-        z-index: -1;
-    }
-
-    .panther-img {
-        width: 100%; height: 100%;
-        object-fit: contain;
-        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-    }
-
-    .title-box h1 {
-        margin: 0;
-        font-size: 42px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 4px;
-        background: linear-gradient(to bottom, #fff, #a0a0a0);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    }
-
-    .title-box p {
-        margin: 8px 0 0;
-        color: var(--text-muted);
-        font-size: 14px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        font-weight: 500;
-    }
-
-    /* --- NAVIGATION TABS --- */
-    .nav-container {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        background: var(--bg-glass);
-        padding: 6px;
-        border-radius: 100px;
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-glass);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        margin-bottom: 35px;
-        flex-wrap: wrap;
-    }
-
-    .nav-btn {
-        background: transparent;
-        border: none;
-        color: var(--text-muted);
-        padding: 12px 28px;
-        border-radius: 50px;
-        font-size: 13px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .nav-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
-
-    .nav-btn.active {
-        color: #fff;
-        background: linear-gradient(135deg, rgba(255,15,67,0.8), rgba(255,15,67,0.4));
-        box-shadow: 0 4px 15px rgba(255, 15, 67, 0.3);
-        border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    /* --- SEARCH BAR (GOOGLE STYLE) --- */
-    .search-container {
-        width: 100%;
-        max-width: 680px;
-        position: relative;
-        margin-bottom: 30px;
-    }
-
-    .search-input {
-        width: 100%;
-        background: var(--bg-glass-heavy);
-        border: 1px solid var(--border-glass);
-        padding: 20px 60px 20px 25px;
-        border-radius: 16px;
-        color: #fff;
-        font-size: 18px;
-        font-family: var(--font-stack);
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-
-    .search-input:focus {
-        outline: none;
-        border-color: var(--primary-red);
-        box-shadow: 0 0 0 4px rgba(255, 15, 67, 0.1), var(--glow-red);
-        background: #000;
-    }
-
-    .search-icon {
-        position: absolute;
-        right: 25px; top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-muted);
-        pointer-events: none;
-        font-size: 20px;
-    }
-
-    /* --- CONTENT PANELS --- */
-    .tab-panel {
-        display: none;
-        width: 100%;
-        max-width: 800px;
-        animation: fadeIn 0.4s ease forwards;
-    }
-    .tab-panel.active { display: block; }
-
-    /* --- RESULT CARDS --- */
-    .results-grid {
-        display: grid;
-        gap: 12px;
-    }
-
-    .card {
-        background: var(--bg-glass);
-        border: 1px solid var(--border-glass);
-        border-radius: 12px;
-        padding: 16px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        backdrop-filter: blur(10px);
-        animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        opacity: 0; /* Hidden initially for animation */
-    }
-
-    .card:hover {
-        transform: translateY(-2px) scale(1.01);
-        background: rgba(40, 40, 45, 0.9);
-        border-color: var(--primary-green);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-    }
-
-    .card-info h3 {
-        margin: 0 0 4px 0;
-        font-size: 16px;
-        font-weight: 600;
-        color: #fff;
-    }
-    .card-info p {
-        margin: 0;
-        font-size: 13px;
-        color: var(--text-muted);
-    }
-    
-    .card-badge {
-        font-size: 12px;
-        font-weight: 700;
-        padding: 6px 12px;
-        border-radius: 8px;
-        background: rgba(255,255,255,0.05);
-        color: var(--text-muted);
-        border: 1px solid var(--border-glass);
-        min-width: 70px;
-        text-align: center;
-        transition: 0.2s;
-    }
-    
-    .card:hover .card-badge {
-        background: rgba(0, 255, 157, 0.1);
-        color: var(--primary-green);
-        border-color: rgba(0, 255, 157, 0.3);
-    }
-
-    /* --- ACCORDIONS (For Lists) --- */
-    .area-group { margin-bottom: 20px; }
-    .area-header {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        color: var(--primary-red);
-        margin-bottom: 10px;
-        font-weight: 800;
-        padding-left: 5px;
-        border-left: 3px solid var(--primary-red);
-        line-height: 1;
-        display: flex;
-        align-items: center;
-    }
-    
-    .accordion-btn {
-        width: 100%;
-        text-align: left;
-        background: var(--bg-glass);
-        border: 1px solid var(--border-glass);
-        padding: 14px 20px;
-        color: #fff;
-        font-weight: 600;
-        font-size: 14px;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 8px;
-        margin-bottom: 2px;
-        transition: 0.2s;
-    }
-    
-    .accordion-btn:hover { background: rgba(255,255,255,0.08); }
-    .accordion-btn.open {
-        background: rgba(255,255,255,0.1);
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-        border-color: rgba(255,255,255,0.2);
-    }
-
-    .accordion-content {
-        display: none;
-        background: rgba(0,0,0,0.4);
-        border: 1px solid var(--border-glass);
-        border-top: none;
-        border-radius: 0 0 8px 8px;
-        padding: 10px;
-    }
-    .accordion-content.open { display: block; animation: fadeIn 0.3s; }
-
-    .sub-item {
-        padding: 8px 12px;
-        font-size: 13px;
-        color: #ccc;
-        border-bottom: 1px solid rgba(255,255,255,0.03);
-        display: flex; justify-content: space-between;
-    }
-    .sub-item:last-child { border-bottom: none; }
-    .sub-machine { font-family: monospace; color: var(--primary-green); font-weight: bold; }
-
-    /* --- CONVERSIONS --- */
-    .conv-grid { display: grid; gap: 10px; }
-    .conv-item {
-        background: linear-gradient(90deg, rgba(20,20,20,0.8), rgba(30,30,30,0.8));
-        border: 1px solid var(--border-glass);
-        padding: 15px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-    .conv-id {
-        font-family: 'Courier New', monospace;
-        font-size: 18px;
-        font-weight: 900;
-        color: #fff;
-        background: rgba(255,255,255,0.1);
-        padding: 10px;
-        border-radius: 8px;
-        min-width: 70px;
-        text-align: center;
-        border: 1px solid rgba(255,255,255,0.1);
-    }
-    .conv-data { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-    .conv-row { display: flex; align-items: baseline; gap: 10px; font-size: 13px; }
-    .badge-was { color: #ff5555; background: rgba(255,85,85,0.1); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; letter-spacing: 1px; }
-    .badge-now { color: #00ff9d; background: rgba(0,255,157,0.1); padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; letter-spacing: 1px; }
-
-    /* --- ANIMATIONS --- */
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-    @keyframes pulseRed { 0% { opacity: 0.3; transform: scale(0.9); } 100% { opacity: 0.6; transform: scale(1.1); } }
-    @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
-
-    /* --- MOBILE OPTIMIZATION --- */
-    @media (max-width: 600px) {
-        .nav-btn { padding: 10px 16px; font-size: 11px; }
-        .panther-wrapper { width: 140px; height: 140px; }
-        .title-box h1 { font-size: 32px; }
-        .card { padding: 14px; }
-    }
-
-</style>
+            .nav-links {
+                display: none; /* Hidden on very small screens for simplicity in this single-file version */
+            }
+            
+            nav {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <div id="wallpaper"></div>
-    <div id="vignette"></div>
-    <canvas id="particles"></canvas>
-
-    <div class="app-shell">
-        
-        <header class="hero">
-            <div class="panther-wrapper">
-                <img src="panther_icon.png" alt="Panther Logo" class="panther-img">
-            </div>
-            <div class="title-box">
-                <h1>Game Finder</h1>
-                <p>Panthers Penrith • Updated 30.12.2025</p>
-            </div>
-        </header>
-
-        <nav class="nav-container">
-            <button class="nav-btn active" onclick="app.setTab('search')">Search</button>
-            <button class="nav-btn" onclick="app.setTab('machines')">Machines by Area</button>
-            <button class="nav-btn" onclick="app.setTab('links')">Links by Area</button>
-            <button class="nav-btn" onclick="app.setTab('conversions')">Conversions</button>
-        </nav>
-
-        <div id="tab-search" class="tab-panel active">
-            <div class="search-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="Search Game Name or Machine #..." autocomplete="off">
-                <div class="search-icon">🔍</div>
-            </div>
-            <div id="searchResults" class="results-grid">
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Rhonda Blackadder | Psychologist</div>
+                <div class="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#services">Services</a>
+                    <a href="#approach">Approach</a>
+                    <a href="#session">First Session</a>
+                    <a href="#contact">Contact</a>
                 </div>
+            </nav>
         </div>
+    </header>
 
-        <div id="tab-machines" class="tab-panel">
-            <div id="machinesList">
-                </div>
-        </div>
-
-        <div id="tab-links" class="tab-panel">
-            <div id="linksList">
-                </div>
-        </div>
-
-        <div id="tab-conversions" class="tab-panel">
-            <div class="area-group">
-                <div class="area-header">LATEST MOVES (30.12.2025)</div>
-                <div class="conv-grid">
-                    <div class="conv-item">
-                        <div class="conv-id">1088</div>
-                        <div class="conv-data">
-                            <div class="conv-row"><span class="badge-was">WAS</span> Pot of Gold</div>
-                            <div class="conv-row"><span class="badge-now">NOW</span> Players Choice Diamond</div>
-                        </div>
-                    </div>
-                    <div class="conv-item">
-                        <div class="conv-id">3201</div>
-                        <div class="conv-data">
-                            <div class="conv-row"><span class="badge-was">WAS</span> Shenlong Golden Emperor</div>
-                            <div class="conv-row"><span class="badge-now">NOW</span> Fortune Doors Jade Assassin</div>
-                        </div>
-                    </div>
-                     <div class="conv-item">
-                        <div class="conv-id">7803</div>
-                        <div class="conv-data">
-                            <div class="conv-row"><span class="badge-was">WAS</span> Dragon Unleashed Treasures</div>
-                            <div class="conv-row"><span class="badge-now">NOW</span> Huff N More Puff</div>
-                        </div>
-                    </div>
-                    <div class="conv-item">
-                        <div class="conv-id">4101</div>
-                        <div class="conv-data">
-                            <div class="conv-row"><span class="badge-was">WAS</span> Lightning Gongs Lions</div>
-                            <div class="conv-row"><span class="badge-now">NOW</span> Legends of the Deep</div>
-                        </div>
-                    </div>
-                </div>
+    <section class="hero">
+        <div class="container" style="display: flex; flex-wrap: wrap; align-items: center;">
+            <div class="hero-text">
+                <h1>Supporting the emotional wellbeing of children, young people, and their families.</h1>
+                <p>A warm and approachable psychologist grounded in a person-centred approach.</p>
+                <br>
+                <a href="#contact" style="background: var(--primary-color); color: white; padding: 12px 25px; border-radius: 5px; font-weight: bold;">Get in Touch</a>
+            </div>
+            <div class="hero-image">
+                <img src="https://static.wixstatic.com/media/8d1054_ee7df96c9df8426c91fea3979c1ba28a~mv2.jpeg/v1/fill/w_371,h_335,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rhonda.jpeg" alt="Rhonda Blackadder">
             </div>
         </div>
+    </section>
 
-    </div>
+    <section id="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <p>I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported. I tailor each session to the individual, recognising the unique experiences, strengths, and needs that every young person brings.</p>
+                <br>
+                <p>My career has taken me across a range of clinical and educational settings. I have supported university students managing both academic pressures and personal challenges, and I have worked as a psychologist within primary and secondary schools. These experiences have deepened my understanding of child and adolescent development, learning needs, and the emotional hurdles young people may encounter. This background allows me to provide sensitive, practical, and well-informed guidance to those I work with.</p>
+            </div>
+        </div>
+    </section>
 
-<script>
-/**
- * DATASET 
- * Full data derived from source
- */
-const DB = {
-    machines: [
-        {loc:"1051",desc:"LIGHTNING CASH DRAGONS RICHES",link:""},
-        {loc:"1052",desc:"LIGHTNING CASH MINE MINE MINE",link:""},
-        {loc:"1053",desc:"LIGHTNING CASH RAGING BULL",link:""},
-        {loc:"1055",desc:"LIGHTNING LINK TIKI FIRE",link:"PEN Lightning Link"},
-        {loc:"1059",desc:"PLAYERS CHOICE OPAL EDITION",link:""},
-        {loc:"1072",desc:"5 DRAGONS EMPIRE",link:""},
-        {loc:"1087",desc:"EASTERN RICHES",link:"PEN Phoenix Link"},
-        {loc:"1088",desc:"PLAYERS CHOICE DIAMOND EDITION",link:""},
-        {loc:"1301",desc:"DRAGON LINK GOLDEN CENTURY",link:"PEN Dragon Link 2"},
-        {loc:"1704",desc:"PLAYERS CHOICE SAPPHIRE EDITION",link:"PEN VIP Link"},
-        {loc:"1801",desc:"CASHMAN MULTILINK INFERNO QUEEN",link:"PEN Multilink, PEN VIP Link"},
-        {loc:"2004",desc:"DRAGON TRAIN LINK FOREVER EMPEROR",link:"PEN Dragon Train, PEN VIP Link"},
-        {loc:"3201",desc:"FORTUNE DOORS LINK JADE ASSASSIN",link:"PEN Fortune Doors"},
-        {loc:"3207",desc:"LNML HUFF N MORE PUFF",link:"PEN Lock N More Link"},
-        {loc:"3404",desc:"HUFF N MORE PUFF",link:""},
-        {loc:"3801",desc:"BULL RUSH STAMPEDE MINOTAURS TREASURE",link:""},
-        {loc:"3901",desc:"HUFF N EVEN MORE PUFF",link:""},
-        {loc:"4001",desc:"MIGHTY GENIE LINK DRAGONS WISH",link:"PEN Mighty Genie Link"},
-        {loc:"4402",desc:"LIGHTNING LINK RAGING BULL",link:"PEN Lightning Link"},
-        {loc:"5001",desc:"TIGER AND DRAGON CASH ON REELS",link:"PEN Tiger and Dragon Link"},
-        {loc:"5201",desc:"POWER PANTHER TIKI TIKI",link:"PEN Panther Power"},
-        {loc:"5301",desc:"CASHMAN MULTILINK IMMORTAL FORTUNE",link:"PEN Multilink"},
-        {loc:"5401",desc:"MEXP BIG BLACK RHINO",link:"PEN Midnight Express"},
-        {loc:"5701",desc:"BANDIT LINK MONEY HEIST",link:"PEN Bandit Link"},
-        {loc:"5801",desc:"5 DRAGONS EMPIRE",link:"PEN Phoenix Link"},
-        {loc:"6004",desc:"DRAGON CASH GENGHIS KHAN",link:"PEN Phoenix Link"},
-        {loc:"6106",desc:"GRAND STAR SAPPHIRE",link:"PEN Grand Star"},
-        {loc:"7014",desc:"MIGHTY GENIE SAP MR BANKS",link:"PEN Phoenix Link"},
-        {loc:"7107",desc:"VEGAS STAR MULTIGAME",link:""},
-        {loc:"7803",desc:"LNML HUFF N MORE PUFF",link:"PEN Lock N More Link"},
-        {loc:"8001",desc:"DRAGON LINK SPRING FESTIVAL",link:"PEN Dragon Link 2"},
-        {loc:"8601",desc:"DRAGON TRAIN LINK CHI LIN WINS",link:"PEN Dragon Train"},
-        // Note: For full functionality, the entire list from the previous prompt is needed.
-        // I have included a representative sample above for the demo to work perfectly.
-        // In production, paste the full array from previous turn here.
-    ]
-};
-
-// -- Utility: Area Mapper --
-function getArea(loc) {
-    const n = parseInt(loc, 10);
-    if(isNaN(n)) return "Other";
-    if(n>=1051 && n<=1095) return "Basement Gaming";
-    if(n>=1101 && n<=1503) return "Main Gaming Floor";
-    if(n>=1701 && n<=2204) return "Black Panther Room VIP";
-    if(n>=2301 && n<=6505) return "Main Gaming Floor";
-    if(n>=7001 && n<=8705) return "Kelly's Gaming";
-    return "Other";
-}
-
-// -- Application Logic --
-const app = {
-    init: function() {
-        this.cacheDOM();
-        this.bindEvents();
-        this.renderLists();
-        this.particles.init();
-        
-        // Load full data if available, otherwise use sample
-        // Using the sample provided in DB for now to keep code clean
-        this.data = DB.machines; 
-    },
-
-    cacheDOM: function() {
-        this.dom = {
-            search: document.getElementById('searchInput'),
-            results: document.getElementById('searchResults'),
-            tabs: document.querySelectorAll('.nav-btn'),
-            panels: document.querySelectorAll('.tab-panel'),
-            machinesList: document.getElementById('machinesList'),
-            linksList: document.getElementById('linksList')
-        };
-    },
-
-    bindEvents: function() {
-        this.dom.search.addEventListener('input', (e) => this.handleSearch(e.target.value));
-        
-        // Accordion functionality
-        document.addEventListener('click', (e) => {
-            if(e.target.closest('.accordion-btn')) {
-                const btn = e.target.closest('.accordion-btn');
-                btn.classList.toggle('open');
-                const content = btn.nextElementSibling;
-                content.classList.toggle('open');
-            }
-        });
-    },
-
-    setTab: function(tabName) {
-        // Toggle Buttons
-        this.dom.tabs.forEach(btn => {
-            btn.classList.toggle('active', btn.onclick.toString().includes(tabName));
-        });
-        // Toggle Panels
-        this.dom.panels.forEach(panel => {
-            panel.classList.toggle('active', panel.id === `tab-${tabName}`);
-        });
-    },
-
-    handleSearch: function(query) {
-        const q = query.toLowerCase().trim();
-        const container = this.dom.results;
-        container.innerHTML = '';
-
-        if (!q) return;
-
-        // Filter Logic
-        const matches = this.data.filter(m => 
-            m.desc.toLowerCase().includes(q) || 
-            m.loc.includes(q)
-        ).slice(0, 30); // Limit to 30 for performance
-
-        if (matches.length === 0) {
-            container.innerHTML = `<div style="text-align:center; color:#666; padding:20px;">No results found.</div>`;
-            return;
-        }
-
-        // Render Cards with Staggered Animation
-        matches.forEach((m, index) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.style.animationDelay = `${index * 0.03}s`; // Stagger effect
-            
-            const area = getArea(m.loc);
-            
-            card.innerHTML = `
-                <div class="card-info">
-                    <h3>${m.desc}</h3>
-                    <p>${area}</p>
-                </div>
-                <div class="card-badge">${m.loc}</div>
-            `;
-            container.appendChild(card);
-        });
-    },
-
-    renderLists: function() {
-        // 1. Group by Area
-        const byArea = {};
-        this.data.forEach(m => {
-            const a = getArea(m.loc);
-            if(!byArea[a]) byArea[a] = [];
-            byArea[a].push(m);
-        });
-
-        // Render Machines List
-        const areaOrder = ["Basement Gaming", "Main Gaming Floor", "Black Panther Room VIP", "Kelly's Gaming"];
-        let machinesHTML = '';
-        
-        areaOrder.forEach(area => {
-            if(byArea[area]) {
-                machinesHTML += `
-                <div class="area-group">
-                    <div class="area-header">${area}</div>
-                    <button class="accordion-btn">
-                        <span>View All Machines</span>
-                        <span>${byArea[area].length}</span>
-                    </button>
-                    <div class="accordion-content">
-                        ${byArea[area].map(m => `
-                            <div class="sub-item">
-                                <span>${m.desc}</span>
-                                <span class="sub-machine">${m.loc}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>`;
-            }
-        });
-        this.dom.machinesList.innerHTML = machinesHTML;
-
-        // 2. Group Links
-        const linksByArea = {};
-        this.data.forEach(m => {
-            if(!m.link) return;
-            const a = getArea(m.loc);
-            if(!linksByArea[a]) linksByArea[a] = {};
-            
-            m.link.split(',').forEach(l => {
-                const linkName = l.replace('PEN ', '').trim();
-                if(!linksByArea[a][linkName]) linksByArea[a][linkName] = [];
-                linksByArea[a][linkName].push(m.loc);
-            });
-        });
-
-        let linksHTML = '';
-        areaOrder.forEach(area => {
-            if(linksByArea[area]) {
-                linksHTML += `<div class="area-group"><div class="area-header">${area}</div>`;
-                for(const [linkName, locs] of Object.entries(linksByArea[area])) {
-                    linksHTML += `
-                    <button class="accordion-btn">
-                        <span>${linkName}</span>
-                        <span>${locs.length}</span>
-                    </button>
-                    <div class="accordion-content">
-                        <div style="display:flex; flex-wrap:wrap; gap:8px;">
-                            ${locs.map(l => `<span class="badge-now" style="font-size:12px; padding:5px 8px;">${l}</span>`).join('')}
-                        </div>
-                    </div>`;
-                }
-                linksHTML += `</div>`;
-            }
-        });
-        this.dom.linksList.innerHTML = linksHTML;
-    },
-
-    // -- Particles System --
-    particles: {
-        init: function() {
-            this.cvs = document.getElementById('particles');
-            this.ctx = this.cvs.getContext('2d');
-            this.items = [];
-            
-            this.resize();
-            window.addEventListener('resize', () => this.resize());
-            
-            for(let i=0; i<45; i++) this.items.push(this.create());
-            this.animate();
-        },
-        create: function() {
-            return {
-                x: Math.random() * this.cvs.width,
-                y: Math.random() * this.cvs.height,
-                size: Math.random() * 2.5,
-                vx: (Math.random() - 0.5) * 0.4,
-                vy: (Math.random() - 0.5) * 0.4,
-                color: Math.random() > 0.5 ? '#ff0f43' : '#00ff9d',
-                alpha: Math.random() * 0.5
-            };
-        },
-        resize: function() {
-            this.cvs.width = window.innerWidth;
-            this.cvs.height = window.innerHeight;
-        },
-        animate: function() {
-            const ctx = this.ctx;
-            const w = this.cvs.width;
-            const h = this.cvs.height;
-            
-            ctx.clearRect(0,0,w,h);
-            
-            this.items.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                if(p.x < 0) p.x = w;
-                if(p.x > w) p.x = 0;
-                if(p.y < 0) p.y = h;
-                if(p.y > h) p.y = 0;
+    <section id="services" style="background-color: #fafafa;">
+        <div class="container">
+            <h2>Individual Therapy</h2>
+            <div class="services-grid">
                 
-                ctx.globalAlpha = p.alpha;
-                ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-                ctx.fill();
-            });
-            requestAnimationFrame(() => this.animate());
-        }
-    }
-};
+                <div class="service-card">
+                    <h3>Who I Support</h3>
+                    <ul class="interest-list">
+                        <li><strong>Children and young people:</strong> Aged 5–18</li>
+                        <li><strong>University students:</strong> Needing support with academic pressure, anxiety, and overall wellbeing</li>
+                    </ul>
+                </div>
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => app.init());
+                <div class="service-card">
+                    <h3>Areas of Special Interest</h3>
+                    <ul class="interest-list">
+                        <li>Anxiety</li>
+                        <li>Depression</li>
+                        <li>Adjustment difficulties</li>
+                        <li>Grief and Loss</li>
+                        <li>Acute stress and psychological distress</li>
+                        <li>Bullying</li>
+                        <li>Self-confidence and self-esteem issues</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</script>
+    <section id="approach" class="approach">
+        <div class="container">
+            <h2>Therapeutic Approach</h2>
+            <div class="approach-text">
+                <p>My practice is informed by positive psychology and a strengths-focused perspective. I use evidence-based therapies, including <strong>Acceptance and Commitment Therapy (ACT)</strong> and <strong>Cognitive Behavioural Therapy (CBT)</strong>, to help young people build resilience, develop emotional regulation skills, and learn strategies that support their overall wellbeing.</p>
+                <br>
+                <p>I value collaboration and believe that effective support often involves the wider network surrounding a young person. When appropriate, I work alongside families, educators, and other health professionals to ensure care is consistent, holistic, and responsive to each client’s needs.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="session">
+        <div class="container">
+            <h2>First Session</h2>
+            <p class="session-intro">The first session focuses on understanding the presenting concerns and gathering important developmental, family, and background information to guide treatment planning.</p>
+            
+            <div class="session-grid">
+                <div class="session-card">
+                    <h3>For children under 14 years</h3>
+                    <p>The initial appointment is held with <strong>parents or caregivers only</strong> to discuss the child’s history, strengths, and areas of concern.</p>
+                </div>
+
+                <div class="session-card">
+                    <h3>For young people aged 14+</h3>
+                    <p>The session is divided into:</p>
+                    <ul style="margin-top: 10px; margin-left: 20px; list-style: disc;">
+                        <li>30 minutes with the young person</li>
+                        <li>30 minutes with parents or caregivers to gain perspectives from both.</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 30px; font-style: italic;">Clients may also complete assessments or questionnaires to help clarify the presenting issues and support the development of an individualised treatment plan.</p>
+        </div>
+    </section>
+
+    <section id="referrals" class="referrals">
+        <div class="container">
+            <h2>Pathways to Referral</h2>
+            <div class="referral-box">
+                <p>I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.</p>
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
+                <p><strong>Mental Health Care Plans (MHCPs):</strong> For children and young people seeking psychological support through Medicare.</p>
+                <p><strong>NDIS Referrals:</strong> I see both self-managed and plan-managed clients.</p>
+                <p><strong>Private Referrals:</strong> No formal referral is required—parents, caregivers, and students may self-refer.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <h2 style="color: #fff; margin-bottom: 20px;">Contact</h2>
+            
+            <div class="address-box">
+                <p>Uralla Cottage</p>
+                <p>3 Baker Street, Windsor</p>
+                <p>NSW 2756</p>
+            </div>
+
+            <div class="contact-info">
+                <p>Email: <a href="mailto:rhondablackadder@gmail.com" class="contact-link">rhondablackadder@gmail.com</a></p>
+                <p>Mobile: <a href="tel:0421140107" class="contact-link">0421 140 107</a></p>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
