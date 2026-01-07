@@ -9,12 +9,14 @@
     <style>
         /* --- THEME COLORS --- */
         :root {
-            --bg-sage: #6B8E6B;           /* The Green from the wallpaper */
-            --deep-forest: #1A281A;       /* Very dark green for Text */
-            --cream-paper: #F9F9F4;       /* Warm Cream for content boxes */
+            /* Palette pulled from the watercolor image */
+            --sage-gold: #8FA88F;         
+            --deep-forest: #1B2E1B;       /* Dark Green for Text */
+            --cream-paper: #FDFDFB;       /* Warm White for boxes */
             --white: #ffffff;
             
-            /* The file you just saved */
+            /* YOUR BACKGROUND FILE */
+            /* Ensure 'background.png' is in the same folder */
             --bg-image: url('background.png'); 
         }
 
@@ -24,12 +26,12 @@
         body {
             font-family: 'Lato', sans-serif;
             color: var(--deep-forest);
-            line-height: 1.8; /* More breathing room for text */
+            line-height: 1.8;
             
-            /* PARALLAX BACKGROUND SETUP */
+            /* PARALLAX WALLPAPER SETTINGS */
             background-image: var(--bg-image);
-            background-attachment: fixed;
-            background-size: cover;
+            background-attachment: fixed; /* Keeps the wallpaper still */
+            background-size: cover;       /* Stretches to fill screen */
             background-position: center;
             background-repeat: no-repeat;
         }
@@ -39,28 +41,28 @@
 
         /* --- LAYOUT --- */
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 0 25px;
         }
 
-        /* This creates the "Strip" effect so it's not just floating boxes */
+        /* --- SECTIONS (Cream Strips) --- */
         section {
             background: var(--cream-paper);
             padding: 80px 0;
-            margin: 40px 0; /* Space between sections to see the wallpaper */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin: 60px 0; /* Big gaps to see the nice background */
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
             border-top: 1px solid rgba(0,0,0,0.05);
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* Make Hero transparent to show off the wallpaper at the top */
+        /* Hero is transparent to show the wallpaper */
         .hero-section {
-            background: transparent; 
+            background: transparent;
             margin: 0;
-            border: none;
             box-shadow: none;
-            min-height: 90vh; /* Full screen height */
+            border: none;
+            min-height: 90vh;
             display: flex;
             align-items: center;
         }
@@ -72,10 +74,10 @@
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 2.8rem;
             line-height: 1.2;
             margin-bottom: 25px;
-            text-shadow: 2px 2px 0px rgba(255,255,255,0.6); /* Text pop */
+            text-shadow: 0px 0px 20px rgba(255,255,255,0.8); /* Glow effect */
         }
 
         h2 {
@@ -84,14 +86,14 @@
             margin-bottom: 50px;
             position: relative;
         }
-        
-        /* Elegant underline for headers */
+
+        /* Gold underline for headers */
         h2::after {
             content: '';
             display: block;
-            width: 60px;
+            width: 80px;
             height: 2px;
-            background: var(--bg-sage);
+            background: #C5A059; /* Gold accent color */
             margin: 15px auto 0;
         }
 
@@ -103,25 +105,31 @@
             background-color: var(--deep-forest);
             color: var(--white);
             padding: 15px 35px;
-            border-radius: 4px; /* More professional, less rounded */
+            border-radius: 4px;
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
             font-size: 0.9rem;
         }
         .btn:hover {
-            background-color: var(--bg-sage);
+            background-color: #C5A059; /* Gold hover */
             color: var(--white);
             transform: translateY(-2px);
         }
 
-        /* --- HEADER --- */
+        /* --- HEADER (UPDATED) --- */
         header {
-            background: rgba(255, 255, 255, 0.95);
+            /* Changed from stark white to warm cream with transparency */
+            background: rgba(253, 253, 251, 0.85); 
+            /* Adds the "Frosted Glass" blur effect */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
+            
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05); /* Softer shadow */
+            border-bottom: 1px solid rgba(0,0,0,0.05); /* Subtle border */
         }
 
         nav {
@@ -136,7 +144,6 @@
             font-size: 1.4rem;
             font-weight: bold;
             color: var(--deep-forest);
-            letter-spacing: 1px;
         }
 
         .nav-links { display: flex; gap: 30px; }
@@ -147,23 +154,24 @@
             color: var(--deep-forest);
             text-transform: uppercase;
         }
-        .nav-links a:hover { color: var(--bg-sage); }
+        .nav-links a:hover { color: #C5A059; }
 
-        /* --- HERO CONTENT --- */
+        /* --- HERO BOX --- */
         .hero-box {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.9);
             padding: 60px;
-            border-radius: 4px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
-            gap: 60px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            gap: 50px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(8px);
         }
 
         .hero-text { flex: 1; }
         .hero-subtitle {
             font-size: 1.2rem;
-            color: #555;
+            color: #444;
             margin-bottom: 35px;
         }
 
@@ -173,8 +181,7 @@
             object-fit: cover;
             border-radius: 50%;
             border: 10px solid var(--white);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            flex-shrink: 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
         .credentials {
@@ -183,6 +190,15 @@
             font-weight: 700;
             text-align: center;
             opacity: 0.8;
+        }
+
+        /* --- ICONS (SVG) --- */
+        .section-icon {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 40px;
+            height: 40px;
+            fill: #C5A059; /* Gold Icon */
         }
 
         /* --- SERVICES GRID --- */
@@ -194,9 +210,9 @@
         
         .service-card {
             background: var(--white);
-            padding: 40px; /* More space */
-            border: 1px solid #eee;
-            /* No rounded corners for a sharper professional look */
+            padding: 40px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
         }
         
         .service-list li {
@@ -208,7 +224,7 @@
         .service-list li::before {
             content: '•';
             margin-right: 15px;
-            color: var(--bg-sage);
+            color: #C5A059;
             font-size: 1.5rem;
             line-height: 1rem;
         }
@@ -226,15 +242,15 @@
             flex: 1;
             min-width: 300px;
             max-width: 500px;
-            border: 1px solid #eee;
+            border: 1px solid #f0f0f0;
         }
 
         /* --- REFERRALS --- */
-        .referral-box { max-width: 800px; margin: 0 auto; background: var(--white); padding: 50px; }
+        .referral-box { max-width: 800px; margin: 0 auto; background: var(--white); padding: 50px; border: 1px solid #f0f0f0; }
         .referral-item {
             margin-bottom: 25px;
             padding-left: 20px;
-            border-left: 4px solid var(--bg-sage);
+            border-left: 4px solid #C5A059;
         }
         .referral-title {
             display: block;
@@ -244,7 +260,7 @@
             font-size: 1.1rem;
         }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER (Dark Green) --- */
         footer {
             background: var(--deep-forest);
             color: var(--white);
@@ -254,7 +270,7 @@
         
         footer a { color: var(--white); border-bottom: 1px dotted rgba(255,255,255,0.5); }
         footer h2 { color: var(--white); text-align: left; }
-        footer h2::after { margin: 15px 0 0 0; background: var(--bg-sage); }
+        footer h2::after { margin: 15px 0 0 0; background: #C5A059; }
         
         .footer-grid {
             display: flex;
@@ -264,9 +280,15 @@
         }
 
         .footer-info { flex: 1; min-width: 250px; }
-        .footer-map { flex: 1; min-width: 300px; height: 300px; }
+        .footer-map { 
+            flex: 1; 
+            min-width: 300px; 
+            height: 300px; 
+            border: 5px solid rgba(255,255,255,0.1); 
+            border-radius: 4px; 
+        }
 
-        .contact-item { margin-bottom: 20px; font-size: 1.1rem; }
+        .contact-item { margin-bottom: 25px; font-size: 1.1rem; }
         .contact-label { 
             display: block; 
             font-size: 0.8rem; 
@@ -339,6 +361,7 @@
 
     <section id="about">
         <div class="container">
+            <svg class="section-icon" viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66c2.08-5.17 4.19-11.34 13.19-13.34V6H22v2h-5zM9 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             <h2>About Me</h2>
             <div style="max-width: 800px; margin: 0 auto; text-align: center;">
                 <p>I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported.</p>
@@ -350,6 +373,7 @@
 
     <section id="services">
         <div class="container">
+            <svg class="section-icon" viewBox="0 0 24 24"><path d="M12 2c-1.7 0-3 1.3-3 3 0 1.1.6 2 1.5 2.5C9.6 7.9 9 9 9 10.2c0 2.2 1.8 4 4 4s4-1.8 4-4c0-1.2-.6-2.3-1.5-2.7C16.4 7 17 6.1 17 5c0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .4.1.8.3 1.2C9.8 7 8.8 8.5 8.8 10.2c0 3.2 2.5 5.8 5.7 5.8h.1l-.3 2.4c-.3 2-2 3.6-4 3.6H8c-1.1 0-2-.9-2-2V4H4v16c0 2.2 1.8 4 4 4h2.3c3.2 0 6-2.5 6.4-5.6L17 16c3.3 0 6-2.7 6-6 0-3.3-2.7-6-6-6-.7 0-1.4.1-2 .4C14.5 2.8 13.3 2 12 2z"/></svg>
             <h2>Individual Therapy</h2>
             <div class="services-grid">
                 
@@ -378,6 +402,7 @@
 
     <section id="approach">
         <div class="container">
+            <svg class="section-icon" viewBox="0 0 24 24"><path d="M22.5 10c-.3-1.6-2.3-2.2-3.4-1.1-.5.5-1.2.6-1.7.2-1.1-.8-2.7-.4-3.5.7-.4.5-1 .8-1.7.8-.6 0-1.2-.1-1.7-.3-.6-.3-1.4-.2-1.9.4-1 1.3-2.8 1.6-4.3.9C2 10.6.7 8.2 1.1 5.4c0-.3-.1-.5-.4-.6C.4 4.7.2 4.9.2 5.2c-.7 5.9 3.3 11.4 9.2 12.5.6.1 1.1.4 1.5 1 .7 1 2.1 1.5 3.4 1 1.3-.5 2.1-1.7 2.1-3.1 0-.6.2-1.2.7-1.5 1.1-.8 1.6-2.3 1-3.6-.2-.5-.1-1.1.3-1.5 1.3-1.3 3.7-.9 4.5.8.2.4.6.6 1 .6h1.1c.6 0 1-.5 1-1s-.6-1-1.1-1.1c-.9-.1-1.7.1-2.4.7z"/></svg>
             <h2>Therapeutic Approach</h2>
             <div style="max-width: 800px; margin: 0 auto; text-align: center;">
                 <p>My practice is informed by positive psychology and a strengths-focused perspective. I use evidence-based therapies, including <strong>Acceptance and Commitment Therapy (ACT)</strong> and <strong>Cognitive Behavioural Therapy (CBT)</strong>, to help young people build resilience and emotional regulation.</p>
@@ -389,6 +414,7 @@
 
     <section id="session">
         <div class="container">
+            <svg class="section-icon" viewBox="0 0 24 24"><path d="M12 3c-1.1 0-2 .9-2 2v14c-1.1 0-2 .9-2 2h4c0-1.1-.9-2-2-2V5c0-1.1-.9-2-2-2zm6 4c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zm-12 4c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/></svg>
             <h2>First Session</h2>
             <p style="text-align: center; max-width: 600px; margin: 0 auto 40px auto; font-style: italic; color: #666;">The first session focuses on understanding presenting concerns and gathering developmental background to guide treatment.</p>
             
@@ -407,12 +433,13 @@
                     </ul>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 30px; font-size: 0.9rem;">Clients may also complete assessments or questionnaires to support treatment planning.</p>
+            <p style="text-align: center; margin-top: 30px; font-style: italic; opacity: 0.8; font-size: 0.9rem;">Clients may also complete assessments or questionnaires to support treatment planning.</p>
         </div>
     </section>
 
     <section id="referrals">
         <div class="container">
+            <svg class="section-icon" viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66c2.08-5.17 4.19-11.34 13.19-13.34V6H22v2h-5zM9 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             <h2>Pathways to Referral</h2>
             <div class="referral-box">
                 <p style="text-align: center; margin-bottom: 30px; font-weight: bold;">I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.</p>
