@@ -3,367 +3,342 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Panthers Search</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Panthers Game Finder</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-    /* PANTHERS BRAND COLORS */
-    --p-black: #000000;
-    --p-charcoal: #121212;
-    --p-card: #1e1e1e;
-    --p-border: #333333;
-    --p-red: #ef4444;
-    --p-yellow: #fbbf24;
-    --p-green: #22c55e;
-    --p-text: #e2e8f0;
-    --p-text-muted: #94a3b8;
+    /* CORPORATE PALETTE */
+    --c-black: #111111;
+    --c-dark-grey: #1a1a1a;
+    --c-border: #333333;
+    --c-red: #e31837; /* Panthers Red */
+    --c-white: #ffffff;
+    --c-text-grey: #999999;
     
-    --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* STATUS COLORS */
+    --s-vip: #fbbf24;   /* Gold */
+    --s-main: #22c55e;  /* Green */
+    
+    --header-h: 80px;
+    --sidebar-w: 320px;
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
 
 body {
-    margin: 0; background-color: var(--p-black); color: var(--p-text);
-    font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden;
+    margin: 0; background-color: #000; color: var(--c-white);
+    font-family: 'Roboto', sans-serif; height: 100vh; overflow: hidden;
     display: flex; flex-direction: column;
 }
 
-/* --- BACKGROUND FX --- */
-.bg-wallpaper {
+/* --- BACKGROUND --- */
+.bg-hero {
     position: fixed; inset: 0; z-index: -2;
     background-image: url('panthers_bg.jpg');
     background-size: cover; background-position: center;
-    opacity: 0.15; filter: grayscale(80%) contrast(1.1);
+    opacity: 0.25; filter: grayscale(100%) contrast(1.2);
 }
-.bg-grid {
-    position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    background-image: radial-gradient(var(--p-border) 1px, transparent 1px);
-    background-size: 30px 30px; opacity: 0.3;
-}
-
-/* --- MAIN CONTAINER --- */
-/* This container shifts states from "Centered" to "Top" */
-.app-container {
-    flex: 1; display: flex; flex-direction: column;
-    transition: all 0.5s var(--ease-out);
-    position: relative;
-    padding-top: 15vh; /* Initial centered position */
+.bg-overlay {
+    position: fixed; inset: 0; z-index: -1;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, #000 90%);
 }
 
-/* STATE: SEARCHING (The transition) */
-body.searching .app-container {
-    padding-top: 0;
-}
-
-/* --- THE LOGO AREA --- */
-.hero-section {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    margin-bottom: 30px; transition: all 0.5s var(--ease-out);
-}
-body.searching .hero-section {
-    flex-direction: row; justify-content: flex-start;
-    padding: 15px 30px; margin-bottom: 0;
-    background: rgba(18, 18, 18, 0.95);
-    border-bottom: 1px solid var(--p-border);
+/* --- HEADER --- */
+.corp-header {
+    height: var(--header-h); background: rgba(17, 17, 17, 0.95);
+    border-bottom: 1px solid var(--c-border); display: flex; align-items: center;
+    padding: 0 30px; justify-content: space-between; z-index: 50;
     backdrop-filter: blur(10px);
 }
-
-.logo-big {
-    width: 120px; height: 120px; margin-bottom: 20px;
-    transition: all 0.5s var(--ease-out);
-    filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.2));
+.logo-section { display: flex; align-items: center; gap: 15px; }
+.logo-img {
+    width: 50px; height: 50px; object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.1));
 }
-.logo-big img { width: 100%; height: 100%; object-fit: contain; }
-
-body.searching .logo-big {
-    width: 40px; height: 40px; margin-bottom: 0; margin-right: 20px;
-    filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.4));
+.site-title {
+    font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; color: #fff;
 }
 
-.brand-text {
-    font-family: 'Rajdhani', sans-serif; font-size: 42px; font-weight: 700; color: #fff;
-    text-transform: uppercase; letter-spacing: 2px;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.8);
-    transition: all 0.5s var(--ease-out);
+.map-toggle-btn {
+    background: transparent; border: 1px solid var(--c-white);
+    color: var(--c-white); padding: 8px 20px; font-family: 'Oswald';
+    font-weight: 500; text-transform: uppercase; font-size: 14px;
+    cursor: pointer; transition: 0.2s; letter-spacing: 1px;
 }
-body.searching .brand-text { display: none; } /* Hide big text when searching */
+.map-toggle-btn:hover { background: var(--c-white); color: #000; }
+.map-toggle-btn.active { background: var(--c-red); border-color: var(--c-red); color: #fff; }
 
-/* --- THE SEARCH BAR --- */
-.search-wrapper {
-    width: 100%; max-width: 600px; margin: 0 auto; position: relative;
-    transition: all 0.5s var(--ease-out);
-}
-body.searching .search-wrapper {
-    margin: 0; max-width: 800px;
+/* --- MAIN CONTAINER --- */
+.main-body {
+    flex: 1; display: grid; 
+    grid-template-columns: 1fr var(--sidebar-w);
+    overflow: hidden;
 }
 
-.search-box {
-    width: 100%; background: #222; border: 1px solid var(--p-border);
-    border-radius: 24px; padding: 14px 25px 14px 50px;
-    font-size: 18px; color: #fff; font-family: 'Inter', sans-serif;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    transition: all 0.3s;
+/* --- LEFT CONTENT AREA --- */
+.content-area {
+    display: flex; flex-direction: column; position: relative;
+    border-right: 1px solid var(--c-border);
 }
-.search-box:focus {
-    background: #333; border-color: var(--p-yellow);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+
+/* SEARCH HERO SECTION */
+.search-hero {
+    padding: 40px 50px; display: flex; flex-direction: column; gap: 20px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
 }
+
+.search-input-group { position: relative; width: 100%; max-width: 800px; }
+.search-input {
+    width: 100%; background: #fff; border: none;
+    padding: 18px 25px; font-size: 18px; font-family: 'Roboto';
+    color: #000; border-radius: 2px; /* Sharp corners like corporate site */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+}
+.search-input::placeholder { color: #666; }
 .search-icon {
-    position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
-    color: var(--p-text-muted); font-size: 20px;
-}
-/* Quick Clear Button */
-.clear-icon {
-    position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
-    color: var(--p-text-muted); font-size: 18px; cursor: pointer;
-    display: none;
-}
-.clear-icon:hover { color: #fff; }
-
-/* --- FILTER CHIPS (The "I'm Feeling Lucky" area) --- */
-.action-buttons {
-    display: flex; justify-content: center; gap: 12px; margin-top: 25px;
-    transition: all 0.4s;
-}
-body.searching .action-buttons {
-    display: none; /* Hide standard buttons in search mode, move to header? */
+    position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+    color: #000; font-size: 20px;
 }
 
-.btn-pill {
-    background: #1e1e1e; border: 1px solid var(--p-border); color: var(--p-text-muted);
-    padding: 10px 20px; border-radius: 4px; font-size: 13px; font-weight: 500;
-    cursor: pointer; transition: 0.2s;
+/* FILTER TABS */
+.filter-tabs { display: flex; gap: 2px; margin-top: 10px; }
+.f-tab {
+    padding: 10px 20px; background: rgba(255,255,255,0.1); 
+    color: #fff; font-family: 'Oswald'; font-size: 13px; text-transform: uppercase;
+    cursor: pointer; transition: 0.2s; letter-spacing: 1px;
 }
-.btn-pill:hover {
-    background: #333; color: #fff; border-color: var(--p-yellow);
+.f-tab:hover { background: rgba(255,255,255,0.2); }
+.f-tab.active { background: var(--c-red); color: #fff; font-weight: 700; }
+
+/* RESULTS GRID */
+.results-viewport {
+    flex: 1; overflow-y: auto; padding: 0 50px 50px;
+    position: relative;
+}
+.results-viewport::-webkit-scrollbar { width: 8px; }
+.results-viewport::-webkit-scrollbar-thumb { background: var(--c-border); }
+
+.grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;
 }
 
-/* Header Tools (Visible only when searching) */
-.header-tools {
-    display: none; margin-left: auto; gap: 10px;
+/* CARDS (Clean Corporate Look) */
+.corp-card {
+    background: #111; border: 1px solid var(--c-border); border-left: 4px solid var(--c-border);
+    padding: 20px; cursor: pointer; transition: 0.2s;
+    display: flex; flex-direction: column; gap: 10px;
 }
-body.searching .header-tools { display: flex; }
-
-.tool-btn {
-    background: transparent; border: 1px solid var(--p-border); color: var(--p-text);
-    padding: 8px 12px; border-radius: 4px; font-size: 12px; font-weight: 600;
-    cursor: pointer; display: flex; align-items: center; gap: 6px;
-    text-transform: uppercase; font-family: 'Rajdhani';
-}
-.tool-btn:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
-.tool-btn.active { background: var(--p-yellow); color: #000; border-color: var(--p-yellow); }
-
-
-/* --- CONTENT AREA (Grid + Sidebar) --- */
-.main-content {
-    display: none; /* Hidden on landing */
-    flex: 1; overflow: hidden;
-    grid-template-columns: 1fr 350px; /* Search Results | Knowledge Panel */
-}
-body.searching .main-content { display: grid; }
-
-/* LEFT: RESULTS */
-.results-pane {
-    overflow-y: auto; padding: 20px 40px; border-right: 1px solid var(--p-border);
-}
-.results-pane::-webkit-scrollbar { width: 8px; }
-.results-pane::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-
-.result-count {
-    font-size: 13px; color: var(--p-text-muted); margin-bottom: 20px;
+.corp-card:hover {
+    background: #161616; border-color: #444; border-left-color: var(--c-red);
+    transform: translateX(5px);
 }
 
-/* CARDS */
-.g-card {
-    background: #161616; border: 1px solid var(--p-border); border-radius: 8px;
-    padding: 16px; margin-bottom: 12px;
-    display: grid; grid-template-columns: 60px 1fr; gap: 15px;
-    transition: transform 0.2s; cursor: pointer;
+.cc-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.cc-title { font-family: 'Oswald'; font-size: 18px; font-weight: 700; color: #fff; line-height: 1.2; text-transform: uppercase;}
+.cc-mach { font-family: 'Oswald'; font-size: 24px; font-weight: 700; color: #666; }
+
+.cc-meta { display: flex; gap: 10px; font-size: 12px; color: var(--c-text-grey); align-items: center; }
+.cc-tag { 
+    padding: 2px 6px; border: 1px solid var(--c-border); text-transform: uppercase; font-weight: 600;
 }
-.g-card:hover { 
-    transform: translateY(-2px); border-color: var(--p-yellow); 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+.cc-tag.vip { color: var(--s-vip); border-color: var(--s-vip); }
+.cc-tag.main { color: var(--s-main); border-color: var(--s-main); }
+
+.cc-link { 
+    margin-top: 5px; font-size: 12px; color: var(--c-red); font-weight: 700; 
+    text-transform: uppercase; letter-spacing: 0.5px;
 }
 
-.mach-badge {
-    display: flex; align-items: center; justify-content: center;
-    background: #000; border: 1px solid var(--p-border); border-radius: 6px;
-    color: var(--p-yellow); font-family: 'Rajdhani'; font-weight: 700; font-size: 18px;
+.pack-toggle {
+    margin-top: 10px; font-size: 11px; text-transform: uppercase; 
+    color: #fff; cursor: pointer; display: flex; justify-content: space-between;
+    padding: 8px; background: rgba(255,255,255,0.05);
 }
-
-.info-block h3 {
-    margin: 0 0 6px 0; font-size: 16px; color: #fff; font-weight: 600;
-}
-.meta-tags { display: flex; gap: 10px; font-size: 12px; color: var(--p-text-muted); align-items: center; }
-.tag-zone {
-    color: #000; padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 10px; text-transform: uppercase;
-}
-.tag-link { color: var(--p-green); font-weight: 600; }
-
-.pack-expander {
-    grid-column: 2; margin-top: 5px;
-    font-size: 12px; color: var(--p-red); cursor: pointer; display: inline-block;
-}
-.pack-expander:hover { text-decoration: underline; }
-
-.sub-games {
-    grid-column: 2; display: none; margin-top: 8px; 
-    padding: 10px; background: #0a0a0a; border-radius: 4px;
-}
-.sub-games.show { display: block; }
-.sub-game-item {
-    font-size: 12px; color: var(--p-text-muted); padding: 4px 0; 
-    border-bottom: 1px solid #222; cursor: pointer;
-}
-.sub-game-item:hover { color: #fff; }
-.sub-game-item:last-child { border: none; }
+.pack-toggle:hover { background: rgba(255,255,255,0.1); }
+.pack-list { display: none; padding: 10px; background: #000; border: 1px solid var(--c-border); border-top: none; }
+.pack-list div { padding: 4px 0; font-size: 12px; color: #999; border-bottom: 1px solid #222; }
+.pack-list div:hover { color: #fff; padding-left: 5px; cursor: pointer; }
 
 
-/* RIGHT: KNOWLEDGE PANEL (Sidebar) */
-.knowledge-panel {
-    background: #0a0a0a; overflow-y: auto; padding: 20px;
-}
-.panel-header {
-    font-family: 'Rajdhani'; font-size: 14px; color: var(--p-text-muted); 
-    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;
-    border-bottom: 1px solid var(--p-border); padding-bottom: 5px;
-}
-
-/* Accordion */
-.acc-item { margin-bottom: 10px; border: 1px solid var(--p-border); border-radius: 4px; }
-.acc-head {
-    padding: 10px 12px; background: #1a1a1a; cursor: pointer;
-    font-size: 12px; font-weight: 700; color: #fff; text-transform: uppercase;
-    display: flex; justify-content: space-between;
-}
-.acc-head:hover { background: #252525; }
-.acc-body { display: none; padding: 5px 0; }
-.acc-body.open { display: block; }
-.acc-link {
-    padding: 8px 12px; font-size: 12px; color: var(--p-text-muted); cursor: pointer;
-    display: block; border-left: 2px solid transparent;
-}
-.acc-link:hover { background: #111; color: #fff; border-left-color: var(--p-yellow); }
-
-
-/* --- MAP OVERLAY --- */
-.map-overlay {
-    position: absolute; inset: 0; background: #000; z-index: 50;
-    display: none; flex-direction: column;
-}
-.map-overlay.active { display: flex; }
-.map-toolbar {
-    height: 50px; border-bottom: 1px solid var(--p-border); display: flex; align-items: center; padding: 0 20px;
-    justify-content: space-between; background: #111;
-}
-.map-frame {
-    flex: 1; display: flex; justify-content: center; align-items: center; overflow: auto; position: relative;
-}
-.digital-map {
-    max-width: 95%; height: auto;
-    filter: invert(100%) contrast(150%) hue-rotate(90deg) brightness(0.9); /* Green Blueprint */
-}
-.map-pin {
-    position: absolute; width: 10px; height: 10px; background: var(--p-red);
-    border-radius: 50%; box-shadow: 0 0 10px var(--p-red); cursor: pointer;
-}
-.map-pin:hover { transform: scale(2); }
-
-
-/* --- DRAWER (Moves) --- */
-.drawer {
-    position: fixed; top: 0; right: 0; bottom: 0; width: 400px;
-    background: #111; border-left: 1px solid var(--p-red); z-index: 100;
-    transform: translateX(100%); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* --- RIGHT SIDEBAR (Mimicking the Screenshot) --- */
+.corp-sidebar {
+    background: #000; border-left: 1px solid var(--c-border);
     display: flex; flex-direction: column;
 }
-.drawer.open { transform: translateX(0); box-shadow: -50px 0 100px rgba(0,0,0,0.8); }
-.drawer-head { padding: 20px; border-bottom: 1px solid var(--p-border); display: flex; justify-content: space-between; align-items: center; }
-.drawer-body { flex: 1; overflow-y: auto; padding: 20px; }
 
-/* Moves list */
-.move-card { background: #1a1a1a; padding: 12px; margin-bottom: 10px; border-radius: 4px; border: 1px solid var(--p-border); }
-.move-mach { color: var(--p-yellow); font-weight: 700; font-size: 14px; margin-bottom: 4px; font-family:'Rajdhani';}
-.move-detail { font-size: 12px; margin-bottom: 2px; color: #ccc; }
-.move-detail span { color: var(--p-text-muted); margin-right: 5px; font-size: 10px; text-transform: uppercase; border: 1px solid #333; padding: 1px 4px; border-radius: 3px; }
+/* The Red Button Area */
+.sb-action-area {
+    padding: 25px; border-bottom: 1px solid var(--c-border);
+    display: flex; justify-content: flex-end;
+}
+.btn-moves {
+    background: transparent; border: 1px solid var(--c-red);
+    color: var(--c-red); padding: 12px 24px;
+    font-family: 'Oswald'; font-weight: 700; font-size: 14px;
+    text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+    transition: 0.2s; width: 100%; text-align: center;
+}
+.btn-moves:hover { background: var(--c-red); color: #fff; }
+
+/* The Menu List */
+.sb-menu { flex: 1; overflow-y: auto; padding: 20px 0; }
+.sb-header {
+    padding: 10px 25px; color: #fff; font-family: 'Oswald'; 
+    font-size: 14px; font-weight: 700; text-transform: uppercase; 
+    letter-spacing: 1px; margin-top: 10px;
+}
+
+.sb-item {
+    padding: 15px 25px; border-bottom: 1px solid #1a1a1a;
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; transition: 0.2s;
+}
+.sb-item:hover { background: #111; }
+.sb-label {
+    font-family: 'Oswald'; font-size: 14px; font-weight: 500; 
+    color: var(--c-red); text-transform: uppercase; letter-spacing: 1px;
+}
+.sb-arrow { color: var(--c-red); font-size: 10px; transform: rotate(0deg); transition: 0.2s; }
+.sb-item.active .sb-arrow { transform: rotate(180deg); }
+
+.sb-sub-list {
+    background: #0a0a0a; display: none; padding: 5px 0;
+    box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);
+}
+.sb-sub-item {
+    padding: 10px 35px; font-size: 13px; color: #888; cursor: pointer;
+    border-bottom: 1px solid #151515; display: block;
+}
+.sb-sub-item:hover { color: #fff; background: #111; }
+
+
+/* --- MAP VIEW --- */
+.map-container {
+    position: absolute; inset: 0; background: #080808; z-index: 20;
+    display: none; align-items: center; justify-content: center;
+}
+.map-container.show { display: flex; }
+.map-content {
+    position: relative; border: 1px solid var(--c-border); max-width: 95%; max-height: 90%; overflow: auto;
+    background: #000; box-shadow: 0 0 50px rgba(0,0,0,0.5);
+}
+/* Blueprint Filter */
+.blueprint {
+    display: block;
+    /* Invert White->Black, Tint Lines Greenish/White */
+    filter: invert(100%) grayscale(100%) contrast(150%) brightness(0.9);
+}
+.pin {
+    position: absolute; width: 16px; height: 16px; background: var(--c-red);
+    border: 2px solid #fff; border-radius: 50%; transform: translate(-50%, -50%);
+    cursor: pointer; box-shadow: 0 0 10px var(--c-red);
+}
+.pin:hover { transform: translate(-50%, -50%) scale(1.5); }
+
+
+/* --- MOVES MODAL --- */
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100;
+    display: none; justify-content: center; align-items: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+    width: 600px; max-width: 90%; background: #111; border: 1px solid var(--c-border);
+    display: flex; flex-direction: column; max-height: 80vh;
+}
+.modal-header {
+    padding: 20px; border-bottom: 1px solid var(--c-border); display: flex; justify-content: space-between;
+    align-items: center; background: #151515;
+}
+.modal-title { font-family: 'Oswald'; font-size: 20px; text-transform: uppercase; color: #fff; }
+.modal-close { cursor: pointer; color: var(--c-red); font-weight: bold; font-size: 20px; }
+.modal-body { overflow-y: auto; padding: 20px; }
+
+.move-entry {
+    padding: 15px; border-bottom: 1px solid #222; display: flex; justify-content: space-between;
+}
+.move-id { font-family: 'Oswald'; color: var(--s-vip); font-size: 18px; }
+.move-info { text-align: right; font-size: 13px; color: #888; }
+.move-arrow { margin: 0 8px; color: #444; }
+.move-new { color: #fff; font-weight: bold; }
 
 
 /* Responsive */
-@media (max-width: 900px) {
-    .main-content { grid-template-columns: 1fr; }
-    .knowledge-panel { display: none; } /* Hide sidebar on mobile */
-    body.searching .logo-big { display: none; } /* Just search bar on mobile */
+@media (max-width: 1000px) {
+    .main-body { grid-template-columns: 1fr; }
+    .corp-sidebar { display: none; }
 }
 </style>
 </head>
 <body>
 
-<div class="bg-wallpaper"></div>
-<div class="bg-grid"></div>
+<div class="bg-hero"></div>
+<div class="bg-overlay"></div>
 
-<div class="app-container">
-    
-    <div class="hero-section">
-        <div class="logo-big">
-            <img src="panther_icon.png" alt="Panthers">
-        </div>
-        <div class="brand-text">Panthers Search</div>
+<header class="corp-header">
+    <div class="logo-section">
+        <img src="panther_icon.png" class="logo-img" alt="Panthers">
+        <div class="site-title">Game Finder</div>
+    </div>
+    <button class="map-toggle-btn" id="btnMap" onclick="toggleMap()">View Floor Map</button>
+</header>
+
+<div class="main-body">
+    <main class="content-area">
         
-        <div class="search-wrapper">
-            <span class="search-icon">🔍</span>
-            <input type="text" class="search-box" id="searchBox" placeholder="Search games, machines, or links..." autocomplete="off">
-            <span class="clear-icon" id="clearBtn" onclick="resetSearch()">✕</span>
+        <div class="search-hero">
+            <div class="search-input-group">
+                <input type="text" class="search-input" id="searchBox" placeholder="Search for a Game, Machine, or Link..." autocomplete="off">
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="filter-tabs">
+                <div class="f-tab active" onclick="setZone('all', this)">All Areas</div>
+                <div class="f-tab" onclick="setZone('VIP Room Black Panther', this)">VIP Room</div>
+                <div class="f-tab" onclick="setZone('Main Floor', this)">Main Floor</div>
+                <div class="f-tab" onclick="setZone('Kelly\'s Gaming', this)">Kelly's</div>
+                <div class="f-tab" onclick="setZone('Basement', this)">Basement</div>
+            </div>
         </div>
 
-        <div class="header-tools">
-            <button class="tool-btn" onclick="toggleMap()">Map</button>
-            <button class="tool-btn" onclick="toggleDrawer()">Moves</button>
+        <div class="results-viewport" id="gridView">
+            <div style="margin-top:20px; font-size:14px; color:#666; margin-bottom:15px;" id="resultCount">Start typing to search...</div>
+            <div class="grid" id="cardGrid"></div>
         </div>
-    </div>
 
-    <div class="action-buttons" id="landingBtns">
-        <button class="btn-pill" onclick="quickSearch('VIP')">VIP Room</button>
-        <button class="btn-pill" onclick="quickSearch('Main Floor')">Main Floor</button>
-        <button class="btn-pill" onclick="quickSearch('Kelly\'s')">Kelly's Gaming</button>
-        <button class="btn-pill" onclick="toggleMap()">Floor Map</button>
-    </div>
+        <div class="map-container" id="mapView">
+            <div class="map-content">
+                <img src="image_e40346.png" class="blueprint" alt="Floor Map">
+                <div class="pin" style="top:15%; left:91.5%;" onclick="quickSearch('1059')"></div>
+                <div class="pin" style="top:15%; left:38%;" onclick="quickSearch('1051')"></div>
+                <div class="pin" style="top:70%; left:9.5%;" onclick="quickSearch('1091')"></div>
+            </div>
+        </div>
 
-    <div class="main-content" id="mainContent">
+    </main>
+
+    <aside class="corp-sidebar">
         
-        <div class="results-pane">
-            <div class="result-count" id="resultCount">Searching...</div>
-            <div id="resultsList"></div>
+        <div class="sb-action-area">
+            <button class="btn-moves" onclick="toggleMoves()">Conversions & Moves</button>
         </div>
 
-        <div class="knowledge-panel">
-            <div class="panel-header">Floor Overview</div>
-            <div id="sidebarContent"></div>
-        </div>
+        <div class="sb-menu" id="sidebarMenu">
+            <div class="sb-header">Floor Overview</div>
+            </div>
 
-    </div>
-
-    <div class="map-overlay" id="mapOverlay">
-        <div class="map-toolbar">
-            <span style="font-family:'Rajdhani'; font-weight:700; color:var(--p-green)">DIGITAL FLOOR MAP</span>
-            <button class="tool-btn" onclick="toggleMap()">Close Map</button>
-        </div>
-        <div class="map-frame">
-            <img src="image_e40346.png" class="digital-map">
-            <div class="map-pin" style="top:15%; left:91.5%;" title="1059" onclick="quickSearch('1059'); toggleMap()"></div>
-            <div class="map-pin" style="top:15%; left:38%;" title="1051" onclick="quickSearch('1051'); toggleMap()"></div>
-            <div class="map-pin" style="top:70%; left:9.5%;" title="1091" onclick="quickSearch('1091'); toggleMap()"></div>
-        </div>
-    </div>
-
+    </aside>
 </div>
 
-<div class="drawer" id="movesDrawer">
-    <div class="drawer-head">
-        <span style="font-family:'Rajdhani'; font-weight:700; color:#fff; text-transform:uppercase;">Recent Conversions</span>
-        <span style="cursor:pointer; color:var(--p-red)" onclick="toggleDrawer()">✕</span>
+<div class="modal-overlay" id="movesModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <div class="modal-title">Recent Floor Changes</div>
+            <div class="modal-close" onclick="toggleMoves()">✕</div>
+        </div>
+        <div class="modal-body" id="movesList">
+            </div>
     </div>
-    <div class="drawer-body" id="movesList"></div>
 </div>
 
 <script>
@@ -372,6 +347,7 @@ const data = {"game_packs":{"5 Dragons":["5 DRAGONS EMPIRE","5 Dragons Legends",
 
 // --- LOGIC ---
 
+// Pack Index
 const packMap = {};
 for(const [game, packs] of Object.entries(data.game_packs)){
     packs.forEach(p => {
@@ -380,6 +356,7 @@ for(const [game, packs] of Object.entries(data.game_packs)){
     });
 }
 
+// Area Logic
 const getArea = (loc) => {
     const n = parseInt(loc);
     if(n>=1051 && n<=1095) return "Basement";
@@ -391,149 +368,140 @@ const getArea = (loc) => {
 };
 
 const getZoneClass = (area) => {
-    if(area.includes("VIP")) return "tag-vip";
-    return "tag-zone";
+    if(area.includes("VIP")) return "vip";
+    if(area === "Main Floor") return "main";
+    return "base";
 };
 
 // UI STATE
 let currentZone = 'all';
 const searchBox = document.getElementById('searchBox');
 const resultCount = document.getElementById('resultCount');
-const resultsList = document.getElementById('resultsList');
-const clearBtn = document.getElementById('clearBtn');
+const grid = document.getElementById('cardGrid');
 
-// --- SEARCH ENGINE ---
-function runSearch(query) {
-    // 1. Manage State Classes
-    if(query || currentZone !== 'all') {
-        document.body.classList.add('searching');
-        clearBtn.style.display = 'block';
-    } else {
-        document.body.classList.remove('searching');
-        clearBtn.style.display = 'none';
-        return; // Stop here if empty
-    }
-
-    // 2. Filter Data
-    let matches = [];
-    const limit = 100;
+// --- GRID RENDER ---
+function updateGrid(){
+    const query = searchBox.value.toLowerCase();
+    grid.innerHTML = '';
     
-    // Normalize
-    const qLower = query.toLowerCase().trim();
-
-    for(const m of data.machines){
-        if(matches.length >= limit) break;
-
-        const area = getArea(m.location);
-        const desc = (m.description || "").toLowerCase();
-        const link = (m.link || "").toLowerCase();
-        const loc = m.location;
-
-        // Zone Filter
-        if(currentZone !== 'all' && area !== currentZone) continue;
-
-        // Text Search
-        let isMatch = false;
-        if(!qLower) isMatch = true; // Show all in zone
-        else {
-            if(desc.includes(qLower)) isMatch = true;
-            if(loc.includes(qLower)) isMatch = true;
-            if(link.includes(qLower)) isMatch = true;
-            // Deep Search Packs
-            if(packMap[m.description]){
-                if(packMap[m.description].some(g => g.toLowerCase().includes(qLower))) isMatch = true;
-            }
-        }
-
-        if(isMatch) matches.push({ ...m, area });
-    }
-
-    // 3. Render
-    resultCount.textContent = `Found ${matches.length} results`;
-    resultsList.innerHTML = '';
-
-    if(matches.length === 0){
-        resultsList.innerHTML = `<div style="padding:20px; text-align:center; color:var(--p-text-muted);">No games found matching "${query}"</div>`;
+    // Default Empty State
+    if(!query && currentZone === 'all') {
+        grid.innerHTML = ''; 
+        resultCount.textContent = "Enter a game name to begin search.";
         return;
     }
 
-    const frag = document.createDocumentFragment();
-    matches.forEach(m => {
-        const el = document.createElement('div');
-        el.className = 'g-card';
+    const fragment = document.createDocumentFragment();
+    let count = 0;
+    const limit = query ? 500 : 50;
+
+    for(const m of data.machines){
+        if(count >= limit) break;
+
+        const area = getArea(m.location);
         
-        const games = packMap[m.description] || [];
-        const hasPack = games.length > 0;
-        const linkStr = m.link ? m.link.replace(/PEN /g, '').replace(/,/g, ', ') : '';
+        // Filter
+        if(currentZone !== 'all' && area !== currentZone) continue;
 
-        el.innerHTML = `
-            <div class="mach-badge">${m.location}</div>
-            <div class="info-block">
-                <h3>${m.description}</h3>
-                <div class="meta-tags">
-                    <span class="tag-zone" style="background:${getZoneColor(m.area)}">${m.area.replace(" Black Panther","")}</span>
-                    <span>${m.manufacturer}</span>
-                    ${linkStr ? `<span class="tag-link">⚡ ${linkStr}</span>` : ''}
-                </div>
-                ${hasPack ? `
-                    <div class="pack-expander" onclick="toggleSubGames(this)">View ${games.length} included games ▼</div>
-                    <div class="sub-games">
-                        ${games.map(g => `<div class="sub-game-item" onclick="quickSearch('${g}')">› ${g}</div>`).join('')}
-                    </div>
-                ` : ''}
-            </div>
-        `;
-        frag.appendChild(el);
-    });
-    resultsList.appendChild(frag);
-}
+        // Search
+        let match = false;
+        if(!query) match = true;
+        else {
+            if(m.location.includes(query)) match = true;
+            if((m.description||"").toLowerCase().includes(query)) match = true;
+            if((m.link||"").toLowerCase().includes(query)) match = true;
+            if(packMap[m.description]){
+                if(packMap[m.description].some(g => g.toLowerCase().includes(query))) match = true;
+            }
+        }
 
-function getZoneColor(area){
-    if(area.includes("VIP")) return "#ef4444";
-    if(area.includes("Main")) return "#22c55e";
-    if(area.includes("Kelly")) return "#fbbf24";
-    return "#e2e8f0";
-}
-
-window.toggleSubGames = (btn) => {
-    const box = btn.nextElementSibling;
-    box.classList.toggle('show');
-    btn.textContent = box.classList.contains('show') ? 'Hide games ▲' : `View included games ▼`;
-};
-
-// --- ACTIONS ---
-window.quickSearch = (term) => {
-    searchBox.value = term; // Set text
-    // Reset zone if it's a specific search, or set zone if it's a zone button
-    if(['VIP Room Black Panther','Main Floor','Kelly\'s Gaming','Basement'].includes(term)){
-        currentZone = term;
-        searchBox.value = ""; // Clear text for zone filter
-    } else {
-        currentZone = 'all'; // Reset zone for global search
+        if(match){
+            count++;
+            fragment.appendChild(createCard(m, area));
+        }
     }
+
+    if(count === 0){
+        resultCount.textContent = "No results found.";
+    } else {
+        resultCount.textContent = `${count} machines found.`;
+        grid.appendChild(fragment);
+    }
+}
+
+function createCard(m, area){
+    const el = document.createElement('div');
+    el.className = 'corp-card';
     
-    // Trigger
-    runSearch(searchBox.value);
+    const games = packMap[m.description] || [];
+    const hasPack = games.length > 0;
+    const linkStr = m.link ? m.link.replace(/PEN /g, '').replace(/,/g, ' | ') : '';
+
+    el.innerHTML = `
+        <div class="cc-header">
+            <div class="cc-title">${m.description}</div>
+            <div class="cc-mach">#${m.location}</div>
+        </div>
+        <div class="cc-meta">
+            <span class="cc-tag ${getZoneClass(area)}">${area.replace(" Black Panther","")}</span>
+            <span>${m.manufacturer}</span>
+        </div>
+        ${linkStr ? `<div class="cc-link">⚡ ${linkStr}</div>` : ''}
+        
+        ${hasPack ? `
+            <div class="pack-wrapper">
+                <div class="pack-toggle" onclick="togglePack(this)">
+                    <span>View Included Games</span> <span>+</span>
+                </div>
+                <div class="pack-list">
+                    ${games.map(g => `<div onclick="quickSearch('${g}')">${g}</div>`).join('')}
+                </div>
+            </div>
+        ` : ''}
+    `;
+    return el;
+}
+
+window.togglePack = (btn) => {
+    const list = btn.nextElementSibling;
+    const isHidden = getComputedStyle(list).display === 'none';
+    if(isHidden){
+        list.style.display = 'block';
+        btn.querySelector('span:last-child').textContent = '-';
+        btn.style.backgroundColor = 'rgba(255,255,255,0.1)';
+    } else {
+        list.style.display = 'none';
+        btn.querySelector('span:last-child').textContent = '+';
+        btn.style.backgroundColor = 'rgba(255,255,255,0.05)';
+    }
 };
 
-window.resetSearch = () => {
-    searchBox.value = '';
-    currentZone = 'all';
-    document.body.classList.remove('searching');
+window.quickSearch = (term) => {
+    toggleMap(false);
+    searchBox.value = term;
+    updateGrid();
 };
 
-// --- SIDEBAR (ACCORDION) ---
+function setZone(zone, el){
+    currentZone = zone;
+    document.querySelectorAll('.f-tab').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    toggleMap(false);
+    updateGrid();
+}
+
+// --- SIDEBAR (Accordion) ---
 function renderSidebar(){
-    const sidebar = document.getElementById('sidebarContent');
+    const sidebar = document.getElementById('sidebarMenu');
+    
+    // 1. Links
     const links = new Set();
     data.machines.forEach(m => {
         if(m.link) m.link.split(',').forEach(l => links.add(l.trim().replace('PEN ', '')));
     });
+    createSbGroup(sidebar, "FLOOR LINKS", Array.from(links).sort());
 
-    // Link Section
-    createAccordion(sidebar, "Floor Links", Array.from(links).sort());
-
-    // Packs
+    // 2. Packs by Manu
     const manuMap = {};
     for(const [game, info] of Object.entries(data.game_info || {})){
         const m = info.manufacturer || "Other";
@@ -541,66 +509,86 @@ function renderSidebar(){
         manuMap[m].push(game);
     }
     for(const manu in manuMap){
-        createAccordion(sidebar, `${manu} Packs`, manuMap[manu].sort());
+        createSbGroup(sidebar, `${manu} PACKS`, manuMap[manu].sort());
     }
 }
 
-function createAccordion(parent, title, items){
-    const div = document.createElement('div');
-    div.className = 'acc-item';
-    div.innerHTML = `
-        <div class="acc-head" onclick="toggleAcc(this)">
-            <span>${title}</span> <span>▼</span>
+function createSbGroup(parent, title, items){
+    const itemDiv = document.createElement('div');
+    
+    itemDiv.innerHTML = `
+        <div class="sb-item" onclick="toggleSb(this)">
+            <div class="sb-label">${title}</div>
+            <div class="sb-arrow">▼</div>
         </div>
-        <div class="acc-body">
-            ${items.map(i => `<span class="acc-link" onclick="quickSearch('${i}')">${i}</span>`).join('')}
+        <div class="sb-sub-list">
+            ${items.map(i => `<span class="sb-sub-item" onclick="quickSearch('${i}')">${i}</span>`).join('')}
         </div>
     `;
-    parent.appendChild(div);
+    parent.appendChild(itemDiv);
 }
 
-window.toggleAcc = (head) => {
-    const body = head.nextElementSibling;
-    body.classList.toggle('open');
+window.toggleSb = (btn) => {
+    btn.classList.toggle('active');
+    const sub = btn.nextElementSibling;
+    if(sub.style.display === 'block'){
+        sub.style.display = 'none';
+    } else {
+        sub.style.display = 'block';
+    }
 };
 
 // --- MAP & MOVES ---
-const mapOverlay = document.getElementById('mapOverlay');
-const drawer = document.getElementById('movesDrawer');
-const backdrop = document.getElementById('backdrop');
+const mapContainer = document.getElementById('mapView');
+const gridView = document.getElementById('gridView');
+const btnMap = document.getElementById('btnMap');
 
-window.toggleMap = () => {
-    mapOverlay.classList.toggle('active');
-};
+function toggleMap(force){
+    const isMap = mapContainer.classList.contains('show');
+    const showMap = force !== undefined ? force : !isMap;
 
-window.toggleDrawer = () => {
-    drawer.classList.toggle('open');
-    backdrop.classList.toggle('open');
+    if(showMap){
+        mapContainer.classList.add('show');
+        gridView.style.display = 'none';
+        btnMap.classList.add('active');
+        btnMap.textContent = "Back to List";
+    } else {
+        mapContainer.classList.remove('show');
+        gridView.style.display = 'block';
+        btnMap.classList.remove('active');
+        btnMap.textContent = "View Floor Map";
+    }
+}
+
+const movesModal = document.getElementById('movesModal');
+window.toggleMoves = () => {
+    movesModal.classList.toggle('open');
 };
-backdrop.onclick = toggleDrawer;
 
 // Render Moves
-const movesContainer = document.getElementById('movesList');
-data.retired_moves.forEach(group => {
-    const div = document.createElement('div');
-    div.innerHTML = `<h4 style="color:#fff; margin:15px 0 5px; border-bottom:1px solid #333">${group.date} (${group.type})</h4>`;
-    group.moves.forEach(m => {
+const movesList = document.getElementById('movesList');
+data.retired_moves.forEach(g => {
+    const d = document.createElement('div');
+    d.innerHTML = `<div style="background:#222; color:#fff; padding:10px; font-weight:bold; font-family:'Oswald'; margin-top:15px;">${g.date} - ${g.type}</div>`;
+    g.moves.forEach(m => {
         const row = document.createElement('div');
-        row.className = 'move-card';
+        row.className = 'move-entry';
         row.innerHTML = `
-            <div class="move-mach">#${m.mach}</div>
-            <div class="move-detail"><span>WAS</span> ${m.was}</div>
-            <div class="move-detail"><span style="color:var(--p-green); border-color:var(--p-green)">NOW</span> <b style="color:#fff">${m.now}</b></div>
+            <div class="move-id">#${m.mach}</div>
+            <div class="move-info">
+                <div>WAS: ${m.was}</div>
+                <div class="move-new">NOW: ${m.now}</div>
+            </div>
         `;
-        div.appendChild(row);
+        d.appendChild(row);
     });
-    movesContainer.appendChild(div);
+    movesList.appendChild(d);
 });
 
-
 // INIT
-searchBox.addEventListener('input', (e) => runSearch(e.target.value));
+searchBox.addEventListener('input', updateGrid);
 renderSidebar();
+updateGrid();
 
 </script>
 </body>
