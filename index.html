@@ -15,8 +15,8 @@
             --white: #ffffff;
             --text-color: #444;
             
-            /* Background Pattern - Soft Floral */
-            --bg-floral: url('https://img.freepik.com/free-vector/hand-drawn-floral-pattern-background_52683-65086.jpg?w=1380&t=st=1706138000~exp=1706138600~hmac=a22787c8801901249969152342341234');
+            /* Background Image - Points to the local file you saved */
+            --bg-floral: url('bg-floral.png');
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -48,7 +48,7 @@
         }
 
         h1 {
-            font-size: 2.4rem; /* Balanced size */
+            font-size: 2.4rem;
             line-height: 1.2;
             margin-bottom: 20px;
         }
@@ -70,6 +70,16 @@
         }
 
         h3 { font-size: 1.3rem; margin-bottom: 15px; }
+
+        /* --- Section Icons --- */
+        .section-icon {
+            display: block;
+            margin: 0 auto 15px auto;
+            width: 60px;
+            height: 60px;
+            fill: var(--primary-sage); /* Color the SVG to match theme */
+            opacity: 0.8;
+        }
 
         /* --- BUTTONS --- */
         .btn {
@@ -112,7 +122,6 @@
             align-items: center;
         }
 
-        /* The Flower Logo Icon */
         .logo-icon {
             font-size: 2rem;
             color: var(--primary-sage);
@@ -171,7 +180,7 @@
             width: 350px;
             height: 350px;
             object-fit: cover;
-            border-radius: 50%; /* Circle */
+            border-radius: 50%;
             border: 8px solid var(--white);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             margin-bottom: 20px;
@@ -197,16 +206,8 @@
             border: 1px solid #eee;
         }
 
-        /* Bird Decoration */
-        .bird-icon {
-            display: block;
-            margin: 0 auto 10px auto;
-            width: 50px;
-            opacity: 0.6;
-        }
-
         /* --- SERVICES --- */
-        .services-bg { background-color: #EBF1EB; } /* Soft Green BG */
+        .services-bg { background-color: #EBF1EB; }
         
         .services-grid {
             display: grid;
@@ -250,7 +251,7 @@
             border: 1px solid #eee;
         }
 
-        /* --- REFERRALS (Clean List) --- */
+        /* --- REFERRALS --- */
         .referral-box { max-width: 800px; margin: 0 auto; }
         .referral-item {
             margin-bottom: 20px;
@@ -264,14 +265,23 @@
             margin-bottom: 5px;
         }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER & MAP --- */
         footer {
             background: var(--dark-sage);
             color: #e0e0e0;
-            padding: 60px 0;
+            padding: 60px 0 30px;
             text-align: center;
         }
         footer a { color: var(--white); font-weight: bold; text-decoration: underline; }
+        
+        .map-container {
+            margin: 0 auto 30px auto;
+            max-width: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 3px solid rgba(255,255,255,0.1);
+        }
         
         .footer-abn {
             margin-top: 30px;
@@ -284,7 +294,7 @@
         @media (max-width: 768px) {
             .hero-content { flex-direction: column-reverse; text-align: center; gap: 30px; }
             .hero-subtitle { margin: 0 auto 30px auto; }
-            .nav-links { display: none; } /* Hide menu on mobile */
+            .nav-links { display: none; }
             nav { justify-content: center; }
             h1 { font-size: 2rem; }
             .hero-photo { width: 280px; height: 280px; }
@@ -332,7 +342,7 @@
 
     <section id="about">
         <div class="container">
-            <img src="https://cdn-icons-png.flaticon.com/512/2663/2663008.png" class="bird-icon" alt="Bird">
+            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 4-3 7-3 7s-3-1-3-5c-2 0-3 .6-3 2 0 .5.3 1 .7 1.5.4.4.6 1 .6 1.6 0 1.4-1 2.7-2.6 3.4C8 21.4 6.3 22 4.5 22h-1c-1 0-2-.8-2-1.8 0-.5.2-.9.6-1.2.4-.3.6-.8.6-1.3 0-.8-.4-1.5-1.1-2-.7-.6-1.1-1.4-1.1-2.3 0-1.6 1.2-3 2.8-3.3C4.9 7 7.1 4.7 9.8 3.4 12 2.3 14.5 2 17 2c2 0 4 3.6 4 8z"/></svg>
             <h2>About Me</h2>
             <div class="content-box">
                 <p>I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported.</p>
@@ -344,6 +354,7 @@
 
     <section id="services" class="services-bg">
         <div class="container">
+            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c-1.7 0-3 1.3-3 3 0 1.1.6 2 1.5 2.5C9.6 7.9 9 9 9 10.2c0 2.2 1.8 4 4 4s4-1.8 4-4c0-1.2-.6-2.3-1.5-2.7C16.4 7 17 6.1 17 5c0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .4.1.8.3 1.2C9.8 7 8.8 8.5 8.8 10.2c0 3.2 2.5 5.8 5.7 5.8h.1l-.3 2.4c-.3 2-2 3.6-4 3.6H8c-1.1 0-2-.9-2-2V4H4v16c0 2.2 1.8 4 4 4h2.3c3.2 0 6-2.5 6.4-5.6L17 16c3.3 0 6-2.7 6-6 0-3.3-2.7-6-6-6-.7 0-1.4.1-2 .4C14.5 2.8 13.3 2 12 2z"/></svg>
             <h2>Individual Therapy</h2>
             <div class="services-grid">
                 
@@ -372,7 +383,7 @@
 
     <section id="approach">
         <div class="container">
-            <img src="https://cdn-icons-png.flaticon.com/512/2663/2663008.png" class="bird-icon" style="transform: scaleX(-1);" alt="Bird">
+            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.5 10c-.3-1.6-2.3-2.2-3.4-1.1-.5.5-1.2.6-1.7.2-1.1-.8-2.7-.4-3.5.7-.4.5-1 .8-1.7.8-.6 0-1.2-.1-1.7-.3-.6-.3-1.4-.2-1.9.4-1 1.3-2.8 1.6-4.3.9C2 10.6.7 8.2 1.1 5.4c0-.3-.1-.5-.4-.6C.4 4.7.2 4.9.2 5.2c-.7 5.9 3.3 11.4 9.2 12.5.6.1 1.1.4 1.5 1 .7 1 2.1 1.5 3.4 1 1.3-.5 2.1-1.7 2.1-3.1 0-.6.2-1.2.7-1.5 1.1-.8 1.6-2.3 1-3.6-.2-.5-.1-1.1.3-1.5 1.3-1.3 3.7-.9 4.5.8.2.4.6.6 1 .6h1.1c.6 0 1-.5 1-1s-.6-1-1.1-1.1c-.9-.1-1.7.1-2.4.7z"/></svg>
             <h2>Therapeutic Approach</h2>
             <div class="content-box" style="text-align: center; max-width: 800px; margin: 0 auto;">
                 <p>My practice is informed by positive psychology and a strengths-focused perspective. I use evidence-based therapies, including <strong>Acceptance and Commitment Therapy (ACT)</strong> and <strong>Cognitive Behavioural Therapy (CBT)</strong>, to help young people build resilience and emotional regulation.</p>
@@ -384,6 +395,7 @@
 
     <section id="session" style="background-color: #F9FBF8;">
         <div class="container">
+            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c-1.1 0-2 .9-2 2v14c-1.1 0-2 .9-2 2h4c0-1.1-.9-2-2-2V5c0-1.1-.9-2-2-2zm6 4c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zm-12 4c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/></svg>
             <h2>First Session</h2>
             <p style="text-align: center; max-width: 600px; margin: 0 auto 30px auto;">The first session focuses on understanding presenting concerns and gathering developmental background to guide treatment.</p>
             
@@ -408,6 +420,7 @@
 
     <section id="referrals">
         <div class="container">
+            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66c2.08-5.17 4.19-11.34 13.19-13.34V6H22v2h-5zM9 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             <h2>Pathways to Referral</h2>
             <div class="content-box referral-box">
                 <p style="text-align: center; margin-bottom: 30px;">I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.</p>
@@ -433,13 +446,12 @@
     <footer id="contact">
         <div class="container">
             <h2>Contact</h2>
-            
-            <div style="background: rgba(255,255,255,0.1); display: inline-block; padding: 20px 40px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px;">
-                <p style="font-weight: bold; font-size: 1.2rem; margin-bottom: 5px;">Uralla Cottage</p>
-                <p>3 Baker Street, Windsor, NSW 2756</p>
-            </div>
 
-            <div style="font-size: 1.1rem;">
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3320.0067652568987!2d150.81417437626043!3d-33.68285447330097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b0d7e4555555555%3A0x4010401040104010!2s3%20Baker%20St%2C%20Windsor%20NSW%202756%2C%20Australia!5e0!3m2!1sen!2sus!4v1706139000000!5m2!1sen!2sus" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            
+            <div style="font-size: 1.1rem; margin-top: 20px;">
                 <p style="margin-bottom: 10px;">Email: <a href="mailto:rhondablackadder@gmail.com">rhondablackadder@gmail.com</a></p>
                 <p>Mobile: <a href="tel:0421140107">0421 140 107</a></p>
             </div>
