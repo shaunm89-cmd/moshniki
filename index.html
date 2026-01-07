@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mila's Tiny Match</title>
+    <title>Mila's World</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
 
         body {
             font-family: 'Fredoka', sans-serif;
-            background-color: #FFF3E0;
+            background-color: #E0F7FA;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -18,20 +19,22 @@
             padding: 10px;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
         }
 
         h1 {
-            color: #FF6F00;
+            color: #006064;
             font-size: 2rem;
             margin: 10px 0;
             text-align: center;
             letter-spacing: 1px;
+            text-shadow: 2px 2px 0px #4DD0E1;
         }
 
         .instructions {
             font-size: 1.2rem;
             margin-bottom: 15px;
-            color: #5D4037;
+            color: #00838F;
             text-align: center;
             font-weight: bold;
         }
@@ -39,16 +42,15 @@
         .game-board {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 8px;
             max-width: 500px;
             width: 100%;
-            touch-action: manipulation;
         }
 
         .tile {
             background-color: white;
-            border: 4px solid #FFCC80;
-            border-radius: 20px;
+            border: 3px solid #B2EBF2;
+            border-radius: 15px;
             aspect-ratio: 1 / 1;
             display: flex;
             flex-direction: column;
@@ -56,36 +58,45 @@
             justify-content: center;
             cursor: pointer;
             transition: transform 0.1s, background-color 0.2s;
-            box-shadow: 0 6px #FFB74D;
+            box-shadow: 0 4px #80DEEA;
+            position: relative;
+            padding: 5px;
+            overflow: hidden;
         }
 
-        .emoji-icon {
-            font-size: 2.5rem;
-            line-height: 1;
+        /* STYLES FOR REAL IMAGES */
+        .tile img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain; /* Keeps the image shape correct */
             margin-bottom: 5px;
+            pointer-events: none; /* Clicks pass through to the tile */
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
         }
 
         .word-label {
-            font-size: 0.8rem;
-            color: #888;
+            font-size: 0.7rem;
+            color: #555;
             font-weight: 700;
             text-transform: uppercase;
+            text-align: center;
         }
 
         @media (max-width: 400px) {
-            .emoji-icon { font-size: 2rem; }
+            .tile img { width: 65%; height: 65%; }
             .word-label { font-size: 0.6rem; }
-            .game-board { gap: 8px; }
+            .game-board { gap: 6px; }
         }
 
-        .tile:active { transform: translateY(6px); box-shadow: 0 0 #FFB74D; }
+        .tile:active { transform: translateY(4px); box-shadow: 0 0 #80DEEA; }
 
         .tile.selected {
-            background-color: #81D4FA;
-            border-color: #039BE5;
-            box-shadow: 0 6px #0277BD;
+            background-color: #4DD0E1;
+            border-color: #0097A7;
+            box-shadow: 0 4px #006064;
             transform: translateY(-2px);
         }
+        .tile.selected .word-label { color: white; }
 
         .tile.solved {
             cursor: default;
@@ -129,51 +140,52 @@
         }
         
         button.action-btn:active { transform: translateY(6px); box-shadow: none; }
-        .btn-go { background-color: #66BB6A; }
-        .btn-new { background-color: #AB47BC; }
+        .btn-go { background-color: #FF7043; }
+        .btn-new { background-color: #7E57C2; }
 
         #error-message {
             margin-top: 15px;
             height: 30px;
             font-weight: bold;
             font-size: 1.3rem;
-            color: #E65100;
+            color: #D84315;
             text-align: center;
         }
 
         /* Solved Group Colors */
-        .group-0 { background-color: #FFECB3; color: #333; } 
-        .group-1 { background-color: #C8E6C9; color: #333; } 
-        .group-2 { background-color: #BBDEFB; color: #333; } 
-        .group-3 { background-color: #E1BEE7; color: #333; }
+        .group-0 { background-color: #FFF59D; } /* Yellow */
+        .group-1 { background-color: #A5D6A7; } /* Green */
+        .group-2 { background-color: #90CAF9; } /* Blue */
+        .group-3 { background-color: #CE93D8; } /* Purple */
 
-        /* --- NEW HUGE CELEBRATION OVERLAY --- */
+        /* CELEBRATION OVERLAY */
         #celebration-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(255, 243, 224, 0.9); /* Semi-transparent background */
+            background-color: rgba(255, 255, 255, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 100; /* sits on top of everything */
-            pointer-events: none; /* lets clicks pass through when hidden */
+            z-index: 100;
+            pointer-events: none;
             opacity: 0;
             transition: opacity 0.3s;
         }
 
         #celebration-overlay.show {
             opacity: 1;
-            pointer-events: auto; /* blocks clicks when showing */
+            pointer-events: auto;
         }
 
         #celebration-text {
-            font-size: 4rem;
-            color: #FF6F00;
+            font-size: 3.5rem;
+            color: #00BCD4;
             text-align: center;
-            text-shadow: 3px 3px 0px #FFD54F, 6px 6px 0px #FFA000;
+            text-shadow: 3px 3px 0px #0097A7;
             transform: scale(0.5);
             opacity: 0;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 20px;
         }
 
         #celebration-overlay.show #celebration-text {
@@ -181,16 +193,12 @@
             opacity: 1;
         }
 
-        @media (max-width: 500px) {
-            #celebration-text { font-size: 2.5rem; }
-        }
-
     </style>
 </head>
 <body>
 
-    <h1>💖 Mila's Tiny Match</h1>
-    <div class="instructions">Match 4 pictures, Mila!</div>
+    <h1>💖 Mila's Game</h1>
+    <div class="instructions">Match the pictures!</div>
 
     <div id="game-board" class="game-board"></div>
     <div id="error-message"></div>
@@ -205,35 +213,63 @@
     </div>
 
 <script>
-    // --- THE LIST OF PRAISE FOR MILA ---
-    const celebrations = [
-        "YAY! 🎉",
-        "Good work Mila! 💖",
-        "AWESOME! 🌟",
-        "Super Smart! 🧠",
-        "Way to go Mila! 🚀",
-        "FANTASTIC! ✨",
-        "You did it! 🌈"
+    // --- IMAGE DATABASE ---
+    // We use "img" instead of "e" for the image address.
+    // I have found stable links for Toy Story and Labubu figures.
+    
+    const database = [
+        // 1. Toy Story Theme (Using character renders)
+        { theme: "Toy Story", words: [
+            {t:"WOODY", img:"https://upload.wikimedia.org/wikipedia/en/0/01/Sheriff_Woody.png"}, 
+            {t:"BUZZ", img:"https://upload.wikimedia.org/wikipedia/en/b/b4/Buzz_Lightyear.png"}, 
+            {t:"JESSIE", img:"https://upload.wikimedia.org/wikipedia/en/8/87/Jessie_%28Toy_Story_character%29.png"}, 
+            {t:"REX", img:"https://upload.wikimedia.org/wikipedia/en/c/c5/Rex_%28Toy_Story_character%29.png"}
+        ]},
+        // 2. Labubu / The Monsters (Using Pop Mart figure images)
+        { theme: "The Monsters", words: [
+            {t:"LABUBU", img:"https://i.imgur.com/4c71VvH.png"}, 
+            {t:"TYCOCO", img:"https://i.imgur.com/e1fW0A3.png"}, 
+            {t:"ZIMOMO", img:"https://i.imgur.com/X9YgUaD.png"}, 
+            {t:"SPOOKY", img:"https://i.imgur.com/5yD2CqL.png"}
+        ]},
+        // 3. Generic Themes using high-quality clipart icons
+        { theme: "Fruits", words: [
+            {t:"APPLE", img:"https://cdn-icons-png.flaticon.com/512/415/415733.png"}, 
+            {t:"BANANA", img:"https://cdn-icons-png.flaticon.com/512/2909/2909761.png"}, 
+            {t:"GRAPE", img:"https://cdn-icons-png.flaticon.com/512/3194/3194695.png"}, 
+            {t:"MELON", img:"https://cdn-icons-png.flaticon.com/512/2836/2836653.png"}
+        ]},
+        { theme: "Animals", words: [
+            {t:"DOG", img:"https://cdn-icons-png.flaticon.com/512/616/616408.png"}, 
+            {t:"CAT", img:"https://cdn-icons-png.flaticon.com/512/616/616430.png"}, 
+            {t:"PIG", img:"https://cdn-icons-png.flaticon.com/512/1998/1998749.png"}, 
+            {t:"COW", img:"https://cdn-icons-png.flaticon.com/512/1998/1998610.png"}
+        ]},
+        { theme: "Vehicles", words: [
+            {t:"CAR", img:"https://cdn-icons-png.flaticon.com/512/2554/2554936.png"}, 
+            {t:"BUS", img:"https://cdn-icons-png.flaticon.com/512/3066/3066259.png"}, 
+            {t:"POLICE", img:"https://cdn-icons-png.flaticon.com/512/2554/2554978.png"}, 
+            {t:"TRUCK", img:"https://cdn-icons-png.flaticon.com/512/2554/2554927.png"}
+        ]},
+        { theme: "Space", words: [
+            {t:"ROCKET", img:"https://cdn-icons-png.flaticon.com/512/3209/3209983.png"}, 
+            {t:"ALIEN", img:"https://cdn-icons-png.flaticon.com/512/3069/3069176.png"}, 
+            {t:"MOON", img:"https://cdn-icons-png.flaticon.com/512/3209/3209962.png"}, 
+            {t:"STAR", img:"https://cdn-icons-png.flaticon.com/512/3209/3209936.png"}
+        ]}
     ];
 
-    const database = [
-        { theme: "Animals", words: [{t:"DOG", e:"🐶"}, {t:"CAT", e:"🐱"}, {t:"PIG", e:"🐷"}, {t:"COW", e:"🐮"}]},
-        { theme: "Fruits", words: [{t:"APPLE", e:"🍎"}, {t:"BANANA", e:"🍌"}, {t:"GRAPE", e:"🍇"}, {t:"MELON", e:"🍉"}]},
-        { theme: "Vehicles", words: [{t:"CAR", e:"🚗"}, {t:"BUS", e:"🚌"}, {t:"POLICE", e:"🚓"}, {t:"TRUCK", e:"🚛"}]},
-        { theme: "Balls", words: [{t:"SOCCER", e:"⚽"}, {t:"BASKET", e:"🏀"}, {t:"FOOTBALL", e:"🏈"}, {t:"TENNIS", e:"🎾"}]},
-        { theme: "Weather", words: [{t:"SUN", e:"☀️"}, {t:"RAIN", e:"🌧️"}, {t:"SNOW", e:"❄️"}, {t:"STORM", e:"⚡"}]},
-        { theme: "Fast Food", words: [{t:"BURGER", e:"🍔"}, {t:"FRIES", e:"🍟"}, {t:"PIZZA", e:"🍕"}, {t:"HOTDOG", e:"🌭"}]},
-        { theme: "Faces", words: [{t:"HAPPY", e:"😀"}, {t:"SAD", e:"😢"}, {t:"ANGRY", e:"😡"}, {t:"SLEEPY", e:"😴"}]},
-        { theme: "Bugs", words: [{t:"BUG", e:"🐛"}, {t:"ANT", e:"🐜"}, {t:"BEE", e:"🐝"}, {t:"SPIDER", e:"🕷️"}]},
-        { theme: "Space", words: [{t:"ROCKET", e:"🚀"}, {t:"ALIEN", e:"👽"}, {t:"MOON", e:"🌙"}, {t:"STAR", e:"⭐"}]},
-        { theme: "Ocean", words: [{t:"FISH", e:"🐠"}, {t:"WHALE", e:"🐳"}, {t:"OCTOPUS", e:"🐙"}, {t:"DOLPHIN", e:"🐬"}]},
-        { theme: "Clothes", words: [{t:"SHIRT", e:"👕"}, {t:"PANTS", e:"👖"}, {t:"DRESS", e:"👗"}, {t:"SHOE", e:"👟"}]},
-        { theme: "Sweets", words: [{t:"CANDY", e:"🍬"}, {t:"COOKIE", e:"🍪"}, {t:"DONUT", e:"🍩"}, {t:"CAKE", e:"🍰"}]}
+    const celebrations = [
+        "Good job Mila! 💖",
+        "You are so smart! 🧠",
+        "WOW! ✨",
+        "Labubu loves it! 🐰",
+        "To Infinity! 🚀",
+        "Super Star! ⭐"
     ];
 
     const board = document.getElementById('game-board');
     const errorMsg = document.getElementById('error-message');
-    // Get the new celebration elements
     const overlay = document.getElementById('celebration-overlay');
     const celebText = document.getElementById('celebration-text');
     
@@ -265,7 +301,8 @@
         let gameItems = [];
         currentGroups.forEach(g => {
             g.words.forEach(w => {
-                gameItems.push({ text: w.t, emoji: w.e, groupId: g.id, theme: g.theme });
+                // Passing the image URL here
+                gameItems.push({ text: w.t, img: w.img, groupId: g.id, theme: g.theme });
             });
         });
 
@@ -274,7 +311,8 @@
         gameItems.forEach((item) => {
             const tile = document.createElement('div');
             tile.classList.add('tile');
-            tile.innerHTML = `<span class="emoji-icon">${item.emoji}</span><span class="word-label">${item.text}</span>`;
+            // USING IMG TAG INSTEAD OF EMOJI
+            tile.innerHTML = `<img src="${item.img}" alt="${item.text}"><span class="word-label">${item.text}</span>`;
             tile.dataset.groupId = item.groupId;
             tile.onclick = () => toggleTile(tile);
             board.appendChild(tile);
@@ -301,26 +339,26 @@
         }
     }
 
-    // --- NEW FUNCTION TO TRIGGER CELEBRATION ---
     function triggerCelebration(isFinalWin) {
-        // 1. Pick a random message
         let msg;
         if (isFinalWin) {
-            msg = "🎉 YOU WON MILA! 🎉";
+            msg = "🎉 YAY MILA! 🎉";
+            var duration = 3000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
         } else {
             msg = celebrations[Math.floor(Math.random() * celebrations.length)];
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         }
 
-        // 2. Set text and show overlay
         celebText.innerText = msg;
         overlay.classList.add('show');
-
-        // 3. Hide after 2 seconds
-        setTimeout(() => {
-             overlay.classList.remove('show');
-        }, 2000);
+        setTimeout(() => { overlay.classList.remove('show'); }, 2000);
     }
-
 
     function checkSelection() {
         if (selectedTiles.length !== 4) return;
@@ -329,25 +367,18 @@
         const isMatch = selectedTiles.every(tile => tile.dataset.groupId === firstId);
 
         if (isMatch) {
-            // Clear any old errors
             errorMsg.innerText = "";
-
-            // Mark tiles as solved
             selectedTiles.forEach(tile => {
                 tile.classList.remove('selected');
                 tile.classList.add('solved', `group-${firstId}`);
             });
-            
             selectedTiles = [];
             solvedCount++;
-
-            // TRIGGER THE BIG CELEBRATION!
             triggerCelebration(solvedCount === 4);
-            
         } else {
-            errorMsg.innerText = "Uh oh, try again!";
+            errorMsg.innerText = "Try again!";
             selectedTiles.forEach(tile => {
-                tile.style.backgroundColor = "#FFCCBC"; 
+                tile.style.backgroundColor = "#FFAB91"; 
                 setTimeout(() => {
                     tile.classList.remove('selected');
                     tile.style.backgroundColor = "";
@@ -358,6 +389,17 @@
         }
     }
 
+    // Preload images so they don't pop in late
+    function preloadImages() {
+        database.forEach(group => {
+            group.words.forEach(word => {
+                const img = new Image();
+                img.src = word.img;
+            });
+        });
+    }
+
+    preloadImages();
     initGame();
 
 </script>
