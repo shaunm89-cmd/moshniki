@@ -2,262 +2,102 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mila's Monster</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON VORTEX</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
-
         body {
             margin: 0;
-            font-family: 'Fredoka', sans-serif;
-            background: linear-gradient(to bottom, #4FC3F7, #ffffff);
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            overflow: hidden;
-            transition: background 1s ease;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: crosshair;
         }
-
-        /* NIGHT MODE STYLES */
-        body.night {
-            background: linear-gradient(to bottom, #1A237E, #311B92);
+        canvas {
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.2);
         }
-        body.night .stat-label { color: white; }
-        body.night h1 { color: #B39DDB; text-shadow: 0 0 10px white; }
-
-        /* HEADER & STATS */
-        #top-bar {
-            width: 90%;
-            margin-top: 10px;
-            background: rgba(255,255,255,0.8);
-            padding: 15px;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        h1 { margin: 0 0 10px 0; text-align: center; color: #0277BD; font-size: 1.5rem; }
-
-        .stat-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            width: 30px;
-            font-size: 1.2rem;
-        }
-
-        .progress-bar-bg {
-            flex-grow: 1;
-            height: 15px;
-            background-color: #E0E0E0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-left: 10px;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            width: 50%;
-            transition: width 0.5s, background-color 0.5s;
-        }
-
-        /* THE PET AREA */
-        #pet-container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            width: 100%;
-        }
-
-        #pet {
-            font-size: 8rem;
-            cursor: pointer;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
-            transition: transform 0.2s;
-            animation: breathe 3s infinite ease-in-out;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* ANIMATIONS */
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes jump {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-50px) scale(1.1); }
-            100% { transform: translateY(0); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        @keyframes evolveSpin {
-            0% { transform: scale(1) rotate(0deg); opacity: 1; }
-            50% { transform: scale(0) rotate(360deg); opacity: 0; }
-            100% { transform: scale(1) rotate(720deg); opacity: 1; }
-        }
-
-        /* Floating emojis (hearts/food) */
-        .floater {
+        #ui {
             position: absolute;
-            font-size: 2rem;
-            pointer-events: none;
-            animation: floatUp 1.5s forwards;
-        }
-
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-100px); }
-        }
-
-        /* CONTROLS */
-        #controls {
-            width: 100%;
-            padding: 20px 0 40px 0;
-            background: white;
-            border-top-left-radius: 30px;
-            border-top-right-radius: 30px;
-            display: flex;
-            justify-content: space-evenly;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
-        }
-
-        .btn {
-            background: none;
-            border: none;
-            font-size: 2.5rem;
-            background-color: #F5F5F5;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.1s, background-color 0.2s;
-            box-shadow: 0 4px #BDBDBD;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .btn:active { transform: translateY(4px); box-shadow: none; }
-        .btn-feed { background-color: #FFCCBC; color: #D84315; }
-        .btn-play { background-color: #C8E6C9; color: #2E7D32; }
-        .btn-sleep { background-color: #BBDEFB; color: #1565C0; }
-        .btn-clean { background-color: #E1BEE7; color: #6A1B9A; }
-
-        /* Level Badge */
-        #level-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #FF6F00;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        /* Message Bubble */
-        #message {
-            position: absolute;
-            top: 20%;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 15px;
-            font-weight: bold;
-            color: #333;
-            opacity: 0;
-            transition: opacity 0.3s;
+            top: 20px;
+            left: 20px;
             pointer-events: none;
         }
-        #message:after {
-            content: '';
+        #score { font-size: 2rem; color: #0ff; text-shadow: 0 0 10px #0ff; }
+        #wave { font-size: 1.2rem; color: #f0f; }
+        #start-screen, #game-over {
             position: absolute;
-            bottom: -10px;
-            left: 50%;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+        h1 { font-size: 4rem; margin: 0; color: #0ff; text-shadow: 0 0 20px #0ff, 0 0 40px #f0f; }
+        p { font-size: 1.5rem; }
+        .hidden { display: none !important; }
+        #dash-cooldown {
+            position: absolute;
+            bottom: 20px; left: 50%;
             transform: translateX(-50%);
-            border-width: 10px 10px 0;
-            border-style: solid;
-            border-color: white transparent;
+            width: 200px; height: 10px;
+            background: #333;
+            border: 2px solid #555;
         }
-
+        #dash-fill { height: 100%; background: #f0f; width: 100%; box-shadow: 0 0 10px #f0f; transition: width 0.1s linear; }
     </style>
 </head>
 <body>
 
-    <div id="top-bar">
-        <h1>💖 Mila's Monster</h1>
-        <div class="stat-row">
-            <span class="stat-label">🍖</span>
-            <div class="progress-bar-bg">
-                <div id="bar-hunger" class="progress-bar-fill" style="background-color: #FF7043;"></div>
-            </div>
-        </div>
-        <div class="stat-row">
-            <span class="stat-label">😊</span>
-            <div class="progress-bar-bg">
-                <div id="bar-happy" class="progress-bar-fill" style="background-color: #66BB6A;"></div>
-            </div>
-        </div>
-        <div class="stat-row">
-            <span class="stat-label">⚡</span>
-            <div class="progress-bar-bg">
-                <div id="bar-energy" class="progress-bar-fill" style="background-color: #42A5F5;"></div>
-            </div>
-        </div>
+    <div id="ui">
+        <div id="score">SCORE: 0</div>
+        <div id="wave">WAVE: 1</div>
     </div>
 
-    <div id="pet-container">
-        <div id="level-badge">Lvl 1</div>
-        <div id="message"></div>
-        <div id="pet" onclick="petClick()">🥚</div>
+    <div id="dash-cooldown"><div id="dash-fill"></div></div>
+
+    <div id="start-screen">
+        <h1>NEON VORTEX</h1>
+        <p>WASD to move // MOUSE to aim & shoot<br>SPACE to Dash</p>
+        <p style="color: #f0f; font-size: 1.2rem; margin-top: 30px;">CLICK TO ENGAGE</p>
     </div>
 
-    <div id="controls">
-        <button class="btn btn-feed" onclick="action('feed')">🍎</button>
-        <button class="btn btn-play" onclick="action('play')">🎾</button>
-        <button class="btn btn-sleep" onclick="action('sleep')">💤</button>
+    <div id="game-over" class="hidden">
+        <h1 style="color: #f00; text-shadow: 0 0 20px #f00;">SYSTEM FAILURE</h1>
+        <p id="final-score">Score: 0</p>
+        <p style="color: #0ff; margin-top: 30px;">CLICK TO REBOOT</p>
     </div>
+
+    <canvas id="gameCanvas"></canvas>
 
 <script>
-    // --- GAME STATE ---
-    let stats = {
-        hunger: 50,    // 0 = starving, 100 = full
-        happy: 50,     // 0 = sad, 100 = overjoyed
-        energy: 50,    // 0 = exhausted, 100 = hyper
-        xp: 0,
-        level: 1,
-        isSleeping: false
-    };
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    const waveEl = document.getElementById('wave');
+    const startScreen = document.getElementById('start-screen');
+    const gameOverScreen = document.getElementById('game-over');
+    const finalScoreEl = document.getElementById('final-score');
+    const dashFill = document.getElementById('dash-fill');
 
-    // The Evolution Path (Emoji, Name)
-    // 1. Egg -> 2. Chick -> 3. Rabbit (Labubu) -> 4. Monster -> 5. King Monster
-    const evolutions = ["🥚", "🐣", "🐰", "👹", "👑"];
-    
-    const petEl = document.getElementById('pet');
-    const msgEl = document.getElementById('message');
-    
-    // --- AUDIO SYSTEM (No files needed) ---
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    function playTone(type) {
+    let gameRunning = false;
+    let score = 0;
+    let wave = 1;
+    let frame = 0;
+    let difficultyMultiplier = 1;
+
+    // Camera Shake
+    let screenshake = 0;
+
+    // --- AUDIO SYNTHESIS (No files required) ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
         if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -265,202 +105,299 @@
         gain.connect(audioCtx.destination);
 
         const now = audioCtx.currentTime;
-        if(type === 'happy') {
-            osc.frequency.setValueAtTime(500, now);
-            osc.frequency.linearRampToValueAtTime(800, now + 0.1);
+        if (type === 'shoot') {
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(800, now);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 0.15);
             gain.gain.setValueAtTime(0.1, now);
-            gain.gain.linearRampToValueAtTime(0, now + 0.2);
-            osc.start(now);
-            osc.stop(now + 0.2);
-        } else if (type === 'sleep') {
-            osc.frequency.setValueAtTime(300, now);
-            osc.frequency.linearRampToValueAtTime(150, now + 0.5);
-            gain.gain.setValueAtTime(0.05, now);
-            gain.gain.linearRampToValueAtTime(0, now + 0.5);
-            osc.start(now);
-            osc.stop(now + 0.5);
-        } else if (type === 'evolve') {
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(300, now);
-            osc.frequency.linearRampToValueAtTime(600, now + 0.2);
-            osc.frequency.linearRampToValueAtTime(900, now + 0.4);
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.linearRampToValueAtTime(0, now + 1.0);
-            osc.start(now);
-            osc.stop(now + 1.0);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            osc.start(now); osc.stop(now + 0.15);
+        } else if (type === 'hit') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(200, now);
+            osc.frequency.exponentialRampToValueAtTime(50, now + 0.2);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+            osc.start(now); osc.stop(now + 0.3);
+        } else if (type === 'dash') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(1200, now);
+            osc.frequency.exponentialRampToValueAtTime(400, now + 0.3);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.linearRampToValueAtTime(0, now + 0.3);
+            osc.start(now); osc.stop(now + 0.3);
         }
     }
 
-    // --- ACTIONS ---
-    function action(type) {
-        if (stats.isSleeping && type !== 'sleep') {
-            showMessage("Zzz... shhh!");
-            shakePet();
-            return;
-        }
+    // --- GAME ENTITIES ---
+    const player = {
+        x: canvas.width / 2, y: canvas.height / 2,
+        radius: 15, color: '#0ff', angle: 0, speed: 5,
+        dx: 0, dy: 0,
+        isDashing: false, dashCooldown: 0, dashDuration: 15
+    };
 
-        if (type === 'feed') {
-            if (stats.hunger >= 100) {
-                showMessage("I'm full!");
-                shakePet();
-            } else {
-                updateStat('hunger', 20);
-                updateStat('energy', -5);
-                spawnFloater("🍎");
-                petAnimation('jump');
-                playTone('happy');
-                addXP(5);
+    let bullets = [];
+    let enemies = [];
+    let particles = [];
+
+    const keys = { w: false, a: false, s: false, d: false, space: false };
+    const mouse = { x: canvas.width / 2, y: canvas.height / 2, down: false };
+
+    // --- INPUT HANDLING ---
+    window.addEventListener('keydown', e => {
+        if(e.key === 'w') keys.w = true;
+        if(e.key === 'a') keys.a = true;
+        if(e.key === 's') keys.s = true;
+        if(e.key === 'd') keys.d = true;
+        if(e.key === ' ' && !keys.space) { keys.space = true; tryDash(); }
+    });
+    window.addEventListener('keyup', e => {
+        if(e.key === 'w') keys.w = false;
+        if(e.key === 'a') keys.a = false;
+        if(e.key === 's') keys.s = false;
+        if(e.key === 'd') keys.d = false;
+        if(e.key === ' ') keys.space = false;
+    });
+    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('mousedown', () => mouse.down = true);
+    window.addEventListener('mouseup', () => mouse.down = false);
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    window.addEventListener('click', () => {
+        if (!gameRunning) startGame();
+    });
+
+    // --- CORE MECHANICS ---
+    function tryDash() {
+        if (player.dashCooldown <= 0 && gameRunning) {
+            player.isDashing = true;
+            player.dashCooldown = 60; // Frames until next dash
+            playSound('dash');
+            screenshake = 10;
+            // Create dash particles
+            for(let i=0; i<10; i++) {
+                 particles.push(new Particle(player.x, player.y, player.color, Math.random()*2, (Math.random()-0.5)*10, (Math.random()-0.5)*10));
             }
-        } 
-        else if (type === 'play') {
-            if (stats.energy <= 10) {
-                showMessage("Too tired...");
-                shakePet();
-            } else {
-                updateStat('happy', 20);
-                updateStat('hunger', -10);
-                updateStat('energy', -15);
-                spawnFloater("💖");
-                petAnimation('jump');
-                playTone('happy');
-                addXP(10);
-            }
-        } 
-        else if (type === 'sleep') {
-            toggleSleep();
         }
-        
-        updateUI();
     }
 
-    function toggleSleep() {
-        stats.isSleeping = !stats.isSleeping;
-        const body = document.body;
-        
-        if (stats.isSleeping) {
-            body.classList.add('night');
-            petEl.innerText = "💤";
-            playTone('sleep');
-            // Fast recharge
-            sleepInterval = setInterval(() => {
-                updateStat('energy', 5);
-                if(stats.energy >= 100) {
-                    toggleSleep(); // Wake up automatically
+    function spawnEnemy() {
+        const size = Math.random() * 15 + 10;
+        let x, y;
+        // Spawn on edge of screen
+        if (Math.random() < 0.5) {
+            x = Math.random() < 0.5 ? 0 - size : canvas.width + size;
+            y = Math.random() * canvas.height;
+        } else {
+            x = Math.random() * canvas.width;
+            y = Math.random() < 0.5 ? 0 - size : canvas.height + size;
+        }
+        const color = `hsl(${Math.random() * 60 + 300}, 100%, 50%)`; // Pinks and Purples
+        const speed = (Math.random() * 2 + 1) * difficultyMultiplier;
+        enemies.push({ x, y, size, color, speed });
+    }
+
+    function fireBullet() {
+        if(frame % 5 === 0) { // Fire rate limiter
+            const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+            const velocity = { x: Math.cos(angle) * 12, y: Math.sin(angle) * 12 };
+            bullets.push({ x: player.x, y: player.y, dx: velocity.x, dy: velocity.y, radius: 5, color: '#ff0' });
+            playSound('shoot');
+            screenshake = 2;
+        }
+    }
+
+    // Particle System for explosions
+    class Particle {
+        constructor(x, y, color, radius, dx, dy) {
+            this.x = x; this.y = y; this.color = color; this.radius = radius || Math.random() * 3;
+            this.dx = dx || (Math.random() - 0.5) * 15; this.dy = dy || (Math.random() - 0.5) * 15;
+            this.alpha = 1; this.friction = 0.95;
+        }
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color; ctx.fill();
+            ctx.restore();
+        }
+        update() {
+            this.dx *= this.friction; this.dy *= this.friction;
+            this.x += this.dx; this.y += this.dy;
+            this.alpha -= 0.02;
+        }
+    }
+
+    function createExplosion(x, y, color, count = 20) {
+        screenshake = 15;
+        playSound('hit');
+        for (let i = 0; i < count; i++) {
+            particles.push(new Particle(x, y, color));
+        }
+    }
+
+    function startGame() {
+        if(gameOverScreen.classList.contains('hidden') && startScreen.classList.contains('hidden')) return;
+        gameRunning = true;
+        score = 0; wave = 1; difficultyMultiplier = 1; frame = 0;
+        scoreEl.innerText = "SCORE: " + score;
+        waveEl.innerText = "WAVE: " + wave;
+        player.x = canvas.width/2; player.y = canvas.height/2;
+        bullets = []; enemies = []; particles = [];
+        startScreen.classList.add('hidden');
+        gameOverScreen.classList.add('hidden');
+        audioCtx.resume();
+        animate();
+    }
+
+    function endGame() {
+        gameRunning = false;
+        finalScoreEl.innerText = "Final Score: " + score;
+        gameOverScreen.classList.remove('hidden');
+        createExplosion(player.x, player.y, '#0ff', 50);
+    }
+
+    // --- MAIN GAME LOOP ---
+    function animate() {
+        if (!gameRunning) return;
+        requestAnimationFrame(animate);
+        frame++;
+
+        // Clear Canvas with trailing effect
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Screenshake application
+        let shakeX = 0, shakeY = 0;
+        if (screenshake > 0) {
+            shakeX = (Math.random() - 0.5) * screenshake;
+            shakeY = (Math.random() - 0.5) * screenshake;
+            screenshake *= 0.9; // damping
+            if(screenshake < 0.5) screenshake = 0;
+        }
+        ctx.save();
+        ctx.translate(shakeX, shakeY);
+
+        // Player Logic
+        if (keys.w) player.y -= player.speed;
+        if (keys.s) player.y += player.speed;
+        if (keys.a) player.x -= player.speed;
+        if (keys.d) player.x += player.speed;
+        // Clamp player to screen
+        player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
+        player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y));
+
+        player.angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+
+        // Dash logic
+        if(player.dashCooldown > 0) player.dashCooldown--;
+        dashFill.style.width = (1 - (player.dashCooldown / 60)) * 100 + "%";
+
+        if(player.isDashing) {
+            player.dashDuration--;
+            // Dashing visual
+            ctx.shadowBlur = 30; ctx.shadowColor = '#f0f';
+            player.x += Math.cos(player.angle) * 10; // Dash movement
+            if(player.dashDuration <= 0) {
+                player.isDashing = false; player.dashDuration = 15;
+            }
+        } else {
+            ctx.shadowBlur = 15; ctx.shadowColor = '#0ff';
+        }
+
+        // Draw Player
+        ctx.save();
+        ctx.translate(player.x, player.y);
+        ctx.rotate(player.angle);
+        ctx.beginPath();
+        ctx.moveTo(20, 0); // Nose
+        ctx.lineTo(-15, -15); // Back left
+        ctx.lineTo(-5, 0); // Inner back
+        ctx.lineTo(-15, 15); // Back right
+        ctx.closePath();
+        ctx.fillStyle = player.isDashing ? '#f0f' : player.color;
+        ctx.fill();
+        ctx.restore();
+        ctx.shadowBlur = 0; // Reset glow for other elements
+
+        // Fire mechanism
+        if (mouse.down && !player.isDashing) fireBullet();
+
+        // Projectiles
+        bullets.forEach((b, i) => {
+            b.x += b.dx; b.y += b.dy;
+            ctx.shadowBlur = 10; ctx.shadowColor = b.color;
+            ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI*2);
+            ctx.fillStyle = b.color; ctx.fill();
+            // Remove offscreen bullets
+            if (b.x+b.radius<0 || b.x-b.radius>canvas.width || b.y+b.radius<0 || b.y-b.radius>canvas.height) {
+                bullets.splice(i, 1);
+            }
+        });
+        ctx.shadowBlur = 0;
+
+        // Enemies
+        // Wave management: increase difficulty every 500 frames
+        if(frame % 500 === 0) {
+            wave++; difficultyMultiplier += 0.2;
+            waveEl.innerText = "WAVE: " + wave;
+        }
+        // Spawn rate depends on difficulty
+        if(frame % Math.max(20, Math.floor(60 - difficultyMultiplier*5)) === 0) spawnEnemy();
+
+        enemies.forEach((e, eIndex) => {
+            // Move towards player
+            const angle = Math.atan2(player.y - e.y, player.x - e.x);
+            e.x += Math.cos(angle) * e.speed;
+            e.y += Math.sin(angle) * e.speed;
+
+            // Draw Enemy
+            ctx.shadowBlur = 20; ctx.shadowColor = e.color;
+            ctx.save();
+            ctx.translate(e.x, e.y);
+            ctx.rotate(frame * 0.05); // Spin em
+            ctx.beginPath();
+            ctx.rect(-e.size/2, -e.size/2, e.size, e.size);
+            ctx.fillStyle = e.color; ctx.fill();
+            ctx.restore();
+
+            // Collision: Enemy vs Player
+            const distToPlayer = Math.hypot(player.x - e.x, player.y - e.y);
+            if (distToPlayer - e.size/2 - player.radius < 1) {
+                if(player.isDashing) {
+                    // Dash kill!
+                    createExplosion(e.x, e.y, e.color, 40);
+                    enemies.splice(eIndex, 1);
+                    score += 50;
+                    scoreEl.innerText = "SCORE: " + score;
+                } else {
+                    endGame();
                 }
-                updateUI();
-            }, 500);
-        } else {
-            body.classList.remove('night');
-            petEl.innerText = evolutions[stats.level - 1];
-            playTone('happy');
-            clearInterval(sleepInterval);
-            showMessage("Good morning!");
-        }
-    }
+            }
 
-    function updateStat(stat, value) {
-        stats[stat] += value;
-        if (stats[stat] > 100) stats[stat] = 100;
-        if (stats[stat] < 0) stats[stat] = 0;
-    }
-
-    function addXP(amount) {
-        stats.xp += amount;
-        
-        // Level Up Thresholds: 50, 150, 300, 500
-        let nextLevelThreshold = stats.level * 50 * stats.level; 
-        
-        if (stats.xp >= nextLevelThreshold && stats.level < evolutions.length) {
-            levelUp();
-        }
-    }
-
-    function levelUp() {
-        stats.level++;
-        playTone('evolve');
-        
-        // Evolution Animation
-        petEl.style.animation = 'evolveSpin 1s ease';
-        
-        setTimeout(() => {
-            petEl.innerText = evolutions[stats.level - 1];
-            petEl.style.animation = 'breathe 3s infinite ease-in-out';
-            showMessage("LEVEL UP! 🎉");
-            document.getElementById('level-badge').innerText = "Lvl " + stats.level;
-            
-            // Big Confetti
-            confetti({
-                particleCount: 150,
-                spread: 100,
-                origin: { y: 0.6 }
+            // Collision: Enemy vs Bullets
+            bullets.forEach((b, bIndex) => {
+                const dist = Math.hypot(b.x - e.x, b.y - e.y);
+                if (dist - e.size/2 - b.radius < 1) {
+                    // Kill!
+                    createExplosion(e.x, e.y, e.color);
+                    enemies.splice(eIndex, 1);
+                    bullets.splice(bIndex, 1);
+                    score += 10;
+                    scoreEl.innerText = "SCORE: " + score;
+                }
             });
-        }, 500);
+        });
+        ctx.shadowBlur = 0;
+
+        // Particles
+        particles.forEach((p, i) => {
+            if (p.alpha <= 0) particles.splice(i, 1); else p.update(); p.draw();
+        });
+
+        ctx.restore(); // End Screenshake transform
     }
-
-    function showMessage(text) {
-        msgEl.innerText = text;
-        msgEl.style.opacity = 1;
-        msgEl.style.top = "15%";
-        setTimeout(() => {
-            msgEl.style.opacity = 0;
-            msgEl.style.top = "20%";
-        }, 1500);
-    }
-
-    function spawnFloater(char) {
-        const f = document.createElement('div');
-        f.innerText = char;
-        f.classList.add('floater');
-        f.style.left = (Math.random() * 50 + 25) + "%"; // random horizontal pos
-        f.style.top = "50%";
-        document.getElementById('pet-container').appendChild(f);
-        setTimeout(() => f.remove(), 1500);
-    }
-
-    function petAnimation(animName) {
-        petEl.style.animation = 'none';
-        petEl.offsetHeight; /* trigger reflow */
-        petEl.style.animation = `${animName} 0.5s linear`;
-        setTimeout(() => {
-            petEl.style.animation = 'breathe 3s infinite ease-in-out';
-        }, 500);
-    }
-
-    function shakePet() {
-        petEl.style.animation = 'none';
-        petEl.offsetHeight; 
-        petEl.style.animation = `shake 0.3s linear`;
-        setTimeout(() => {
-            petEl.style.animation = 'breathe 3s infinite ease-in-out';
-        }, 300);
-    }
-
-    function petClick() {
-        if(!stats.isSleeping) {
-            action('play');
-        } else {
-            showMessage("Shhh... sleeping");
-        }
-    }
-
-    function updateUI() {
-        document.getElementById('bar-hunger').style.width = stats.hunger + "%";
-        document.getElementById('bar-happy').style.width = stats.happy + "%";
-        document.getElementById('bar-energy').style.width = stats.energy + "%";
-    }
-
-    // Game Loop (Time passes)
-    setInterval(() => {
-        if (!stats.isSleeping) {
-            updateStat('hunger', -1);
-            updateStat('happy', -1);
-            updateStat('energy', -0.5);
-            updateUI();
-        }
-    }, 2000);
-
-    updateUI();
-
 </script>
 </body>
 </html>
