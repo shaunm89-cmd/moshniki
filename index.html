@@ -9,14 +9,14 @@
     <style>
         /* --- THEME SETTINGS --- */
         :root {
-            --primary-sage: #6B8E6B;      /* The main sage green */
+            --primary-sage: #6B8E6B;      /* Main sage green */
             --dark-sage: #3A4F3A;         /* Darker green for text */
-            --cream-bg: #F4F7F4;          /* Soft background color */
             --white: #ffffff;
             --text-color: #444;
             
-            /* Background Image - Points to the local file you saved */
-            --bg-floral: url('bg-floral.png');
+            /* THIS IS THE BACKGROUND IMAGE */
+            /* It expects the file to be named 'bg-floral.png' in the same folder */
+            --bg-image: url('bg-floral.png'); 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,13 +26,20 @@
             font-family: 'Lato', sans-serif;
             color: var(--text-color);
             line-height: 1.6;
-            background-color: var(--cream-bg);
+            
+            /* BACKGROUND CONFIGURATION */
+            /* This makes the wallpaper cover the whole page and stay fixed while scrolling */
+            background-image: var(--bg-image);
+            background-attachment: fixed; 
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         a { text-decoration: none; transition: 0.3s; }
         ul { list-style: none; }
 
-        /* --- LAYOUT --- */
+        /* --- LAYOUT UTILS --- */
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -48,16 +55,17 @@
         }
 
         h1 {
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             line-height: 1.2;
             margin-bottom: 20px;
         }
 
         h2 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             text-align: center;
             margin-bottom: 40px;
             position: relative;
+            text-shadow: 2px 2px 0px #fff; /* Helps text pop off background */
         }
         
         /* Little flower under titles */
@@ -67,18 +75,20 @@
             color: var(--primary-sage);
             font-size: 1.5rem;
             margin-top: 10px;
+            text-shadow: none;
         }
 
         h3 { font-size: 1.3rem; margin-bottom: 15px; }
 
-        /* --- Section Icons --- */
+        /* --- ICONS (SVG) --- */
         .section-icon {
             display: block;
             margin: 0 auto 15px auto;
             width: 60px;
             height: 60px;
-            fill: var(--primary-sage); /* Color the SVG to match theme */
-            opacity: 0.8;
+            fill: var(--primary-sage);
+            opacity: 0.9;
+            filter: drop-shadow(0px 2px 0px rgba(255,255,255,0.8));
         }
 
         /* --- BUTTONS --- */
@@ -90,7 +100,8 @@
             border-radius: 50px;
             font-weight: 700;
             letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(107, 142, 107, 0.4);
+            box-shadow: 0 4px 10px rgba(58, 79, 58, 0.3);
+            border: 2px solid white;
         }
         .btn:hover {
             background-color: var(--dark-sage);
@@ -104,6 +115,7 @@
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-bottom: 1px solid #e0e0e0;
         }
 
         nav {
@@ -115,7 +127,7 @@
 
         .logo {
             font-family: 'Cinzel Decorative', serif;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--dark-sage);
             display: flex;
@@ -128,7 +140,7 @@
             margin-right: 10px;
             line-height: 0;
             position: relative;
-            top: -2px;
+            top: -3px;
         }
 
         .nav-links { display: flex; gap: 25px; }
@@ -141,16 +153,12 @@
         }
         .nav-links a:hover { color: var(--primary-sage); }
 
-        /* --- HERO SECTION (Floral Background) --- */
+        /* --- HERO SECTION --- */
         .hero {
-            position: relative;
             min-height: 85vh;
             display: flex;
             align-items: center;
-            /* Floral Pattern Overlay */
-            background-image: linear-gradient(rgba(235, 245, 235, 0.85), rgba(235, 245, 235, 0.85)), var(--bg-floral);
-            background-size: 400px; 
-            border-bottom: 10px solid var(--white);
+            /* No background image here, it's on the body now */
         }
 
         .hero-content {
@@ -158,6 +166,12 @@
             align-items: center;
             justify-content: space-between;
             gap: 50px;
+            /* White box behind hero content for readability */
+            background: rgba(255, 255, 255, 0.85);
+            padding: 50px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
         .hero-text { flex: 1; }
@@ -177,8 +191,8 @@
         }
 
         .hero-photo {
-            width: 350px;
-            height: 350px;
+            width: 320px;
+            height: 320px;
             object-fit: cover;
             border-radius: 50%;
             border: 8px solid var(--white);
@@ -187,28 +201,28 @@
         }
 
         .credentials {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--dark-sage);
             font-weight: 700;
             text-align: center;
-            background: rgba(255,255,255,0.7);
-            padding: 10px 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 15px;
             border-radius: 10px;
             line-height: 1.4;
-        }
-
-        /* --- CONTENT BOXES --- */
-        .content-box {
-            background: var(--white);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
             border: 1px solid #eee;
         }
 
+        /* --- CONTENT BOXES --- */
+        /* Used to make text readable over the floral background */
+        .content-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
         /* --- SERVICES --- */
-        .services-bg { background-color: #EBF1EB; }
-        
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -216,10 +230,11 @@
         }
         
         .service-card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
             padding: 30px;
             border-radius: 15px;
             border-top: 5px solid var(--primary-sage);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
         
         .service-list li {
@@ -232,6 +247,7 @@
             content: '🌿';
             margin-right: 10px;
             font-size: 0.9rem;
+            color: var(--primary-sage);
         }
 
         /* --- FIRST SESSION --- */
@@ -242,13 +258,14 @@
             justify-content: center;
         }
         .session-card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
             padding: 30px;
             border-radius: 15px;
             flex: 1;
             min-width: 300px;
             max-width: 450px;
             border: 1px solid #eee;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         /* --- REFERRALS --- */
@@ -265,12 +282,14 @@
             margin-bottom: 5px;
         }
 
-        /* --- FOOTER & MAP --- */
+        /* --- FOOTER --- */
         footer {
             background: var(--dark-sage);
             color: #e0e0e0;
             padding: 60px 0 30px;
             text-align: center;
+            position: relative;
+            z-index: 10;
         }
         footer a { color: var(--white); font-weight: bold; text-decoration: underline; }
         
@@ -280,7 +299,7 @@
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            border: 3px solid rgba(255,255,255,0.1);
+            border: 4px solid rgba(255,255,255,0.1);
         }
         
         .footer-abn {
@@ -292,12 +311,17 @@
 
         /* --- MOBILE --- */
         @media (max-width: 768px) {
-            .hero-content { flex-direction: column-reverse; text-align: center; gap: 30px; }
+            .hero-content { 
+                flex-direction: column-reverse; 
+                text-align: center; 
+                gap: 30px; 
+                padding: 30px 20px;
+            }
             .hero-subtitle { margin: 0 auto 30px auto; }
-            .nav-links { display: none; }
+            .nav-links { display: none; } /* Mobile menu hidden for simplicity */
             nav { justify-content: center; }
             h1 { font-size: 2rem; }
-            .hero-photo { width: 280px; height: 280px; }
+            .hero-photo { width: 250px; height: 250px; }
         }
     </style>
 </head>
@@ -322,20 +346,22 @@
     </header>
 
     <section class="hero">
-        <div class="container hero-content">
-            <div class="hero-text">
-                <h1>Nurturing Resilience & Wellbeing</h1>
-                <p class="hero-subtitle">Supporting the emotional wellbeing of children, young people, and their families in a safe, person-centred environment.</p>
-                <a href="#contact" class="btn">Get in Touch</a>
-            </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Nurturing Resilience & Wellbeing</h1>
+                    <p class="hero-subtitle">Supporting the emotional wellbeing of children, young people, and their families in a safe, person-centred environment.</p>
+                    <a href="#contact" class="btn">Get in Touch</a>
+                </div>
 
-            <div class="hero-image-container">
-                <img src="https://static.wixstatic.com/media/8d1054_ee7df96c9df8426c91fea3979c1ba28a~mv2.jpeg/v1/fill/w_371,h_335,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rhonda.jpeg" alt="Rhonda Blackadder" class="hero-photo">
-                
-                <p class="credentials">
-                    BAEng&Psy, BPsySt(Hons), DipProPrac<br>
-                    Registered Psychologist (AHPRA)
-                </p>
+                <div class="hero-image-container">
+                    <img src="https://static.wixstatic.com/media/8d1054_ee7df96c9df8426c91fea3979c1ba28a~mv2.jpeg/v1/fill/w_371,h_335,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rhonda.jpeg" alt="Rhonda Blackadder" class="hero-photo">
+                    
+                    <p class="credentials">
+                        BAEng&Psy, BPsySt(Hons), DipProPrac<br>
+                        Registered Psychologist (AHPRA)
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -352,7 +378,7 @@
         </div>
     </section>
 
-    <section id="services" class="services-bg">
+    <section id="services">
         <div class="container">
             <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c-1.7 0-3 1.3-3 3 0 1.1.6 2 1.5 2.5C9.6 7.9 9 9 9 10.2c0 2.2 1.8 4 4 4s4-1.8 4-4c0-1.2-.6-2.3-1.5-2.7C16.4 7 17 6.1 17 5c0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .4.1.8.3 1.2C9.8 7 8.8 8.5 8.8 10.2c0 3.2 2.5 5.8 5.7 5.8h.1l-.3 2.4c-.3 2-2 3.6-4 3.6H8c-1.1 0-2-.9-2-2V4H4v16c0 2.2 1.8 4 4 4h2.3c3.2 0 6-2.5 6.4-5.6L17 16c3.3 0 6-2.7 6-6 0-3.3-2.7-6-6-6-.7 0-1.4.1-2 .4C14.5 2.8 13.3 2 12 2z"/></svg>
             <h2>Individual Therapy</h2>
@@ -393,11 +419,11 @@
         </div>
     </section>
 
-    <section id="session" style="background-color: #F9FBF8;">
+    <section id="session">
         <div class="container">
             <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c-1.1 0-2 .9-2 2v14c-1.1 0-2 .9-2 2h4c0-1.1-.9-2-2-2V5c0-1.1-.9-2-2-2zm6 4c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zm-12 4c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/></svg>
             <h2>First Session</h2>
-            <p style="text-align: center; max-width: 600px; margin: 0 auto 30px auto;">The first session focuses on understanding presenting concerns and gathering developmental background to guide treatment.</p>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto 30px auto; background: rgba(255,255,255,0.8); padding: 10px; border-radius: 10px;">The first session focuses on understanding presenting concerns and gathering developmental background to guide treatment.</p>
             
             <div class="session-grid">
                 <div class="session-card">
@@ -414,7 +440,7 @@
                     </ul>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 20px; font-style: italic; opacity: 0.8; font-size: 0.9rem;">Clients may also complete assessments or questionnaires to support treatment planning.</p>
+            <p style="text-align: center; margin-top: 20px; font-style: italic; opacity: 0.8; font-size: 0.9rem; color: #333;">Clients may also complete assessments or questionnaires to support treatment planning.</p>
         </div>
     </section>
 
@@ -448,7 +474,7 @@
             <h2>Contact</h2>
 
             <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3320.0067652568987!2d150.81417437626043!3d-33.68285447330097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b0d7e4555555555%3A0x4010401040104010!2s3%20Baker%20St%2C%20Windsor%20NSW%202756%2C%20Australia!5e0!3m2!1sen!2sus!4v1706139000000!5m2!1sen!2sus" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3320.720886561569!2d150.8175519768394!3d-33.66442117326493!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b0d7d9a5b5b5b5b%3A0x1c00f3e3e3e3e3e3!2s3%20Baker%20St%2C%20Windsor%20NSW%202756!5e0!3m2!1sen!2sau!4v1700000000000!5m2!1sen!2sau" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             
             <div style="font-size: 1.1rem; margin-top: 20px;">
@@ -458,7 +484,7 @@
 
             <div class="footer-abn">
                 ABN 75 872 154 399<br>
-                &copy; 2026 Rhonda Blackadder Psychologist
+                © 2026 Rhonda Blackadder Psychologist
             </div>
         </div>
     </footer>
