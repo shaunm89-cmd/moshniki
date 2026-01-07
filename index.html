@@ -117,11 +117,15 @@
 
         /* --- HEADER --- */
         header {
+            /* Crisp white with slight transparency */
             background: rgba(255, 255, 255, 0.95); 
+            
             position: sticky;
             top: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            
+            /* Gold border to make it feel premium */
             border-bottom: 2px solid var(--gold-accent); 
         }
 
@@ -132,11 +136,28 @@
             height: 90px;
         }
 
+        /* Updated Logo Styles for Stacking */
         .logo {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            line-height: 1.2;
+        }
+        
+        .logo-main {
             font-family: 'Cinzel Decorative', serif;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: var(--deep-forest);
+        }
+        
+        .logo-sub {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            color: var(--gold-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
 
         .nav-links { display: flex; gap: 30px; }
@@ -198,7 +219,7 @@
             padding: 40px;
             border: 1px solid #f0f0f0;
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-            border-top: 4px solid var(--gold-accent); 
+            border-top: 4px solid var(--gold-accent); /* Nice accent on top of cards */
         }
         
         .service-list li {
@@ -265,7 +286,7 @@
         footer h2 { 
             color: var(--white); 
             text-align: left; 
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         /* Remove the standard gold underline for footer, use spacing instead */
         footer h2::after { display: none; } 
@@ -319,6 +340,7 @@
             .footer-info { text-align: center; }
             .nav-links { display: none; }
             nav { justify-content: center; }
+            .logo { align-items: center; }
         }
     </style>
 </head>
@@ -327,7 +349,11 @@
     <header>
         <div class="container">
             <nav>
-                <div class="logo">Rhonda Blackadder</div>
+                <div class="logo">
+                    <span class="logo-main">Rhonda Blackadder</span>
+                    <span class="logo-sub">Psychologist</span>
+                </div>
+                
                 <div class="nav-links">
                     <a href="#about">About</a>
                     <a href="#services">Services</a>
@@ -429,7 +455,7 @@
                     </ul>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 30px; font-size: 0.9rem;">Clients may also complete assessments or questionnaires to support treatment planning.</p>
+            <p style="text-align: center; margin-top: 30px; font-style: italic; opacity: 0.8; font-size: 0.9rem;">Clients may also complete assessments or questionnaires to support treatment planning.</p>
         </div>
     </section>
 
