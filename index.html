@@ -7,19 +7,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-    /* CORPORATE THEME */
     --c-bg: #050505;
-    --c-surface: #111111;
+    --c-header: #0a0a0a;
     --c-border: #333333;
     --c-red: #e31837;
     --c-white: #ffffff;
-    --c-text-mute: #9ca3af;
+    --c-text-mute: #888888;
     
-    /* STATUS COLORS */
     --s-vip: #fbbf24;
     --s-main: #22c55e;
     
-    --ease-google: cubic-bezier(0.4, 0, 0.2, 1);
+    --anim: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -37,303 +35,222 @@ body {
     background-size: cover; background-position: center;
     opacity: 0.15; filter: grayscale(100%) contrast(1.2);
 }
-.bg-vignette {
-    position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    background: radial-gradient(circle at center, transparent 0%, #000 100%);
+
+/* --- HEADER (Tabs & Search) --- */
+.top-nav {
+    height: 70px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 30px; background: rgba(10, 10, 10, 0.95);
+    border-bottom: 1px solid var(--c-border); z-index: 100;
+    transition: transform 0.4s var(--anim);
 }
 
-/* --- HEADER & SEARCH BAR AREA --- */
-.app-header {
-    display: flex; flex-direction: column; 
-    border-bottom: 1px solid transparent;
-    padding: 0 20px; z-index: 50; transition: all 0.4s var(--ease-google);
-    background: transparent;
-    position: relative;
+/* When in Home Mode, hide the top nav search bar to avoid duplicates */
+body.home-mode .top-nav { border-bottom-color: transparent; background: transparent; }
+body.home-mode .nav-search-wrap { opacity: 0; pointer-events: none; }
+
+.nav-left { display: flex; align-items: center; gap: 30px; }
+
+/* TABS */
+.nav-tabs { display: flex; gap: 5px; }
+.tab-btn {
+    padding: 8px 16px; color: var(--c-text-mute); font-family: 'Oswald'; 
+    font-size: 14px; text-transform: uppercase; font-weight: 500; cursor: pointer;
+    border-radius: 4px; transition: 0.2s; letter-spacing: 1px;
+}
+.tab-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
+.tab-btn.active { color: #fff; background: var(--c-red); }
+
+/* TOP SEARCH BAR (Visible when not home) */
+.nav-search-wrap {
+    position: relative; width: 400px; transition: opacity 0.3s;
+}
+.nav-input {
+    width: 100%; background: #1a1a1a; border: 1px solid var(--c-border);
+    padding: 10px 15px 10px 40px; color: #fff; font-family: 'Roboto'; font-size: 14px;
+    border-radius: 4px; transition: 0.2s;
+}
+.nav-input:focus { border-color: var(--c-red); background: #000; }
+.nav-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #666; }
+
+
+/* --- HERO (Home Mode) --- */
+.hero-container {
+    position: absolute; inset: 0; z-index: 50;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--c-bg); /* Covers content */
+    transition: opacity 0.4s var(--anim), transform 0.4s var(--anim);
 }
 
-/* STATE: HERO (Centered) */
-.app-header.hero-mode {
-    height: 60vh; justify-content: center; align-items: center;
+/* Hide hero when not home */
+body:not(.home-mode) .hero-container {
+    opacity: 0; pointer-events: none; transform: scale(0.95);
 }
 
-/* STATE: TOP (Searching) */
-.app-header.search-mode {
-    height: auto; padding-top: 15px; 
-    background: rgba(10, 10, 10, 0.95);
-    border-bottom: 1px solid var(--c-border);
-    backdrop-filter: blur(10px);
+.hero-logo { width: 140px; margin-bottom: 25px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.1)); }
+.hero-search-box {
+    width: 100%; max-width: 600px; position: relative;
 }
+.hero-input {
+    width: 100%; padding: 18px 25px 18px 50px; border-radius: 30px; border: none;
+    font-size: 18px; font-family: 'Roboto'; box-shadow: 0 0 0 1px #333;
+    background: #111; color: #fff; transition: 0.2s;
+}
+.hero-input:focus { box-shadow: 0 0 0 2px var(--c-red); outline: none; background: #000; }
+.hero-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #666; }
 
-/* LOGO */
-.logo-wrap {
-    margin-bottom: 30px; transition: all 0.4s;
-    display: flex; flex-direction: column; align-items: center;
+.quick-chips {
+    display: flex; gap: 10px; margin-top: 25px; justify-content: center;
 }
-.logo-img { width: 120px; height: auto; filter: drop-shadow(0 0 20px rgba(0,0,0,0.5)); }
-.logo-text { 
-    font-family: 'Oswald'; font-size: 32px; font-weight: 700; 
-    text-transform: uppercase; margin-top: 10px; color: #fff; letter-spacing: 1px;
-}
-
-/* Logo Shift for Search Mode */
-.app-header.search-mode .logo-wrap {
-    flex-direction: row; margin-bottom: 15px; width: 100%; max-width: 900px; margin-inline: auto;
-    justify-content: flex-start; gap: 15px;
-}
-.app-header.search-mode .logo-img { width: 40px; }
-.app-header.search-mode .logo-text { font-size: 20px; margin-top: 0; display: none; } /* Hide text on mobile search */
-
-/* SEARCH INPUT */
-.search-container {
-    width: 100%; max-width: 600px; position: relative; transition: all 0.4s;
-}
-.app-header.search-mode .search-container { max-width: 900px; margin-inline: auto; }
-
-.search-input {
-    width: 100%; background: #fff; border: 1px solid transparent;
-    padding: 16px 50px 16px 20px; border-radius: 30px;
-    font-size: 18px; color: #000; font-family: 'Roboto';
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: 0.2s;
-}
-.search-input:focus { box-shadow: 0 4px 20px rgba(227, 24, 55, 0.2); }
-
-.search-actions {
-    position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-    display: flex; gap: 10px; align-items: center;
-}
-.action-icon { color: #666; cursor: pointer; font-size: 18px; }
-.action-icon:hover { color: var(--c-red); }
-
-/* --- TABS (Google Style) --- */
-.tabs-bar {
-    display: flex; gap: 25px; margin-top: 20px; 
-    width: 100%; max-width: 900px; margin-inline: auto;
-    opacity: 0; pointer-events: none; transform: translateY(10px);
-    transition: 0.3s;
-    overflow-x: auto;
-}
-.app-header.search-mode .tabs-bar {
-    opacity: 1; pointer-events: auto; transform: translateY(0);
-}
-
-.tab {
-    padding: 10px 5px; color: var(--c-text-mute); font-size: 14px; font-weight: 500;
-    cursor: pointer; position: relative; white-space: nowrap; text-transform: uppercase;
-    font-family: 'Oswald'; letter-spacing: 0.5px;
-}
-.tab:hover { color: #fff; }
-.tab.active { color: var(--c-red); }
-.tab.active::after {
-    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-    height: 3px; background: var(--c-red); border-radius: 3px 3px 0 0;
-}
-
-/* --- HOME CHIPS (Hero Mode Only) --- */
-.hero-chips {
-    display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; justify-content: center;
-}
-.app-header.search-mode .hero-chips { display: none; }
-
 .chip {
-    padding: 8px 16px; background: rgba(255,255,255,0.1); border-radius: 20px;
-    font-size: 13px; color: #ccc; cursor: pointer; transition: 0.2s; border: 1px solid transparent;
+    padding: 8px 18px; background: #1a1a1a; border: 1px solid #333; color: #aaa;
+    border-radius: 20px; font-size: 13px; cursor: pointer; transition: 0.2s;
 }
-.chip:hover { background: rgba(255,255,255,0.2); color: #fff; border-color: #fff; }
+.chip:hover { border-color: #fff; color: #fff; }
 
 
-/* --- MAIN CONTENT VIEWS --- */
-.main-viewport {
-    flex: 1; overflow-y: auto; overflow-x: hidden; position: relative;
-    padding: 20px; display: none; /* Hidden until search */
+/* --- MAIN CONTENT AREA --- */
+.content-stage {
+    flex: 1; overflow-y: auto; padding: 40px; position: relative;
 }
-.app-header.search-mode + .main-viewport { display: block; }
+.content-stage::-webkit-scrollbar { width: 8px; }
+.content-stage::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
 
+/* VIEW SECTIONS */
 .view-section {
-    max-width: 1000px; margin: 0 auto; display: none;
-    animation: fadeIn 0.4s var(--ease-google);
+    max-width: 1100px; margin: 0 auto; display: none;
+    animation: fadeIn 0.4s ease;
 }
 .view-section.active { display: block; }
 
+/* VIEW: RESULTS */
+.result-header { font-family: 'Oswald'; font-size: 20px; margin-bottom: 20px; color: #888; text-transform: uppercase; }
+.card-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px;
+}
 
-/* --- VIEW 1: ALL RESULTS (Grid) --- */
-.results-info { font-size: 13px; color: var(--c-text-mute); margin-bottom: 15px; }
-
+/* CARDS */
 .card {
     background: #111; border: 1px solid var(--c-border); border-left: 3px solid var(--c-border);
-    padding: 15px; margin-bottom: 12px; border-radius: 4px;
-    display: flex; flex-direction: column; gap: 5px; cursor: pointer; transition: 0.2s;
+    padding: 15px; border-radius: 4px; cursor: pointer; transition: 0.2s;
+    display: flex; flex-direction: column; gap: 5px;
 }
-.card:hover {
-    background: #181818; transform: translateX(5px); border-left-color: var(--c-red);
-}
-.c-head { display: flex; justify-content: space-between; align-items: baseline; }
-.c-title { font-family: 'Oswald'; font-size: 18px; color: #fff; font-weight: 500; text-transform: uppercase; }
+.card:hover { transform: translateY(-3px); border-left-color: var(--c-red); background: #161616; }
+
+.c-top { display: flex; justify-content: space-between; align-items: baseline; }
+.c-title { font-family: 'Oswald'; font-size: 17px; color: #fff; text-transform: uppercase; }
 .c-mach { font-family: 'Oswald'; font-size: 18px; color: var(--s-vip); }
 
-.c-meta { display: flex; gap: 10px; font-size: 12px; color: #888; align-items: center; }
-.badge { padding: 2px 6px; border: 1px solid #333; border-radius: 3px; font-weight: 700; font-size: 10px; text-transform: uppercase; }
+.c-meta { display: flex; gap: 8px; align-items: center; font-size: 12px; color: #777; margin-top: 4px; }
+.badge { padding: 1px 5px; border: 1px solid #333; border-radius: 3px; font-weight: 700; font-size: 10px; text-transform: uppercase; }
 .badge.vip { color: var(--s-vip); border-color: var(--s-vip); }
 .badge.main { color: var(--s-main); border-color: var(--s-main); }
-
 .c-link { color: var(--c-red); font-weight: 700; font-size: 11px; text-transform: uppercase; }
 
-/* Packs */
+/* Pack Inside Card */
 .pack-row {
-    margin-top: 5px; font-size: 12px; color: #aaa; cursor: pointer;
-    border-top: 1px dashed #333; padding-top: 5px;
+    margin-top: 8px; padding-top: 8px; border-top: 1px dashed #222;
+    font-size: 11px; color: #999; cursor: pointer; display: flex; justify-content: space-between;
 }
 .pack-row:hover { color: #fff; }
-.pack-games-list { display: none; padding-top: 5px; }
-.pack-games-list div { padding: 3px 0; border-bottom: 1px solid #222; }
-.pack-games-list div:hover { color: var(--c-red); }
+.pack-drop { display: none; padding-top: 5px; }
+.pack-drop div { padding: 3px 0; border-bottom: 1px solid #1a1a1a; }
+.pack-drop div:hover { color: var(--c-red); }
 
 
-/* --- VIEW 2: FLOOR LINKS (Category Grid) --- */
-.category-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;
+/* VIEW: LINKS / PACKS (Category Grid) */
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+.cat-item {
+    background: #111; border: 1px solid var(--c-border); padding: 20px;
+    border-radius: 6px; text-align: center; cursor: pointer; transition: 0.2s;
 }
-.cat-card {
-    background: #161616; border: 1px solid var(--c-border); padding: 20px;
-    border-radius: 8px; cursor: pointer; transition: 0.2s;
-    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;
-}
-.cat-card:hover { border-color: var(--c-red); background: #222; transform: translateY(-3px); }
-.cat-icon { font-size: 24px; }
-.cat-name { font-family: 'Oswald'; font-size: 16px; color: #fff; text-transform: uppercase; }
-.cat-count { font-size: 12px; color: #666; }
+.cat-item:hover { border-color: var(--c-red); background: #1a1a1a; transform: translateY(-2px); }
+.cat-name { font-family: 'Oswald'; color: #fff; font-size: 16px; margin-top: 8px; text-transform: uppercase; }
+.cat-sub { font-size: 12px; color: #666; margin-top: 4px; }
 
 
-/* --- VIEW 3: MAP --- */
-.map-wrap {
-    background: #000; border: 1px solid var(--c-border);
-    display: flex; justify-content: center; overflow: auto; padding: 20px;
-    position: relative;
+/* VIEW: CONVERSIONS (List) */
+.move-group { margin-bottom: 25px; }
+.move-date { 
+    font-family: 'Oswald'; font-size: 16px; color: var(--c-red); border-bottom: 1px solid #333; 
+    padding-bottom: 5px; margin-bottom: 10px;
 }
-.blueprint {
-    max-width: 100%; filter: invert(100%) grayscale(100%) contrast(150%) brightness(0.9);
+.move-row {
+    display: grid; grid-template-columns: 80px 1fr; gap: 15px; 
+    padding: 12px; background: #111; border-bottom: 1px solid #222; align-items: center;
 }
-.pin {
-    position: absolute; width: 14px; height: 14px; background: var(--c-red);
-    border: 2px solid #fff; border-radius: 50%; cursor: pointer;
-    transform: translate(-50%, -50%); box-shadow: 0 0 15px var(--c-red);
-}
-.pin:hover { transform: translate(-50%, -50%) scale(1.5); }
+.move-row:hover { background: #161616; }
+.m-mach { font-family: 'Oswald'; font-size: 16px; color: #fff; }
+.m-detail { font-size: 13px; color: #888; }
+.m-detail b { color: #fff; }
+.m-arrow { margin: 0 8px; color: #444; }
 
-
-/* --- CONVERSIONS DRAWER --- */
-.drawer-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200;
-    opacity: 0; pointer-events: none; transition: 0.3s;
-}
-.drawer-overlay.open { opacity: 1; pointer-events: auto; }
-.drawer {
-    position: fixed; top: 0; right: 0; bottom: 0; width: 400px; max-width: 90%;
-    background: #0a0a0a; border-left: 2px solid var(--c-red);
-    transform: translateX(100%); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex; flex-direction: column;
-}
-.drawer-overlay.open .drawer { transform: translateX(0); }
-
-.drawer-head {
-    padding: 20px; border-bottom: 1px solid var(--c-border);
-    display: flex; justify-content: space-between; align-items: center;
-}
-.drawer-title { font-family: 'Oswald'; font-size: 18px; text-transform: uppercase; color: #fff; }
-.drawer-content { flex: 1; overflow-y: auto; padding: 20px; }
-
-.move-group { margin-bottom: 20px; }
-.move-date { color: var(--c-red); font-weight: 700; margin-bottom: 10px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 5px; }
-.move-item { 
-    padding: 10px; background: #161616; margin-bottom: 8px; border-radius: 4px; border: 1px solid #222;
-}
-.m-head { display: flex; justify-content: space-between; font-weight: 700; color: #fff; font-size: 13px; }
-.m-change { font-size: 12px; color: #888; margin-top: 4px; }
-.m-change b { color: var(--c-white); }
-
-
-/* ANIMATIONS */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* RESPONSIVE */
+/* Responsive */
 @media(max-width: 768px){
-    .logo-text { font-size: 24px; }
-    .tabs-bar { padding-bottom: 10px; }
+    .nav-search-wrap { display: none; } /* Hide top search on mobile to save space */
+    .top-nav { padding: 0 15px; overflow-x: auto; }
 }
 
 </style>
 </head>
-<body>
+<body class="home-mode">
 
 <div class="bg-layer"></div>
-<div class="bg-vignette"></div>
 
-<header class="app-header hero-mode" id="appHeader">
-    
-    <div class="logo-wrap">
-        <img src="panther_icon.png" class="logo-img">
-        <div class="logo-text">Game Finder</div>
-    </div>
-
-    <div class="search-container">
-        <input type="text" class="search-input" id="searchBox" placeholder="Search..." autocomplete="off">
-        <div class="search-actions">
-            <span class="action-icon" onclick="resetApp()">✕</span>
-            <span class="action-icon" onclick="toggleDrawer()">⚡</span>
+<nav class="top-nav">
+    <div class="nav-left">
+        <div class="nav-tabs">
+            <div class="tab-btn active" onclick="goHome()">Home</div>
+            <div class="tab-btn" onclick="openView('links')">Links</div>
+            <div class="tab-btn" onclick="openView('packs')">Manufacturers</div>
+            <div class="tab-btn" onclick="openView('moves')">Conversions</div>
         </div>
     </div>
-
-    <div class="hero-chips">
-        <div class="chip" onclick="quickSearch('VIP Room Black Panther')">VIP Room</div>
-        <div class="chip" onclick="quickSearch('Main Floor')">Main Floor</div>
-        <div class="chip" onclick="quickSearch('Kelly\'s Gaming')">Kelly's Gaming</div>
-        <div class="chip" onclick="switchTab('tab-links')">Browse Links</div>
-    </div>
-
-    <div class="tabs-bar">
-        <div class="tab active" id="tab-all" onclick="switchTab('tab-all')">All Results</div>
-        <div class="tab" id="tab-links" onclick="switchTab('tab-links')">Floor Links</div>
-        <div class="tab" id="tab-packs" onclick="switchTab('tab-packs')">Game Packs</div>
-        <div class="tab" id="tab-map" onclick="switchTab('tab-map')">Floor Map</div>
-    </div>
-
-</header>
-
-<div class="main-viewport">
     
-    <div id="view-all" class="view-section active">
-        <div class="results-info" id="resultInfo">Start searching to see machines...</div>
-        <div id="resultsList"></div>
+    <div class="nav-search-wrap">
+        <span class="nav-icon">🔍</span>
+        <input type="text" class="nav-input" id="topSearch" placeholder="Search..." autocomplete="off">
+    </div>
+</nav>
+
+
+<div class="hero-container">
+    <img src="panther_icon.png" class="hero-logo">
+    <div class="hero-search-box">
+        <span class="hero-icon">🔍</span>
+        <input type="text" class="hero-input" id="heroSearch" placeholder="Search for a Game, Link or Machine #..." autocomplete="off">
+    </div>
+    <div class="quick-chips">
+        <div class="chip" onclick="quickSearch('VIP')">VIP Room</div>
+        <div class="chip" onclick="quickSearch('Main Floor')">Main Floor</div>
+        <div class="chip" onclick="quickSearch('Kelly\'s')">Kelly's</div>
+    </div>
+</div>
+
+
+<div class="content-stage">
+
+    <div id="view-results" class="view-section">
+        <div class="result-header" id="resultHeader">Search Results</div>
+        <div class="card-grid" id="resultsGrid"></div>
     </div>
 
     <div id="view-links" class="view-section">
-        <h3 style="font-family:'Oswald'; color:var(--c-red); text-transform:uppercase;">Floor Links</h3>
-        <div class="category-grid" id="linksGrid"></div>
+        <div class="result-header">Browse by Link</div>
+        <div class="cat-grid" id="linksGrid"></div>
     </div>
 
     <div id="view-packs" class="view-section">
-        <h3 style="font-family:'Oswald'; color:var(--c-red); text-transform:uppercase;">Manufacturer Packs</h3>
-        <div class="category-grid" id="packsGrid"></div>
+        <div class="result-header">Browse by Manufacturer</div>
+        <div class="cat-grid" id="packsGrid"></div>
     </div>
 
-    <div id="view-map" class="view-section">
-        <div class="map-wrap">
-            <img src="image_e40346.png" class="blueprint">
-            <div class="pin" style="top:15%; left:91.5%;" title="1059" onclick="pinSearch('1059')"></div>
-            <div class="pin" style="top:15%; left:38%;" title="1051" onclick="pinSearch('1051')"></div>
-            <div class="pin" style="top:70%; left:9.5%;" title="1091" onclick="pinSearch('1091')"></div>
-        </div>
+    <div id="view-moves" class="view-section">
+        <div class="result-header">Recent Floor Changes</div>
+        <div id="movesList"></div>
     </div>
 
-</div>
-
-<div class="drawer-overlay" id="drawerOverlay">
-    <div class="drawer">
-        <div class="drawer-head">
-            <div class="drawer-title">Recent Conversions</div>
-            <div style="cursor:pointer; font-size:20px;" onclick="toggleDrawer()">✕</div>
-        </div>
-        <div class="drawer-content" id="movesContainer"></div>
-    </div>
 </div>
 
 <script>
@@ -351,7 +268,6 @@ for(const [game, packs] of Object.entries(data.game_packs)){
     });
 }
 
-// Area Logic
 const getArea = (loc) => {
     const n = parseInt(loc);
     if(n>=1051 && n<=1095) return "Basement";
@@ -368,224 +284,192 @@ const getZoneClass = (area) => {
     return "base";
 };
 
-// UI STATE
-let currentZone = 'all';
-const searchBox = document.getElementById('searchBox');
-const appHeader = document.getElementById('appHeader');
-const tabs = document.querySelectorAll('.tab');
-const views = document.querySelectorAll('.view-section');
+// --- STATE MANAGEMENT ---
+let appState = 'home'; // home, search, links, packs, moves
 
-// --- SEARCH ENGINE ---
-function runSearch(query) {
-    const cleanQuery = query.toLowerCase().trim();
+function setMode(mode) {
+    appState = mode;
+    document.body.className = (mode === 'home') ? 'home-mode' : 'search-mode';
+    
+    // Manage Views
+    document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-    // 1. Manage State Classes
-    if(cleanQuery || currentZone !== 'all') {
-        document.body.classList.add('is-searching');
-        appHeader.classList.remove('hero-mode');
-        appHeader.classList.add('search-mode');
+    if(mode === 'home'){
+        document.getElementById('heroSearch').value = '';
+        document.getElementById('topSearch').value = '';
     } else {
-        // Only reset if completely empty
-        return; 
-    }
-
-    // 2. Filter Data
-    let matches = [];
-    const limit = 100;
-    
-    for(const m of data.machines){
-        if(matches.length >= limit) break;
-
-        const area = getArea(m.location);
-        const desc = (m.description || "").toLowerCase();
-        const link = (m.link || "").toLowerCase();
-        const loc = m.location;
-
-        // Zone Filter
-        if(currentZone !== 'all' && area !== currentZone) continue;
-
-        // Text Search
-        let isMatch = false;
-        if(!cleanQuery) isMatch = true; 
-        else {
-            if(desc.includes(cleanQuery)) isMatch = true;
-            if(loc.includes(cleanQuery)) isMatch = true;
-            if(link.includes(cleanQuery)) isMatch = true;
-            if(packMap[m.description]){
-                if(packMap[m.description].some(g => g.toLowerCase().includes(cleanQuery))) isMatch = true;
-            }
-        }
-
-        if(isMatch) matches.push({ ...m, area });
-    }
-
-    // 3. Render
-    const resultsList = document.getElementById('resultsList');
-    const resultInfo = document.getElementById('resultInfo');
-    
-    resultsList.innerHTML = '';
-    resultInfo.textContent = matches.length > 0 ? `${matches.length} machines found` : "No results found.";
-
-    if(matches.length === 0) return;
-
-    const frag = document.createDocumentFragment();
-    matches.forEach(m => {
-        const el = document.createElement('div');
-        el.className = 'card';
+        // Activate Tab
+        const tabMap = { 'search':0, 'links':1, 'packs':2, 'moves':3 };
+        const viewMap = { 'search':'view-results', 'links':'view-links', 'packs':'view-packs', 'moves':'view-moves' };
         
-        const games = packMap[m.description] || [];
-        const hasPack = games.length > 0;
-        const linkStr = m.link ? m.link.replace(/PEN /g, '').replace(/,/g, ', ') : '';
-
-        el.innerHTML = `
-            <div class="c-head">
-                <div class="c-title">${m.description}</div>
-                <div class="c-mach">#${m.location}</div>
-            </div>
-            <div class="c-meta">
-                <span class="badge ${getZoneClass(m.area)}">${m.area.replace(" Black Panther","")}</span>
-                <span>${m.manufacturer}</span>
-                ${linkStr ? `<span class="c-link">⚡ ${linkStr}</span>` : ''}
-            </div>
-            ${hasPack ? `
-                <div class="pack-row" onclick="toggleSubGames(this)">
-                    View ${games.length} included games ▼
-                </div>
-                <div class="pack-games-list">
-                    ${games.map(g => `<div onclick="quickSearch('${g}')">› ${g}</div>`).join('')}
-                </div>
-            ` : ''}
-        `;
-        frag.appendChild(el);
-    });
-    resultsList.appendChild(frag);
-    
-    // Ensure we are on the results tab if searching
-    if(!document.getElementById('view-all').classList.contains('active')){
-       switchTab('tab-all');
+        if(tabMap[mode] !== undefined) document.querySelectorAll('.tab-btn')[tabMap[mode]].classList.add('active');
+        if(viewMap[mode]) document.getElementById(viewMap[mode]).classList.add('active');
     }
 }
 
-window.toggleSubGames = (btn) => {
-    const list = btn.nextElementSibling;
-    const isHidden = getComputedStyle(list).display === 'none';
-    if(isHidden){
-        list.style.display = 'block';
-        btn.innerHTML = `Hide games ▲`;
-    } else {
-        list.style.display = 'none';
-        btn.innerHTML = `View included games ▼`;
+// --- ACTIONS ---
+
+window.goHome = () => setMode('home');
+
+window.openView = (viewName) => {
+    setMode(viewName);
+    // If opening links/packs, maybe clear search filter? keeping it for now
+};
+
+// Search Logic
+function performSearch(query) {
+    const q = query.toLowerCase().trim();
+    
+    // Sync inputs
+    document.getElementById('heroSearch').value = query;
+    document.getElementById('topSearch').value = query;
+
+    if(!q && appState === 'home') return; // Don't trigger empty search from home
+
+    // Switch to search view if we are home
+    if(appState === 'home') setMode('search');
+
+    const grid = document.getElementById('resultsGrid');
+    grid.innerHTML = '';
+    
+    let count = 0;
+    const limit = 60;
+    const frag = document.createDocumentFragment();
+
+    for(const m of data.machines){
+        if(count >= limit) break;
+
+        let match = false;
+        if(!q) match = true; // Show all if empty query (but usually we filter by zone via chips)
+        else {
+            if(m.location.includes(q)) match = true;
+            if(m.description.toLowerCase().includes(q)) match = true;
+            if((m.link||'').toLowerCase().includes(q)) match = true;
+            // Pack check
+            if(packMap[m.description]){
+                if(packMap[m.description].some(g => g.toLowerCase().includes(q))) match = true;
+            }
+            // Zone check (for quick chips)
+            if(getArea(m.location).toLowerCase().includes(q)) match = true;
+        }
+
+        if(match){
+            count++;
+            frag.appendChild(createCard(m));
+        }
     }
+
+    if(count === 0){
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#666;">No results found for "${query}"</div>`;
+    } else {
+        grid.appendChild(frag);
+    }
+    
+    document.getElementById('resultHeader').textContent = q ? `Results for "${query}"` : "All Machines";
+}
+
+function createCard(m){
+    const area = getArea(m.location);
+    const el = document.createElement('div');
+    el.className = 'card';
+    
+    const games = packMap[m.description] || [];
+    const hasPack = games.length > 0;
+    const linkStr = m.link ? m.link.replace(/PEN /g, '').replace(/,/g, ' | ') : '';
+
+    el.innerHTML = `
+        <div class="c-top">
+            <div class="c-title">${m.description}</div>
+            <div class="c-mach">#${m.location}</div>
+        </div>
+        <div class="c-meta">
+            <span class="badge ${getZoneClass(area)}">${area.replace(" Black Panther","")}</span>
+            <span>${m.manufacturer}</span>
+            ${linkStr ? `<span class="c-link">⚡ ${linkStr}</span>` : ''}
+        </div>
+        ${hasPack ? `
+            <div class="pack-row" onclick="togglePack(this)">
+                <span>View Included Games</span> <span>▼</span>
+            </div>
+            <div class="pack-drop">
+                ${games.map(g => `<div onclick="quickSearch('${g}')">› ${g}</div>`).join('')}
+            </div>
+        ` : ''}
+    `;
+    return el;
+}
+
+window.togglePack = (btn) => {
+    const drop = btn.nextElementSibling;
+    const isOpen = drop.style.display === 'block';
+    drop.style.display = isOpen ? 'none' : 'block';
+    btn.querySelector('span:last-child').textContent = isOpen ? '▼' : '▲';
     event.stopPropagation();
 };
 
-// --- ACTIONS ---
 window.quickSearch = (term) => {
-    searchBox.value = term; 
-    if(['VIP Room Black Panther','Main Floor','Kelly\'s Gaming','Basement'].includes(term)){
-        currentZone = term;
-        searchBox.value = ""; 
-    } else {
-        currentZone = 'all';
-    }
-    runSearch(searchBox.value);
+    performSearch(term);
+    // If using chips, force to search view (already handled by performSearch logic)
 };
 
-window.resetApp = () => {
-    searchBox.value = '';
-    currentZone = 'all';
-    document.body.classList.remove('is-searching');
-    appHeader.classList.add('hero-mode');
-    appHeader.classList.remove('search-mode');
-    
-    // Reset tabs
-    switchTab('tab-all');
-    document.getElementById('resultsList').innerHTML = '';
-};
 
-// --- TABS LOGIC ---
-window.switchTab = (tabId) => {
-    // 1. Highlight Tab
-    tabs.forEach(t => t.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-
-    // 2. Show View
-    const viewId = tabId.replace('tab', 'view');
-    views.forEach(v => v.classList.remove('active'));
-    document.getElementById(viewId).classList.add('active');
-    
-    // 3. Ensure Search Mode is active if not already
-    if(!document.body.classList.contains('is-searching')){
-        document.body.classList.add('is-searching');
-        appHeader.classList.remove('hero-mode');
-        appHeader.classList.add('search-mode');
-    }
-};
-
-// --- RENDER CATEGORY VIEWS ---
-function renderCategories(){
-    // LINKS
-    const linksGrid = document.getElementById('linksGrid');
+// --- RENDER CATEGORIES ---
+function renderCats(){
+    // Links
+    const lGrid = document.getElementById('linksGrid');
     const links = new Set();
-    data.machines.forEach(m => {
-        if(m.link) m.link.split(',').forEach(l => links.add(l.trim().replace('PEN ', '')));
-    });
-    
+    data.machines.forEach(m => { if(m.link) m.link.split(',').forEach(l => links.add(l.trim().replace('PEN ', ''))); });
     Array.from(links).sort().forEach(l => {
-        const div = document.createElement('div');
-        div.className = 'cat-card';
-        div.innerHTML = `<div class="cat-icon">🔗</div><div class="cat-name">${l}</div>`;
-        div.onclick = () => quickSearch(l);
-        linksGrid.appendChild(div);
+        const d = document.createElement('div');
+        d.className = 'cat-item';
+        d.innerHTML = `<div style="font-size:24px; color:var(--c-red)">🔗</div><div class="cat-name">${l}</div>`;
+        d.onclick = () => { performSearch(l); setMode('search'); };
+        lGrid.appendChild(d);
     });
 
-    // PACKS
-    const packsGrid = document.getElementById('packsGrid');
-    const manuMap = {};
-    for(const [game, info] of Object.entries(data.game_info || {})){
-        const m = info.manufacturer || "Other";
-        if(!manuMap[m]) manuMap[m] = 0;
-        manuMap[m]++;
-    }
-    for(const manu in manuMap){
-        const div = document.createElement('div');
-        div.className = 'cat-card';
-        div.innerHTML = `<div class="cat-icon">🎰</div><div class="cat-name">${manu}</div><div class="cat-count">${manuMap[manu]} Packs</div>`;
-        div.onclick = () => quickSearch(manu);
-        packsGrid.appendChild(div);
-    }
+    // Packs
+    const pGrid = document.getElementById('packsGrid');
+    const manus = new Set(data.machines.map(m => m.manufacturer).filter(Boolean));
+    Array.from(manus).sort().forEach(m => {
+        const d = document.createElement('div');
+        d.className = 'cat-item';
+        d.innerHTML = `<div style="font-size:24px; color:var(--s-vip)">🎰</div><div class="cat-name">${m}</div>`;
+        d.onclick = () => { performSearch(m); setMode('search'); };
+        pGrid.appendChild(d);
+    });
 }
 
-
-// --- MOVES DRAWER ---
-const drawer = document.querySelector('.drawer-overlay');
-window.toggleDrawer = () => {
-    const isOpen = drawer.classList.contains('open');
-    if(isOpen) drawer.classList.remove('open');
-    else drawer.classList.add('open');
-};
-
-const movesContainer = document.getElementById('movesContainer');
-data.retired_moves.forEach(g => {
-    const d = document.createElement('div');
-    d.className = 'move-group';
-    d.innerHTML = `<div class="move-date">${g.date} (${g.type})</div>`;
-    g.moves.forEach(m => {
-        const row = document.createElement('div');
-        row.className = 'move-item';
-        row.innerHTML = `
-            <div class="m-head"><span>#${m.mach}</span></div>
-            <div class="m-change">WAS: ${m.was}</div>
-            <div class="m-change" style="color:var(--c-white)">NOW: <b>${m.now}</b></div>
-        `;
-        d.appendChild(row);
+// --- RENDER MOVES ---
+function renderMoves(){
+    const list = document.getElementById('movesList');
+    data.retired_moves.forEach(g => {
+        const d = document.createElement('div');
+        d.className = 'move-group';
+        d.innerHTML = `<div class="move-date">${g.date} (${g.type})</div>`;
+        g.moves.forEach(m => {
+            const r = document.createElement('div');
+            r.className = 'move-row';
+            r.innerHTML = `
+                <div class="m-mach">#${m.mach}</div>
+                <div class="m-info">
+                    <div class="m-detail">WAS: ${m.was}</div>
+                    <div class="m-detail">NOW: <b>${m.now}</b></div>
+                </div>
+            `;
+            d.appendChild(r);
+        });
+        list.appendChild(d);
     });
-    movesContainer.appendChild(d);
-});
+}
 
-// INIT
-searchBox.addEventListener('input', (e) => runSearch(e.target.value));
-renderCategories();
+// --- EVENT LISTENERS ---
+document.getElementById('heroSearch').addEventListener('input', (e) => performSearch(e.target.value));
+document.getElementById('topSearch').addEventListener('input', (e) => performSearch(e.target.value));
+
+// Init
+renderCats();
+renderMoves();
 
 </script>
 </body>
