@@ -12,7 +12,7 @@
             --primary-color: #6B8E6B; /* Soft Sage Green */
             --primary-dark: #4A634A; /* Darker Sage for text headers */
             --secondary-color: #F9FBF8; /* Creamy off-white background */
-            --accent-soft: #E0EBE0; /* Very pale green accent box background */
+            --accent-soft: #E0EBE0; /* Very pale green accent */
             --accent-warm: #F4EEE8; /* Soft blush/creamy accent */
             --text-color: #555D55; /* Softer charcoal text */
             --white: #ffffff;
@@ -21,7 +21,7 @@
             --font-headers: 'Cinzel Decorative', cursive, serif;
             --font-body: 'Lato', sans-serif;
 
-            /* Background Images (Royalty Free sourced) */
+            /* Background Images */
             --bg-hero-floral: url('https://images.unsplash.com/photo-1490750967868-88dd44862943?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             --bg-bird-accent: url('https://img.freepik.com/free-vector/watercolor-birds-flowers_23-2148329376.jpg?w=996&t=st=1706090000~exp=1706090600~hmac=a8158484c4256444313008880090055615552052061850425451801545');
         }
@@ -41,7 +41,6 @@
             color: var(--text-color);
             line-height: 1.7;
             background-color: var(--secondary-color);
-            background-image: linear-gradient(to bottom, #fff, var(--secondary-color));
         }
 
         a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
@@ -49,7 +48,7 @@
 
         /* --- TYPOGRAPHY & UTILITIES --- */
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 25px;
         }
@@ -65,13 +64,19 @@
             font-weight: 700;
         }
 
-        h1 { font-size: 2.8rem; line-height: 1.2; margin-bottom: 20px; }
-        h2 { font-size: 2.2rem; text-align: center; margin-bottom: 50px; position: relative; padding-bottom: 15px; }
-        h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--primary-color); }
+        /* FIXED: Reduced H1 size significantly */
+        h1 { 
+            font-size: 2rem; 
+            line-height: 1.3; 
+            margin-bottom: 20px; 
+            letter-spacing: 0.5px;
+        }
 
-        /* Subtle decorative line under headers */
+        h2 { font-size: 2rem; text-align: center; margin-bottom: 50px; position: relative; padding-bottom: 15px; }
+        h3 { font-size: 1.3rem; margin-bottom: 15px; color: var(--primary-color); }
+
         h2::after {
-            content: '❀'; /* Small floral text icon */
+            content: '❀';
             display: block;
             font-size: 1.2rem;
             color: var(--primary-color);
@@ -83,36 +88,34 @@
             display: inline-block;
             background: var(--primary-color);
             color: var(--white);
-            padding: 14px 32px;
+            padding: 12px 30px;
             border-radius: 30px;
             font-weight: 700;
             letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(107, 142, 107, 0.3);
+            box-shadow: 0 4px 10px rgba(107, 142, 107, 0.3);
+            font-size: 0.9rem;
         }
         .btn:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
         }
 
-        /* decorative bird element before sections */
         .bird-divider {
             display: block;
             margin: 0 auto 20px auto;
-            width: 100px;
-            height: auto;
+            width: 80px;
             opacity: 0.8;
             mix-blend-mode: multiply;
         }
 
         /* --- HEADER --- */
         header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.03);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 3px solid var(--accent-soft);
+            border-bottom: 1px solid var(--accent-soft);
         }
 
         nav {
@@ -124,38 +127,49 @@
 
         .logo {
             font-family: var(--font-headers);
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--primary-dark);
             display: flex;
             align-items: center;
         }
-        .logo::before { content: '✾'; margin-right: 10px; color: var(--primary-color); font-size: 1.8rem;}
+        
+        /* FIXED: Made the logo flower icon bigger */
+        .logo::before { 
+            content: '✾'; 
+            margin-right: 12px; 
+            color: var(--primary-color); 
+            font-size: 2.2rem; /* Much larger */
+            line-height: 0;
+            position: relative;
+            top: -2px;
+        }
 
-        .nav-links { display: flex; gap: 25px; }
+        /* FIXED: Nav links spacing to force one line */
+        .nav-links { display: flex; gap: 20px; }
         .nav-links a {
-            font-size: 0.95rem;
+            font-size: 0.85rem; /* Slightly smaller for fit */
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--primary-dark);
             padding-bottom: 5px;
             border-bottom: 2px solid transparent;
+            white-space: nowrap; /* Prevents breaking */
         }
         .nav-links a:hover { color: var(--primary-color); border-color: var(--primary-color); }
 
         /* --- HERO SECTION --- */
         .hero {
-            min-height: 85vh;
+            min-height: 80vh; /* Reduced height slightly */
             display: flex;
             align-items: center;
             position: relative;
-            background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.9)), var(--bg-hero-floral);
+            background-image: linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 100%), var(--bg-hero-floral);
             background-size: cover;
             background-position: center;
-            border-bottom-left-radius: 50% 20%;
-            border-bottom-right-radius: 50% 20%;
-            box-shadow: 0 10px 30px -10px rgba(107, 142, 107, 0.2);
+            border-bottom-left-radius: 50% 10%; /* Subtle curve */
+            border-bottom-right-radius: 50% 10%;
             margin-bottom: 50px;
         }
 
@@ -163,171 +177,142 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 50px;
+            gap: 40px;
+            width: 100%;
         }
 
-        .hero-text { flex: 1; }
-        .hero-text p { font-size: 1.2rem; margin-bottom: 30px; color: var(--primary-dark); }
+        .hero-text { 
+            flex: 1; 
+            max-width: 600px; /* Limits width so text doesn't stretch too far */
+        }
+        .hero-text p { font-size: 1.1rem; margin-bottom: 30px; color: var(--text-color); }
 
-        .hero-image { flex: 1; text-align: center; position: relative; }
+        .hero-image { flex: 1; text-align: center; display: flex; justify-content: center; }
         .hero-image img {
-            width: 350px;
-            height: 350px;
+            width: 320px;
+            height: 320px;
             object-fit: cover;
             border-radius: 50%;
             border: 8px solid var(--white);
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 2;
-        }
-        /* Floral circle behind image */
-        .hero-image::after {
-            content: '';
-            position: absolute;
-            top: -20px; left: 50%; transform: translateX(-50%);
-            width: 390px; height: 390px;
-            border-radius: 50%;
-            background: var(--accent-soft);
-            z-index: 1;
-            opacity: 0.7;
         }
 
-        /* --- Content Box Styling (Shared) --- */
+        /* --- Content Box Styling --- */
         .content-box {
             background: var(--white);
             padding: 40px;
-            border-radius: 25px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.03);
             border: 1px solid var(--accent-soft);
             position: relative;
-            overflow: hidden;
         }
-        /* Subtle floral corner accent */
-        .content-box::before {
-            content: '❀';
-            position: absolute;
-            top: -10px; right: 10px;
-            font-size: 4rem;
-            color: var(--accent-soft);
-            opacity: 0.4;
-            font-family: var(--font-headers);
-            z-index: 0;
-        }
-        .content-box > * { position: relative; z-index: 1; }
 
         /* --- SERVICES --- */
         .services-section { background-color: var(--accent-soft); }
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
         }
         .service-card {
             background: var(--white);
-            padding: 35px;
-            border-radius: 20px;
-            border-top: 5px solid var(--primary-color);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
-            transition: transform 0.3s;
+            padding: 30px;
+            border-radius: 12px;
+            border-top: 4px solid var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
-        .service-card:hover { transform: translateY(-5px); }
         .interest-list li {
-            padding: 10px 0;
-            border-bottom: 1px dotted var(--accent-soft);
+            padding: 8px 0;
+            border-bottom: 1px dotted #eee;
             display: flex;
             align-items: flex-start;
+            font-size: 0.95rem;
         }
         .interest-list li::before {
-            content: '🌿'; /* Leaf icon */
-            margin-right: 10px;
-            font-size: 0.9rem;
+            content: '•';
             color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 1rem;
+            margin-right: 10px;
         }
 
         /* --- APPROACH --- */
         .approach-text {
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             max-width: 800px;
             margin: 0 auto;
         }
 
         /* --- FIRST SESSION --- */
         .session-section {
-             background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), var(--bg-bird-accent);
+             background-image: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), var(--bg-bird-accent);
              background-size: cover;
              background-attachment: fixed;
         }
         .session-grid {
             display: flex;
-            gap: 30px;
+            gap: 25px;
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: 40px;
+            margin-top: 30px;
         }
         .session-card {
             background: rgba(255,255,255,0.95);
             flex: 1;
             min-width: 300px;
             max-width: 450px;
-            padding: 40px;
-            border-radius: 25px;
-            border: 2px solid var(--accent-soft);
+            padding: 35px;
+            border-radius: 15px;
+            border: 1px solid var(--accent-soft);
             text-align: center;
         }
-        .session-card h3 { color: var(--primary-dark); }
-        .session-card ul { text-align: left; display: inline-block; margin-top: 20px; }
-        .session-card li { margin-bottom: 10px; position: relative; padding-left: 25px;}
+        .session-card ul { text-align: left; display: inline-block; margin-top: 15px; }
+        .session-card li { margin-bottom: 8px; position: relative; padding-left: 20px;}
         .session-card li::before {
              content: '✓';
              position: absolute; left: 0; color: var(--primary-color);
+             font-weight: bold;
         }
 
-        /* --- REFERRALS --- */
-        .referral-box hr { border: none; height: 2px; background: var(--accent-soft); margin: 25px 0; }
-        .referral-item { display: flex; margin-bottom: 15px; }
-        .referral-icon {
-            flex-shrink: 0;
-            width: 40px; height: 40px;
-            background: var(--accent-soft);
-            color: var(--primary-color);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin-right: 15px; font-size: 1.2rem;
+        /* --- REFERRALS (FIXED) --- */
+        /* Replaced complicated icons with clean styling */
+        .referral-box hr { border: none; height: 1px; background: var(--accent-soft); margin: 25px 0; }
+        .referral-item { 
+            margin-bottom: 20px; 
+            padding-left: 15px;
+            border-left: 3px solid var(--primary-color);
+        }
+        .referral-title {
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: block;
+            margin-bottom: 4px;
         }
 
         /* --- FOOTER --- */
         footer {
             background: var(--primary-dark);
             color: var(--accent-soft);
-            padding: 80px 0 40px;
+            padding: 60px 0 30px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
-        /* Floral overlay on footer */
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: var(--bg-hero-floral);
-            opacity: 0.1;
-            mix-blend-mode: overlay;
-        }
-        footer h2 { color: var(--white); }
-        footer h2::after { color: var(--accent-soft); opacity: 0.5; }
+        footer h2 { color: var(--white); font-size: 1.8rem; }
+        footer h2::after { display: none; } /* Remove flower from footer header */
 
-        .footer-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 30px;}
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 20px;}
+        
         .address-box {
-            background: rgba(255,255,255,0.1);
-            padding: 25px 40px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            padding: 20px 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 10px;
         }
         .contact-link {
             color: var(--white);
             font-weight: 700;
-            font-size: 1.1rem;
             border-bottom: 1px dotted var(--accent-soft);
         }
         .contact-link:hover { color: var(--accent-soft); border-bottom-style: solid;}
@@ -335,17 +320,14 @@
         /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 900px) {
             .hero-content-wrapper { flex-direction: column-reverse; text-align: center; gap: 30px; }
-            .hero-image::after { width: 300px; height: 300px; }
-            .hero-image img { width: 280px; height: 280px; }
-            h1 { font-size: 2.2rem; }
+            .hero-text { margin: 0 auto; }
+            h1 { font-size: 1.8rem; }
         }
 
         @media (max-width: 768px) {
-            .nav-links { display: none; } /* Simplified mobile nav for single file */
+            .nav-links { display: none; } /* On mobile phones, hide menu for simplicity in this single-file version */
             nav { justify-content: center; }
-            .container { padding: 0 20px; }
-            section { padding: 60px 0; }
-            .content-box { padding: 25px; }
+            section { padding: 50px 0; }
         }
     </style>
 </head>
@@ -381,12 +363,12 @@
 
     <section id="about">
         <div class="container">
-             <img src="https://cdn-icons-png.flaticon.com/512/7377/7377630.png" alt="decorative bird" class="bird-divider" style="width: 60px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/7377/7377630.png" alt="bird decoration" class="bird-divider">
             <h2>About Me</h2>
             <div class="content-box">
                 <p>I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported. I tailor each session to the individual, recognising the unique experiences, strengths, and needs that every young person brings.</p>
                 <br>
-                <p>My career has taken me across a range of clinical and educational settings. I have supported university students managing both academic pressures and personal challenges, and I have worked as a psychologist within primary and secondary schools. These experiences have deepened my understanding of child and adolescent development, learning needs, and the emotional hurdles young people may encounter. This background allows me to provide sensitive, practical, and well-informed guidance to those I work with.</p>
+                <p>My career has taken me across a range of clinical and educational settings. I have supported university students managing both academic pressures and personal challenges, and I have worked as a psychologist within primary and secondary schools. These experiences have deepened my understanding of child and adolescent development, learning needs, and the emotional hurdles young people may encounter.</p>
             </div>
         </div>
     </section>
@@ -422,7 +404,7 @@
 
     <section id="approach">
         <div class="container">
-             <img src="https://cdn-icons-png.flaticon.com/512/7377/7377630.png" alt="decorative bird" class="bird-divider" style="width: 60px; transform: scaleX(-1);">
+            <img src="https://cdn-icons-png.flaticon.com/512/7377/7377630.png" alt="bird decoration" class="bird-divider" style="transform: scaleX(-1);">
             <h2>Therapeutic Approach</h2>
             <div class="content-box approach-text">
                 <p>My practice is informed by positive psychology and a strengths-focused perspective. I use evidence-based therapies, including <strong>Acceptance and Commitment Therapy (ACT)</strong> and <strong>Cognitive Behavioural Therapy (CBT)</strong>, to help young people build resilience, develop emotional regulation skills, and learn strategies that support their overall wellbeing.</p>
@@ -435,7 +417,7 @@
     <section id="session" class="session-section">
         <div class="container">
             <h2>First Session</h2>
-            <p style="text-align: center; max-width: 700px; margin: 0 auto;">The first session focuses on understanding the presenting concerns and gathering important developmental, family, and background information to guide treatment planning.</p>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 30px auto;">The first session focuses on understanding the presenting concerns and gathering important developmental, family, and background information to guide treatment planning.</p>
             
             <div class="session-grid">
                 <div class="session-card">
@@ -452,7 +434,6 @@
                     </ul>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 30px; font-style: italic; color: var(--primary-color);">Clients may also complete assessments or questionnaires to help clarify the presenting issues and support the development of an individualised treatment plan.</p>
         </div>
     </section>
 
@@ -460,20 +441,20 @@
         <div class="container">
             <h2>Pathways to Referral</h2>
             <div class="content-box referral-box" style="max-width: 800px; margin: 0 auto;">
-                <p style="font-size: 1.1rem; text-align: center;">I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.</p>
+                <p style="text-align: center; margin-bottom: 20px;">I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.</p>
                 <hr>
                 
                 <div class="referral-item">
-                    <div class="referral-icon">📋</div>
-                    <div><strong>Mental Health Care Plans (MHCPs):</strong> For children and young people seeking psychological support through Medicare.</div>
+                    <span class="referral-title">Mental Health Care Plans (MHCPs)</span>
+                    For children and young people seeking psychological support through Medicare.
                 </div>
                  <div class="referral-item">
-                    <div class="referral-icon">🤝</div>
-                    <div><strong>NDIS Referrals:</strong> I see both self-managed and plan-managed clients.</div>
+                    <span class="referral-title">NDIS Referrals</span>
+                    I see both self-managed and plan-managed clients.
                 </div>
                  <div class="referral-item">
-                    <div class="referral-icon">👤</div>
-                    <div><strong>Private Referrals:</strong> No formal referral is required—parents, caregivers, and students may self-refer.</div>
+                    <span class="referral-title">Private Referrals</span>
+                    No formal referral is required—parents, caregivers, and students may self-refer.
                 </div>
             </div>
         </div>
@@ -484,9 +465,8 @@
             <h2>Contact</h2>
             
             <div class="address-box">
-                <p style="font-weight: bold; font-size: 1.2rem; margin-bottom: 10px;">Uralla Cottage</p>
-                <p>3 Baker Street, Windsor</p>
-                <p>NSW 2756</p>
+                <p style="font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">Uralla Cottage</p>
+                <p>3 Baker Street, Windsor, NSW 2756</p>
             </div>
 
             <div style="text-align: center;">
@@ -494,7 +474,7 @@
                 <p style="margin-top: 10px;">Mobile: <a href="tel:0421140107" class="contact-link">0421 140 107</a></p>
             </div>
             
-            <p style="margin-top: 40px; font-size: 0.9rem; opacity: 0.7;">© 2023 Rhonda Blackadder Psychologist</p>
+            <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.6;">© 2026 Rhonda Blackadder Psychologist</p>
         </div>
     </footer>
 
