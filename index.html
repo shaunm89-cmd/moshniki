@@ -11,12 +11,13 @@
         :root {
             --primary-sage: #6B8E6B;      /* Main sage green */
             --dark-sage: #3A4F3A;         /* Darker green for text */
-            --footer-bg: #2C3E2C;         /* Very dark green for footer */
+            --footer-bg: #2C3E2C;         /* Very dark green for footer contrast */
             --white: #ffffff;
             --text-color: #444;
             
-            /* BACKGROUND IMAGE */
-            --bg-image: url('bg-floral.png'); 
+            /* BACKGROUND IMAGE CONFIGURATION */
+            /* Ensure your image is named 'background.png' */
+            --bg-image: url('background.png'); 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,18 +28,18 @@
             color: var(--text-color);
             line-height: 1.6;
             
-            /* FIXED WALLPAPER BACKGROUND */
+            /* WALLPAPER SETTINGS */
             background-image: var(--bg-image);
-            background-attachment: fixed; 
-            background-size: 500px; /* Adjusted size for better look */
-            background-repeat: repeat;
-            background-position: top center;
+            background-attachment: fixed; /* Keeps flowers still while scrolling */
+            background-size: cover;       /* Stretches image to fill screen */
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         a { text-decoration: none; transition: 0.3s; }
         ul { list-style: none; }
 
-        /* --- LAYOUT UTILS --- */
+        /* --- LAYOUT --- */
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -64,26 +65,19 @@
             text-align: center;
             margin-bottom: 40px;
             position: relative;
-            text-shadow: 1px 1px 0px #fff; 
+            /* White shadow helps text stand out if it hits a flower stem */
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.8); 
         }
         
-        h2::after {
-            content: '❀';
-            display: block;
-            color: var(--primary-sage);
-            font-size: 1.5rem;
-            margin-top: 10px;
-            text-shadow: none;
-        }
-
         h3 { font-size: 1.3rem; margin-bottom: 15px; }
 
-        /* --- ICONS --- */
+        /* --- ICONS (SVG) --- */
+        /* Consistent, elegant line art */
         .section-icon {
             display: block;
-            margin: 0 auto 15px auto;
-            width: 60px;
-            height: 60px;
+            margin: 0 auto 10px auto;
+            width: 50px;
+            height: 50px;
             fill: var(--primary-sage);
             opacity: 0.9;
             filter: drop-shadow(0px 2px 0px rgba(255,255,255,0.8));
@@ -99,7 +93,7 @@
             font-weight: 700;
             letter-spacing: 1px;
             box-shadow: 0 4px 10px rgba(58, 79, 58, 0.3);
-            border: 2px solid white;
+            border: 2px solid white; /* Makes button pop */
         }
         .btn:hover {
             background-color: var(--dark-sage);
@@ -108,7 +102,7 @@
 
         /* --- HEADER --- */
         header {
-            background: rgba(255, 255, 255, 0.98); /* Solid white background for contrast */
+            background: rgba(255, 255, 255, 0.98);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -127,7 +121,7 @@
             font-family: 'Cinzel Decorative', serif;
             font-size: 1.3rem;
             font-weight: bold;
-            color: var(--dark-sage); /* Dark green text on white header */
+            color: var(--dark-sage);
             display: flex;
             align-items: center;
         }
@@ -146,7 +140,7 @@
             font-size: 0.85rem;
             font-weight: 700;
             letter-spacing: 1px;
-            color: var(--dark-sage); /* Dark green links */
+            color: var(--dark-sage);
             text-transform: uppercase;
         }
         .nav-links a:hover { color: var(--primary-sage); }
@@ -158,15 +152,17 @@
             align-items: center;
         }
 
+        /* White "Glass" Box for Hero */
         .hero-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 50px;
-            background: rgba(255, 255, 255, 0.9); /* High opacity for readability */
+            background: rgba(255, 255, 255, 0.92); /* Solid enough to read, slightly transparent */
             padding: 50px;
             border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            backdrop-filter: blur(5px);
         }
 
         .hero-text { flex: 1; }
@@ -204,16 +200,17 @@
             padding: 8px 15px;
             border-radius: 10px;
             line-height: 1.4;
-            border: 1px solid #eee;
+            border: 1px solid #ccc;
         }
 
         /* --- CONTENT BOXES --- */
+        /* These boxes sit over the flowers so text is always readable */
         .content-box {
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.5);
+            border: 1px solid rgba(255,255,255,0.6);
         }
 
         /* --- SERVICES --- */
@@ -238,7 +235,7 @@
             align-items: flex-start;
         }
         .service-list li::before {
-            content: '🌿';
+            content: '✿'; /* Small simple flower bullet */
             margin-right: 10px;
             font-size: 0.9rem;
             color: var(--primary-sage);
@@ -276,20 +273,18 @@
             margin-bottom: 5px;
         }
 
-        /* --- FOOTER (FIXED CONTRAST) --- */
+        /* --- FOOTER (Dark Green Background / White Text) --- */
         footer {
-            background: var(--footer-bg); /* Dark Green Background */
-            color: #ffffff; /* FORCE WHITE TEXT */
+            background: var(--footer-bg); 
+            color: #ffffff;
             padding: 60px 0 30px;
             text-align: center;
             position: relative;
             z-index: 10;
         }
         
-        /* Ensure all links and headers in footer are WHITE */
         footer a { color: #ffffff; font-weight: bold; text-decoration: underline; }
         footer h2 { color: #ffffff; text-shadow: none; }
-        footer h2::after { display: none; } /* Remove flower from footer */
         
         .footer-grid {
             display: flex;
@@ -306,7 +301,8 @@
             max-width: 500px;
             border-radius: 15px;
             overflow: hidden;
-            border: 3px solid rgba(255,255,255,0.2);
+            border: 4px solid rgba(255,255,255,0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
         .address-container {
@@ -314,14 +310,22 @@
             min-width: 250px;
             max-width: 400px;
             text-align: left;
-            background: rgba(255,255,255,0.1); /* Slight white box for contrast */
+            background: rgba(255,255,255,0.1); 
             padding: 30px;
             border-radius: 15px;
             border: 1px solid rgba(255,255,255,0.2);
         }
 
         .address-container p { margin-bottom: 15px; font-size: 1.1rem; }
-        .address-label { font-weight: bold; text-transform: uppercase; opacity: 0.7; font-size: 0.85rem; display: block; margin-bottom: 5px;}
+        .address-label { 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            opacity: 0.7; 
+            font-size: 0.85rem; 
+            display: block; 
+            margin-bottom: 5px;
+            color: #ccc;
+        }
         
         .footer-abn {
             margin-top: 30px;
@@ -345,8 +349,8 @@
             nav { justify-content: center; }
             h1 { font-size: 2rem; }
             .hero-photo { width: 250px; height: 250px; }
-            .footer-grid { flex-direction: column; align-items: center; text-align: center; }
-            .address-container { text-align: center; }
+            .footer-grid { flex-direction: column; align-items: center; }
+            .address-container { text-align: center; width: 100%; }
         }
     </style>
 </head>
@@ -356,7 +360,6 @@
         <div class="container">
             <nav>
                 <div class="logo">
-                    <span class="logo-icon">✿</span> 
                     Rhonda Blackadder | Psychologist
                 </div>
                 <div class="nav-links">
@@ -393,7 +396,7 @@
 
     <section id="about">
         <div class="container">
-            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 4-3 7-3 7s-3-1-3-5c-2 0-3 .6-3 2 0 .5.3 1 .7 1.5.4.4.6 1 .6 1.6 0 1.4-1 2.7-2.6 3.4C8 21.4 6.3 22 4.5 22h-1c-1 0-2-.8-2-1.8 0-.5.2-.9.6-1.2.4-.3.6-.8.6-1.3 0-.8-.4-1.5-1.1-2-.7-.6-1.1-1.4-1.1-2.3 0-1.6 1.2-3 2.8-3.3C4.9 7 7.1 4.7 9.8 3.4 12 2.3 14.5 2 17 2c2 0 4 3.6 4 8z"/></svg>
+            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c-1.7 0-3 1.3-3 3 0 1.1.6 2 1.5 2.5C9.6 7.9 9 9 9 10.2c0 2.2 1.8 4 4 4s4-1.8 4-4c0-1.2-.6-2.3-1.5-2.7C16.4 7 17 6.1 17 5c0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .4.1.8.3 1.2C9.8 7 8.8 8.5 8.8 10.2c0 3.2 2.5 5.8 5.7 5.8h.1l-.3 2.4c-.3 2-2 3.6-4 3.6H8c-1.1 0-2-.9-2-2V4H4v16c0 2.2 1.8 4 4 4h2.3c3.2 0 6-2.5 6.4-5.6L17 16c3.3 0 6-2.7 6-6 0-3.3-2.7-6-6-6-.7 0-1.4.1-2 .4C14.5 2.8 13.3 2 12 2z"/></svg>
             <h2>About Me</h2>
             <div class="content-box">
                 <p>I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported.</p>
@@ -434,7 +437,7 @@
 
     <section id="approach">
         <div class="container">
-            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.5 10c-.3-1.6-2.3-2.2-3.4-1.1-.5.5-1.2.6-1.7.2-1.1-.8-2.7-.4-3.5.7-.4.5-1 .8-1.7.8-.6 0-1.2-.1-1.7-.3-.6-.3-1.4-.2-1.9.4-1 1.3-2.8 1.6-4.3.9C2 10.6.7 8.2 1.1 5.4c0-.3-.1-.5-.4-.6C.4 4.7.2 4.9.2 5.2c-.7 5.9 3.3 11.4 9.2 12.5.6.1 1.1.4 1.5 1 .7 1 2.1 1.5 3.4 1 1.3-.5 2.1-1.7 2.1-3.1 0-.6.2-1.2.7-1.5 1.1-.8 1.6-2.3 1-3.6-.2-.5-.1-1.1.3-1.5 1.3-1.3 3.7-.9 4.5.8.2.4.6.6 1 .6h1.1c.6 0 1-.5 1-1s-.6-1-1.1-1.1c-.9-.1-1.7.1-2.4.7z"/></svg>
+            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c-1.7 0-3 1.3-3 3 0 1.1.6 2 1.5 2.5C9.6 7.9 9 9 9 10.2c0 2.2 1.8 4 4 4s4-1.8 4-4c0-1.2-.6-2.3-1.5-2.7C16.4 7 17 6.1 17 5c0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .4.1.8.3 1.2C9.8 7 8.8 8.5 8.8 10.2c0 3.2 2.5 5.8 5.7 5.8h.1l-.3 2.4c-.3 2-2 3.6-4 3.6H8c-1.1 0-2-.9-2-2V4H4v16c0 2.2 1.8 4 4 4h2.3c3.2 0 6-2.5 6.4-5.6L17 16c3.3 0 6-2.7 6-6 0-3.3-2.7-6-6-6-.7 0-1.4.1-2 .4C14.5 2.8 13.3 2 12 2z"/></svg>
             <h2>Therapeutic Approach</h2>
             <div class="content-box" style="text-align: center; max-width: 800px; margin: 0 auto;">
                 <p>My practice is informed by positive psychology and a strengths-focused perspective. I use evidence-based therapies, including <strong>Acceptance and Commitment Therapy (ACT)</strong> and <strong>Cognitive Behavioural Therapy (CBT)</strong>, to help young people build resilience and emotional regulation.</p>
@@ -446,9 +449,9 @@
 
     <section id="session">
         <div class="container">
-            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c-1.1 0-2 .9-2 2v14c-1.1 0-2 .9-2 2h4c0-1.1-.9-2-2-2V5c0-1.1-.9-2-2-2zm6 4c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zm-12 4c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/></svg>
+            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c-1.7 0-3 1.3-3 3 0 1.1.6 2 1.5 2.5C9.6 7.9 9 9 9 10.2c0 2.2 1.8 4 4 4s4-1.8 4-4c0-1.2-.6-2.3-1.5-2.7C16.4 7 17 6.1 17 5c0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .4.1.8.3 1.2C9.8 7 8.8 8.5 8.8 10.2c0 3.2 2.5 5.8 5.7 5.8h.1l-.3 2.4c-.3 2-2 3.6-4 3.6H8c-1.1 0-2-.9-2-2V4H4v16c0 2.2 1.8 4 4 4h2.3c3.2 0 6-2.5 6.4-5.6L17 16c3.3 0 6-2.7 6-6 0-3.3-2.7-6-6-6-.7 0-1.4.1-2 .4C14.5 2.8 13.3 2 12 2z"/></svg>
             <h2>First Session</h2>
-            <p style="text-align: center; max-width: 600px; margin: 0 auto 30px auto; background: rgba(255,255,255,0.95); padding: 15px; border-radius: 10px; border: 1px solid #ddd;">The first session focuses on understanding presenting concerns and gathering developmental background to guide treatment.</p>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto 30px auto; background: rgba(255,255,255,0.9); padding: 15px; border-radius: 10px; border: 1px solid #ddd;">The first session focuses on understanding presenting concerns and gathering developmental background to guide treatment.</p>
             
             <div class="session-grid">
                 <div class="session-card">
@@ -471,7 +474,7 @@
 
     <section id="referrals">
         <div class="container">
-            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66c2.08-5.17 4.19-11.34 13.19-13.34V6H22v2h-5zM9 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            <svg class="section-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c-1.7 0-3 1.3-3 3 0 1.1.6 2 1.5 2.5C9.6 7.9 9 9 9 10.2c0 2.2 1.8 4 4 4s4-1.8 4-4c0-1.2-.6-2.3-1.5-2.7C16.4 7 17 6.1 17 5c0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .4.1.8.3 1.2C9.8 7 8.8 8.5 8.8 10.2c0 3.2 2.5 5.8 5.7 5.8h.1l-.3 2.4c-.3 2-2 3.6-4 3.6H8c-1.1 0-2-.9-2-2V4H4v16c0 2.2 1.8 4 4 4h2.3c3.2 0 6-2.5 6.4-5.6L17 16c3.3 0 6-2.7 6-6 0-3.3-2.7-6-6-6-.7 0-1.4.1-2 .4C14.5 2.8 13.3 2 12 2z"/></svg>
             <h2>Pathways to Referral</h2>
             <div class="content-box referral-box">
                 <p style="text-align: center; margin-bottom: 30px;">I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.</p>
