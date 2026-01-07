@@ -3,260 +3,463 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mila counts!</title>
+    <title>Mila's Monster</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
 
         body {
-            font-family: 'Fredoka', sans-serif;
-            background-color: #FFF9C4; /* Light Yellow */
             margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(to bottom, #4FC3F7, #ffffff);
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: background 1s ease;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* HEADER */
-        header {
-            background-color: #FF6F00;
-            width: 100%;
-            padding: 15px 0;
-            text-align: center;
-            box-shadow: 0 4px rgba(0,0,0,0.1);
+        /* NIGHT MODE STYLES */
+        body.night {
+            background: linear-gradient(to bottom, #1A237E, #311B92);
         }
+        body.night .stat-label { color: white; }
+        body.night h1 { color: #B39DDB; text-shadow: 0 0 10px white; }
 
-        h1 {
-            color: white;
-            margin: 0;
-            font-size: 1.8rem;
-            text-shadow: 2px 2px #E65100;
-        }
-
-        /* THE STAGE (Where items appear) */
-        #stage {
-            background-color: white;
-            margin: 20px;
+        /* HEADER & STATS */
+        #top-bar {
             width: 90%;
-            max-width: 500px;
-            min-height: 250px;
+            margin-top: 10px;
+            background: rgba(255,255,255,0.8);
+            padding: 15px;
             border-radius: 20px;
-            border: 5px solid #FFAB91;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0 0 10px 0; text-align: center; color: #0277BD; font-size: 1.5rem; }
+
+        .stat-row {
             display: flex;
-            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            width: 30px;
+            font-size: 1.2rem;
+        }
+
+        .progress-bar-bg {
+            flex-grow: 1;
+            height: 15px;
+            background-color: #E0E0E0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: 10px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 50%;
+            transition: width 0.5s, background-color 0.5s;
+        }
+
+        /* THE PET AREA */
+        #pet-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            box-shadow: inset 0 0 20px #FFF3E0;
-            gap: 15px;
-        }
-
-        /* The Items to Count */
-        .item {
-            font-size: 4rem;
-            animation: bounce 2s infinite;
-            filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1));
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* INSTRUCTION TEXT */
-        #question-text {
-            font-size: 1.5rem;
-            color: #5D4037;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        /* ANSWER BUTTONS */
-        #options-container {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
+            position: relative;
             width: 100%;
         }
 
-        .number-btn {
-            background-color: #4DB6AC;
-            color: white;
-            border: none;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            font-size: 2.5rem;
-            font-family: 'Fredoka', sans-serif;
-            font-weight: bold;
+        #pet {
+            font-size: 8rem;
             cursor: pointer;
-            box-shadow: 0 6px #00796B;
-            transition: transform 0.1s;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
+            transition: transform 0.2s;
+            animation: breathe 3s infinite ease-in-out;
+            position: relative;
+            z-index: 2;
         }
 
-        .number-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 0 #00796B;
+        /* ANIMATIONS */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        /* Colors for buttons */
-        .btn-1 { background-color: #4DD0E1; box-shadow: 0 6px #0097A7; }
-        .btn-2 { background-color: #9575CD; box-shadow: 0 6px #512DA8; }
-        .btn-3 { background-color: #F06292; box-shadow: 0 6px #C2185B; }
+        @keyframes jump {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-50px) scale(1.1); }
+            100% { transform: translateY(0); }
+        }
 
-        /* FEEDBACK OVERLAY */
-        #feedback {
-            height: 50px;
-            margin-top: 20px;
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes evolveSpin {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(0) rotate(360deg); opacity: 0; }
+            100% { transform: scale(1) rotate(720deg); opacity: 1; }
+        }
+
+        /* Floating emojis (hearts/food) */
+        .floater {
+            position: absolute;
             font-size: 2rem;
+            pointer-events: none;
+            animation: floatUp 1.5s forwards;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-100px); }
+        }
+
+        /* CONTROLS */
+        #controls {
+            width: 100%;
+            padding: 20px 0 40px 0;
+            background: white;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            display: flex;
+            justify-content: space-evenly;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            background: none;
+            border: none;
+            font-size: 2.5rem;
+            background-color: #F5F5F5;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            box-shadow: 0 4px #BDBDBD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn:active { transform: translateY(4px); box-shadow: none; }
+        .btn-feed { background-color: #FFCCBC; color: #D84315; }
+        .btn-play { background-color: #C8E6C9; color: #2E7D32; }
+        .btn-sleep { background-color: #BBDEFB; color: #1565C0; }
+        .btn-clean { background-color: #E1BEE7; color: #6A1B9A; }
+
+        /* Level Badge */
+        #level-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #FF6F00;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
             font-weight: bold;
-            color: #2E7D32;
-            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        /* Message Bubble */
+        #message {
+            position: absolute;
+            top: 20%;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-weight: bold;
+            color: #333;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        #message:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: white transparent;
         }
 
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🎪 Mila's Counting</h1>
-    </header>
-
-    <div id="stage">
+    <div id="top-bar">
+        <h1>💖 Mila's Monster</h1>
+        <div class="stat-row">
+            <span class="stat-label">🍖</span>
+            <div class="progress-bar-bg">
+                <div id="bar-hunger" class="progress-bar-fill" style="background-color: #FF7043;"></div>
+            </div>
         </div>
-
-    <div id="question-text">How many?</div>
-
-    <div id="options-container">
+        <div class="stat-row">
+            <span class="stat-label">😊</span>
+            <div class="progress-bar-bg">
+                <div id="bar-happy" class="progress-bar-fill" style="background-color: #66BB6A;"></div>
+            </div>
         </div>
+        <div class="stat-row">
+            <span class="stat-label">⚡</span>
+            <div class="progress-bar-bg">
+                <div id="bar-energy" class="progress-bar-fill" style="background-color: #42A5F5;"></div>
+            </div>
+        </div>
+    </div>
 
-    <div id="feedback">Correct! 🎉</div>
+    <div id="pet-container">
+        <div id="level-badge">Lvl 1</div>
+        <div id="message"></div>
+        <div id="pet" onclick="petClick()">🥚</div>
+    </div>
+
+    <div id="controls">
+        <button class="btn btn-feed" onclick="action('feed')">🍎</button>
+        <button class="btn btn-play" onclick="action('play')">🎾</button>
+        <button class="btn btn-sleep" onclick="action('sleep')">💤</button>
+    </div>
 
 <script>
-    // --- SETTINGS ---
-    // Characters she likes
-    const items = ["🤠", "🚀", "🦖", "👽", "🐰", "👹", "💀", "🐷", "⭐"];
+    // --- GAME STATE ---
+    let stats = {
+        hunger: 50,    // 0 = starving, 100 = full
+        happy: 50,     // 0 = sad, 100 = overjoyed
+        energy: 50,    // 0 = exhausted, 100 = hyper
+        xp: 0,
+        level: 1,
+        isSleeping: false
+    };
+
+    // The Evolution Path (Emoji, Name)
+    // 1. Egg -> 2. Chick -> 3. Rabbit (Labubu) -> 4. Monster -> 5. King Monster
+    const evolutions = ["🥚", "🐣", "🐰", "👹", "👑"];
     
-    // Audio Context for sounds
+    const petEl = document.getElementById('pet');
+    const msgEl = document.getElementById('message');
+    
+    // --- AUDIO SYSTEM (No files needed) ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
 
-    function playSound(type) {
+    function playTone(type) {
         if (audioCtx.state === 'suspended') audioCtx.resume();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
 
-        if (type === 'win') {
-            oscillator.type = 'triangle';
-            oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
-            oscillator.frequency.linearRampToValueAtTime(880, audioCtx.currentTime + 0.1); // A5
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.3);
-        } else {
-            oscillator.type = 'sawtooth';
-            oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
-            oscillator.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.2);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.2);
+        const now = audioCtx.currentTime;
+        if(type === 'happy') {
+            osc.frequency.setValueAtTime(500, now);
+            osc.frequency.linearRampToValueAtTime(800, now + 0.1);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.linearRampToValueAtTime(0, now + 0.2);
+            osc.start(now);
+            osc.stop(now + 0.2);
+        } else if (type === 'sleep') {
+            osc.frequency.setValueAtTime(300, now);
+            osc.frequency.linearRampToValueAtTime(150, now + 0.5);
+            gain.gain.setValueAtTime(0.05, now);
+            gain.gain.linearRampToValueAtTime(0, now + 0.5);
+            osc.start(now);
+            osc.stop(now + 0.5);
+        } else if (type === 'evolve') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(300, now);
+            osc.frequency.linearRampToValueAtTime(600, now + 0.2);
+            osc.frequency.linearRampToValueAtTime(900, now + 0.4);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.linearRampToValueAtTime(0, now + 1.0);
+            osc.start(now);
+            osc.stop(now + 1.0);
         }
     }
 
-    // GAME LOGIC
-    let currentNumber = 0;
-
-    function generateRound() {
-        const stage = document.getElementById('stage');
-        const optionsDiv = document.getElementById('options-container');
-        const feedback = document.getElementById('feedback');
-        
-        feedback.style.opacity = '0';
-        stage.innerHTML = '';
-        optionsDiv.innerHTML = '';
-
-        // 1. Pick a random number between 1 and 6 (Good start for age 2-6)
-        // You can change the '6' to '10' if she gets too good at it!
-        currentNumber = Math.floor(Math.random() * 6) + 1;
-
-        // 2. Pick a random character
-        const char = items[Math.floor(Math.random() * items.length)];
-
-        // 3. Draw the items on stage
-        for (let i = 0; i < currentNumber; i++) {
-            const span = document.createElement('span');
-            span.classList.add('item');
-            span.innerText = char;
-            // Add a slight stagger to the animation so they don't all bounce at once
-            span.style.animationDelay = (i * 0.1) + 's';
-            stage.appendChild(span);
+    // --- ACTIONS ---
+    function action(type) {
+        if (stats.isSleeping && type !== 'sleep') {
+            showMessage("Zzz... shhh!");
+            shakePet();
+            return;
         }
 
-        // 4. Generate Button Answers
-        let answers = [currentNumber];
-        
-        // Add 2 fake answers
-        while (answers.length < 3) {
-            let fake = Math.floor(Math.random() * 6) + 1;
-            if (!answers.includes(fake)) {
-                answers.push(fake);
+        if (type === 'feed') {
+            if (stats.hunger >= 100) {
+                showMessage("I'm full!");
+                shakePet();
+            } else {
+                updateStat('hunger', 20);
+                updateStat('energy', -5);
+                spawnFloater("🍎");
+                petAnimation('jump');
+                playTone('happy');
+                addXP(5);
             }
+        } 
+        else if (type === 'play') {
+            if (stats.energy <= 10) {
+                showMessage("Too tired...");
+                shakePet();
+            } else {
+                updateStat('happy', 20);
+                updateStat('hunger', -10);
+                updateStat('energy', -15);
+                spawnFloater("💖");
+                petAnimation('jump');
+                playTone('happy');
+                addXP(10);
+            }
+        } 
+        else if (type === 'sleep') {
+            toggleSleep();
         }
-
-        // Shuffle buttons so the correct one isn't always first
-        answers.sort(() => Math.random() - 0.5);
-
-        // Draw Buttons
-        answers.forEach((num, index) => {
-            const btn = document.createElement('button');
-            btn.innerText = num;
-            btn.classList.add('number-btn');
-            // Assign random colors
-            btn.classList.add(index === 0 ? 'btn-1' : index === 1 ? 'btn-2' : 'btn-3');
-            
-            btn.onclick = () => checkAnswer(num);
-            optionsDiv.appendChild(btn);
-        });
-    }
-
-    function checkAnswer(selectedNumber) {
-        constfeedback = document.getElementById('feedback');
         
-        if (selectedNumber === currentNumber) {
-            // WIN
-            playSound('win');
-            document.getElementById('feedback').innerText = "Good Job! 🎉";
-            document.getElementById('feedback').style.color = "#2E7D32";
-            document.getElementById('feedback').style.opacity = '1';
-            
-            // Confetti
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.8 }
-            });
+        updateUI();
+    }
 
-            // Wait 2 seconds then new round
-            setTimeout(generateRound, 2000);
-
+    function toggleSleep() {
+        stats.isSleeping = !stats.isSleeping;
+        const body = document.body;
+        
+        if (stats.isSleeping) {
+            body.classList.add('night');
+            petEl.innerText = "💤";
+            playTone('sleep');
+            // Fast recharge
+            sleepInterval = setInterval(() => {
+                updateStat('energy', 5);
+                if(stats.energy >= 100) {
+                    toggleSleep(); // Wake up automatically
+                }
+                updateUI();
+            }, 500);
         } else {
-            // LOSE (Try again)
-            playSound('lose');
-            document.getElementById('feedback').innerText = "Try Again! 🤔";
-            document.getElementById('feedback').style.color = "#D84315";
-            document.getElementById('feedback').style.opacity = '1';
+            body.classList.remove('night');
+            petEl.innerText = evolutions[stats.level - 1];
+            playTone('happy');
+            clearInterval(sleepInterval);
+            showMessage("Good morning!");
         }
     }
 
-    // Start first round
-    generateRound();
+    function updateStat(stat, value) {
+        stats[stat] += value;
+        if (stats[stat] > 100) stats[stat] = 100;
+        if (stats[stat] < 0) stats[stat] = 0;
+    }
+
+    function addXP(amount) {
+        stats.xp += amount;
+        
+        // Level Up Thresholds: 50, 150, 300, 500
+        let nextLevelThreshold = stats.level * 50 * stats.level; 
+        
+        if (stats.xp >= nextLevelThreshold && stats.level < evolutions.length) {
+            levelUp();
+        }
+    }
+
+    function levelUp() {
+        stats.level++;
+        playTone('evolve');
+        
+        // Evolution Animation
+        petEl.style.animation = 'evolveSpin 1s ease';
+        
+        setTimeout(() => {
+            petEl.innerText = evolutions[stats.level - 1];
+            petEl.style.animation = 'breathe 3s infinite ease-in-out';
+            showMessage("LEVEL UP! 🎉");
+            document.getElementById('level-badge').innerText = "Lvl " + stats.level;
+            
+            // Big Confetti
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 }
+            });
+        }, 500);
+    }
+
+    function showMessage(text) {
+        msgEl.innerText = text;
+        msgEl.style.opacity = 1;
+        msgEl.style.top = "15%";
+        setTimeout(() => {
+            msgEl.style.opacity = 0;
+            msgEl.style.top = "20%";
+        }, 1500);
+    }
+
+    function spawnFloater(char) {
+        const f = document.createElement('div');
+        f.innerText = char;
+        f.classList.add('floater');
+        f.style.left = (Math.random() * 50 + 25) + "%"; // random horizontal pos
+        f.style.top = "50%";
+        document.getElementById('pet-container').appendChild(f);
+        setTimeout(() => f.remove(), 1500);
+    }
+
+    function petAnimation(animName) {
+        petEl.style.animation = 'none';
+        petEl.offsetHeight; /* trigger reflow */
+        petEl.style.animation = `${animName} 0.5s linear`;
+        setTimeout(() => {
+            petEl.style.animation = 'breathe 3s infinite ease-in-out';
+        }, 500);
+    }
+
+    function shakePet() {
+        petEl.style.animation = 'none';
+        petEl.offsetHeight; 
+        petEl.style.animation = `shake 0.3s linear`;
+        setTimeout(() => {
+            petEl.style.animation = 'breathe 3s infinite ease-in-out';
+        }, 300);
+    }
+
+    function petClick() {
+        if(!stats.isSleeping) {
+            action('play');
+        } else {
+            showMessage("Shhh... sleeping");
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('bar-hunger').style.width = stats.hunger + "%";
+        document.getElementById('bar-happy').style.width = stats.happy + "%";
+        document.getElementById('bar-energy').style.width = stats.energy + "%";
+    }
+
+    // Game Loop (Time passes)
+    setInterval(() => {
+        if (!stats.isSleeping) {
+            updateStat('hunger', -1);
+            updateStat('happy', -1);
+            updateStat('energy', -0.5);
+            updateUI();
+        }
+    }, 2000);
+
+    updateUI();
 
 </script>
 </body>
