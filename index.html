@@ -14,7 +14,7 @@
             --cream-paper: #FDFDFB;       /* Warm White for boxes */
             --white: #ffffff;
             
-            /* YOUR BACKGROUND FILE - Must be in same folder */
+            /* YOUR BACKGROUND FILE */
             --bg-image: url('background.png'); 
         }
 
@@ -39,7 +39,7 @@
 
         /* --- LAYOUT --- */
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 0 25px;
         }
@@ -275,7 +275,7 @@
             font-size: 1.1rem;
         }
 
-        /* --- FOOTER (3 Column Layout) --- */
+        /* --- FOOTER (Tidied Up 2-Column Layout) --- */
         footer {
             background: rgba(27, 46, 27, 0.95);
             backdrop-filter: blur(5px);
@@ -294,34 +294,31 @@
         }
         footer h2::after { display: none; } 
         
+        /* New tidied footer grid: 2 columns, centered, restricted width */
         .footer-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr; /* 3 Columns: Photo | Info | Map */
-            gap: 40px;
+            grid-template-columns: 1fr 1fr; /* Photo | Info */
+            gap: 60px;
             align-items: center;
+            max-width: 800px; /* Prevents it from stretching too wide */
+            margin: 0 auto;
         }
 
         /* Footer Photo Styling */
         .footer-photo img {
             width: 100%;
-            max-width: 300px;
+            max-width: 280px; /* Slightly smaller for balance */
             height: auto;
             border-radius: 4px;
             border: 2px solid var(--gold-accent);
             display: block;
-            margin: 0 auto;
+            margin: 0 auto; /* Centers photo in its column */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .footer-info { 
             padding: 0 20px;
-        }
-
-        .footer-map { 
-            width: 100%;
-            height: 300px; 
-            border: 1px solid rgba(255,255,255,0.2); 
-            border-radius: 4px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: left;
         }
 
         .contact-item { margin-bottom: 25px; font-size: 1.1rem; }
@@ -336,15 +333,13 @@
         }
 
         .footer-abn {
-            margin-top: 50px;
+            margin-top: 60px;
             padding-top: 30px;
             border-top: 1px solid rgba(255,255,255,0.1);
             text-align: center;
             font-size: 0.8rem;
             opacity: 0.5;
         }
-
-        iframe { width: 100%; height: 100%; border: 0; filter: grayscale(20%); }
 
         /* --- MOBILE --- */
         @media (max-width: 900px) {
@@ -353,7 +348,8 @@
             h1 { font-size: 2.2rem; }
             
             /* Stack footer columns on mobile */
-            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 40px;}
+            .footer-info { text-align: center; }
             footer h2 { text-align: center; }
             
             .nav-links { display: none; }
@@ -534,10 +530,6 @@
                         <span class="contact-label">Mobile</span>
                         <a href="tel:0421140107">0421 140 107</a>
                     </div>
-                </div>
-
-                <div class="footer-map">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.507351706874!2d150.8208047542544!3d-33.60472819271055!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b0d625d95c85de7%3A0x5b7694e2afb7e9f5!2s3%20Baker%20St%2C%20Windsor%20NSW%202756!5e1!3m2!1sen!2sau!4v1767788600536!5m2!1sen!2sau" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
 
             </div>
