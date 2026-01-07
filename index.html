@@ -3,252 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mila's Pop Party</title>
+    <title>Mila counts!</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap');
 
         body {
-            margin: 0;
-            overflow: hidden; /* Stop scrolling */
-            background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
             font-family: 'Fredoka', sans-serif;
-            touch-action: none; /* Crucial for fast tapping */
-            height: 100vh;
-            width: 100vw;
-        }
-
-        /* The Scoreboard */
-        #ui-layer {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            pointer-events: none; /* Let clicks pass through */
-            z-index: 10;
-        }
-
-        #score {
-            font-size: 4rem;
-            color: #fff;
-            text-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            background-color: #FFF9C4; /* Light Yellow */
             margin: 0;
-        }
-
-        #label {
-            font-size: 1.5rem;
-            color: #0277BD;
-            margin-top: -10px;
-        }
-
-        /* The Bubbles */
-        .bubble {
-            position: absolute;
-            bottom: -100px; /* Start below screen */
-            width: 90px;
-            height: 90px;
-            background-color: rgba(255, 255, 255, 0.6);
-            border: 3px solid rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            font-size: 3.5rem;
-            cursor: pointer;
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5);
-            animation: floatUp linear forwards;
+            min-height: 100vh;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
-        
-        /* Different speeds for bubbles */
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-120vh) rotate(20deg); }
-        }
 
-        /* The Start Screen */
-        #start-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(255,255,255,0.8);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 20;
+        /* HEADER */
+        header {
+            background-color: #FF6F00;
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 4px rgba(0,0,0,0.1);
         }
 
         h1 {
-            color: #FF6F00;
-            font-size: 3rem;
-            text-shadow: 2px 2px #FFD54F;
-            margin-bottom: 20px;
-            text-align: center;
+            color: white;
+            margin: 0;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px #E65100;
         }
 
-        button {
-            background-color: #7E57C2;
+        /* THE STAGE (Where items appear) */
+        #stage {
+            background-color: white;
+            margin: 20px;
+            width: 90%;
+            max-width: 500px;
+            min-height: 250px;
+            border-radius: 20px;
+            border: 5px solid #FFAB91;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-shadow: inset 0 0 20px #FFF3E0;
+            gap: 15px;
+        }
+
+        /* The Items to Count */
+        .item {
+            font-size: 4rem;
+            animation: bounce 2s infinite;
+            filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1));
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* INSTRUCTION TEXT */
+        #question-text {
+            font-size: 1.5rem;
+            color: #5D4037;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* ANSWER BUTTONS */
+        #options-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .number-btn {
+            background-color: #4DB6AC;
             color: white;
             border: none;
-            padding: 20px 50px;
-            font-size: 2rem;
-            border-radius: 50px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            font-size: 2.5rem;
             font-family: 'Fredoka', sans-serif;
-            box-shadow: 0 8px #512DA8;
+            font-weight: bold;
             cursor: pointer;
-        }
-
-        button:active {
-            transform: translateY(5px);
-            box-shadow: 0 0 #512DA8;
-        }
-
-        /* Pop animation class */
-        .popped {
+            box-shadow: 0 6px #00796B;
             transition: transform 0.1s;
-            transform: scale(1.5);
-            opacity: 0;
         }
+
+        .number-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 #00796B;
+        }
+
+        /* Colors for buttons */
+        .btn-1 { background-color: #4DD0E1; box-shadow: 0 6px #0097A7; }
+        .btn-2 { background-color: #9575CD; box-shadow: 0 6px #512DA8; }
+        .btn-3 { background-color: #F06292; box-shadow: 0 6px #C2185B; }
+
+        /* FEEDBACK OVERLAY */
+        #feedback {
+            height: 50px;
+            margin-top: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2E7D32;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
     </style>
 </head>
 <body>
 
-    <div id="ui-layer">
-        <div id="score">0</div>
-        <div id="label">Mila's Points</div>
-    </div>
+    <header>
+        <h1>🎪 Mila's Counting</h1>
+    </header>
 
-    <div id="game-area"></div>
+    <div id="stage">
+        </div>
 
-    <div id="start-screen">
-        <h1>Mila's<br>Pop Party! 🎈</h1>
-        <button onclick="startGame()">PLAY ▶️</button>
-    </div>
+    <div id="question-text">How many?</div>
+
+    <div id="options-container">
+        </div>
+
+    <div id="feedback">Correct! 🎉</div>
 
 <script>
     // --- SETTINGS ---
-    let score = 0;
-    let gameActive = false;
-    let spawnRate = 1000; // New bubble every 1 second (decreases over time)
-
-    // EMOJI DATABASE (Labubu stand-ins + Toy Story)
-    const characters = [
-        "🤠", // Woody
-        "🚀", // Buzz
-        "👽", // Alien
-        "🦖", // Rex
-        "🐰", // Labubu (Bunny ears)
-        "👹", // Monster
-        "💀", // Tycoco
-        "👻", // Spooky
-        "🐷", // Hamm
-        "⭐", // Star
-        "💖"  // Heart
-    ];
-
-    function startGame() {
-        document.getElementById('start-screen').style.display = 'none';
-        score = 0;
-        document.getElementById('score').innerText = score;
-        gameActive = true;
-        gameLoop();
-    }
-
-    function gameLoop() {
-        if (!gameActive) return;
-
-        spawnBubble();
-
-        // Randomize spawn time between 600ms and 1400ms
-        let nextSpawn = Math.random() * 800 + 600;
-        setTimeout(gameLoop, nextSpawn);
-    }
-
-    function spawnBubble() {
-        const gameArea = document.getElementById('game-area');
-        const bubble = document.createElement('div');
-        
-        // Pick random character
-        const char = characters[Math.floor(Math.random() * characters.length)];
-        bubble.innerText = char;
-        bubble.classList.add('bubble');
-
-        // Random Position (Left to Right)
-        // We subtract 90px (width of bubble) to keep it on screen
-        const randomLeft = Math.random() * (window.innerWidth - 100);
-        bubble.style.left = randomLeft + 'px';
-
-        // Random Speed (3s to 6s)
-        const duration = Math.random() * 3 + 3;
-        bubble.style.animationDuration = duration + 's';
-
-        // CLICK EVENT
-        bubble.onpointerdown = function(e) {
-            popBubble(bubble, e);
-        };
-
-        // Remove bubble when animation ends (it floats off screen)
-        bubble.addEventListener('animationend', () => {
-            bubble.remove();
-        });
-
-        gameArea.appendChild(bubble);
-    }
-
-    function popBubble(element, event) {
-        if (element.classList.contains('popped')) return; // Prevent double taps
-        element.classList.add('popped');
-        
-        // Play Pop Sound (Synthesized so no audio files needed!)
-        playPopSound();
-
-        // Increment Score
-        score++;
-        document.getElementById('score').innerText = score;
-
-        // Visual Explosion (Confetti)
-        // We calculate where the click happened to center the confetti
-        const x = event.clientX / window.innerWidth;
-        const y = event.clientY / window.innerHeight;
-
-        confetti({
-            particleCount: 15,
-            spread: 60,
-            origin: { x: x, y: y },
-            colors: ['#FFD54F', '#81D4FA', '#FF8A65', '#9575CD'],
-            disableForReducedMotion: true,
-            zIndex: 100
-        });
-
-        // Remove element quickly after visual pop
-        setTimeout(() => element.remove(), 100);
-    }
-
-    // Audio Context for Beeps/Boops (No external files needed)
+    // Characters she likes
+    const items = ["🤠", "🚀", "🦖", "👽", "🐰", "👹", "💀", "🐷", "⭐"];
+    
+    // Audio Context for sounds
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
 
-    function playPopSound() {
+    function playSound(type) {
         if (audioCtx.state === 'suspended') audioCtx.resume();
         const oscillator = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
-
-        oscillator.type = 'sine';
-        // Random pitch for fun
-        oscillator.frequency.setValueAtTime(400 + Math.random() * 200, audioCtx.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
-
-        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-
         oscillator.connect(gainNode);
         gainNode.connect(audioCtx.destination);
 
-        oscillator.start();
-        oscillator.stop(audioCtx.currentTime + 0.1);
+        if (type === 'win') {
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
+            oscillator.frequency.linearRampToValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.3);
+        } else {
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
+            oscillator.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.2);
+        }
     }
+
+    // GAME LOGIC
+    let currentNumber = 0;
+
+    function generateRound() {
+        const stage = document.getElementById('stage');
+        const optionsDiv = document.getElementById('options-container');
+        const feedback = document.getElementById('feedback');
+        
+        feedback.style.opacity = '0';
+        stage.innerHTML = '';
+        optionsDiv.innerHTML = '';
+
+        // 1. Pick a random number between 1 and 6 (Good start for age 2-6)
+        // You can change the '6' to '10' if she gets too good at it!
+        currentNumber = Math.floor(Math.random() * 6) + 1;
+
+        // 2. Pick a random character
+        const char = items[Math.floor(Math.random() * items.length)];
+
+        // 3. Draw the items on stage
+        for (let i = 0; i < currentNumber; i++) {
+            const span = document.createElement('span');
+            span.classList.add('item');
+            span.innerText = char;
+            // Add a slight stagger to the animation so they don't all bounce at once
+            span.style.animationDelay = (i * 0.1) + 's';
+            stage.appendChild(span);
+        }
+
+        // 4. Generate Button Answers
+        let answers = [currentNumber];
+        
+        // Add 2 fake answers
+        while (answers.length < 3) {
+            let fake = Math.floor(Math.random() * 6) + 1;
+            if (!answers.includes(fake)) {
+                answers.push(fake);
+            }
+        }
+
+        // Shuffle buttons so the correct one isn't always first
+        answers.sort(() => Math.random() - 0.5);
+
+        // Draw Buttons
+        answers.forEach((num, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = num;
+            btn.classList.add('number-btn');
+            // Assign random colors
+            btn.classList.add(index === 0 ? 'btn-1' : index === 1 ? 'btn-2' : 'btn-3');
+            
+            btn.onclick = () => checkAnswer(num);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedNumber) {
+        constfeedback = document.getElementById('feedback');
+        
+        if (selectedNumber === currentNumber) {
+            // WIN
+            playSound('win');
+            document.getElementById('feedback').innerText = "Good Job! 🎉";
+            document.getElementById('feedback').style.color = "#2E7D32";
+            document.getElementById('feedback').style.opacity = '1';
+            
+            // Confetti
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.8 }
+            });
+
+            // Wait 2 seconds then new round
+            setTimeout(generateRound, 2000);
+
+        } else {
+            // LOSE (Try again)
+            playSound('lose');
+            document.getElementById('feedback').innerText = "Try Again! 🤔";
+            document.getElementById('feedback').style.color = "#D84315";
+            document.getElementById('feedback').style.opacity = '1';
+        }
+    }
+
+    // Start first round
+    generateRound();
 
 </script>
 </body>
