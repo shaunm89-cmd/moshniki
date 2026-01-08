@@ -141,8 +141,13 @@
 
         <div id="request" class="form-content active">
             
-            <form action="https://formspree.io/f/xjgknlyn" method="POST" id="requestForm">
+            <form action="https://formsubmit.co/Austreams89@gmail.com" method="POST" id="requestForm">
+                
                 <input type="hidden" name="_subject" value="NEW VOD REQUEST">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_autoresponse" value="We have received your request and will add it to the server shortly.">
+                
+                <input type="text" name="_honey" style="display:none">
 
                 <div class="form-group">
                     <label>What are you requesting?</label>
@@ -186,7 +191,7 @@
 
                 <div class="form-group">
                     <label>Client Name / Email</label>
-                    <input type="text" name="Client_Info" placeholder="So we can notify you..." required>
+                    <input type="text" name="email" placeholder="Required for notifications..." required>
                 </div>
 
                 <button type="submit" class="submit-btn">Submit Request</button>
@@ -194,8 +199,14 @@
         </div>
 
         <div id="report" class="form-content">
-            <form action="https://formspree.io/f/xjgknlyn" method="POST">
+            
+            <form action="https://formsubmit.co/Austreams89@gmail.com" method="POST">
+                
                 <input type="hidden" name="_subject" value="⚠️ SUPPORT TICKET FILED">
+                <input type="hidden" name="_template" value="box">
+                <input type="hidden" name="_autoresponse" value="Support Ticket Created. Our technicians are investigating.">
+
+                <input type="text" name="_honey" style="display:none">
 
                 <div class="form-group">
                     <label>Where is the problem?</label>
@@ -244,7 +255,7 @@
 
                 <div class="form-group">
                     <label>Your Email (For updates)</label>
-                    <input type="email" name="Client_Email" required>
+                    <input type="email" name="email" required>
                 </div>
 
                 <button type="submit" class="submit-btn" style="background: #ef4444;">Report Issue</button>
@@ -255,11 +266,8 @@
     <script>
         // --- TAB SWITCHER ---
         function switchTab(tabName) {
-            // Update Buttons
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-
-            // Update Content
             document.querySelectorAll('.form-content').forEach(content => content.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
         }
@@ -269,9 +277,7 @@
             const query = document.getElementById('movieSearchInput').value;
             if(!query) return;
 
-            // ---------------------------------------------------------
-            // API KEY ADDED BELOW
-            // ---------------------------------------------------------
+            // YOUR API KEY
             const apiKey = "b71b47e2"; 
             
             const btn = document.querySelector('.search-btn');
@@ -282,7 +288,6 @@
                 const data = await response.json();
 
                 if(data.Response === "True") {
-                    // Show Preview
                     const preview = document.getElementById('moviePreview');
                     preview.classList.add('visible');
                     
@@ -290,20 +295,18 @@
                     document.getElementById('previewTitle').innerText = data.Title;
                     document.getElementById('previewYear').innerText = data.Year;
 
-                    // Fill Hidden Inputs
                     document.getElementById('realTitle').value = data.Title;
                     document.getElementById('realYear').value = data.Year;
                     document.getElementById('realID').value = data.imdbID;
 
                     btn.innerText = "Found!";
                 } else {
-                    alert("Movie not found. Please double check spelling or paste the link.");
+                    alert("Movie not found. Check spelling or paste link.");
                     btn.innerText = "Retry";
                 }
             } catch (e) {
                 console.log(e);
                 btn.innerText = "Error";
-                // If API fails, we just let them type it manually
                 document.getElementById('realTitle').value = query; 
             }
         }
