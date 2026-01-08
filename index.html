@@ -11,7 +11,7 @@
             --bg: #020203;
             --surface: #0f1014;
             --accent: #3b82f6; /* Electric Blue */
-            --accent-glow: rgba(59, 130, 246, 0.4);
+            --accent-glow: rgba(59, 130, 246, 0.6); /* Increased Glow Intensity */
             --text: #ffffff;
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
@@ -28,36 +28,45 @@
             overflow-x: hidden;
         }
 
-        /* --- ATMOSPHERIC GLOW ENGINE --- */
+        /* --- BOOSTED ATMOSPHERE --- */
         #glow-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
             pointer-events: none;
             background: 
-                radial-gradient(circle at 50% -10%, rgba(59, 130, 246, 0.25) 0%, transparent 50%), /* Top Center Main */
-                radial-gradient(circle at 90% 40%, rgba(124, 58, 237, 0.1) 0%, transparent 40%),  /* Right Purple Hint */
-                radial-gradient(circle at 10% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);  /* Left Blue Hint */
-            animation: pulseGlow 10s ease-in-out infinite alternate;
+                radial-gradient(circle at 50% -20%, rgba(59, 130, 246, 0.4) 0%, transparent 60%), /* Top Center (Stronger) */
+                radial-gradient(circle at 100% 50%, rgba(124, 58, 237, 0.25) 0%, transparent 50%), /* Right Purple (Stronger) */
+                radial-gradient(circle at 0% 50%, rgba(6, 182, 212, 0.25) 0%, transparent 50%); /* Left Cyan (Stronger) */
+            animation: pulseGlow 8s ease-in-out infinite alternate;
         }
 
         @keyframes pulseGlow {
-            0% { opacity: 0.8; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.1); }
+            0% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
         }
 
-        /* DIGITAL PARTICLE CANVAS */
+        /* PARTICLE CANVAS */
         #particle-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
 
         .main-container {
             width: 100%; max-width: 650px;
-            background: rgba(10, 10, 15, 0.6); /* Slightly darker for contrast */
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-top: 1px solid rgba(255, 255, 255, 0.15); /* Top Rim Light */
+            background: rgba(10, 10, 16, 0.75);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            
+            /* --- THE GLASS EDGE EFFECT --- */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid rgba(255, 255, 255, 0.5); /* BRIGHT RIM LIGHT */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+            
+            /* --- OUTER GLOW --- */
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset, /* Inner Highlight */
+                0 20px 60px rgba(0,0,0,0.9), /* Deep Shadow */
+                0 0 40px rgba(59, 130, 246, 0.15); /* Blue Outer Glow */
+
             border-radius: 24px;
             overflow: visible;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.7);
             position: relative;
             margin-top: 20px;
         }
@@ -65,11 +74,19 @@
         .header {
             text-align: center; padding: 35px;
             border-bottom: 1px solid var(--border);
-            background: linear-gradient(to bottom, rgba(59, 130, 246, 0.05), transparent);
+            background: linear-gradient(to bottom, rgba(59, 130, 246, 0.08), transparent);
             border-radius: 24px 24px 0 0;
+            position: relative;
         }
+        
+        /* Subtle light leak at top of header */
+        .header::before {
+            content: ''; position: absolute; top: 0; left: 25%; width: 50%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+        }
+
         .logo { font-size: 1.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
-        .logo span { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+        .logo span { color: var(--accent); text-shadow: 0 0 25px var(--accent); }
 
         .tabs { display: flex; border-bottom: 1px solid var(--border); }
         .tab-btn {
@@ -77,8 +94,8 @@
             color: var(--text-muted); font-weight: 600; cursor: pointer; transition: 0.3s;
             border-bottom: 3px solid transparent; font-size: 1rem;
         }
-        .tab-btn:hover { background: rgba(255,255,255,0.03); color: white; }
-        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59, 130, 246, 0.08); }
+        .tab-btn:hover { background: rgba(255,255,255,0.05); color: white; text-shadow: 0 0 10px white; }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59, 130, 246, 0.1); box-shadow: inset 0 -10px 20px -10px rgba(59,130,246,0.2); }
 
         .form-content { padding: 40px; display: none; animation: fadeIn 0.4s ease; }
         .form-content.active { display: block; }
@@ -92,20 +109,20 @@
             width: 100%; padding: 16px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
             color: white; border-radius: 12px; font-size: 1rem; transition: 0.3s;
         }
-        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); background: rgba(59, 130, 246, 0.05); box-shadow: 0 0 15px var(--accent-glow); }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); background: rgba(59, 130, 246, 0.05); box-shadow: 0 0 20px var(--accent-glow); }
 
         /* DROPDOWN RESULTS */
         .search-results {
             position: absolute; top: 100%; left: 0; width: 100%;
             background: #0a0a0c; border: 1px solid var(--accent); border-top: none;
             border-radius: 0 0 12px 12px; z-index: 100; max-height: 350px;
-            overflow-y: auto; display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            overflow-y: auto; display: none; box-shadow: 0 20px 50px rgba(0,0,0,1);
         }
         .result-item {
             padding: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer;
             border-bottom: 1px solid var(--border); transition: 0.2s;
         }
-        .result-item:hover { background: var(--accent-glow); color: white; }
+        .result-item:hover { background: rgba(59, 130, 246, 0.2); color: white; }
         .result-item img { width: 45px; height: 70px; object-fit: cover; border-radius: 6px; background: #222; }
         .result-info div { font-weight: 700; font-size: 1rem; }
         .result-info span { font-size: 0.85rem; opacity: 0.8; }
@@ -125,7 +142,7 @@
         .poster-img { width: 110px; height: 160px; object-fit: cover; border-radius: 8px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         
         .movie-info { flex: 1; }
-        .movie-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; color: white; line-height: 1.2; text-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
+        .movie-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; color: white; line-height: 1.2; text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
         .movie-meta { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
         .meta-tag {
             font-size: 0.75rem; padding: 4px 10px; border-radius: 20px;
@@ -141,7 +158,7 @@
             cursor: pointer; transition: 0.3s; margin-top: 15px; letter-spacing: 1px;
             box-shadow: 0 0 25px var(--accent-glow);
         }
-        .submit-btn:hover { opacity: 0.9; transform: translateY(-3px); box-shadow: 0 0 40px var(--accent-glow); }
+        .submit-btn:hover { opacity: 0.9; transform: translateY(-3px); box-shadow: 0 0 50px var(--accent-glow); }
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .success-msg {
@@ -418,7 +435,7 @@
 
         function init() {
             particlesArray = [];
-            // Increased density (9000 instead of 15000 for more particles)
+            // Increased density (9000 instead of 15000)
             let numberOfParticles = (canvas.height * canvas.width) / 9000; 
             for (let i = 0; i < numberOfParticles; i++) {
                 let size = (Math.random() * 2) + 1;
