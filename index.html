@@ -3,350 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Koala Tycoon</title>
+    <title>StreamOps | Command Deck</title>
     <style>
         :root {
-            --primary: #00f2ea; /* Cyan */
-            --secondary: #ff0050; /* Neon Pink */
-            --bg: #0b0b15;
-            --panel: rgba(255, 255, 255, 0.05);
-            --text: #ffffff;
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --bg-dark: #050505;
+            --panel-bg: #0a0a12;
+            --border: #1f1f2e;
+            --text-main: #e0e0e0;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; font-family: 'Segoe UI', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', monospace; }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            background-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #000 100%);
-        }
-
-        /* LEFT SIDE - THE KOALA */
-        .click-zone {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-right: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-        }
-
-        .score-display {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        h1 { font-size: 3rem; text-shadow: 0 0 20px var(--primary); }
-        .currency { color: var(--primary); font-size: 1.5rem; margin-top: 10px; }
-
-        .koala-btn {
-            width: 250px;
-            height: 250px;
-            background: url('https://api.iconify.design/noto:koala.svg') no-repeat center center;
-            background-size: contain;
-            cursor: pointer;
-            transition: transform 0.1s;
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
-            position: relative;
-            z-index: 10;
-        }
-
-        .koala-btn:active { transform: scale(0.95); }
-        .koala-btn:hover { filter: drop-shadow(0 0 40px var(--primary)); }
-
-        /* Floating numbers animation */
-        .click-effect {
-            position: absolute;
-            color: var(--primary);
-            font-weight: bold;
-            font-size: 1.5rem;
-            pointer-events: none;
-            animation: floatUp 1s ease-out forwards;
-        }
-
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-100px); }
-        }
-
-        /* RIGHT SIDE - SHOP */
-        .shop-zone {
-            width: 400px;
-            background: rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .shop-header {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             padding: 20px;
-            background: var(--secondary);
-            text-align: center;
-            font-weight: bold;
-            letter-spacing: 2px;
-            box-shadow: 0 0 20px rgba(255, 0, 80, 0.5);
-            z-index: 2;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            min-height: 100vh;
         }
 
-        .upgrades-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .upgrade-card {
-            background: var(--panel);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
+        /* HEADER */
+        header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--neon-blue);
+            padding-bottom: 15px;
+        }
+
+        h1 { text-transform: uppercase; letter-spacing: 4px; color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
+        .status { color: #0f0; font-size: 0.8rem; }
+        .blink { animation: blinker 1.5s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+
+        /* GRID LAYOUT */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
             transition: 0.3s;
-            cursor: pointer;
         }
 
-        .upgrade-card:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: var(--primary);
-            transform: translateX(-5px);
+        .card:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.2);
         }
 
-        .upgrade-card.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            filter: grayscale(1);
+        .card h2 {
+            font-size: 1.1rem;
+            color: var(--neon-purple);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 10px;
         }
 
-        .icon { font-size: 2.5rem; margin-right: 15px; }
-        .info { flex: 1; }
-        .name { font-weight: bold; font-size: 1.1rem; }
-        .cost { color: var(--secondary); font-size: 0.9rem; margin-top: 5px; }
-        .count { font-size: 1.5rem; font-weight: bold; color: #555; margin-left: 10px; }
-
-        /* PARTICLES BACKGROUND */
-        .particles {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
+        /* FORMS & INPUTS */
+        label { display: block; margin-bottom: 5px; font-size: 0.8rem; color: #888; }
         
-        .particle {
+        input, select, textarea {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            color: var(--neon-blue);
+            padding: 10px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            outline: none;
+        }
+
+        input:focus, textarea:focus { border-color: var(--neon-blue); }
+
+        button {
+            width: 100%;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        /* OUTPUT AREAS */
+        .result-box {
+            background: #111;
+            border: 1px solid #333;
+            padding: 10px;
+            margin-top: 10px;
+            min-height: 40px;
+            word-break: break-all;
+            color: #fff;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .copy-btn {
             position: absolute;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float 10s infinite linear;
+            right: 5px;
+            top: 5px;
+            background: #222;
+            border: none;
+            color: #fff;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            width: auto;
         }
 
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); }
-            100% { transform: translateY(-100px) rotate(360deg); }
-        }
-
+        /* SPECIAL ELEMENTS */
+        .mac-grid { display: flex; gap: 10px; }
+        
     </style>
 </head>
 <body>
 
-    <div class="particles" id="particles"></div>
+<div class="container">
+    <header>
+        <h1>StreamOps <span style="font-size:0.5em; vertical-align:middle;">v1.0</span></h1>
+        <div class="status"><span class="blink">●</span> SYSTEM ONLINE</div>
+    </header>
 
-    <div class="click-zone">
-        <div class="score-display">
-            <h1 id="score">0</h1>
-            <div class="currency">Euc-Coins</div>
-            <div style="margin-top:10px; opacity: 0.6; font-size: 0.9rem;">
-                <span id="cps">0</span> Coins per second
-            </div>
-        </div>
+    <div class="grid">
 
-        <div class="koala-btn" id="koala" onclick="clickKoala(event)"></div>
-    </div>
-
-    <div class="shop-zone">
-        <div class="shop-header">UPGRADES MARKET</div>
-        <div class="upgrades-list" id="shop">
-            </div>
-        
-        <div style="padding: 20px; text-align: center; border-top: 1px solid #333;">
-            <button onclick="resetGame()" style="background:none; border:1px solid #555; color:#555; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Reset Game</button>
-        </div>
-    </div>
-
-    <script>
-        // --- GAME DATA ---
-        let gameData = {
-            score: 0,
-            clickPower: 1,
-            cps: 0, // Coins Per Second
-            upgrades: [
-                { id: 0, name: "Better Claws", cost: 15, cps: 0, clickPower: 1, count: 0, icon: "💅" },
-                { id: 1, name: "Auto-Feeder", cost: 50, cps: 1, clickPower: 0, count: 0, icon: "🌿" },
-                { id: 2, name: "Turtle Security", cost: 250, cps: 5, clickPower: 0, count: 0, icon: "🐢" },
-                { id: 3, name: "Giraffe Manager", cost: 1000, cps: 15, clickPower: 0, count: 0, icon: "🦒" },
-                { id: 4, name: "Neon Zoo", cost: 5000, cps: 50, clickPower: 0, count: 0, icon: "🎡" },
-                { id: 5, name: "Koala Clone Lab", cost: 20000, cps: 200, clickPower: 0, count: 0, icon: "🧪" }
-            ]
-        };
-
-        // --- LOAD SAVE ---
-        const saveGame = () => localStorage.setItem('neonKoalaSave', JSON.stringify(gameData));
-        const loadGame = () => {
-            const save = JSON.parse(localStorage.getItem('neonKoalaSave'));
-            if(save) gameData = save;
-            renderShop();
-            updateUI();
-        };
-
-        // --- GAME LOOP ---
-        setInterval(() => {
-            // Add CPS (Coins Per Second)
-            if (gameData.cps > 0) {
-                gameData.score += gameData.cps;
-                updateUI();
-                createPassiveParticles(); // Visual effect
-            }
-            saveGame(); // Auto save
-        }, 1000);
-
-        // --- CLICK HANDLER ---
-        function clickKoala(e) {
-            gameData.score += gameData.clickPower;
+        <div class="card">
+            <h2>M3U Link Decoder</h2>
+            <p style="font-size:0.8rem; color:#666; margin-bottom:10px;">Extract credentials from long streaming URLs.</p>
             
-            // Visual Pop-up
-            const el = document.createElement('div');
-            el.className = 'click-effect';
-            el.innerText = '+' + gameData.clickPower;
-            // Position near mouse click
-            el.style.left = (e.clientX - 20) + 'px';
-            el.style.top = (e.clientY - 50) + 'px';
-            document.body.appendChild(el);
-            
-            setTimeout(() => el.remove(), 1000); // Cleanup
+            <label>Paste Full M3U Link:</label>
+            <textarea id="m3uInput" rows="3" placeholder="http://domain.com:8080/get.php?username=xxxx&password=xxxx"></textarea>
+            <button onclick="decodeURL()">Extract Details</button>
 
-            // Sound Effect (Synth)
-            playTone();
-            
-            checkShop(); // Check if we can afford things
-            updateUI();
-        }
-
-        // --- SHOP SYSTEM ---
-        function buyUpgrade(index) {
-            const item = gameData.upgrades[index];
-            if (gameData.score >= item.cost) {
-                gameData.score -= item.cost;
-                item.count++;
-                item.cost = Math.floor(item.cost * 1.5); // Increase price
+            <div style="margin-top: 20px;">
+                <label>Host URL:</label>
+                <div class="result-box" id="resHost">...</div>
                 
-                // Apply stats
-                if (item.cps > 0) gameData.cps += item.cps;
-                if (item.clickPower > 0) gameData.clickPower += item.clickPower;
-
-                renderShop();
-                updateUI();
-            }
-        }
-
-        function renderShop() {
-            const shop = document.getElementById('shop');
-            shop.innerHTML = '';
-
-            gameData.upgrades.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'upgrade-card';
-                if(gameData.score < item.cost) div.classList.add('disabled');
-                
-                div.onclick = () => buyUpgrade(index);
-
-                let desc = item.cps > 0 ? `+${item.cps}/sec` : `+${item.clickPower}/click`;
-
-                div.innerHTML = `
-                    <div class="icon">${item.icon}</div>
-                    <div class="info">
-                        <div class="name">${item.name}</div>
-                        <div class="cost">💰 ${item.cost}</div>
-                        <div style="font-size:0.8rem; color:#888;">${desc}</div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
+                    <div>
+                        <label>Username:</label>
+                        <div class="result-box" id="resUser">...</div>
                     </div>
-                    <div class="count">${item.count}</div>
-                `;
-                shop.appendChild(div);
-            });
+                    <div>
+                        <label>Password:</label>
+                        <div class="result-box" id="resPass">...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Bandwidth Calculator</h2>
+            <p style="font-size:0.8rem; color:#666; margin-bottom:10px;">Estimate server load requirements.</p>
+            
+            <label>Number of Concurrent Users:</label>
+            <input type="number" id="numUsers" value="10">
+            
+            <label>Stream Quality:</label>
+            <select id="quality">
+                <option value="4">SD (4 Mbps)</option>
+                <option value="8">HD (8 Mbps)</option>
+                <option value="12">FHD (12 Mbps)</option>
+                <option value="25">4K UHD (25 Mbps)</option>
+            </select>
+
+            <button onclick="calcSpeed()">Calculate Load</button>
+
+            <div class="result-box" id="bandwidthResult" style="margin-top:20px; text-align:center; font-size:1.2rem; color:var(--neon-blue);">
+                0 Mbps
+            </div>
+            <p style="font-size:0.7rem; color:#666; margin-top:5px; text-align:center;">*Includes 10% overhead buffer</p>
+        </div>
+
+        <div class="card">
+            <h2>MAC Address Fixer</h2>
+            <p style="font-size:0.8rem; color:#666; margin-bottom:10px;">Format raw MACs for MAG/Stalker portals.</p>
+            
+            <label>Raw MAC (e.g., 001a79...):</label>
+            <input type="text" id="rawMac" placeholder="001A79XXXXXX" maxlength="17">
+            
+            <button onclick="formatMac()">Format & Copy</button>
+
+            <div class="result-box" id="macResult" style="margin-top:20px; text-align:center; font-size:1.5rem; letter-spacing: 2px;">
+                00:00:00:00:00:00
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Network Status</h2>
+            <div id="ping-grid" style="font-size: 0.8rem; margin-top:10px;">
+                </div>
+            <div style="margin-top:20px; height: 50px; background: #000; border: 1px solid #333; position: relative; overflow: hidden;">
+                <div id="graph-line" style="position: absolute; bottom: 0; left: 0; height: 2px; background: var(--neon-blue); width: 100%; box-shadow: 0 0 10px var(--neon-blue);"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // --- TOOL 1: M3U DECODER ---
+    function decodeURL() {
+        const input = document.getElementById('m3uInput').value;
+        if (!input) return;
+
+        try {
+            const urlObj = new URL(input);
+            const params = new URLSearchParams(urlObj.search);
+
+            document.getElementById('resHost').innerText = urlObj.origin;
+            document.getElementById('resUser').innerText = params.get('username') || "Not found";
+            document.getElementById('resPass').innerText = params.get('password') || "Not found";
+        } catch (e) {
+            document.getElementById('resHost').innerText = "Invalid URL";
+        }
+    }
+
+    // --- TOOL 2: BANDWIDTH CALC ---
+    function calcSpeed() {
+        const users = parseInt(document.getElementById('numUsers').value) || 0;
+        const bitrate = parseInt(document.getElementById('quality').value) || 0;
+        
+        // Total + 10% overhead
+        const total = (users * bitrate) * 1.1;
+        
+        let display = "";
+        if(total > 1000) {
+            display = (total / 1000).toFixed(2) + " Gbps";
+        } else {
+            display = Math.round(total) + " Mbps";
         }
 
-        function checkShop() {
-            // Just refresh classes for disabled/enabled visuals
-            const cards = document.querySelectorAll('.upgrade-card');
-            gameData.upgrades.forEach((item, index) => {
-                if(gameData.score >= item.cost) cards[index].classList.remove('disabled');
-                else cards[index].classList.add('disabled');
-            });
+        document.getElementById('bandwidthResult').innerText = display;
+    }
+
+    // --- TOOL 3: MAC FIXER ---
+    function formatMac() {
+        let input = document.getElementById('rawMac').value.toUpperCase().replace(/[^A-F0-9]/g, "");
+        
+        if(input.length > 12) input = input.substring(0, 12);
+
+        // Split into pairs and join with colon
+        const formatted = input.match(/.{1,2}/g)?.join(":") || "Invalid MAC";
+        
+        document.getElementById('macResult').innerText = formatted;
+
+        // Auto Copy
+        if(formatted !== "Invalid MAC") {
+            navigator.clipboard.writeText(formatted);
+            const btn = document.querySelector('button[onclick="formatMac()"]');
+            const originalText = btn.innerText;
+            btn.innerText = "COPIED!";
+            setTimeout(() => btn.innerText = originalText, 2000);
         }
+    }
 
-        function updateUI() {
-            document.getElementById('score').innerText = Math.floor(gameData.score).toLocaleString();
-            document.getElementById('cps').innerText = gameData.cps;
-            checkShop();
-        }
+    // --- TOOL 4: FAKE NETWORK GRAPH ---
+    const graphLine = document.getElementById('graph-line');
+    let height = 10;
+    
+    setInterval(() => {
+        // Random fluctuation for visual effect
+        height = Math.max(5, Math.min(95, height + (Math.random() * 40 - 20)));
+        graphLine.style.height = height + "%";
+        
+        // Update ping text
+        const pings = [
+            { name: "DNS Resolver", val: Math.floor(Math.random() * 10) + 10 + "ms" },
+            { name: "Gateway", val: Math.floor(Math.random() * 5) + 2 + "ms" },
+            { name: "Ext. Host", val: Math.floor(Math.random() * 50) + 20 + "ms" }
+        ];
 
-        function resetGame() {
-            if(confirm("Start over?")) {
-                localStorage.removeItem('neonKoalaSave');
-                location.reload();
-            }
-        }
+        let html = "";
+        pings.forEach(p => {
+            html += `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #222;">
+                <span>${p.name}</span> <span style="color:var(--neon-blue)">${p.val}</span>
+            </div>`;
+        });
+        document.getElementById('ping-grid').innerHTML = html;
 
-        // --- VISUALS ---
-        // Simple synth sound for clicks
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playTone() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(400 + (Math.random()*200), audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.15);
-        }
+    }, 500);
 
-        // Create background floating particles
-        const particlesContainer = document.getElementById('particles');
-        for(let i=0; i<20; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.width = Math.random() * 10 + 'px';
-            p.style.height = p.style.width;
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            p.style.animationDelay = Math.random() * 5 + 's';
-            particlesContainer.appendChild(p);
-        }
+</script>
 
-        function createPassiveParticles() {
-            // Little sparkle when auto-collecting
-             const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.background = '#ff0050';
-            p.style.width = '5px';
-            p.style.height = '5px';
-            p.style.left = '50%';
-            p.style.top = '50%';
-            p.style.animation = 'floatUp 1s ease-out forwards';
-            particlesContainer.appendChild(p);
-            setTimeout(() => p.remove(), 1000);
-        }
-
-        // Init
-        loadGame();
-
-    </script>
 </body>
 </html>
