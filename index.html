@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Streaming | Request Portal</title>
+    <title>Request Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #020203;
-            --surface: #0f1014;
+            --bg: #010102; /* Deeper black bg */
+            --surface: #0a0a0f; /* Darker surface */
             --accent: #3b82f6; /* Electric Blue */
+            --accent-red: #ef4444; /* New Red Accent */
             --accent-glow: rgba(59, 130, 246, 0.6);
+            --accent-red-glow: rgba(239, 68, 68, 0.5); /* Red Glow */
             --text: #ffffff;
             --text-muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
@@ -28,20 +30,13 @@
             overflow-x: hidden;
         }
 
-        /* ATMOSPHERIC GLOW */
+        /* ATMOSPHERIC GLOW - Mixed Blue and subtle Red */
         #glow-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
             pointer-events: none;
             background: 
-                radial-gradient(circle at 50% -20%, rgba(59, 130, 246, 0.4) 0%, transparent 60%),
-                radial-gradient(circle at 100% 50%, rgba(124, 58, 237, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 0% 50%, rgba(6, 182, 212, 0.25) 0%, transparent 50%);
-            animation: pulseGlow 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { opacity: 0.7; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.05); }
+                radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(239, 68, 68, 0.2) 0%, transparent 50%); /* Added subtle red base */
         }
 
         /* PARTICLE CANVAS */
@@ -49,41 +44,49 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
         }
 
-        /* --- THE ULTRA-GLASS CONTAINER --- */
+        /* --- THE DARKER, DUAL-GLOW CONTAINER --- */
         .main-container {
             width: 100%; max-width: 650px;
+            /* Much darker background, less transparent for higher contrast */
+            background: rgba(5, 5, 10, 0.85); 
             backdrop-filter: blur(60px) saturate(150%);
             -webkit-backdrop-filter: blur(60px) saturate(150%);
-            background: rgba(10, 10, 16, 0.5);
-            border-top: 2px solid rgba(255, 255, 255, 0.6);
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
-            border-bottom: 3px solid rgba(0, 0, 0, 0.5);
-            box-shadow: 
-                inset 0 0 40px rgba(59, 130, 246, 0.15),
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                -10px -10px 40px rgba(124, 58, 237, 0.15),
-                10px 10px 40px rgba(6, 182, 212, 0.15),
-                0 40px 80px rgba(0, 0, 0, 0.9),
-                0 0 100px rgba(59, 130, 246, 0.3);
+            
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            
             border-radius: 24px;
             overflow: visible;
             position: relative;
             margin-top: 30px;
+            
+            /* COMPLEX DUAL-COLOR GLOW SHADOW */
+            box-shadow: 
+                /* Inner Blue tint */
+                inset 0 0 40px rgba(59, 130, 246, 0.1),
+                /* Deep dark shadow base */
+                0 40px 80px rgba(0, 0, 0, 1),
+                /* Primary Blue Glow */
+                0 0 80px rgba(59, 130, 246, 0.3),
+                /* SECONDARY RED GLOW (Wider spread) */
+                0 0 150px rgba(239, 68, 68, 0.25);
         }
 
         .header {
             text-align: center; padding: 35px;
             border-bottom: 1px solid var(--border);
-            background: linear-gradient(to bottom, rgba(59, 130, 246, 0.08), transparent);
+            /* Subtle gradient mixing blue to transparent */
+            background: linear-gradient(to bottom, rgba(59, 130, 246, 0.05), transparent);
             border-radius: 24px 24px 0 0;
             position: relative;
         }
         
         .header::before {
             content: ''; position: absolute; top: 0; left: 20%; width: 60%; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
-            box-shadow: 0 0 15px rgba(255,255,255,0.5);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
         }
 
         .logo { font-size: 1.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
@@ -95,8 +98,8 @@
             color: var(--text-muted); font-weight: 600; cursor: pointer; transition: 0.3s;
             border-bottom: 3px solid transparent; font-size: 1rem;
         }
-        .tab-btn:hover { background: rgba(255,255,255,0.05); color: white; text-shadow: 0 0 10px white; }
-        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59, 130, 246, 0.1); box-shadow: inset 0 -10px 20px -10px rgba(59,130,246,0.2); }
+        .tab-btn:hover { background: rgba(255,255,255,0.05); color: white; }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59, 130, 246, 0.08); box-shadow: inset 0 -10px 20px -10px rgba(59,130,246,0.1); }
 
         .form-content { padding: 40px; display: none; animation: fadeIn 0.4s ease; }
         .form-content.active { display: block; }
@@ -104,66 +107,57 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .form-group { margin-bottom: 25px; position: relative; }
-        /* Removed generic label style to reduce visual noise */
         label { display: block; margin-bottom: 10px; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
         
+        /* Darker Input Backgrounds */
         input[type="text"], textarea, select, input[type="email"] {
-            width: 100%; padding: 16px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+            width: 100%; padding: 16px; 
+            background: rgba(0,0,0,0.6); /* Darker inputs */
+            border: 1px solid var(--border);
             color: white; border-radius: 12px; font-size: 1rem; transition: 0.3s;
         }
         input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); background: rgba(59, 130, 246, 0.05); box-shadow: 0 0 20px var(--accent-glow); }
 
-        /* --- STRONG DROPDOWN FIX --- */
-        select {
-            background-color: rgba(0,0,0,0.4); 
-            color: white;
-        }
-        /* Force options to be black text on white background for maximum readability on all devices */
-        select option {
-            background-color: white !important;
-            color: black !important;
-        }
+        select { background-color: rgba(0,0,0,0.6); color: white; }
+        select option { background-color: #111 !important; color: white !important; } /* Dark dropdowns for dark theme */
 
         /* DROPDOWN RESULTS */
         .search-results {
             position: absolute; top: 100%; left: 0; width: 100%;
-            background: #0a0a0c; border: 1px solid var(--accent); border-top: none;
+            background: #050508; border: 1px solid var(--accent); border-top: none; /* Darker results bg */
             border-radius: 0 0 12px 12px; z-index: 100; 
-            max-height: 300px; /* Limits height so it scrolls */
-            overflow-y: auto; /* Adds scrollbar */
-            display: none; box-shadow: 0 20px 50px rgba(0,0,0,1);
+            max-height: 300px; overflow-y: auto; display: none; box-shadow: 0 20px 50px rgba(0,0,0,1);
         }
         .result-item {
             padding: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer;
             border-bottom: 1px solid var(--border); transition: 0.2s;
         }
-        .result-item:hover { background: rgba(59, 130, 246, 0.2); color: white; }
+        .result-item:hover { background: rgba(59, 130, 246, 0.15); color: white; }
         .result-item img { width: 45px; height: 70px; object-fit: cover; border-radius: 6px; background: #222; }
         .result-info div { font-weight: 700; font-size: 1rem; }
         .result-info span { font-size: 0.85rem; opacity: 0.8; }
 
-        /* ENHANCED MOVIE PREVIEW */
+        /* ENHANCED MOVIE PREVIEW - Darker Theme */
         .movie-preview {
             display: none;
-            background: rgba(59, 130, 246, 0.08);
-            border: 1px solid var(--accent);
+            background: rgba(20, 20, 25, 0.6); /* Darker preview bg */
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 16px; padding: 20px;
             margin-bottom: 25px;
             align-items: flex-start; gap: 20px;
-            box-shadow: inset 0 0 30px rgba(59, 130, 246, 0.15);
         }
         .movie-preview.visible { display: flex; }
         .poster-img { width: 110px; height: 160px; object-fit: cover; border-radius: 8px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); flex-shrink: 0; }
         
         .movie-info { flex: 1; }
-        .movie-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; color: white; line-height: 1.2; text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
+        .movie-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; color: white; line-height: 1.2; }
         .movie-meta { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
         .meta-tag {
             font-size: 0.75rem; padding: 4px 10px; border-radius: 20px;
-            background: rgba(255,255,255,0.1); color: var(--text-muted); font-weight: 600;
+            background: rgba(255,255,255,0.05); color: var(--text-muted); font-weight: 600;
             border: 1px solid var(--border);
         }
-        .meta-rating { color: #ffd700; border-color: rgba(255, 215, 0, 0.3); background: rgba(255, 215, 0, 0.05); }
+        .meta-rating { color: #ffd700; border-color: rgba(255, 215, 0, 0.2); background: rgba(255, 215, 0, 0.05); }
         .movie-plot { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; max-height: 80px; overflow-y: auto; }
 
         .submit-btn {
@@ -185,26 +179,13 @@
         @media (max-width: 600px) {
             body { padding: 20px 10px; }
             .main-container { margin-top: 10px; }
-            
             .header { padding: 25px 20px; }
             .logo { font-size: 1.4rem; letter-spacing: 2px; }
             .form-content { padding: 25px; }
-
-            .movie-preview {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            
-            .poster-img {
-                width: 130px; 
-                height: 190px;
-                margin-bottom: 10px;
-            }
-
+            .movie-preview { flex-direction: column; align-items: center; text-align: center; }
+            .poster-img { width: 130px; height: 190px; margin-bottom: 10px; }
             .movie-meta { justify-content: center; }
         }
-
     </style>
 </head>
 <body>
@@ -225,7 +206,6 @@
 
         <div id="request" class="form-content active">
             <form id="vodForm" onsubmit="window.handleFormSubmit(event, 'vodForm')">
-                
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
                 <input type="hidden" name="_subject" value="NEW VOD REQUEST">
                 <input type="hidden" name="_template" value="table">
@@ -261,7 +241,6 @@
                 <div class="form-group">
                     <textarea name="Request_Details" rows="2" placeholder="Specific notes? (e.g. Season 4, 4K only...)"></textarea>
                 </div>
-
                 <div class="form-group">
                     <input type="text" name="Client_Name" required placeholder="Your Name">
                 </div>
@@ -273,7 +252,6 @@
 
         <div id="report" class="form-content">
             <form id="issueForm" onsubmit="window.handleFormSubmit(event, 'issueForm')">
-                
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
                 <input type="hidden" name="_subject" value="⚠️ SUPPORT TICKET FILED">
                 <input type="hidden" name="_template" value="box">
@@ -288,7 +266,6 @@
                         <option value="Series">TV Series (VOD)</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label>Issue Type</label>
                     <select name="Issue_Type" style="cursor: pointer;">
@@ -299,22 +276,18 @@
                         <option value="Other">Other</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label>Channel Category / Country</label>
                     <input type="text" name="Category" placeholder="e.g. UK Sports, USA Ent..." required>
                 </div>
-
                 <div class="form-group">
                     <label>Channel Name / Title</label>
                     <input type="text" name="Channel_Name" placeholder="e.g. Sky Sports Main Event" required>
                 </div>
-
                 <div class="form-group">
                     <label>Description</label>
                     <textarea name="Description" rows="3" placeholder="Describe exactly what is happening..."></textarea>
                 </div>
-
                 <div class="form-group">
                     <label>Email for Updates (Optional)</label>
                     <input type="email" name="Client_Email" placeholder="Leave blank if not needed">
@@ -330,16 +303,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0",
-          authDomain: "vodrequest.firebaseapp.com",
-          projectId: "vodrequest",
-          storageBucket: "vodrequest.firebasestorage.app",
-          messagingSenderId: "603036227000",
-          appId: "1:603036227000:web:340e481b47eb70cc742b4d",
-          measurementId: "G-RBV2G25ZYB"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0", projectId: "vodrequest", appId: "1:603036227000:web:340e481b47eb70cc742b4d" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
@@ -348,38 +312,14 @@
             const form = document.getElementById(formId);
             const btn = form.querySelector('.submit-btn');
             const successMsg = form.querySelector('.success-msg');
-            
-            btn.innerText = "Sending...";
-            btn.disabled = true;
-
+            btn.innerText = "Sending..."; btn.disabled = true;
             const formData = new FormData(form);
-            const dataObj = Object.fromEntries(formData.entries());
-
             try {
-                let collectionName = formId === 'vodForm' ? 'requests' : 'reports';
-                
-                await addDoc(collection(db, collectionName), {
-                    ...dataObj,
-                    timestamp: serverTimestamp(),
-                    status: 'New'
-                });
-
-                await fetch("https://formsubmit.co/ajax/Austreams89@gmail.com", {
-                    method: "POST",
-                    body: formData
-                });
-
-                btn.style.display = 'none';
-                successMsg.style.display = 'block';
-                form.reset();
+                await addDoc(collection(db, formId === 'vodForm' ? 'requests' : 'reports'), { ...Object.fromEntries(formData.entries()), timestamp: serverTimestamp(), status: 'New' });
+                await fetch("https://formsubmit.co/ajax/Austreams89@gmail.com", { method: "POST", body: formData });
+                btn.style.display = 'none'; successMsg.style.display = 'block'; form.reset();
                 if(formId === 'vodForm') window.clearSelection();
-
-            } catch (error) {
-                console.error("Error:", error);
-                btn.innerText = "Error - Try Again";
-                btn.disabled = false;
-                alert("Something went wrong. Please check your connection.");
-            }
+            } catch (error) { btn.innerText = "Error - Try Again"; btn.disabled = false; alert("Connection Error"); }
         };
 
         const API_KEY = "b71b47e2";
@@ -389,28 +329,15 @@
         let debounceTimer;
 
         window.switchTab = function(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            document.querySelectorAll('.form-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); event.target.classList.add('active');
+            document.querySelectorAll('.form-content').forEach(content => content.classList.remove('active')); document.getElementById(tabName).classList.add('active');
         }
 
         window.selectMovie = async function(imdbID) {
-            resultsBox.style.display = 'none';
-            searchInput.value = "Searching Database..."; // Feedback
-
+            resultsBox.style.display = 'none'; searchInput.value = "Searching Database...";
             const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&plot=short&apikey=${API_KEY}`);
             const data = await res.json();
-
-            // --- ERROR HANDLING FOR NEW MOVIES ---
-            if (data.Response === "False") {
-                alert("This title is too new and hasn't been indexed by the database yet!\n\nPlease just type the name manually (e.g. 'Beatles 2025') and hit Submit.");
-                window.clearSelection(); 
-                searchInput.value = ""; 
-                return; 
-            }
-            // -------------------------------------
-
+            if (data.Response === "False") { alert("Title not found in DB. Please type manually."); window.clearSelection(); searchInput.value = ""; return; }
             previewBox.classList.add('visible');
             document.getElementById('previewPoster').src = data.Poster !== "N/A" ? data.Poster : "";
             document.getElementById('previewTitle').innerText = data.Title;
@@ -418,7 +345,6 @@
             document.getElementById('previewGenre').innerText = data.Genre;
             document.getElementById('previewRating').innerText = `⭐ ${data.imdbRating}`;
             document.getElementById('previewPlot').innerText = data.Plot;
-
             searchInput.value = data.Title; 
             document.getElementById('realTitle').value = data.Title;
             document.getElementById('realLink').value = `https://www.imdb.com/title/${data.imdbID}`;
@@ -428,156 +354,71 @@
             document.getElementById('realPlot').value = data.Plot;
         }
 
-        window.clearSelection = function() {
-            previewBox.classList.remove('visible');
-            document.getElementById('realTitle').value = "";
-            document.getElementById('realLink').value = "";
-        }
+        window.clearSelection = function() { previewBox.classList.remove('visible'); document.getElementById('realTitle').value = ""; }
 
         searchInput.addEventListener('input', function() {
-            // --- FIX FOR BUTTON REAPPEARING ---
-            const btn = document.getElementById('vodBtn');
-            const successMsg = document.getElementById('vodSuccess');
-            if(btn.style.display === 'none') {
-                btn.style.display = 'block';
-                btn.disabled = false;
-                btn.innerText = 'Submit Request'; 
-                successMsg.style.display = 'none';
-            }
-            // ----------------------------------
-
-            clearTimeout(debounceTimer);
-            let query = this.value.trim();
-
-            // Magic Link Logic
-            if (query.includes('imdb.com/title/')) {
-                const match = query.match(/tt\d+/);
-                if (match) { window.selectMovie(match[0]); return; }
-            }
-            if (query.startsWith('tt') && query.length > 6) {
-                window.selectMovie(query);
-                return;
-            }
-
-            if(query.length === 0) {
-                window.clearSelection();
-                resultsBox.style.display = 'none';
-                return;
-            }
-            if (query.length < 3) {
-                resultsBox.style.display = 'none';
-                return;
-            }
-            debounceTimer = setTimeout(() => fetchMovies(query), 300);
-        });
-
-        async function fetchMovies(query) {
-            try {
+            const btn = document.getElementById('vodBtn'); btn.style.display = 'block'; btn.disabled = false; btn.innerText = 'Submit Request'; document.getElementById('vodSuccess').style.display = 'none';
+            clearTimeout(debounceTimer); let query = this.value.trim();
+            if (query.includes('imdb.com/title/')) { const match = query.match(/tt\d+/); if (match) { window.selectMovie(match[0]); return; }}
+            if (query.startsWith('tt') && query.length > 6) { window.selectMovie(query); return; }
+            if (query.length < 3) { resultsBox.style.display = 'none'; return; }
+            debounceTimer = setTimeout(async () => {
                 const res = await fetch(`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`);
                 const data = await res.json();
                 if (data.Response === "True") {
-                    displayResults(data.Search);
-                } else {
-                    resultsBox.style.display = 'none';
-                }
-            } catch (err) { console.error(err); }
-        }
-
-        function displayResults(movies) {
-            resultsBox.innerHTML = '';
-            resultsBox.style.display = 'block';
-            movies.slice(0, 10).forEach(movie => {
-                const div = document.createElement('div');
-                div.className = 'result-item';
-                const poster = movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/45x70?text=No+Img";
-                div.innerHTML = `<img src="${poster}"><div class="result-info"><div>${movie.Title}</div><span>${movie.Year} • ${movie.Type}</span></div>`;
-                div.onclick = () => window.selectMovie(movie.imdbID);
-                resultsBox.appendChild(div);
-            });
-        }
-
-        document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
-                resultsBox.style.display = 'none';
-            }
+                    resultsBox.innerHTML = ''; resultsBox.style.display = 'block';
+                    data.Search.slice(0, 10).forEach(movie => {
+                        const div = document.createElement('div'); div.className = 'result-item';
+                        const poster = movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/45x70?text=No+Img";
+                        div.innerHTML = `<img src="${poster}"><div class="result-info"><div>${movie.Title}</div><span>${movie.Year} • ${movie.Type}</span></div>`;
+                        div.onclick = () => window.selectMovie(movie.imdbID); resultsBox.appendChild(div);
+                    });
+                } else { resultsBox.style.display = 'none'; }
+            }, 300);
         });
 
-        // --- PARTICLE SYSTEM (CONNECTED LINES) ---
+        document.addEventListener('click', function(e) { if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) { resultsBox.style.display = 'none'; }});
+
+        // --- VFX PARTICLE SYSTEM (DIALED BACK 10% + BRIGHTER GLOW) ---
         const canvas = document.getElementById("particle-canvas");
         const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let particlesArray;
 
         class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x; this.y = y;
-                this.directionX = directionX; this.directionY = directionY;
-                this.size = size; this.color = color;
+            constructor() {
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 2; this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * 1 - 0.5; 
             }
             draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = this.color;
-                ctx.fill();
+                ctx.fillStyle = 'rgba(100, 200, 255, 0.9)'; // 90% Opacity (Dialed back 10%)
+                ctx.shadowBlur = 20; ctx.shadowColor = '#3b82f6'; // Strong Blue Glow
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
             }
             update() {
-                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-                this.x += this.directionX; this.y += this.directionY;
-                this.draw();
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
             }
         }
 
-        function initParticles() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 9000; 
-            for (let i = 0; i < numberOfParticles; i++) {
-                let size = (Math.random() * 2) + 1;
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * 0.4) - 0.2;
-                let directionY = (Math.random() * 0.4) - 0.2;
-                let color = 'rgba(59, 130, 246, 0.4)'; 
-                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-            }
-        }
-
-        function connectParticles() {
-            let opacityValue = 1;
-            for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a; b < particlesArray.length; b++) {
-                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
-                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-                    if (distance < (canvas.width/9) * (canvas.height/9)) {
-                        opacityValue = 1 - (distance / 15000);
-                        ctx.strokeStyle = 'rgba(59, 130, 246,' + opacityValue + ')';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                        ctx.stroke();
+        function initParticles() { particlesArray = []; for (let i = 0; i < 90; i++) { particlesArray.push(new Particle()); }} // Slightly fewer particles
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update(); particlesArray[i].draw();
+                for (let j = i; j < particlesArray.length; j++) {
+                    const dx = particlesArray[i].x - particlesArray[j].x; const dy = particlesArray[i].y - particlesArray[j].y; const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.strokeStyle = `rgba(100, 200, 255, ${0.9 - dist/150})`; // 90% Max Opacity
+                        ctx.lineWidth = 1.5; ctx.shadowBlur = 10; ctx.shadowColor = '#3b82f6';
+                        ctx.beginPath(); ctx.moveTo(particlesArray[i].x, particlesArray[i].y); ctx.lineTo(particlesArray[j].x, particlesArray[j].y); ctx.stroke(); ctx.shadowBlur = 0;
                     }
                 }
-            }
+            } requestAnimationFrame(animateParticles);
         }
-
-        function animateParticles() {
-            requestAnimationFrame(animateParticles);
-            ctx.clearRect(0, 0, innerWidth, innerHeight);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-            }
-            connectParticles();
-        }
-
-        window.addEventListener('resize', function() {
-            canvas.width = innerWidth; canvas.height = innerHeight;
-            initParticles();
-        });
-
-        initParticles();
-        animateParticles();
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initParticles(); });
+        initParticles(); animateParticles();
     </script>
 </body>
 </html>
