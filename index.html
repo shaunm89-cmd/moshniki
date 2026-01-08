@@ -8,9 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #030305;
+            --bg: #020203;
             --surface: #0f1014;
-            --accent: #3b82f6;
+            --accent: #3b82f6; /* Electric Blue */
+            --accent-glow: rgba(59, 130, 246, 0.2);
             --text: #ffffff;
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
@@ -24,118 +25,125 @@
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
             padding: 40px 20px;
+            overflow-x: hidden;
         }
 
-        .bg-animation {
+        /* DIGITAL PARTICLE BACKGROUND */
+        #particle-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #000000 80%);
+            background: radial-gradient(circle at 50% 0%, #111827 0%, #000000 80%);
         }
 
         .main-container {
-            width: 100%; max-width: 600px;
-            background: rgba(20, 20, 30, 0.7);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            width: 100%; max-width: 650px; /* Slightly wider for better preview */
+            background: rgba(15, 15, 20, 0.75);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: visible;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             position: relative;
+            margin-top: 20px;
         }
 
         .header {
-            text-align: center; padding: 30px;
+            text-align: center; padding: 35px;
             border-bottom: 1px solid var(--border);
             background: rgba(0,0,0,0.2);
-            border-radius: 20px 20px 0 0;
+            border-radius: 24px 24px 0 0;
         }
-        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-        .logo span { color: var(--accent); }
+        .logo { font-size: 1.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+        .logo span { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
 
         .tabs { display: flex; border-bottom: 1px solid var(--border); }
         .tab-btn {
             flex: 1; padding: 20px; background: transparent; border: none;
             color: var(--text-muted); font-weight: 600; cursor: pointer; transition: 0.3s;
-            border-bottom: 2px solid transparent;
+            border-bottom: 3px solid transparent; font-size: 1rem;
         }
         .tab-btn:hover { background: rgba(255,255,255,0.03); color: white; }
         .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
 
-        .form-content { padding: 30px; display: none; animation: fadeIn 0.4s ease; }
+        .form-content { padding: 40px; display: none; animation: fadeIn 0.4s ease; }
         .form-content.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .form-group { margin-bottom: 20px; position: relative; }
-        label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .form-group { margin-bottom: 25px; position: relative; }
+        label { display: block; margin-bottom: 10px; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
         
         input[type="text"], textarea, select, input[type="email"] {
-            width: 100%; padding: 14px; background: #050507; border: 1px solid #333;
-            color: white; border-radius: 8px; font-size: 1rem; transition: 0.3s;
+            width: 100%; padding: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            color: white; border-radius: 12px; font-size: 1rem; transition: 0.3s;
         }
-        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); background: rgba(59, 130, 246, 0.05); box-shadow: 0 0 15px var(--accent-glow); }
 
         /* DROPDOWN RESULTS */
         .search-results {
-            position: absolute;
-            top: 100%; left: 0; width: 100%;
-            background: #111;
-            border: 1px solid var(--accent);
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            z-index: 100;
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            position: absolute; top: 100%; left: 0; width: 100%;
+            background: #0a0a0c; border: 1px solid var(--accent); border-top: none;
+            border-radius: 0 0 12px 12px; z-index: 100; max-height: 350px;
+            overflow-y: auto; display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.9);
         }
-        
         .result-item {
-            padding: 10px; display: flex; align-items: center; gap: 10px; cursor: pointer;
-            border-bottom: 1px solid #222; transition: 0.2s;
+            padding: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer;
+            border-bottom: 1px solid var(--border); transition: 0.2s;
         }
-        .result-item:hover { background: var(--accent); color: white; }
-        .result-item img { width: 40px; height: 60px; object-fit: cover; border-radius: 4px; background: #333; }
-        .result-info div { font-weight: bold; font-size: 0.9rem; }
-        .result-info span { font-size: 0.8rem; opacity: 0.7; }
+        .result-item:hover { background: var(--accent-glow); color: white; }
+        .result-item img { width: 45px; height: 70px; object-fit: cover; border-radius: 6px; background: #222; }
+        .result-info div { font-weight: 700; font-size: 1rem; }
+        .result-info span { font-size: 0.85rem; opacity: 0.8; }
 
-        /* PREVIEW */
+        /* ENHANCED MOVIE PREVIEW */
         .movie-preview {
             display: none;
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(59, 130, 246, 0.08);
             border: 1px solid var(--accent);
-            border-radius: 10px; padding: 15px;
-            margin-bottom: 20px;
-            align-items: flex-start; gap: 15px;
+            border-radius: 16px; padding: 20px;
+            margin-bottom: 25px;
+            align-items: flex-start; gap: 20px;
+            box-shadow: inset 0 0 20px var(--accent-glow);
         }
         .movie-preview.visible { display: flex; }
-        .poster-img { width: 80px; height: 120px; object-fit: cover; border-radius: 5px; background: #000; }
-        .movie-info h4 { font-size: 1.2rem; margin-bottom: 5px; color: var(--accent); }
-        .movie-info p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 5px; }
+        /* Bigger Poster */
+        .poster-img { width: 110px; height: 160px; object-fit: cover; border-radius: 8px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        
+        .movie-info { flex: 1; }
+        .movie-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; color: white; line-height: 1.2; }
+        .movie-meta { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+        .meta-tag {
+            font-size: 0.75rem; padding: 4px 10px; border-radius: 20px;
+            background: rgba(255,255,255,0.1); color: var(--text-muted); font-weight: 600;
+            border: 1px solid var(--border);
+        }
+        .meta-rating { color: #ffd700; border-color: rgba(255, 215, 0, 0.3); background: rgba(255, 215, 0, 0.05); }
+        .movie-plot { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; max-height: 80px; overflow-y: auto; }
 
         .submit-btn {
-            width: 100%; padding: 16px; background: var(--accent); color: white;
-            border: none; border-radius: 8px; font-weight: 700; font-size: 1rem;
-            cursor: pointer; transition: 0.3s; margin-top: 10px;
+            width: 100%; padding: 18px; background: var(--accent); color: white;
+            border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem;
+            cursor: pointer; transition: 0.3s; margin-top: 15px; letter-spacing: 1px;
+            box-shadow: 0 0 20px var(--accent-glow);
         }
-        .submit-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .submit-btn:hover { opacity: 0.9; transform: translateY(-3px); box-shadow: 0 0 30px var(--accent-glow); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .success-msg {
             display: none; text-align: center; padding: 20px;
-            background: rgba(0, 255, 0, 0.1); border: 1px solid #00ff00;
-            color: #00ff00; border-radius: 8px; margin-top: 20px;
+            background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981;
+            color: #10b981; border-radius: 12px; margin-top: 25px; font-weight: 600;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="bg-animation"></div>
+    <canvas id="particle-canvas"></canvas>
 
     <div class="main-container">
         <div class="header">
             <div class="logo">REYLO'S <span>PORTAL</span></div>
-            <p style="color:var(--text-muted); font-size:0.9rem; margin-top:5px;">Service Request & Support Center</p>
+            <p style="color:var(--text-muted); font-size:1rem; margin-top:8px; letter-spacing: 1px;">Service Request & Support Center</p>
         </div>
 
         <div class="tabs">
@@ -154,16 +162,21 @@
 
                 <div class="form-group">
                     <label>Search Title</label>
-                    <input type="text" name="Search_Query" id="searchInput" placeholder="e.g. Breaking Bad" autocomplete="off">
+                    <input type="text" name="Search_Query" id="searchInput" placeholder="Start typing... (e.g. The Matrix)" autocomplete="off">
                     <div id="searchResults" class="search-results"></div>
                 </div>
 
                 <div class="movie-preview" id="moviePreview">
                     <img src="" alt="Poster" class="poster-img" id="previewPoster">
                     <div class="movie-info">
-                        <h4 id="previewTitle">Title</h4>
-                        <p id="previewYear">Year</p>
-                        <p style="font-size:0.8rem; color:#888;">IMDB Link Attached</p>
+                        <div class="movie-title" id="previewTitle">Title</div>
+                        <div class="movie-meta">
+                            <span class="meta-tag" id="previewYear">Year</span>
+                            <span class="meta-tag" id="previewGenre">Genre</span>
+                            <span class="meta-tag meta-rating" id="previewRating">⭐ 0.0</span>
+                        </div>
+                        <p class="movie-plot" id="previewPlot">Plot summary...</p>
+                        <p style="font-size:0.75rem; color:var(--accent); margin-top:10px;">✓ IMDB Link Attached Automatically</p>
                     </div>
                 </div>
 
@@ -171,12 +184,17 @@
                 <input type="hidden" name="IMDB_Link" id="realLink">
 
                 <div class="form-group">
+                    <label>Specific Details (Optional)</label>
+                    <textarea name="Request_Details" rows="2" placeholder="e.g. 'Season 4 is missing' or 'Please add 4K version'"></textarea>
+                </div>
+
+                <div class="form-group">
                     <label>Your Name (Required)</label>
                     <input type="text" name="Client_Name" required placeholder="Who is this for?">
                 </div>
 
                 <button type="submit" class="submit-btn" id="vodBtn">Submit Request</button>
-                <div class="success-msg" id="vodSuccess">Request Sent Successfully!</div>
+                <div class="success-msg" id="vodSuccess">Request Sent Successfully! We are processing it now.</div>
             </form>
         </div>
 
@@ -191,8 +209,8 @@
 
                 <div class="form-group">
                     <label>Problem Source</label>
-                    <select name="Source">
-                        <option value="Live TV">Live TV</option>
+                    <select name="Source" style="cursor: pointer;">
+                        <option value="Live TV">Live TV Channel</option>
                         <option value="Movie">Movie (VOD)</option>
                         <option value="Series">TV Series (VOD)</option>
                     </select>
@@ -200,7 +218,7 @@
 
                 <div class="form-group">
                     <label>Issue Type</label>
-                    <select name="Issue_Type">
+                    <select name="Issue_Type" style="cursor: pointer;">
                         <option value="Buffering">Buffering / Freezing</option>
                         <option value="Stream Offline">Stream Offline / Loop</option>
                         <option value="Audio Sync">Audio Out of Sync</option>
@@ -221,16 +239,16 @@
 
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea name="Description" rows="3" placeholder="Describe what is happening..."></textarea>
+                    <textarea name="Description" rows="3" placeholder="Describe exactly what is happening..."></textarea>
                 </div>
 
                 <div class="form-group">
                     <label>Email for Updates (Optional)</label>
-                    <input type="email" name="Client_Email" placeholder="Optional">
+                    <input type="email" name="Client_Email" placeholder="Leave blank if not needed">
                 </div>
 
-                <button type="submit" class="submit-btn" style="background: #ef4444;" id="issueBtn">Report Issue</button>
-                <div class="success-msg" id="issueSuccess">Issue Reported. We are investigating.</div>
+                <button type="submit" class="submit-btn" style="background: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);" id="issueBtn">Report Issue</button>
+                <div class="success-msg" id="issueSuccess" style="border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1);">Issue Reported. Our technicians are investigating.</div>
             </form>
         </div>
     </div>
@@ -239,6 +257,7 @@
         const API_KEY = "b71b47e2";
         const searchInput = document.getElementById('searchInput');
         const resultsBox = document.getElementById('searchResults');
+        const previewBox = document.getElementById('moviePreview');
         let debounceTimer;
 
         function switchTab(tabName) {
@@ -248,19 +267,34 @@
             document.getElementById(tabName).classList.add('active');
         }
 
-        // Auto Search
+        // --- AUTO SEARCH & CLEAR LOGIC ---
         searchInput.addEventListener('input', function() {
             clearTimeout(debounceTimer);
             const query = this.value.trim();
+            
+            // If input is cleared, hide preview and clear hidden data
+            if(query.length === 0) {
+                clearSelection();
+                resultsBox.style.display = 'none';
+                return;
+            }
+
             if (query.length < 3) {
                 resultsBox.style.display = 'none';
                 return;
             }
-            debounceTimer = setTimeout(() => fetchMovies(query), 500);
+            debounceTimer = setTimeout(() => fetchMovies(query), 300);
         });
+
+        function clearSelection() {
+            previewBox.classList.remove('visible');
+            document.getElementById('realTitle').value = "";
+            document.getElementById('realLink').value = "";
+        }
 
         async function fetchMovies(query) {
             try {
+                // Using 's' search for dropdown
                 const res = await fetch(`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`);
                 const data = await res.json();
                 if (data.Response === "True") {
@@ -274,10 +308,11 @@
         function displayResults(movies) {
             resultsBox.innerHTML = '';
             resultsBox.style.display = 'block';
-            movies.slice(0, 5).forEach(movie => {
+            // Show top 6 results
+            movies.slice(0, 6).forEach(movie => {
                 const div = document.createElement('div');
                 div.className = 'result-item';
-                const poster = movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/40x60?text=No+Img";
+                const poster = movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/45x70?text=No+Img";
                 div.innerHTML = `<img src="${poster}"><div class="result-info"><div>${movie.Title}</div><span>${movie.Year} • ${movie.Type}</span></div>`;
                 div.onclick = () => selectMovie(movie.imdbID);
                 resultsBox.appendChild(div);
@@ -286,19 +321,21 @@
 
         async function selectMovie(imdbID) {
             resultsBox.style.display = 'none';
-            searchInput.value = "Loading...";
-            const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${API_KEY}`);
+            // Fetch full details using 'i' (ID) search
+            const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&plot=short&apikey=${API_KEY}`);
             const data = await res.json();
 
-            document.getElementById('moviePreview').classList.add('visible');
+            previewBox.classList.add('visible');
             document.getElementById('previewPoster').src = data.Poster !== "N/A" ? data.Poster : "";
             document.getElementById('previewTitle').innerText = data.Title;
             document.getElementById('previewYear').innerText = data.Year;
+            document.getElementById('previewGenre').innerText = data.Genre;
+            document.getElementById('previewRating').innerText = `⭐ ${data.imdbRating}`;
+            document.getElementById('previewPlot').innerText = data.Plot;
 
-            // Fill inputs
+            // Fill hidden inputs
             searchInput.value = data.Title; 
             document.getElementById('realTitle').value = data.Title;
-            // Generate full IMDB Link automatically
             document.getElementById('realLink').value = `https://www.imdb.com/title/${data.imdbID}`;
         }
 
@@ -329,15 +366,93 @@
                 btn.style.display = 'none';
                 successMsg.style.display = 'block';
                 form.reset();
-                document.getElementById('moviePreview').classList.remove('visible');
+                clearSelection(); // Clear preview after submit
             })
             .catch(error => {
                 console.log(error);
                 btn.innerText = "Error - Try Again";
                 btn.disabled = false;
-                alert("Something went wrong. Please check your internet connection.");
+                alert("Connection error. Please try again.");
             });
         }
+
+        // --- PARTICLE SYSTEM JS ---
+        const canvas = document.getElementById("particle-canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particlesArray;
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x; this.y = y;
+                this.directionX = directionX; this.directionY = directionY;
+                this.size = size; this.color = color;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                this.x += this.directionX; this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function init() {
+            particlesArray = [];
+            // Adjust number of particles based on screen size
+            let numberOfParticles = (canvas.height * canvas.width) / 15000; 
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 0.4) - 0.2;
+                let directionY = (Math.random() * 0.4) - 0.2;
+                let color = 'rgba(59, 130, 246, 0.4)'; // Accent color
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
+                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width/9) * (canvas.height/9)) {
+                        opacityValue = 1 - (distance / 15000);
+                        ctx.strokeStyle = 'rgba(59, 130, 246,' + opacityValue + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connect();
+        }
+
+        window.addEventListener('resize', function() {
+            canvas.width = innerWidth; canvas.height = innerHeight;
+            init();
+        });
+
+        init();
+        animate();
     </script>
 
 </body>
