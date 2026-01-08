@@ -184,7 +184,7 @@
             }
             
             .poster-img {
-                width: 130px; /* Larger poster when stacked */
+                width: 130px; 
                 height: 190px;
                 margin-bottom: 10px;
             }
@@ -197,7 +197,6 @@
 <body>
 
     <div id="glow-layer"></div>
-    
     <canvas id="particle-canvas"></canvas>
 
     <div class="main-container">
@@ -254,7 +253,7 @@
                 </div>
 
                 <button type="submit" class="submit-btn" id="vodBtn">Submit Request</button>
-                <div class="success-msg" id="vodSuccess">Request Sent Successfully! We are processing it now.</div>
+                <div class="success-msg" id="vodSuccess">Request Sent Successfully! We will process shortly.</div>
             </form>
         </div>
 
@@ -327,17 +326,14 @@
             document.getElementById(tabName).classList.add('active');
         }
 
-        // --- AUTO SEARCH & CLEAR LOGIC ---
         searchInput.addEventListener('input', function() {
             clearTimeout(debounceTimer);
             const query = this.value.trim();
-            
             if(query.length === 0) {
                 clearSelection();
                 resultsBox.style.display = 'none';
                 return;
             }
-
             if (query.length < 3) {
                 resultsBox.style.display = 'none';
                 return;
@@ -353,7 +349,6 @@
 
         async function fetchMovies(query) {
             try {
-                // Using 's' search for dropdown
                 const res = await fetch(`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`);
                 const data = await res.json();
                 if (data.Response === "True") {
@@ -367,7 +362,6 @@
         function displayResults(movies) {
             resultsBox.innerHTML = '';
             resultsBox.style.display = 'block';
-            // Show top 6 results
             movies.slice(0, 6).forEach(movie => {
                 const div = document.createElement('div');
                 div.className = 'result-item';
@@ -380,7 +374,6 @@
 
         async function selectMovie(imdbID) {
             resultsBox.style.display = 'none';
-            // Fetch full details using 'i' (ID) search
             const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&plot=short&apikey=${API_KEY}`);
             const data = await res.json();
 
@@ -403,7 +396,6 @@
             }
         });
 
-        // AJAX Submission
         function handleFormSubmit(event, formId) {
             event.preventDefault();
             const form = document.getElementById(formId);
@@ -434,7 +426,7 @@
             });
         }
 
-        // --- ENHANCED PARTICLE SYSTEM ---
+        // --- PARTICLE SYSTEM ---
         const canvas = document.getElementById("particle-canvas");
         const ctx = canvas.getContext("2d");
         canvas.width = window.innerWidth;
@@ -463,7 +455,6 @@
 
         function init() {
             particlesArray = [];
-            // Increased density (9000 instead of 15000)
             let numberOfParticles = (canvas.height * canvas.width) / 9000; 
             for (let i = 0; i < numberOfParticles; i++) {
                 let size = (Math.random() * 2) + 1;
