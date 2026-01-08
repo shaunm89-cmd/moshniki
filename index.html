@@ -112,14 +112,19 @@
         }
         input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); background: rgba(59, 130, 246, 0.05); box-shadow: 0 0 20px var(--accent-glow); }
 
+        /* --- DROPDOWN FIX --- */
+        /* Force dropdown options to be dark so text is readable */
+        select option {
+            background-color: #0f1014;
+            color: white;
+        }
+
         /* DROPDOWN RESULTS */
         .search-results {
             position: absolute; top: 100%; left: 0; width: 100%;
             background: #0a0a0c; border: 1px solid var(--accent); border-top: none;
-            border-radius: 0 0 12px 12px; z-index: 100; 
-            max-height: 300px; /* Limits height so it scrolls */
-            overflow-y: auto; /* Adds scrollbar */
-            display: none; box-shadow: 0 20px 50px rgba(0,0,0,1);
+            border-radius: 0 0 12px 12px; z-index: 100; max-height: 350px;
+            overflow-y: auto; display: none; box-shadow: 0 20px 50px rgba(0,0,0,1);
         }
         .result-item {
             padding: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer;
@@ -179,9 +184,17 @@
             .form-content { padding: 25px; }
 
             .movie-preview {
-                flex-direction: column; align-items: center; text-align: center;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
-            .poster-img { width: 130px; height: 190px; margin-bottom: 10px; }
+            
+            .poster-img {
+                width: 130px; 
+                height: 190px;
+                margin-bottom: 10px;
+            }
+
             .movie-meta { justify-content: center; }
         }
 
@@ -213,8 +226,8 @@
                 <input type="hidden" name="_captcha" value="false">
 
                 <div class="form-group">
-                    <label>Search Title</label>
-                    <input type="text" name="Search_Query" id="searchInput" placeholder="Start typing... (e.g. The Matrix)" autocomplete="off">
+                    <label>Search Title (Or Paste IMDB Link)</label>
+                    <input type="text" name="Search_Query" id="searchInput" placeholder="Type name OR Paste IMDB Link (e.g. tt123456)" autocomplete="off">
                     <div id="searchResults" class="search-results"></div>
                 </div>
 
@@ -256,6 +269,7 @@
 
         <div id="report" class="form-content">
             <form id="issueForm" onsubmit="window.handleFormSubmit(event, 'issueForm')">
+                
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
                 <input type="hidden" name="_subject" value="⚠️ SUPPORT TICKET FILED">
                 <input type="hidden" name="_template" value="box">
@@ -339,6 +353,7 @@
 
             try {
                 let collectionName = formId === 'vodForm' ? 'requests' : 'reports';
+                
                 await addDoc(collection(db, collectionName), {
                     ...dataObj,
                     timestamp: serverTimestamp(),
@@ -354,6 +369,7 @@
                 successMsg.style.display = 'block';
                 form.reset();
                 if(formId === 'vodForm') window.clearSelection();
+
             } catch (error) {
                 console.error("Error:", error);
                 btn.innerText = "Error - Try Again";
@@ -405,7 +421,24 @@
 
         searchInput.addEventListener('input', function() {
             clearTimeout(debounceTimer);
-            const query = this.value.trim();
+            let query = this.value.trim();
+
+            // --- MAGIC LINK DETECTOR ---
+            // If user pastes an IMDB URL, extract ID and fetch directly
+            if (query.includes('imdb.com/title/')) {
+                const match = query.match(/tt\d+/);
+                if (match) {
+                    window.selectMovie(match[0]);
+                    return; 
+                }
+            }
+            // Also works if they just paste "tt123456"
+            if (query.startsWith('tt') && query.length > 6) {
+                window.selectMovie(query);
+                return;
+            }
+            // ---------------------------
+
             if(query.length === 0) {
                 window.clearSelection();
                 resultsBox.style.display = 'none';
@@ -433,7 +466,6 @@
         function displayResults(movies) {
             resultsBox.innerHTML = '';
             resultsBox.style.display = 'block';
-            // CHANGED: Show top 10 results instead of 6 to find duplicates/remakes
             movies.slice(0, 10).forEach(movie => {
                 const div = document.createElement('div');
                 div.className = 'result-item';
