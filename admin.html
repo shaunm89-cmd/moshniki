@@ -101,7 +101,7 @@
 
         /* GRID LAYOUT */
         .grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 25px;
         }
 
         /* GLASS CARD STYLING */
@@ -122,23 +122,27 @@
         .card-body {
             display: flex; padding: 20px; gap: 20px;
         }
+        
+        /* --- BIGGER POSTER STYLE --- */
         .poster {
-            width: 100px; height: 150px; object-fit: cover; border-radius: 8px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5); flex-shrink: 0;
+            width: 180px; height: 270px; /* BIGGER SIZE */
+            object-fit: cover; border-radius: 12px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6); flex-shrink: 0;
         }
-        .info { flex: 1; }
         
-        .title { font-weight: 700; font-size: 1.2rem; margin-bottom: 5px; line-height: 1.2; color: white; }
-        .year { font-size: 0.9rem; color: var(--accent); font-weight: 600; margin-bottom: 8px; display: block;}
+        .info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
         
-        .genre-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+        .title { font-weight: 700; font-size: 1.4rem; margin-bottom: 8px; line-height: 1.2; color: white; }
+        .year { font-size: 1rem; color: var(--accent); font-weight: 600; margin-bottom: 8px; display: block;}
+        
+        .genre-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
         .tag { 
-            font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; 
+            font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; 
             background: rgba(255,255,255,0.1); color: #ccc; border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .plot { font-size: 0.85rem; color: #888; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 10px;}
-        .client-info { font-size: 0.8rem; color: #666; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .plot { font-size: 0.9rem; color: #999; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 15px;}
+        .client-info { font-size: 0.85rem; color: #666; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
 
         .details-box {
             padding: 15px 20px; background: rgba(59, 130, 246, 0.05); font-size: 0.9rem; color: #ddd;
@@ -148,14 +152,14 @@
         .actions {
             padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
             border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2);
-            margin-top: auto; /* Push to bottom */
+            margin-top: auto;
         }
         .imdb-link {
-            color: #f5c518; text-decoration: none; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; gap: 5px;
+            color: #f5c518; text-decoration: none; font-weight: bold; font-size: 1rem; display: flex; align-items: center; gap: 5px;
         }
         .delete-btn {
             background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger);
-            padding: 8px 18px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
             transition: 0.2s;
         }
         .delete-btn:hover { background: var(--danger); color: white; }
@@ -168,8 +172,14 @@
         /* --- MOBILE FIXES --- */
         @media (max-width: 600px) {
             .header { flex-direction: column; text-align: center; }
-            .grid { grid-template-columns: 1fr; } /* Stack cards */
+            .grid { grid-template-columns: 1fr; }
             .admin-search { width: 100%; }
+            
+            /* STACK POSTER ON MOBILE SO IT'S BIG */
+            .card-body { flex-direction: column; align-items: center; text-align: center; }
+            .poster { width: 200px; height: 300px; margin-bottom: 10px; }
+            .actions { justify-content: center; }
+            .plot { -webkit-line-clamp: 3; }
         }
 
     </style>
@@ -307,7 +317,7 @@
         // --- RENDER VOD CARD ---
         function createRequestCard(id, data) {
             const grid = document.getElementById('content-grid');
-            const posterUrl = data.Poster_URL && data.Poster_URL !== "N/A" ? data.Poster_URL : "https://via.placeholder.com/100x150?text=No+Img";
+            const posterUrl = data.Poster_URL && data.Poster_URL !== "N/A" ? data.Poster_URL : "https://via.placeholder.com/180x270?text=No+Img";
             
             // Parse Genre into tags
             let genreHtml = '';
