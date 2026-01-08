@@ -10,7 +10,7 @@
         :root {
             --bg: #020203;
             --accent: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.6);
+            --accent-glow: rgba(59, 130, 246, 0.8); /* Boosted Glow */
             --danger: #ef4444;
             --success: #10b981;
             --text: #ffffff;
@@ -52,11 +52,12 @@
         .pin-input {
             padding: 15px; font-size: 1.5rem; text-align: center; letter-spacing: 5px;
             background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: white; border-radius: 12px;
-            width: 200px; margin-bottom: 20px;
+            width: 200px; margin-bottom: 20px; box-shadow: 0 0 30px var(--accent-glow);
         }
         .enter-btn {
             padding: 12px 30px; background: var(--accent); border: none; color: white;
             font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 0 20px var(--accent-glow);
         }
 
         /* DASHBOARD */
@@ -71,10 +72,11 @@
             border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.4);
             border-radius: 24px; margin-bottom: 30px;
             backdrop-filter: blur(40px);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8); /* Darker shadow to pop against bright particles */
         }
         
         .logo { font-size: 1.8rem; font-weight: 700; letter-spacing: 1px; line-height: 1; }
-        .logo span { color: var(--accent); }
+        .logo span { color: var(--accent); text-shadow: 0 0 20px var(--accent); }
         .subtitle {
             font-size: 0.85rem; color: #666; margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
         }
@@ -84,16 +86,17 @@
             color: white; border-radius: 12px; width: 280px; font-size: 0.95rem;
             transition: 0.3s;
         }
-        .admin-search:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
+        .admin-search:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
 
         .tabs { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
         .tab-btn {
             padding: 10px 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
             color: #aaa; border-radius: 30px; cursor: pointer; transition: 0.2s; font-weight: 600; font-size: 0.9rem;
         }
-        .tab-btn:hover { color: white; border-color: white; }
+        .tab-btn:hover { color: white; border-color: white; text-shadow: 0 0 10px white; }
         .tab-btn.active { 
             background: rgba(59, 130, 246, 0.2); color: white; border-color: var(--accent); 
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
         }
 
         .grid {
@@ -105,7 +108,7 @@
             border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden;
             display: flex; flex-direction: column; transition: 0.3s;
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
 
         .card-body { display: flex; padding: 20px; gap: 20px; }
         .poster {
@@ -133,13 +136,13 @@
             background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid var(--success);
             padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s;
         }
-        .btn-complete:hover { background: var(--success); color: black; }
+        .btn-complete:hover { background: var(--success); color: black; box-shadow: 0 0 15px var(--success); }
 
         .btn-delete {
             background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger);
             padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s;
         }
-        .btn-delete:hover { background: var(--danger); color: white; }
+        .btn-delete:hover { background: var(--danger); color: white; box-shadow: 0 0 15px var(--danger); }
 
         /* MOBILE FIXES */
         @media (max-width: 600px) {
@@ -344,7 +347,7 @@
             });
         }
 
-        // --- FULL VFX PARTICLE SYSTEM (CONNECTED LINES) ---
+        // --- SUPER CHARGED VFX PARTICLE SYSTEM ---
         const canvas = document.getElementById("particle-canvas");
         const ctx = canvas.getContext("2d");
         canvas.width = window.innerWidth;
@@ -352,69 +355,67 @@
         let particlesArray;
 
         class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x; this.y = y;
-                this.directionX = directionX; this.directionY = directionY;
-                this.size = size; this.color = color;
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 2; // BIGGER
+                this.speedX = Math.random() * 1 - 0.5; // FASTER
+                this.speedY = Math.random() * 1 - 0.5; 
             }
             draw() {
+                ctx.fillStyle = 'rgba(100, 200, 255, 1)'; // BRIGHT BLUE
+                ctx.shadowBlur = 20; // NEON GLOW
+                ctx.shadowColor = '#3b82f6';
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = this.color;
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
+                ctx.shadowBlur = 0; // Reset for performance
             }
             update() {
-                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-                this.x += this.directionX; this.y += this.directionY;
-                this.draw();
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
             }
         }
 
         function initParticles() {
             particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 9000; 
-            for (let i = 0; i < numberOfParticles; i++) {
-                let size = (Math.random() * 2) + 1;
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * 0.4) - 0.2;
-                let directionY = (Math.random() * 0.4) - 0.2;
-                let color = 'rgba(59, 130, 246, 0.4)'; 
-                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-            }
-        }
-
-        function connectParticles() {
-            let opacityValue = 1;
-            for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a; b < particlesArray.length; b++) {
-                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
-                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-                    if (distance < (canvas.width/9) * (canvas.height/9)) {
-                        opacityValue = 1 - (distance / 15000);
-                        ctx.strokeStyle = 'rgba(59, 130, 246,' + opacityValue + ')';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                        ctx.stroke();
-                    }
-                }
+            for (let i = 0; i < 100; i++) { // MORE PARTICLES
+                particlesArray.push(new Particle());
             }
         }
 
         function animateParticles() {
-            requestAnimationFrame(animateParticles);
-            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < particlesArray.length; i++) {
                 particlesArray[i].update();
+                particlesArray[i].draw();
+                
+                // BRIGHTER CONNECTIONS
+                for (let j = i; j < particlesArray.length; j++) {
+                    const dx = particlesArray[i].x - particlesArray[j].x;
+                    const dy = particlesArray[i].y - particlesArray[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 150) { // CONNECT FURTHER
+                        ctx.strokeStyle = `rgba(100, 200, 255, ${1 - dist/150})`;
+                        ctx.lineWidth = 1.5; // THICKER LINES
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = '#3b82f6';
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        ctx.stroke();
+                        ctx.shadowBlur = 0;
+                    }
+                }
             }
-            connectParticles();
+            requestAnimationFrame(animateParticles);
         }
 
-        window.addEventListener('resize', function() {
-            canvas.width = innerWidth; canvas.height = innerHeight;
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             initParticles();
         });
 
