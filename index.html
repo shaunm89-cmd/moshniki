@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wild Wonders | The Coolest Animals</title>
+    <title>Cool Facts About Animals</title>
     <style>
         /* --- GLOBAL VARIABLES & RESET --- */
         :root {
@@ -37,12 +37,14 @@
             100% { transform: translateY(0px); }
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        /* NEW: Rich Animated Gradient Background */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* --- HERO SECTION --- */
+        /* --- HERO SECTION (REVAMPED) --- */
         header {
             height: 100vh;
             display: flex;
@@ -50,45 +52,68 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
             position: relative;
             overflow: hidden;
+            
+            /* The New "Nicer" Background */
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #11998e, #38ef7d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        /* Texture Overlay for professional look */
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
         }
 
         .circle {
             position: absolute;
             border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            opacity: 0.3;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(2px);
             animation: float 6s ease-in-out infinite;
             z-index: 1;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         .c1 { width: 300px; height: 300px; top: -50px; left: -50px; }
-        .c2 { width: 200px; height: 200px; bottom: 50px; right: -50px; animation-delay: 1s; }
-        .c3 { width: 100px; height: 100px; top: 40%; right: 20%; animation-delay: 2s; background: var(--accent); }
+        .c2 { width: 400px; height: 400px; bottom: -100px; right: -50px; animation-delay: 1s; }
+        .c3 { width: 150px; height: 150px; top: 20%; right: 10%; animation-delay: 2s; background: rgba(255, 230, 109, 0.1); }
 
         .hero-content {
             z-index: 2;
-            backdrop-filter: blur(5px);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass);
+            padding: 3rem;
+            border-radius: 30px;
+            /* Stronger glass effect to pop against the colorful background */
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            max-width: 90%;
         }
 
         h1 {
-            font-size: 5rem;
+            font-size: 4.5rem;
             text-transform: uppercase;
-            letter-spacing: 5px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
         }
 
         p.subtitle {
             font-size: 1.5rem;
             margin-bottom: 2rem;
+            color: #ddd;
         }
 
         .btn {
@@ -96,21 +121,24 @@
             font-size: 1.2rem;
             border: none;
             border-radius: 50px;
-            background: var(--secondary);
-            color: var(--dark);
+            background: #fff;
+            color: #2c5364;
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         .btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--secondary);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            background: var(--accent);
+            color: var(--dark);
         }
 
-        /* --- SPOTLIGHT SECTION (The Main Event) --- */
+        /* --- SPOTLIGHT SECTION --- */
         .spotlight {
             min-height: 80vh;
             padding: 4rem 2rem;
@@ -134,7 +162,6 @@
             flex: 1;
             min-width: 300px;
             height: 500px;
-            /* Default Giraffe Pattern */
             background: 
                 radial-gradient(circle at 70% 20%, black 2%, transparent 3%),
                 conic-gradient(from 45deg at 50% 50%, #e6a726 25%, #8b4513 25%, #8b4513 50%, #e6a726 50%, #e6a726 75%, #8b4513 75%);
@@ -146,7 +173,7 @@
         }
 
         .animal-visual::after {
-            content: "🦒"; /* Default Emoji */
+            content: "🦒";
             position: absolute;
             font-size: 15rem;
             top: 50%;
@@ -163,11 +190,7 @@
             transition: opacity 0.3s ease;
         }
         
-        /* Class to trigger fade animation */
-        .fade-out {
-            opacity: 0;
-            transform: translateY(10px);
-        }
+        .fade-out { opacity: 0; transform: translateY(10px); }
 
         .animal-info h2 {
             font-size: 4rem;
@@ -238,15 +261,9 @@
             margin-top: 10px;
         }
         
-        .card:hover .click-hint {
-            opacity: 1;
-        }
+        .card:hover .click-hint { opacity: 1; }
+        .card:hover .card-emoji { transform: scale(1.2) rotate(10deg); }
 
-        .card:hover .card-emoji {
-            transform: scale(1.2) rotate(10deg);
-        }
-
-        /* --- FOOTER --- */
         footer {
             text-align: center;
             padding: 2rem;
@@ -254,7 +271,6 @@
             color: #666;
         }
 
-        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             h1 { font-size: 3rem; }
             .animal-visual { height: 300px; }
@@ -270,16 +286,15 @@
         <div class="circle c3"></div>
         
         <div class="hero-content">
-            <h1>Wild Wonders</h1>
-            <p class="subtitle">Discover the coolest creatures on Earth</p>
-            <a href="#spotlight" class="btn">Meet the Star</a>
+            <h1>Cool Facts About Animals</h1>
+            <p class="subtitle">Explore the wild side of nature (Strictly No Turtles)</p>
+            <a href="#spotlight" class="btn">Start Adventure</a>
         </div>
     </header>
 
     <section id="spotlight" class="spotlight">
         <div class="spotlight-container">
-            <div id="spotlight-visual" class="animal-visual">
-                </div>
+            <div id="spotlight-visual" class="animal-visual"></div>
             
             <div id="spotlight-info" class="animal-info">
                 <span id="spotlight-tag" class="tag" style="background:var(--primary); padding: 5px 15px; border-radius: 20px;">The Superstar</span>
@@ -369,7 +384,7 @@
                  onclick="updateSpotlight(this)"
                  data-name="The Lion"
                  data-emoji="🦁"
-                 data-desc="The King of the Jungle (though they mostly live in grasslands). A lion's roar can be heard from 5 miles away!"
+                 data-desc="The King of the Jungle. A lion's roar can be heard from 5 miles away!"
                  data-s1="Roar: 114 Decibels"
                  data-s2="Speed: 80 km/h"
                  data-s3="Sleep: 20 hours a day"
@@ -399,12 +414,11 @@
     </section>
 
     <footer>
-        <p>© 2026 Wild Wonders - Made for Cool People Only</p>
+        <p>© 2026 Cool Facts About Animals</p>
     </footer>
 
     <script>
         function updateSpotlight(element) {
-            // 1. Get Data from clicked card
             const name = element.getAttribute('data-name');
             const emoji = element.getAttribute('data-emoji');
             const desc = element.getAttribute('data-desc');
@@ -414,7 +428,6 @@
             const bgPattern = element.getAttribute('data-bg');
             const mainColor = element.getAttribute('data-color');
 
-            // 2. Select Spotlight Elements
             const infoBox = document.getElementById('spotlight-info');
             const visualBox = document.getElementById('spotlight-visual');
             const title = document.getElementById('spotlight-name');
@@ -423,40 +436,31 @@
             const stat2 = document.getElementById('stat2');
             const stat3 = document.getElementById('stat3');
 
-            // 3. Scroll to top smoothy
             document.getElementById('spotlight').scrollIntoView({ behavior: 'smooth' });
 
-            // 4. Add fade-out effect
             infoBox.classList.add('fade-out');
             visualBox.style.transform = "scale(0.9) rotate(-5deg)";
             visualBox.style.opacity = "0";
 
-            // 5. Swap Content after short delay (to allow fade out)
             setTimeout(() => {
-                // Update Text
                 title.innerText = name;
                 description.innerText = desc;
                 stat1.innerHTML = `<strong>Fact 1:</strong> ${s1}`;
                 stat2.innerHTML = `<strong>Fact 2:</strong> ${s2}`;
                 stat3.innerHTML = `<strong>Fact 3:</strong> ${s3}`;
 
-                // Update Visuals
                 visualBox.style.background = bgPattern;
                 visualBox.style.boxShadow = `20px 20px 0 ${mainColor}`;
                 
-                // Update CSS Variable for pseudo-element content using a trick
-                // We actually just inject the emoji via a style tag or easier: DOM manipulation of style
                 const styleSheet = document.createElement("style");
                 styleSheet.innerText = `#spotlight-visual::after { content: "${emoji}" !important; }`;
                 document.head.appendChild(styleSheet);
 
-                // Update Text Colors
                 title.style.color = mainColor;
                 document.querySelectorAll('.stat-box').forEach(box => {
                     box.style.borderLeftColor = mainColor;
                 });
 
-                // 6. Fade In
                 infoBox.classList.remove('fade-out');
                 visualBox.style.transform = "scale(1) rotate(0deg)";
                 visualBox.style.opacity = "1";
@@ -464,19 +468,14 @@
         }
 
         function celebrate() {
-            // Create a burst of current emoji
-            // Find current emoji by looking at the spotlight visual style we injected, or default
-            let emojiChar = "✨"; // Default
-            
-            // Generate emojis
             for(let i=0; i<30; i++) {
-                createFloatingEmoji(emojiChar);
+                createFloatingEmoji();
             }
         }
 
-        function createFloatingEmoji(char) {
+        function createFloatingEmoji() {
             const emoji = document.createElement('div');
-            emoji.innerText = "🎉"; // Celebration confetti
+            emoji.innerText = "🎉"; 
             emoji.style.position = 'fixed';
             emoji.style.left = Math.random() * 100 + 'vw';
             emoji.style.top = '100vh';
