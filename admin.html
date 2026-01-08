@@ -10,10 +10,9 @@
         :root {
             --bg: #020203;
             --accent: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.6);
+            --success: #10b981; /* Green for Complete */
             --danger: #ef4444;
             --text: #ffffff;
-            --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
         }
 
@@ -24,28 +23,13 @@
             color: var(--text);
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            padding: 40px 20px;
+            padding: 20px;
             overflow-x: hidden;
-        }
-
-        /* ATMOSPHERIC GLOW */
-        #glow-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            pointer-events: none;
-            background: 
-                radial-gradient(circle at 50% -20%, rgba(59, 130, 246, 0.4) 0%, transparent 60%),
-                radial-gradient(circle at 100% 50%, rgba(124, 58, 237, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 0% 50%, rgba(6, 182, 212, 0.25) 0%, transparent 50%);
-            animation: pulseGlow 8s ease-in-out infinite alternate;
-        }
-        @keyframes pulseGlow {
-            0% { opacity: 0.7; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.05); }
         }
 
         #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        /* --- LOGIN OVERLAY --- */
+        /* LOGIN */
         #login-gate {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95); z-index: 9999;
@@ -55,19 +39,16 @@
         .pin-input {
             padding: 15px; font-size: 1.5rem; text-align: center; letter-spacing: 5px;
             background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: white; border-radius: 12px;
-            width: 200px; margin-bottom: 20px; box-shadow: 0 0 20px var(--accent-glow);
+            width: 200px; margin-bottom: 20px;
         }
         .enter-btn {
             padding: 12px 30px; background: var(--accent); border: none; color: white;
             font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s;
         }
-        .enter-btn:hover { box-shadow: 0 0 30px var(--accent); transform: scale(1.05); }
 
-        /* --- DASHBOARD UI --- */
+        /* DASHBOARD */
         .container {
-            width: 100%; max-width: 1200px;
-            display: none; /* Hidden until login */
-            animation: fadeIn 0.5s ease;
+            width: 100%; max-width: 1200px; display: none; animation: fadeIn 0.5s ease;
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -77,120 +58,87 @@
             border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.4);
             border-radius: 24px; margin-bottom: 30px;
             backdrop-filter: blur(40px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
         .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; }
-        .logo span { color: var(--accent); text-shadow: 0 0 15px var(--accent); }
+        .logo span { color: var(--accent); }
 
-        /* SEARCH BAR */
         .admin-search {
             padding: 10px 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
             color: white; border-radius: 10px; width: 250px;
         }
 
-        .tabs { display: flex; gap: 15px; margin-bottom: 30px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
         .tab-btn {
-            padding: 12px 30px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
-            color: #aaa; border-radius: 30px; cursor: pointer; transition: 0.2s; font-weight: 600;
+            padding: 10px 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+            color: #aaa; border-radius: 30px; cursor: pointer; transition: 0.2s; font-weight: 600; font-size: 0.9rem;
         }
         .tab-btn:hover { color: white; border-color: white; }
         .tab-btn.active { 
             background: rgba(59, 130, 246, 0.2); color: white; border-color: var(--accent); 
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
         }
 
-        /* GRID LAYOUT */
         .grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 25px;
         }
 
-        /* GLASS CARD STYLING */
         .card {
-            background: rgba(20, 20, 25, 0.6); 
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 16px; overflow: hidden; position: relative;
-            transition: 0.3s;
-            display: flex; flex-direction: column;
+            background: rgba(20, 20, 25, 0.6); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden;
+            display: flex; flex-direction: column; transition: 0.3s;
         }
-        .card:hover { 
-            transform: translateY(-5px); 
-            border-color: var(--accent); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
-        .card-body {
-            display: flex; padding: 20px; gap: 20px;
-        }
-        
-        /* --- BIGGER POSTER STYLE --- */
+        .card-body { display: flex; padding: 20px; gap: 20px; }
         .poster {
-            width: 180px; height: 270px; /* BIGGER SIZE */
-            object-fit: cover; border-radius: 12px; 
+            width: 180px; height: 270px; object-fit: cover; border-radius: 12px; 
             box-shadow: 0 8px 25px rgba(0,0,0,0.6); flex-shrink: 0;
         }
-        
         .info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
         
-        .title { font-weight: 700; font-size: 1.4rem; margin-bottom: 8px; line-height: 1.2; color: white; }
+        .title { font-weight: 700; font-size: 1.4rem; margin-bottom: 5px; line-height: 1.2; }
         .year { font-size: 1rem; color: var(--accent); font-weight: 600; margin-bottom: 8px; display: block;}
-        
         .genre-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
-        .tag { 
-            font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; 
-            background: rgba(255,255,255,0.1); color: #ccc; border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .plot { font-size: 0.9rem; color: #999; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 15px;}
+        .tag { font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; background: rgba(255,255,255,0.1); color: #ccc; }
+        .plot { font-size: 0.9rem; color: #999; line-height: 1.5; -webkit-line-clamp: 5; overflow: hidden; margin-bottom: 15px;}
         .client-info { font-size: 0.85rem; color: #666; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
 
-        .details-box {
-            padding: 15px 20px; background: rgba(59, 130, 246, 0.05); font-size: 0.9rem; color: #ddd;
-            border-top: 1px solid rgba(255,255,255,0.05); font-style: italic;
-        }
+        .details-box { padding: 15px 20px; background: rgba(59, 130, 246, 0.05); font-size: 0.9rem; color: #ddd; font-style: italic; }
 
         .actions {
             padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2);
-            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2); margin-top: auto;
         }
-        .imdb-link {
-            color: #f5c518; text-decoration: none; font-weight: bold; font-size: 1rem; display: flex; align-items: center; gap: 5px;
+        .imdb-link { color: #f5c518; text-decoration: none; font-weight: bold; }
+        
+        .btn-complete {
+            background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid var(--success);
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s;
         }
-        .delete-btn {
+        .btn-complete:hover { background: var(--success); color: black; }
+
+        .btn-delete {
             background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger);
-            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
-            transition: 0.2s;
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s;
         }
-        .delete-btn:hover { background: var(--danger); color: white; }
+        .btn-delete:hover { background: var(--danger); color: white; }
 
-        /* ISSUE REPORTS STYLING */
-        .badge-Buffering { color: #ef4444; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239,68,68,0.2); padding: 4px 10px; border-radius: 4px; font-size:0.75rem; }
-        .badge-Audio { color: #eab308; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.2); padding: 4px 10px; border-radius: 4px; font-size:0.75rem; }
-        .badge-Other { color: #3b82f6; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); padding: 4px 10px; border-radius: 4px; font-size:0.75rem; }
-
-        /* --- MOBILE FIXES --- */
+        /* MOBILE FIXES */
         @media (max-width: 600px) {
             .header { flex-direction: column; text-align: center; }
             .grid { grid-template-columns: 1fr; }
             .admin-search { width: 100%; }
-            
-            /* STACK POSTER ON MOBILE SO IT'S BIG */
             .card-body { flex-direction: column; align-items: center; text-align: center; }
             .poster { width: 200px; height: 300px; margin-bottom: 10px; }
-            .actions { justify-content: center; }
-            .plot { -webkit-line-clamp: 3; }
+            .actions { justify-content: center; gap:10px; }
         }
-
     </style>
 </head>
 <body>
 
-    <div id="glow-layer"></div>
     <canvas id="particle-canvas"></canvas>
 
     <div id="login-gate">
-        <div style="text-align:center; margin-bottom:20px; color:#666; font-size:0.9rem; letter-spacing:2px;">SECURE ACCESS</div>
+        <div style="margin-bottom:20px; color:#666; letter-spacing:2px;">SECURE ACCESS</div>
         <input type="password" id="pin-input" class="pin-input" placeholder="PIN">
         <button onclick="checkPin()" class="enter-btn">ENTER SYSTEM</button>
     </div>
@@ -199,25 +147,24 @@
         <div class="header">
             <div>
                 <div class="logo">REYLO <span>ADMIN</span></div>
-                <div style="font-size:0.9rem; color:#888;" id="status-text">Connecting to Database...</div>
+                <div style="font-size:0.9rem; color:#888;" id="status-text">...</div>
             </div>
             <input type="text" class="admin-search" placeholder="Filter requests..." onkeyup="filterCards(this.value)">
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="loadData('requests')">VOD Requests</button>
-            <button class="tab-btn" onclick="loadData('reports')">Issue Reports</button>
+            <button class="tab-btn active" onclick="switchView('active')">Active Requests</button>
+            <button class="tab-btn" onclick="switchView('completed')">History / Completed</button>
+            <button class="tab-btn" onclick="switchView('reports')">Issue Reports</button>
         </div>
 
-        <div id="content-grid" class="grid">
-            </div>
+        <div id="content-grid" class="grid"></div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, deleteDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-        // CONFIG
         const firebaseConfig = {
           apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0",
           projectId: "vodrequest",
@@ -227,104 +174,92 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let currentCollection = 'requests';
+        let currentView = 'active'; // active, completed, reports
 
-        // --- AUTH ---
         window.checkPin = function() {
-            const pin = document.getElementById('pin-input').value;
-            // CHANGE PIN HERE
-            if(pin === "2024") {
+            if(document.getElementById('pin-input').value === "2024") {
                 document.getElementById('login-gate').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-                loadData('requests');
-            } else {
-                alert("ACCESS DENIED");
-                document.getElementById('pin-input').value = "";
-            }
+                loadData();
+            } else { alert("ACCESS DENIED"); }
         }
 
-        // --- FILTER FUNCTION ---
-        window.filterCards = function(text) {
-            const cards = document.querySelectorAll('.card');
-            const search = text.toLowerCase();
-            cards.forEach(card => {
-                const title = card.querySelector('.title').innerText.toLowerCase();
-                const client = card.querySelector('.client-info').innerText.toLowerCase();
-                if(title.includes(search) || client.includes(search)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
+        window.switchView = function(view) {
+            currentView = view;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // Highlight the clicked button
+            event.target.classList.add('active');
+            loadData();
         }
 
-        // --- LOAD DATA ---
-        window.loadData = async function(collectionName) {
-            currentCollection = collectionName;
+        window.loadData = async function() {
             const grid = document.getElementById('content-grid');
-            const status = document.getElementById('status-text');
-            
-            // Tab UI
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                if(btn.innerText.includes(collectionName === 'requests' ? 'VOD' : 'Issue')) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-
             grid.innerHTML = '<div style="color:#666; padding:20px;">Fetching records...</div>';
-            status.innerText = "Syncing...";
-
+            
             try {
-                // Try sorting by newest first
+                // DECIDE COLLECTION & FILTER
+                let collectionName = currentView === 'reports' ? 'reports' : 'requests';
+                
+                // Get ALL items (Client-side filtering avoids index errors)
                 const q = query(collection(db, collectionName), orderBy("timestamp", "desc"));
                 const querySnapshot = await getDocs(q);
                 
                 grid.innerHTML = '';
-                status.innerText = `Online. ${querySnapshot.size} Active Records.`;
-
-                if (querySnapshot.empty) {
-                    grid.innerHTML = '<div style="color:#444; padding:20px;">Database is empty.</div>';
-                    return;
-                }
+                let count = 0;
 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
                     const id = doc.id;
-                    if(collectionName === 'requests') {
-                        createRequestCard(id, data);
-                    } else {
-                        createReportCard(id, data);
-                    }
+                    const status = data.status || 'New';
+
+                    // FILTER LOGIC
+                    if(currentView === 'active' && status === 'Completed') return; // Skip completed in Active tab
+                    if(currentView === 'completed' && status !== 'Completed') return; // Skip active in History tab
+
+                    // RENDER
+                    if(collectionName === 'requests') createRequestCard(id, data, currentView === 'completed');
+                    else createReportCard(id, data);
+                    count++;
                 });
 
+                document.getElementById('status-text').innerText = `${count} Records Found.`;
+                if(count === 0) grid.innerHTML = '<div style="color:#444; padding:20px;">Nothing to see here.</div>';
+
             } catch (error) {
-                console.error("Error: ", error);
-                // Fallback if index missing
-                if(error.message.includes("requires an index")) {
-                    const q2 = query(collection(db, collectionName));
-                    const querySnapshot2 = await getDocs(q2);
+                // Fallback for missing index error
+                console.error(error);
+                if(error.message.includes("index")) {
+                    const q2 = query(collection(db, currentView === 'reports' ? 'reports' : 'requests'));
+                    const snap2 = await getDocs(q2);
                     grid.innerHTML = '';
-                    querySnapshot2.forEach((doc) => {
-                        if(collectionName === 'requests') createRequestCard(doc.id, doc.data());
-                        else createReportCard(doc.id, doc.data());
+                    snap2.forEach(doc => {
+                        // Simple fallback render (no sorting)
+                        const data = doc.data();
+                        const status = data.status || 'New';
+                        if(currentView === 'active' && status !== 'Completed') createRequestCard(doc.id, data, false);
+                        else if(currentView === 'completed' && status === 'Completed') createRequestCard(doc.id, data, true);
+                        else if(currentView === 'reports') createReportCard(doc.id, data);
                     });
                 }
             }
         }
 
-        // --- RENDER VOD CARD ---
-        function createRequestCard(id, data) {
+        function createRequestCard(id, data, isCompletedTab) {
             const grid = document.getElementById('content-grid');
             const posterUrl = data.Poster_URL && data.Poster_URL !== "N/A" ? data.Poster_URL : "https://via.placeholder.com/180x270?text=No+Img";
             
-            // Parse Genre into tags
+            // Tag Logic
             let genreHtml = '';
-            if(data.Genre) {
-                data.Genre.split(',').slice(0,3).forEach(g => {
-                    genreHtml += `<span class="tag">${g.trim()}</span>`;
-                });
+            if(data.Genre) data.Genre.split(',').slice(0,3).forEach(g => genreHtml += `<span class="tag">${g.trim()}</span>`);
+
+            // Button Logic
+            let btnHtml = '';
+            if(isCompletedTab) {
+                // History Tab -> Delete Button
+                btnHtml = `<button onclick="deleteItem('${id}', 'requests')" class="btn-delete">Delete Forever 🗑️</button>`;
+            } else {
+                // Active Tab -> Complete Button
+                btnHtml = `<button onclick="markComplete('${id}')" class="btn-complete">Mark Complete ✓</button>`;
             }
 
             const html = `
@@ -335,127 +270,78 @@
                             <div class="title">${data.Confirmed_Title || data.Search_Query || "Unknown"}</div>
                             <span class="year">${data.Year || ""}</span>
                             <div class="genre-tags">${genreHtml}</div>
-                            <div class="plot">${data.Plot || "No plot info available."}</div>
+                            <div class="plot">${data.Plot || "No plot info."}</div>
                             <div class="client-info">Requested by: <span style="color:#fff;">${data.Client_Name}</span></div>
                         </div>
                     </div>
                     ${data.Request_Details ? `<div class="details-box">" ${data.Request_Details} "</div>` : ''}
                     <div class="actions">
                         ${data.IMDB_Link ? `<a href="${data.IMDB_Link}" target="_blank" class="imdb-link">IMDB ↗</a>` : '<span></span>'}
-                        <button onclick="deleteItem('${id}')" class="delete-btn">Complete & Delete</button>
+                        ${btnHtml}
                     </div>
                 </div>
             `;
             grid.innerHTML += html;
         }
 
-        // --- RENDER REPORT CARD ---
         function createReportCard(id, data) {
             const grid = document.getElementById('content-grid');
-            let badgeClass = 'badge-Other';
-            if(data.Issue_Type && data.Issue_Type.includes('Buffer')) badgeClass = 'badge-Buffering';
-            if(data.Issue_Type && data.Issue_Type.includes('Audio')) badgeClass = 'badge-Audio';
-
             const html = `
-                <div class="card" id="card-${id}">
+                <div class="card" id="card-${id}" style="border-left: 4px solid #ef4444;">
                     <div class="card-body" style="flex-direction:column; gap:10px;">
                         <div style="display:flex; justify-content:space-between;">
-                            <span class="${badgeClass}">${data.Issue_Type}</span>
+                            <span style="color:#ef4444; font-weight:bold;">${data.Issue_Type}</span>
                             <span style="font-size:0.8rem; color:#666;">${data.Source}</span>
                         </div>
-                        <div class="title" style="font-size:1.1rem;">${data.Channel_Name}</div>
+                        <div class="title">${data.Channel_Name}</div>
                         <div style="font-size:0.9rem; color:#aaa;">${data.Category}</div>
-                        <div class="client-info">Reported by: <span style="color:#fff;">${data.Client_Email || "Anonymous"}</span></div>
+                        <div class="client-info">By: <span style="color:#fff;">${data.Client_Email || "Anon"}</span></div>
                     </div>
-                    <div class="details-box">
-                        ${data.Description || "No details provided."}
-                    </div>
+                    <div class="details-box">${data.Description || "No details."}</div>
                     <div class="actions" style="justify-content:flex-end;">
-                        <button onclick="deleteItem('${id}')" class="delete-btn">Resolve & Delete</button>
+                        <button onclick="deleteItem('${id}', 'reports')" class="btn-delete">Resolve & Delete</button>
                     </div>
                 </div>
             `;
             grid.innerHTML += html;
         }
 
-        // --- DELETE FUNCTION ---
-        window.deleteItem = async function(id) {
-            if(!confirm("Mark as Complete/Resolved? This will delete the record.")) return;
+        // --- ACTIONS ---
+        window.markComplete = async function(id) {
+            if(!confirm("Mark this request as completed? It will move to History.")) return;
             try {
-                await deleteDoc(doc(db, currentCollection, id));
+                await updateDoc(doc(db, "requests", id), { status: "Completed" });
+                // Animate removal
                 document.getElementById(`card-${id}`).style.opacity = '0';
-                setTimeout(() => { document.getElementById(`card-${id}`).remove(); }, 300);
-            } catch (error) {
-                alert("Error deleting: " + error.message);
-            }
+                setTimeout(() => document.getElementById(`card-${id}`).remove(), 300);
+            } catch (error) { alert("Error: " + error.message); }
         }
 
-        // --- VISUALS JS ---
+        window.deleteItem = async function(id, collectionName) {
+            if(!confirm("Delete this record permanently?")) return;
+            try {
+                await deleteDoc(doc(db, collectionName, id));
+                document.getElementById(`card-${id}`).style.opacity = '0';
+                setTimeout(() => document.getElementById(`card-${id}`).remove(), 300);
+            } catch (error) { alert("Error: " + error.message); }
+        }
+
+        window.filterCards = function(text) {
+            const search = text.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                const txt = card.innerText.toLowerCase();
+                card.style.display = txt.includes(search) ? 'flex' : 'none';
+            });
+        }
+
+        // Visuals
         const canvas = document.getElementById("particle-canvas");
         const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        let particlesArray = [];
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-            }
-            update() {
-                this.x += this.speedX; this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(59, 130, 246, 0.3)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particlesArray = [];
-            for (let i = 0; i < 80; i++) particlesArray.push(new Particle());
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-                for (let j = i; j < particlesArray.length; j++) {
-                    const dx = particlesArray[i].x - particlesArray[j].x;
-                    const dy = particlesArray[i].y - particlesArray[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 100) {
-                        ctx.strokeStyle = `rgba(59, 130, 246, ${1 - dist/100})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initParticles();
-        });
-
-        initParticles();
-        animateParticles();
-
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particles = [];
+        class P { constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.vx=Math.random()*0.5-0.25;this.vy=Math.random()*0.5-0.25;this.s=Math.random()*2} update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>canvas.width)this.vx*=-1;if(this.y<0||this.y>canvas.height)this.vy*=-1} draw(){ctx.fillStyle='rgba(59,130,246,0.2)';ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fill()}}
+        function loop(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(loop)}
+        for(let i=0;i<60;i++)particles.push(new P()); loop();
     </script>
 </body>
 </html>
