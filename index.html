@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cool Facts About Animals</title>
+    <title>Mila's Koala Kingdom 🐨</title>
     <style>
-        /* --- GLOBAL VARIABLES & RESET --- */
+        /* --- GLOBAL VARIABLES & RESET (Koala Palette) --- */
         :root {
-            --primary: #FF6B6B; 
-            --secondary: #4ECDC4; 
-            --accent: #FFE66D; 
-            --dark: #292f36;
-            --light: #f7fff7;
-            --glass: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --primary: #8BA989; /* Eucalyptus Leaf Green */
+            --secondary: #A8BCC3; /* Soft Koala Grey/Blue */
+            --accent: #FFCBA4; /* Soft fuzzy peach/pink for ears */
+            --dark: #2F3E46; /* Dark forest green/grey */
+            --light: #F3F8F3; /* Off-white mist */
+            --glass: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.25);
         }
 
         * {
@@ -37,14 +37,14 @@
             100% { transform: translateY(0px); }
         }
 
-        /* NEW: Rich Animated Gradient Background */
+        /* Misty Forest Gradient */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* --- HERO SECTION (REVAMPED) --- */
+        /* --- HERO SECTION --- */
         header {
             height: 100vh;
             display: flex;
@@ -55,13 +55,13 @@
             position: relative;
             overflow: hidden;
             
-            /* The New "Nicer" Background */
-            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #11998e, #38ef7d);
+            /* The Misty Eucalyptus Background */
+            background: linear-gradient(-45deg, #2F3E46, #354F52, #52796F, #84A98C, #CAD2C5);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            animation: gradientBG 20s ease infinite;
         }
 
-        /* Texture Overlay for professional look */
+        /* Leafy Texture Overlay */
         header::before {
             content: "";
             position: absolute;
@@ -69,33 +69,32 @@
             left: 0;
             width: 100%;
             height: 100%;
+            /* Subtle dotted pattern */
             background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
+            background-size: 20px 20px;
             pointer-events: none;
         }
 
         .circle {
             position: absolute;
             border-radius: 50%;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            backdrop-filter: blur(2px);
-            animation: float 6s ease-in-out infinite;
+            background: linear-gradient(45deg, rgba(255,255,255,0.15), rgba(132, 169, 140, 0.2));
+            backdrop-filter: blur(5px);
+            animation: float 8s ease-in-out infinite;
             z-index: 1;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         .c1 { width: 300px; height: 300px; top: -50px; left: -50px; }
-        .c2 { width: 400px; height: 400px; bottom: -100px; right: -50px; animation-delay: 1s; }
-        .c3 { width: 150px; height: 150px; top: 20%; right: 10%; animation-delay: 2s; background: rgba(255, 230, 109, 0.1); }
+        .c2 { width: 400px; height: 400px; bottom: -100px; right: -50px; animation-delay: 2s; }
+        .c3 { width: 150px; height: 150px; top: 20%; right: 15%; animation-delay: 4s; background: rgba(255, 203, 164, 0.15); }
 
         .hero-content {
             z-index: 2;
             padding: 3rem;
             border-radius: 30px;
-            /* Stronger glass effect to pop against the colorful background */
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            background: rgba(47, 62, 70, 0.5); /* Darker glass for contrast */
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             max-width: 90%;
         }
 
@@ -111,9 +110,10 @@
         }
 
         p.subtitle {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin-bottom: 2rem;
-            color: #ddd;
+            color: var(--accent);
+            font-weight: bold;
         }
 
         .btn {
@@ -121,11 +121,11 @@
             font-size: 1.2rem;
             border: none;
             border-radius: 50px;
-            background: #fff;
-            color: #2c5364;
+            background: var(--light);
+            color: var(--dark);
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
             text-decoration: none;
             display: inline-block;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
@@ -145,7 +145,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #202020;
+            /* Dark Eucalyptus background */
+            background: #354F52; 
             position: relative;
             transition: background 0.5s ease;
         }
@@ -162,18 +163,16 @@
             flex: 1;
             min-width: 300px;
             height: 500px;
-            background: 
-                radial-gradient(circle at 70% 20%, black 2%, transparent 3%),
-                conic-gradient(from 45deg at 50% 50%, #e6a726 25%, #8b4513 25%, #8b4513 50%, #e6a726 50%, #e6a726 75%, #8b4513 75%);
-            background-size: 100px 100px; 
+            /* Initial Koala Fur Pattern */
+            background: radial-gradient(circle at 50% 50%, #A8BCC3 0%, #889a9f 100%);
             border-radius: 30px;
-            box-shadow: 20px 20px 0 var(--accent);
+            box-shadow: 20px 20px 0 var(--primary);
             position: relative;
             transition: all 0.5s ease;
         }
 
         .animal-visual::after {
-            content: "🦒";
+            content: "🐨";
             position: absolute;
             font-size: 15rem;
             top: 50%;
@@ -198,30 +197,37 @@
             margin-bottom: 1rem;
         }
 
+        .tag {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-weight: bold;
+        }
+
         .stat-box {
             background: var(--glass);
             padding: 1rem;
             margin: 1rem 0;
-            border-left: 5px solid var(--primary);
+            border-left: 5px solid var(--accent);
             border-radius: 0 10px 10px 0;
         }
 
-        /* --- ANIMAL GRID --- */
+        /* --- GRID SECTION --- */
         .gallery {
             padding: 4rem 2rem;
-            background: #1a1a2e;
+            background: #2F3E46; /* Darker forest floor */
         }
 
         .section-title {
             text-align: center;
             font-size: 3rem;
             margin-bottom: 3rem;
-            color: var(--secondary);
+            color: var(--primary);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
@@ -241,9 +247,9 @@
 
         .card:hover {
             transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--secondary);
-            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(139, 169, 137, 0.3);
         }
 
         .card-emoji {
@@ -251,8 +257,11 @@
             margin-bottom: 1rem;
             display: inline-block;
             transition: 0.4s;
+            text-shadow: 0 5px 10px rgba(0,0,0,0.2);
         }
         
+        .card h3 { color: var(--secondary); }
+
         .click-hint {
             font-size: 0.8rem;
             color: var(--accent);
@@ -262,13 +271,13 @@
         }
         
         .card:hover .click-hint { opacity: 1; }
-        .card:hover .card-emoji { transform: scale(1.2) rotate(10deg); }
+        .card:hover .card-emoji { transform: scale(1.2) rotate(5deg); }
 
         footer {
             text-align: center;
             padding: 2rem;
-            background: #000;
-            color: #666;
+            background: #1f2b30;
+            color: var(--secondary);
         }
 
         @media (max-width: 768px) {
@@ -286,9 +295,9 @@
         <div class="circle c3"></div>
         
         <div class="hero-content">
-            <h1>Cool Facts About Animals</h1>
-            <p class="subtitle">Explore the wild side of nature (Strictly No Turtles)</p>
-            <a href="#spotlight" class="btn">Start Adventure</a>
+            <h1>Mila's Koala Kingdom</h1>
+            <p class="subtitle">Welcome to the fluffiest, sleepiest place on Earth, Mila! 🐨💖</p>
+            <a href="#spotlight" class="btn">Meet the Koalas</a>
         </div>
     </header>
 
@@ -297,116 +306,122 @@
             <div id="spotlight-visual" class="animal-visual"></div>
             
             <div id="spotlight-info" class="animal-info">
-                <span id="spotlight-tag" class="tag" style="background:var(--primary); padding: 5px 15px; border-radius: 20px;">The Superstar</span>
-                <h2 id="spotlight-name">The Giraffe</h2>
-                <p id="spotlight-desc">The tallest mammals on Earth and the coolest neck-stretchers in the savannah. Did you know a giraffe's neck is too short to reach the ground? They have to spread their legs just to drink water!</p>
+                <span id="spotlight-tag" class="tag" style="background:var(--accent); padding: 5px 15px; border-radius: 20px;">The Sleepy Superstar</span>
+                <h2 id="spotlight-name">The Koala</h2>
+                <p id="spotlight-desc">Hi Mila! I look like a teddy bear, but I'm actually a marsupial (like a kangaroo!). I spend most of my life high up in eucalyptus trees chilling out.</p>
                 
                 <div class="stat-box" id="stat1">
-                    <strong>Height:</strong> Up to 5.5 meters (18 ft)
+                    <strong>Favorite Food:</strong> Eucalyptus leaves (Yum!)
                 </div>
                 <div class="stat-box" id="stat2">
-                    <strong>Tongue Color:</strong> Purple/Black (Natural sunscreen!)
+                    <strong>Sleep:</strong> Up to 20 hours a day! 😴
                 </div>
                 <div class="stat-box" id="stat3">
-                    <strong>Sleep:</strong> Only 30 minutes a day!
+                    <strong>Home:</strong> Australia 🇦🇺
                 </div>
                 <br>
-                <button class="btn" onclick="celebrate()">Give it a High Five! ✋</button>
+                <button class="btn" onclick="celebrate()">Give it some leaves! 🍃</button>
             </div>
         </div>
     </section>
 
     <section class="gallery">
-        <h2 class="section-title">The Cool Crew <br><span style="font-size:1rem; color:#aaa">(Click one to feature it!)</span></h2>
+        <h2 class="section-title">Mila's Koala Facts <br><span style="font-size:1rem; color:var(--secondary)">(Click to learn more about them!)</span></h2>
         <div class="grid">
             
             <div class="card" 
                  onclick="updateSpotlight(this)"
-                 data-name="The Giraffe"
-                 data-emoji="🦒"
-                 data-desc="The tallest mammals on Earth. Their neck is too short to reach the ground so they have to spread their legs just to drink water!"
-                 data-s1="Height: Up to 5.5 meters"
-                 data-s2="Tongue: Purple/Black"
-                 data-s3="Sleep: Only 30 mins a day"
-                 data-bg="conic-gradient(from 45deg at 50% 50%, #e6a726 25%, #8b4513 25%, #8b4513 50%, #e6a726 50%, #e6a726 75%, #8b4513 75%)"
-                 data-color="#e6a726">
-                <div class="card-emoji">🦒</div>
-                <h3>Giraffe</h3>
+                 data-name="The Classic Koala"
+                 data-emoji="🐨"
+                 data-tag="The Sleepy Superstar"
+                 data-desc="Hi Mila! I look like a teddy bear, but I'm actually a marsupial. I spend most of my life high up in eucalyptus trees chilling out."
+                 data-s1="Favorite Food: Eucalyptus leaves"
+                 data-s2="Sleep: Up to 20 hours a day!"
+                 data-s3="Home: Australia 🇦🇺"
+                 data-bg="radial-gradient(circle at 50% 50%, #A8BCC3 0%, #889a9f 100%)"
+                 data-color="#FFCBA4">
+                <div class="card-emoji">🐨</div>
+                <h3>The Classic</h3>
                 <div class="click-hint">Click to Feature</div>
             </div>
 
             <div class="card" 
                  onclick="updateSpotlight(this)"
-                 data-name="African Elephant"
-                 data-emoji="🐘"
-                 data-desc="The largest land animal! They are incredibly smart, can recognize themselves in mirrors, and never forget a face."
-                 data-s1="Weight: Up to 6,000 kg"
-                 data-s2="Trunk: 40,000 muscles"
-                 data-s3="Skin: 2.5 cm thick"
-                 data-bg="repeating-linear-gradient(45deg, #606c88, #606c88 10px, #3f4c6b 10px, #3f4c6b 20px)"
-                 data-color="#606c88">
-                <div class="card-emoji">🐘</div>
-                <h3>Elephant</h3>
+                 data-name="The Picky Eater"
+                 data-emoji="🌿"
+                 data-tag="Snack Time Champion"
+                 data-desc="Koalas are super picky! There are over 700 types of eucalyptus trees, but koalas will only eat about 50 of them. They are food critics!"
+                 data-s1="Amount Eaten: 1 kg of leaves per day"
+                 data-s2="Smell Power: They sniff leaves to check for poison"
+                 data-s3="Water: They get most water from the leaves!"
+                 data-bg="linear-gradient(120deg, #8BA989 0%, #52796F 100%)"
+                 data-color="#8BA989">
+                <div class="card-emoji">🌿</div>
+                <h3>The Eater</h3>
                 <div class="click-hint">Click to Feature</div>
             </div>
 
             <div class="card" 
                  onclick="updateSpotlight(this)"
-                 data-name="The Octopus"
-                 data-emoji="🐙"
-                 data-desc="The alien of the sea! They have three hearts, blue blood, and can change color instantly to hide from predators."
-                 data-s1="Hearts: 3"
-                 data-s2="Brain: 9 (one in each arm!)"
-                 data-s3="Bones: 0"
-                 data-bg="radial-gradient(circle, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)"
-                 data-color="#ff9a9e">
-                <div class="card-emoji">🐙</div>
-                <h3>Octopus</h3>
+                 data-name="The Baby Joey"
+                 data-emoji="👶"
+                 data-tag="Tiny & Cute"
+                 data-desc="A baby koala is called a 'joey'. When they are born, they are the size of a jellybean! They stay in their mom's pouch for 6 months."
+                 data-s1="Birth Size: 2 centimeters long"
+                 data-s2="Pouch Time: 6-7 Months"
+                 data-s3="Riding Style: On mom's back after leaving the pouch"
+                 data-bg="radial-gradient(circle, #FFCBA4 0%, #e0a884 100%)"
+                 data-color="#FFCBA4">
+                <div class="card-emoji">👶</div>
+                <h3>The Joey</h3>
                 <div class="click-hint">Click to Feature</div>
             </div>
 
             <div class="card" 
                  onclick="updateSpotlight(this)"
-                 data-name="The Sloth"
-                 data-emoji="🦥"
-                 data-desc="The chillest animal on earth. They move so slowly that algae actually grows on their fur, turning them green!"
-                 data-s1="Speed: 0.27 km/h"
-                 data-s2="Sleep: 15-20 hours"
-                 data-s3="Bathroom: Once a week"
-                 data-bg="linear-gradient(to top, #c471ed 0%, #f64f59 100%)"
-                 data-color="#c471ed">
-                <div class="card-emoji">🦥</div>
-                <h3>Sloth</h3>
+                 data-name="The Pro Napper"
+                 data-emoji="💤"
+                 data-tag="Do Not Disturb"
+                 data-desc="Why do they sleep so much? Eucalyptus leaves give them very little energy and are hard to digest. Sleeping saves their energy!"
+                 data-s1="Awake Time: Only 4 hours a day"
+                 data-s2="Activity: Mostly eating at night"
+                 data-s3="Bed: A comfy tree fork"
+                 data-bg="linear-gradient(to top, #4a5e66 0%, #A8BCC3 100%)"
+                 data-color="#A8BCC3">
+                <div class="card-emoji">💤</div>
+                <h3>The Sleeper</h3>
                 <div class="click-hint">Click to Feature</div>
             </div>
 
             <div class="card" 
                  onclick="updateSpotlight(this)"
-                 data-name="The Lion"
-                 data-emoji="🦁"
-                 data-desc="The King of the Jungle. A lion's roar can be heard from 5 miles away!"
-                 data-s1="Roar: 114 Decibels"
-                 data-s2="Speed: 80 km/h"
-                 data-s3="Sleep: 20 hours a day"
-                 data-bg="linear-gradient(120deg, #f6d365 0%, #fda085 100%)"
-                 data-color="#f6d365">
-                <div class="card-emoji">🦁</div>
-                <h3>Lion</h3>
+                 data-name="The Tree Hugger"
+                 data-emoji="🌳"
+                 data-tag="Acrobat Mode"
+                 data-desc="They have super sharp claws and two thumbs on their front paws to help them grip branches tightly. They literally hug trees to stay cool!"
+                 data-s1="Paws: Two opposable thumbs!"
+                 data-s2="Claws: Very sharp for climbing"
+                 data-s3="Cooling Trick: Hugging cold tree trunks"
+                 data-bg="repeating-linear-gradient(45deg, #6d4c41, #6d4c41 10px, #5d4037 10px, #5d4037 20px)"
+                 data-color="#FFCBA4">
+                <div class="card-emoji">🌳</div>
+                <h3>The Climber</h3>
                 <div class="click-hint">Click to Feature</div>
             </div>
 
             <div class="card" 
                  onclick="updateSpotlight(this)"
-                 data-name="Emperor Penguin"
-                 data-emoji="🐧"
-                 data-desc="The toughest birds on ice. They survive -60°C winters and huddle together to keep warm."
-                 data-s1="Dive: 500+ meters deep"
-                 data-s2="Breath: Hold for 20 mins"
-                 data-s3="Location: Antarctica"
-                 data-bg="linear-gradient(to top, #00c6fb 0%, #005bea 100%)"
-                 data-color="#00c6fb">
-                <div class="card-emoji">🐧</div>
-                <h3>Penguin</h3>
+                 data-name="The Secret Swimmer"
+                 data-emoji="🏊"
+                 data-tag="Rare Talent"
+                 data-desc="Bet you didn't know this, Mila! Even though they live in trees, koalas are actually pretty good swimmers if they fall into water."
+                 data-s1="Swimming Style: Doggy paddle"
+                 data-s2="Frequency: Very rare!"
+                 data-s3="Reason: Usually to escape danger"
+                 data-bg="linear-gradient(to bottom, #A8BCC3 0%, #52796F 100%)"
+                 data-color="#8BA989">
+                <div class="card-emoji">🏊</div>
+                <h3>The Swimmer</h3>
                 <div class="click-hint">Click to Feature</div>
             </div>
 
@@ -414,13 +429,15 @@
     </section>
 
     <footer>
-        <p>© 2026 Cool Facts About Animals</p>
+        <p>© 2026 Mila's Koala Kingdom - Made with 💖 and Eucalyptus 🍃</p>
     </footer>
 
     <script>
         function updateSpotlight(element) {
+            // 1. Get Data from clicked card
             const name = element.getAttribute('data-name');
             const emoji = element.getAttribute('data-emoji');
+            const tag = element.getAttribute('data-tag');
             const desc = element.getAttribute('data-desc');
             const s1 = element.getAttribute('data-s1');
             const s2 = element.getAttribute('data-s2');
@@ -428,39 +445,51 @@
             const bgPattern = element.getAttribute('data-bg');
             const mainColor = element.getAttribute('data-color');
 
+            // 2. Select Spotlight Elements
             const infoBox = document.getElementById('spotlight-info');
             const visualBox = document.getElementById('spotlight-visual');
             const title = document.getElementById('spotlight-name');
+            const tagBox = document.getElementById('spotlight-tag');
             const description = document.getElementById('spotlight-desc');
             const stat1 = document.getElementById('stat1');
             const stat2 = document.getElementById('stat2');
             const stat3 = document.getElementById('stat3');
 
+            // 3. Scroll to top smoothy
             document.getElementById('spotlight').scrollIntoView({ behavior: 'smooth' });
 
+            // 4. Add fade-out effect
             infoBox.classList.add('fade-out');
             visualBox.style.transform = "scale(0.9) rotate(-5deg)";
             visualBox.style.opacity = "0";
 
+            // 5. Swap Content after short delay
             setTimeout(() => {
+                // Update Text
                 title.innerText = name;
+                tagBox.innerText = tag;
                 description.innerText = desc;
                 stat1.innerHTML = `<strong>Fact 1:</strong> ${s1}`;
                 stat2.innerHTML = `<strong>Fact 2:</strong> ${s2}`;
                 stat3.innerHTML = `<strong>Fact 3:</strong> ${s3}`;
 
+                // Update Visuals
                 visualBox.style.background = bgPattern;
                 visualBox.style.boxShadow = `20px 20px 0 ${mainColor}`;
                 
+                // Inject emoji
                 const styleSheet = document.createElement("style");
                 styleSheet.innerText = `#spotlight-visual::after { content: "${emoji}" !important; }`;
                 document.head.appendChild(styleSheet);
 
+                // Update Colors
                 title.style.color = mainColor;
+                tagBox.style.background = mainColor;
                 document.querySelectorAll('.stat-box').forEach(box => {
                     box.style.borderLeftColor = mainColor;
                 });
 
+                // 6. Fade In
                 infoBox.classList.remove('fade-out');
                 visualBox.style.transform = "scale(1) rotate(0deg)";
                 visualBox.style.opacity = "1";
@@ -468,6 +497,7 @@
         }
 
         function celebrate() {
+            // Create a burst of LEAVES 🍃 instead of confetti
             for(let i=0; i<30; i++) {
                 createFloatingEmoji();
             }
@@ -475,23 +505,27 @@
 
         function createFloatingEmoji() {
             const emoji = document.createElement('div');
-            emoji.innerText = "🎉"; 
+            emoji.innerText = "🍃"; // Eucalyptus leaf!
             emoji.style.position = 'fixed';
             emoji.style.left = Math.random() * 100 + 'vw';
             emoji.style.top = '100vh';
+            // Randomized size and rotation for natural look
             emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
-            emoji.style.transition = 'all 2s ease-out';
+            emoji.style.transform = `rotate(${Math.random() * 360}deg)`;
+            emoji.style.transition = 'all 3s ease-out';
             emoji.style.zIndex = '9999';
             emoji.style.pointerEvents = 'none';
             document.body.appendChild(emoji);
 
             setTimeout(() => {
-                emoji.style.transform = `translateY(-120vh) rotate(${Math.random() * 360}deg)`;
+                // Float up and slightly sideways
+                emoji.style.transform = `translate(${Math.random() * 200 - 100}px, -120vh) rotate(${Math.random() * 720}deg)`;
+                emoji.style.opacity = 0;
             }, 50);
 
             setTimeout(() => {
                 emoji.remove();
-            }, 2000);
+            }, 3000);
         }
     </script>
 </body>
