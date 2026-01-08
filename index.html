@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reylo Entertainment | Elite Media Systems</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Reylo Entertainment | World of Entertainment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #030305;
-            --card-bg: rgba(20, 20, 25, 0.6);
+            --card-bg: rgba(255, 255, 255, 0.03);
             --accent: #3b82f6; /* Electric Blue */
-            --accent-glow: rgba(59, 130, 246, 0.5);
+            --accent-glow: rgba(59, 130, 246, 0.4);
             --text: #ffffff;
-            --text-muted: #a1a1aa;
-            --border: rgba(255, 255, 255, 0.1);
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; scroll-behavior: smooth; }
@@ -23,26 +23,22 @@
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
-            font-size: 16px;
         }
 
-        /* --- COOL ANIMATED BACKGROUND --- */
+        /* --- CINEMATIC BACKGROUND ANIMATION --- */
         .bg-animation {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #1a1b4b 0%, #000000 70%);
+            background: radial-gradient(circle at 50% 50%, #0f172a 0%, #000000 80%);
         }
         
         .blob {
-            position: absolute;
-            filter: blur(80px);
-            opacity: 0.4;
-            animation: float 20s infinite ease-in-out;
-            border-radius: 50%;
+            position: absolute; filter: blur(90px); opacity: 0.3;
+            animation: float 25s infinite ease-in-out; border-radius: 50%;
         }
         
-        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #4c1d95; animation-delay: 0s; }
-        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #0f4c75; animation-delay: -5s; }
-        .blob-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: #be185d; opacity: 0.2; animation-delay: -10s; }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #3b82f6; animation-delay: 0s; } /* Blue */
+        .blob-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: #4f46e5; animation-delay: -5s; } /* Indigo */
+        .blob-3 { top: 40%; left: 30%; width: 40vw; height: 40vw; background: #06b6d4; opacity: 0.2; animation-delay: -10s; } /* Cyan */
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
@@ -51,22 +47,24 @@
             100% { transform: translate(0, 0) scale(1); }
         }
 
-        /* --- GLASSMORPHISM UTILITIES --- */
+        /* --- UTILITIES --- */
         .glass {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border);
         }
 
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
         /* --- NAV --- */
         nav {
-            padding: 25px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 25px 0;
             position: fixed; width: 100%; top: 0; z-index: 100;
             background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
         }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
         .logo span { color: var(--accent); }
 
@@ -74,78 +72,77 @@
         .hero {
             min-height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 0 20px;
-            padding-top: 80px; /* Offset for fixed nav */
+            text-align: center; padding-top: 80px;
         }
 
         h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
-            line-height: 1.1; margin-bottom: 25px; font-weight: 700;
-            background: linear-gradient(to bottom right, #fff, #aaa);
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            line-height: 1.05; margin-bottom: 30px; font-weight: 700;
+            background: linear-gradient(to bottom right, #ffffff 30%, #94a3b8);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin-bottom: 40px; }
+        .hero p { font-size: 1.25rem; color: var(--text-muted); max-width: 700px; margin-bottom: 50px; }
 
         .btn {
             padding: 18px 45px; background: var(--accent); color: white;
             font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
             border-radius: 50px; text-decoration: none; transition: 0.3s;
-            box-shadow: 0 0 20px var(--accent-glow);
-            border: 1px solid var(--accent);
+            box-shadow: 0 0 30px var(--accent-glow); border: 1px solid var(--accent);
         }
-        .btn:hover { background: transparent; box-shadow: 0 0 40px var(--accent-glow); transform: scale(1.05); }
+        .btn:hover { background: transparent; box-shadow: 0 0 50px var(--accent-glow); transform: scale(1.05); }
+
+        /* --- WHY REYLO SECTION --- */
+        .features { padding: 100px 0; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 50px; }
+        .feature-card { padding: 40px; border-radius: 20px; transition: 0.3s; }
+        .feature-card:hover { background: rgba(255,255,255,0.05); transform: translateY(-5px); }
+        .feature-icon { font-size: 2rem; color: var(--accent); margin-bottom: 20px; }
 
         /* --- HARDWARE SECTION --- */
-        .hardware { padding: 100px 5%; max-width: 1400px; margin: 0 auto; }
+        .hardware { padding: 80px 0; }
+        .section-header { text-align: center; margin-bottom: 80px; }
+        .section-header h2 { font-size: 3rem; margin-bottom: 20px; }
         
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: 2.5rem; margin-bottom: 15px; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .hardware-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 
         .device-card {
-            border-radius: 20px; padding: 40px 30px;
+            border-radius: 24px; padding: 40px 30px;
             display: flex; flex-direction: column; align-items: center; text-align: center;
             transition: 0.4s; position: relative; overflow: hidden;
         }
 
-        .device-card:hover { transform: translateY(-10px); border-color: var(--accent); }
-        .device-card:hover::before { opacity: 0.2; }
-
-        /* Glow effect on hover */
-        .device-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 0%, var(--accent), transparent 70%);
-            opacity: 0; transition: 0.4s; pointer-events: none;
+        .device-card:hover { transform: translateY(-15px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        
+        /* Image styling */
+        .device-img-container {
+            width: 100%; height: 250px; display: flex; align-items: center; justify-content: center;
+            margin-bottom: 30px;
         }
+        .device-img-container img {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); transition: 0.3s;
+        }
+        .device-card:hover img { transform: scale(1.05); }
 
         .badge {
             font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
-            padding: 5px 12px; border-radius: 20px; margin-bottom: 20px;
+            padding: 8px 16px; border-radius: 20px; margin-bottom: 20px;
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
         }
-        
-        .device-img {
-            height: 150px; width: 100%; display: flex; align-items: center; justify-content: center;
-            margin-bottom: 20px; background: rgba(0,0,0,0.3); border-radius: 10px;
-            font-size: 3rem; color: #444; /* Placeholder for image */
-        }
 
-        /* --- CONTACT FORM --- */
-        .contact { padding: 100px 5%; display: flex; justify-content: center; }
-        .form-box {
-            width: 100%; max-width: 700px; padding: 60px; border-radius: 20px;
-        }
+        /* --- LEAD FORM --- */
+        .contact { padding: 100px 0; display: flex; justify-content: center; }
+        .form-box { width: 100%; max-width: 800px; padding: 60px; border-radius: 30px; }
 
         input, select, textarea {
-            width: 100%; padding: 15px; background: rgba(0,0,0,0.4); border: 1px solid #333;
-            color: white; border-radius: 8px; margin-bottom: 20px; font-size: 1rem;
+            width: 100%; padding: 18px; background: rgba(0,0,0,0.4); border: 1px solid #333;
+            color: white; border-radius: 12px; margin-bottom: 20px; font-size: 1rem;
         }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
-        label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
+        label { display: block; margin-bottom: 10px; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-        footer { padding: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; color: #666; }
+        footer { padding: 50px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; color: #666; }
 
     </style>
 </head>
@@ -158,60 +155,97 @@
     </div>
 
     <nav>
-        <div class="logo">REYLO <span>ENTERTAINMENT</span></div>
-        <a href="#audit" style="color:white; text-decoration:none; font-weight:bold;">Client Login</a>
+        <div class="container nav-inner">
+            <div class="logo">REYLO <span>ENTERTAINMENT</span></div>
+            <a href="#consult" style="color:white; text-decoration:none; font-weight:600;">System Audit</a>
+        </div>
     </nav>
 
-    <header class="hero">
-        <div class="badge" style="color: var(--accent); border-color: var(--accent);">Next-Gen Media Architecture</div>
-        <h1>The Ultimate<br>Home Theater.</h1>
-        <p>Stop struggling with cheap sticks and buffering. Reylo Entertainment engineers high-performance, unified streaming systems powered by the world's most advanced dedicated media processors.</p>
-        <a href="#hardware" class="btn">View The Hardware</a>
+    <header class="hero container">
+        <div class="badge" style="color: var(--accent); border-color: var(--accent); background: rgba(59,130,246,0.1);">Elite Media Systems</div>
+        <h1>Unlock a World of<br>Entertainment.</h1>
+        <p>We combine concierge-level consultancy with the world's most powerful Formuler streaming hardware. Tell us what you love to watch, and we will engineer the perfect cinematic experience for your home.</p>
+        <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+            <a href="#hardware" class="btn" style="background:transparent; border:1px solid rgba(255,255,255,0.3); box-shadow:none;">View Devices</a>
+            <a href="#consult" class="btn">Get Started</a>
+        </div>
     </header>
 
-    <section class="hardware" id="hardware">
+    <section class="features container">
+        <div class="feature-grid">
+            <div class="feature-card glass">
+                <div class="feature-icon">⚡</div>
+                <h3>Powered by Formuler</h3>
+                <p style="color:var(--text-muted)">We exclusively utilize Formuler devices because they are the industry standard for IPTV stability. No crashing. No lag. Just performance.</p>
+            </div>
+            <div class="feature-card glass">
+                <div class="feature-icon">📺</div>
+                <h3>MyTVOnline 3</h3>
+                <p style="color:var(--text-muted)">Experience the best interface in the world. Pause live TV, record shows, and navigate a beautiful guide that feels better than cable.</p>
+            </div>
+            <div class="feature-card glass">
+                <div class="feature-icon">🎯</div>
+                <h3>Tailored To You</h3>
+                <p style="color:var(--text-muted)">Whether you love Premier League, NFL, or International Movies, we curate a server package that fits your specific viewing habits and budget.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="hardware container" id="hardware">
         <div class="section-header">
-            <h2>The Formuler Advantage</h2>
-            <p style="color:var(--text-muted)">We exclusively deploy <strong>Formuler</strong> architecture. Why? Because generic Android boxes cannot handle the bitrate we deliver.</p>
+            <h2>The Hardware.</h2>
+            <p style="color:var(--text-muted); max-width:600px; margin:0 auto;">
+                A great stream needs a great engine. We deploy hardware capable of <strong>AV1 Decoding</strong> and 4K HDR processing.
+            </p>
         </div>
 
-        <div class="grid">
+        <div class="hardware-grid">
             
-            <div class="device-card glass" style="border-color: var(--accent);">
+            <div class="device-card glass" style="border: 1px solid var(--accent);">
                 <div class="badge" style="background: var(--accent); color: white; border:none;">Reylo Recommended</div>
-                <div class="device-img" style="color: var(--accent);">Z11</div> <h3>Formuler Z11 Pro Max</h3>
+                <div class="device-img-container">
+                    <img src="z11.jpg" alt="Formuler Z11 Pro Max">
+                </div>
+                <h3>Formuler Z11 Pro Max</h3>
                 <p style="color:var(--text-muted); font-size:0.9rem; margin-top:10px;">
-                    The undisputed king. 4GB RAM, Gigabit Ethernet, and WiFi 6. Powered by <strong>MyTVOnline3</strong> for instant channel zapping and professional DVR capabilities.
+                    The fastest media streamer on the market. 4GB RAM, WiFi 6, and Gigabit Ethernet. The ultimate choice for serious 4K enthusiasts who want zero compromises.
                 </p>
-                <div style="margin-top:20px; font-weight:bold; font-size:1.2rem;">Flagship Performance</div>
             </div>
 
             <div class="device-card glass">
-                <div class="badge">Compact Powerhouse</div>
-                <div class="device-img">MINI</div> <h3>Formuler Z Mini</h3>
+                <div class="badge">Stealth Edition</div>
+                <div class="device-img-container">
+                    <img src="z mini.jpg" alt="Formuler Z Mini">
+                </div>
+                <h3>Formuler Z Mini</h3>
                 <p style="color:var(--text-muted); font-size:0.9rem; margin-top:10px;">
-                    Don't let the size fool you. This dongle hides behind your TV but packs the same processor as the big boys. Includes the premium BT1 remote.
+                    Don't let the size fool you. This powerful dongle hides behind your TV but runs the full MyTVOnline3 experience. Includes the premium BT1 remote.
                 </p>
-                <div style="margin-top:20px; font-weight:bold; font-size:1.2rem;">Stealth Setup</div>
             </div>
 
             <div class="device-card glass">
                 <div class="badge">Entry Level</div>
-                <div class="device-img">Z10</div> <h3>Formuler Z10 Pro</h3>
+                <div class="device-img-container">
+                    <img src="z10.jpg" alt="Formuler Z10">
+                </div>
+                <h3>Formuler Z10</h3>
                 <p style="color:var(--text-muted); font-size:0.9rem; margin-top:10px;">
-                    The reliability standard. Perfect for guest rooms or secondary setups. Delivers stable 4K decoding at an accessible entry point.
+                    The reliability standard. Perfect for guest rooms or secondary setups. Delivers stable 4K decoding at our most accessible price point.
                 </p>
-                <div style="margin-top:20px; font-weight:bold; font-size:1.2rem;">Standard Definition</div>
             </div>
 
         </div>
     </section>
 
-    <section class="contact" id="audit">
+    <section class="contact container" id="consult">
         <div class="form-box glass">
-            <h2 style="font-size:2rem; margin-bottom:10px; text-align:center;">Build Your System</h2>
-            <p style="color:var(--text-muted); text-align:center; margin-bottom:40px;">Tell us what you need. We'll design the package.</p>
-            
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="font-size: 2.5rem;">Let's Build Your Setup.</h2>
+                <p style="color: var(--text-muted); margin-top: 10px;">
+                    Tell us what you watch. We will design a hardware & subscription package that fits your budget perfectly.
+                </p>
+            </div>
+
             <form action="https://formspree.io/f/YOUR_ID_HERE" method="POST">
                 
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
@@ -225,33 +259,46 @@
                     </div>
                 </div>
 
-                <label>Preferred Hardware</label>
-                <select name="device">
-                    <option value="Unsure">I need advice</option>
-                    <option value="Z11 Pro Max">Formuler Z11 Pro Max (Best)</option>
-                    <option value="Z Mini">Formuler Z Mini (Stealth)</option>
-                    <option value="Z10">Formuler Z10 (Budget)</option>
-                    <option value="Own Device">I already have a device</option>
-                </select>
+                <label>What do you love to watch? (Be Specific)</label>
+                <textarea name="interests" rows="3" placeholder="e.g. English Premier League, Netflix Movies, Australian TV, Formula 1..."></textarea>
 
-                <label>Internet Connection Type</label>
-                <select name="internet">
-                    <option value="WiFi">WiFi (Wireless)</option>
-                    <option value="Ethernet">Ethernet (Hardwired)</option>
-                </select>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                    <div>
+                        <label>Preferred Device</label>
+                        <select name="device">
+                            <option value="Advice Needed">I need advice</option>
+                            <option value="Z11 Pro Max">Z11 Pro Max (Best)</option>
+                            <option value="Z Mini">Z Mini (Stealth)</option>
+                            <option value="Z10">Z10 (Budget)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Budget Level</label>
+                        <select name="budget">
+                            <option value="Premium">Premium Experience</option>
+                            <option value="Value">Best Value</option>
+                            <option value="Budget">Tight Budget</option>
+                        </select>
+                    </div>
+                </div>
 
-                <label>Message / Requirements</label>
-                <textarea name="message" rows="3" placeholder="I want to watch sports, movies, etc..."></textarea>
-
-                <button type="submit" class="btn" style="width:100%; cursor:pointer;">Request Consultation</button>
-
+                <button type="submit" class="btn" style="width:100%; cursor:pointer; margin-top:20px;">Get My Custom Plan</button>
+                <p style="font-size: 0.8rem; color: #666; text-align: center; margin-top: 20px;">
+                    Your information is private. We do not spam.
+                </p>
             </form>
-            </div>
+
+        </div>
     </section>
 
     <footer>
-        &copy; 2026 Reylo Entertainment.<br>
-        We are hardware consultants. We do not host or broadcast any content.
+        <div class="container">
+            <p>&copy; 2026 Reylo Entertainment.</p>
+            <p style="font-size: 0.8rem; opacity: 0.5; margin-top:10px;">
+                Reylo Entertainment provides hardware consultancy and system optimization. <br>
+                We do not host or broadcast any content directly.
+            </p>
+        </div>
     </footer>
 
 </body>
