@@ -9,206 +9,98 @@
     <style>
         :root {
             --bg: #020203;
-            --surface: #0f1014;
-            --accent: #3b82f6; /* Electric Blue */
+            --accent: #3b82f6;
             --accent-glow: rgba(59, 130, 246, 0.6);
             --text: #ffffff;
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
-
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center;
-            padding: 40px 20px;
-            overflow-x: hidden;
+            background-color: var(--bg); color: var(--text); min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center; padding: 40px 20px; overflow-x: hidden;
         }
-
-        /* ATMOSPHERIC GLOW */
         #glow-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            pointer-events: none;
-            background: 
-                radial-gradient(circle at 50% -20%, rgba(59, 130, 246, 0.4) 0%, transparent 60%),
-                radial-gradient(circle at 100% 50%, rgba(124, 58, 237, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 0% 50%, rgba(6, 182, 212, 0.25) 0%, transparent 50%);
-            animation: pulseGlow 8s ease-in-out infinite alternate;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none;
+            background: radial-gradient(circle at 50% -20%, rgba(59, 130, 246, 0.4) 0%, transparent 60%);
         }
-
-        @keyframes pulseGlow {
-            0% { opacity: 0.7; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.05); }
-        }
-
-        /* PARTICLE CANVAS */
-        #particle-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-        }
-
-        /* --- THE ULTRA-GLASS CONTAINER --- */
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        
         .main-container {
             width: 100%; max-width: 650px;
-            backdrop-filter: blur(60px) saturate(150%);
-            -webkit-backdrop-filter: blur(60px) saturate(150%);
-            background: rgba(10, 10, 16, 0.5);
-            border-top: 2px solid rgba(255, 255, 255, 0.6);
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
-            border-bottom: 3px solid rgba(0, 0, 0, 0.5);
-            box-shadow: 
-                inset 0 0 40px rgba(59, 130, 246, 0.15),
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                -10px -10px 40px rgba(124, 58, 237, 0.15),
-                10px 10px 40px rgba(6, 182, 212, 0.15),
-                0 40px 80px rgba(0, 0, 0, 0.9),
-                0 0 100px rgba(59, 130, 246, 0.3);
-            border-radius: 24px;
-            overflow: visible;
-            position: relative;
-            margin-top: 30px;
+            background: rgba(10, 10, 16, 0.5); backdrop-filter: blur(60px);
+            border-top: 2px solid rgba(255,255,255,0.6); border-bottom: 3px solid rgba(0,0,0,0.5);
+            border-left: 1px solid rgba(255,255,255,0.2); border-right: 1px solid rgba(255,255,255,0.2);
+            border-radius: 24px; overflow: visible; margin-top: 30px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.9);
         }
-
         .header {
-            text-align: center; padding: 35px;
-            border-bottom: 1px solid var(--border);
-            background: linear-gradient(to bottom, rgba(59, 130, 246, 0.08), transparent);
-            border-radius: 24px 24px 0 0;
-            position: relative;
+            text-align: center; padding: 35px; border-bottom: 1px solid var(--border);
+            background: linear-gradient(to bottom, rgba(59, 130, 246, 0.08), transparent); border-radius: 24px 24px 0 0;
         }
-        
-        .header::before {
-            content: ''; position: absolute; top: 0; left: 20%; width: 60%; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
-            box-shadow: 0 0 15px rgba(255,255,255,0.5);
-        }
-
-        .logo { font-size: 1.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+        .logo { font-size: 1.75rem; font-weight: 700; letter-spacing: 3px; }
         .logo span { color: var(--accent); text-shadow: 0 0 25px var(--accent); }
-
+        
         .tabs { display: flex; border-bottom: 1px solid var(--border); }
         .tab-btn {
-            flex: 1; padding: 20px; background: transparent; border: none;
-            color: var(--text-muted); font-weight: 600; cursor: pointer; transition: 0.3s;
-            border-bottom: 3px solid transparent; font-size: 1rem;
+            flex: 1; padding: 20px; background: transparent; border: none; color: var(--text-muted);
+            font-weight: 600; cursor: pointer; transition: 0.3s; border-bottom: 3px solid transparent;
         }
-        .tab-btn:hover { background: rgba(255,255,255,0.05); color: white; text-shadow: 0 0 10px white; }
-        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59, 130, 246, 0.1); box-shadow: inset 0 -10px 20px -10px rgba(59,130,246,0.2); }
-
-        .form-content { padding: 40px; display: none; animation: fadeIn 0.4s ease; }
-        .form-content.active { display: block; }
-
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59, 130, 246, 0.1); }
+        
+        .form-content { padding: 40px; display: none; }
+        .form-content.active { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .form-group { margin-bottom: 25px; position: relative; }
-        /* Removed generic label style to reduce visual noise */
-        label { display: block; margin-bottom: 10px; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-        
         input[type="text"], textarea, select, input[type="email"] {
             width: 100%; padding: 16px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
             color: white; border-radius: 12px; font-size: 1rem; transition: 0.3s;
         }
-        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); background: rgba(59, 130, 246, 0.05); box-shadow: 0 0 20px var(--accent-glow); }
-
-        /* --- STRONG DROPDOWN FIX --- */
-        select {
-            background-color: rgba(0,0,0,0.4); 
-            color: white;
-        }
-        /* Force options to be black text on white background for maximum readability on all devices */
-        select option {
-            background-color: white !important;
-            color: black !important;
-        }
-
-        /* DROPDOWN RESULTS */
+        input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 20px var(--accent-glow); }
+        
+        /* DROPDOWN FIX */
+        select option { background-color: white !important; color: black !important; }
+        
         .search-results {
-            position: absolute; top: 100%; left: 0; width: 100%;
-            background: #0a0a0c; border: 1px solid var(--accent); border-top: none;
-            border-radius: 0 0 12px 12px; z-index: 100; 
-            max-height: 300px; /* Limits height so it scrolls */
-            overflow-y: auto; /* Adds scrollbar */
-            display: none; box-shadow: 0 20px 50px rgba(0,0,0,1);
+            position: absolute; top: 100%; left: 0; width: 100%; background: #0a0a0c;
+            border: 1px solid var(--accent); border-top: none; border-radius: 0 0 12px 12px;
+            z-index: 100; max-height: 300px; overflow-y: auto; display: none;
         }
         .result-item {
-            padding: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer;
-            border-bottom: 1px solid var(--border); transition: 0.2s;
+            padding: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer; border-bottom: 1px solid var(--border);
         }
-        .result-item:hover { background: rgba(59, 130, 246, 0.2); color: white; }
-        .result-item img { width: 45px; height: 70px; object-fit: cover; border-radius: 6px; background: #222; }
-        .result-info div { font-weight: 700; font-size: 1rem; }
-        .result-info span { font-size: 0.85rem; opacity: 0.8; }
+        .result-item:hover { background: rgba(59, 130, 246, 0.2); }
+        .result-item img { width: 45px; height: 70px; object-fit: cover; border-radius: 6px; }
 
-        /* ENHANCED MOVIE PREVIEW */
         .movie-preview {
-            display: none;
-            background: rgba(59, 130, 246, 0.08);
-            border: 1px solid var(--accent);
-            border-radius: 16px; padding: 20px;
-            margin-bottom: 25px;
-            align-items: flex-start; gap: 20px;
-            box-shadow: inset 0 0 30px rgba(59, 130, 246, 0.15);
+            display: none; background: rgba(59, 130, 246, 0.08); border: 1px solid var(--accent);
+            border-radius: 16px; padding: 20px; margin-bottom: 25px; align-items: flex-start; gap: 20px;
         }
         .movie-preview.visible { display: flex; }
-        .poster-img { width: 110px; height: 160px; object-fit: cover; border-radius: 8px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); flex-shrink: 0; }
-        
+        .poster-img { width: 110px; height: 160px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
         .movie-info { flex: 1; }
-        .movie-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; color: white; line-height: 1.2; text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
-        .movie-meta { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-        .meta-tag {
-            font-size: 0.75rem; padding: 4px 10px; border-radius: 20px;
-            background: rgba(255,255,255,0.1); color: var(--text-muted); font-weight: 600;
-            border: 1px solid var(--border);
-        }
-        .meta-rating { color: #ffd700; border-color: rgba(255, 215, 0, 0.3); background: rgba(255, 215, 0, 0.05); }
-        .movie-plot { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; max-height: 80px; overflow-y: auto; }
-
+        .movie-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; color: white; line-height: 1.2; }
+        .meta-tag { font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); }
+        
         .submit-btn {
-            width: 100%; padding: 18px; background: var(--accent); color: white;
-            border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem;
-            cursor: pointer; transition: 0.3s; margin-top: 15px; letter-spacing: 1px;
-            box-shadow: 0 0 25px var(--accent-glow);
+            width: 100%; padding: 18px; background: var(--accent); color: white; border: none;
+            border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; margin-top: 15px;
+            box-shadow: 0 0 25px var(--accent-glow); transition: 0.3s;
         }
-        .submit-btn:hover { opacity: 0.9; transform: translateY(-3px); box-shadow: 0 0 50px var(--accent-glow); }
-        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 0 50px var(--accent-glow); }
         .success-msg {
-            display: none; text-align: center; padding: 20px;
-            background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981;
-            color: #10b981; border-radius: 12px; margin-top: 25px; font-weight: 600;
+            display: none; text-align: center; padding: 20px; background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981; color: #10b981; border-radius: 12px; margin-top: 25px; font-weight: 600;
         }
 
-        /* --- MOBILE FIXES --- */
         @media (max-width: 600px) {
-            body { padding: 20px 10px; }
-            .main-container { margin-top: 10px; }
-            
-            .header { padding: 25px 20px; }
-            .logo { font-size: 1.4rem; letter-spacing: 2px; }
-            .form-content { padding: 25px; }
-
-            .movie-preview {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            
-            .poster-img {
-                width: 130px; 
-                height: 190px;
-                margin-bottom: 10px;
-            }
-
-            .movie-meta { justify-content: center; }
+            .movie-preview { flex-direction: column; align-items: center; text-align: center; }
+            .poster-img { width: 130px; height: 190px; margin-bottom: 10px; }
         }
-
     </style>
 </head>
 <body>
-
     <div id="glow-layer"></div>
     <canvas id="particle-canvas"></canvas>
 
@@ -225,13 +117,9 @@
 
         <div id="request" class="form-content active">
             <form id="vodForm" onsubmit="window.handleFormSubmit(event, 'vodForm')">
-                
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
                 <input type="hidden" name="_subject" value="NEW VOD REQUEST">
-                <input type="hidden" name="_template" value="table">
-                <input type="text" name="_honey" style="display:none">
-                <input type="hidden" name="_captcha" value="false">
-
+                
                 <div class="form-group">
                     <input type="text" name="Search_Query" id="searchInput" placeholder="Search Title or Paste IMDB Link..." autocomplete="off" style="font-weight:600; font-size: 1.1rem;">
                     <div id="searchResults" class="search-results"></div>
@@ -241,13 +129,8 @@
                     <img src="" alt="Poster" class="poster-img" id="previewPoster">
                     <div class="movie-info">
                         <div class="movie-title" id="previewTitle">Title</div>
-                        <div class="movie-meta">
-                            <span class="meta-tag" id="previewYear">Year</span>
-                            <span class="meta-tag" id="previewGenre">Genre</span>
-                            <span class="meta-tag meta-rating" id="previewRating">⭐ 0.0</span>
-                        </div>
-                        <p class="movie-plot" id="previewPlot">Plot summary...</p>
-                        <p style="font-size:0.75rem; color:var(--accent); margin-top:10px;">✓ IMDB Link Attached Automatically</p>
+                        <div style="margin-bottom:10px;"><span class="meta-tag" id="previewYear">Year</span> <span class="meta-tag" id="previewRating">⭐ 0.0</span></div>
+                        <p style="font-size:0.9rem; color:#94a3b8;" id="previewPlot">Plot...</p>
                     </div>
                 </div>
 
@@ -258,13 +141,8 @@
                 <input type="hidden" name="Genre" id="realGenre">
                 <input type="hidden" name="Plot" id="realPlot">
 
-                <div class="form-group">
-                    <textarea name="Request_Details" rows="2" placeholder="Specific notes? (e.g. Season 4, 4K only...)"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <input type="text" name="Client_Name" required placeholder="Your Name">
-                </div>
+                <div class="form-group"><textarea name="Request_Details" rows="2" placeholder="Specific notes? (e.g. Season 4, 4K only...)"></textarea></div>
+                <div class="form-group"><input type="text" name="Client_Name" required placeholder="Your Name"></div>
 
                 <button type="submit" class="submit-btn" id="vodBtn">Submit Request</button>
                 <div class="success-msg" id="vodSuccess">Request Sent Successfully! We will process shortly.</div>
@@ -273,55 +151,15 @@
 
         <div id="report" class="form-content">
             <form id="issueForm" onsubmit="window.handleFormSubmit(event, 'issueForm')">
-                
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
-                <input type="hidden" name="_subject" value="⚠️ SUPPORT TICKET FILED">
-                <input type="hidden" name="_template" value="box">
-                <input type="text" name="_honey" style="display:none">
-                <input type="hidden" name="_captcha" value="false">
-
-                <div class="form-group">
-                    <label>Problem Source</label>
-                    <select name="Source" style="cursor: pointer;">
-                        <option value="Live TV">Live TV Channel</option>
-                        <option value="Movie">Movie (VOD)</option>
-                        <option value="Series">TV Series (VOD)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Issue Type</label>
-                    <select name="Issue_Type" style="cursor: pointer;">
-                        <option value="Buffering">Buffering / Freezing</option>
-                        <option value="Stream Offline">Stream Offline / Loop</option>
-                        <option value="Audio Sync">Audio Out of Sync</option>
-                        <option value="EPG Issue">EPG / Guide Incorrect</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Channel Category / Country</label>
-                    <input type="text" name="Category" placeholder="e.g. UK Sports, USA Ent..." required>
-                </div>
-
-                <div class="form-group">
-                    <label>Channel Name / Title</label>
-                    <input type="text" name="Channel_Name" placeholder="e.g. Sky Sports Main Event" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea name="Description" rows="3" placeholder="Describe exactly what is happening..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Email for Updates (Optional)</label>
-                    <input type="email" name="Client_Email" placeholder="Leave blank if not needed">
-                </div>
-
-                <button type="submit" class="submit-btn" style="background: #ef4444; box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);" id="issueBtn">Report Issue</button>
-                <div class="success-msg" id="issueSuccess" style="border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1);">Issue Reported. Our technicians are investigating.</div>
+                <input type="hidden" name="_subject" value="ISSUE REPORTED">
+                
+                <div class="form-group"><label>Source</label><select name="Source"><option>Live TV</option><option>Movie</option><option>Series</option></select></div>
+                <div class="form-group"><label>Issue</label><select name="Issue_Type"><option>Buffering</option><option>Offline</option><option>Audio Sync</option><option>EPG</option></select></div>
+                <div class="form-group"><input type="text" name="Channel_Name" placeholder="Channel Name / Title" required></div>
+                <div class="form-group"><textarea name="Description" rows="3" placeholder="Describe the problem..."></textarea></div>
+                <button type="submit" class="submit-btn" style="background:#ef4444; box-shadow:0 0 25px rgba(239,68,68,0.4);" id="issueBtn">Report Issue</button>
+                <div class="success-msg" id="issueSuccess" style="border-color:#ef4444; color:#ef4444; background:rgba(239,68,68,0.1);">Report Sent.</div>
             </form>
         </div>
     </div>
@@ -330,96 +168,53 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0",
-          authDomain: "vodrequest.firebaseapp.com",
-          projectId: "vodrequest",
-          storageBucket: "vodrequest.firebasestorage.app",
-          messagingSenderId: "603036227000",
-          appId: "1:603036227000:web:340e481b47eb70cc742b4d",
-          measurementId: "G-RBV2G25ZYB"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0", projectId: "vodrequest", appId: "1:603036227000:web:340e481b47eb70cc742b4d" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        window.handleFormSubmit = async function(event, formId) {
-            event.preventDefault();
+        window.handleFormSubmit = async function(e, formId) {
+            e.preventDefault();
             const form = document.getElementById(formId);
             const btn = form.querySelector('.submit-btn');
-            const successMsg = form.querySelector('.success-msg');
-            
-            btn.innerText = "Sending...";
-            btn.disabled = true;
+            const msg = form.querySelector('.success-msg');
+            btn.innerText = "Sending..."; btn.disabled = true;
 
-            const formData = new FormData(form);
-            const dataObj = Object.fromEntries(formData.entries());
+            const fd = new FormData(form);
+            const data = Object.fromEntries(fd.entries());
 
             try {
-                let collectionName = formId === 'vodForm' ? 'requests' : 'reports';
-                
-                await addDoc(collection(db, collectionName), {
-                    ...dataObj,
-                    timestamp: serverTimestamp(),
-                    status: 'New'
-                });
-
-                await fetch("https://formsubmit.co/ajax/Austreams89@gmail.com", {
-                    method: "POST",
-                    body: formData
-                });
-
-                btn.style.display = 'none';
-                successMsg.style.display = 'block';
-                form.reset();
+                await addDoc(collection(db, formId === 'vodForm' ? 'requests' : 'reports'), { ...data, timestamp: serverTimestamp(), status: 'New' });
+                await fetch("https://formsubmit.co/ajax/Austreams89@gmail.com", { method: "POST", body: fd });
+                btn.style.display = 'none'; msg.style.display = 'block'; form.reset();
                 if(formId === 'vodForm') window.clearSelection();
-
-            } catch (error) {
-                console.error("Error:", error);
-                btn.innerText = "Error - Try Again";
-                btn.disabled = false;
-                alert("Something went wrong. Please check your connection.");
-            }
+            } catch (err) { btn.innerText = "Error"; btn.disabled = false; alert("Connection Error"); }
         };
 
         const API_KEY = "b71b47e2";
         const searchInput = document.getElementById('searchInput');
         const resultsBox = document.getElementById('searchResults');
-        const previewBox = document.getElementById('moviePreview');
         let debounceTimer;
 
-        window.switchTab = function(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            document.querySelectorAll('.form-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
+        window.switchTab = function(t) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active');
+            document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active')); document.getElementById(t).classList.add('active');
         }
 
-        window.selectMovie = async function(imdbID) {
-            resultsBox.style.display = 'none';
-            searchInput.value = "Searching Database..."; // Feedback
-
-            const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&plot=short&apikey=${API_KEY}`);
+        window.selectMovie = async function(id) {
+            resultsBox.style.display = 'none'; searchInput.value = "Loading...";
+            const res = await fetch(`https://www.omdbapi.com/?i=${id}&plot=short&apikey=${API_KEY}`);
             const data = await res.json();
 
-            // --- ERROR HANDLING FOR NEW MOVIES ---
-            if (data.Response === "False") {
-                alert("This title is too new and hasn't been indexed by the database yet!\n\nPlease just type the name manually (e.g. 'Beatles 2025') and hit Submit.");
-                window.clearSelection(); 
-                searchInput.value = ""; 
-                return; 
-            }
-            // -------------------------------------
+            if (data.Response === "False") { alert("New title not in DB. Type manually."); window.clearSelection(); searchInput.value=""; return; }
 
-            previewBox.classList.add('visible');
-            document.getElementById('previewPoster').src = data.Poster !== "N/A" ? data.Poster : "";
+            document.getElementById('moviePreview').classList.add('visible');
+            document.getElementById('previewPoster').src = data.Poster;
             document.getElementById('previewTitle').innerText = data.Title;
             document.getElementById('previewYear').innerText = data.Year;
-            document.getElementById('previewGenre').innerText = data.Genre;
             document.getElementById('previewRating').innerText = `⭐ ${data.imdbRating}`;
             document.getElementById('previewPlot').innerText = data.Plot;
 
-            searchInput.value = data.Title; 
+            searchInput.value = data.Title;
             document.getElementById('realTitle').value = data.Title;
             document.getElementById('realLink').value = `https://www.imdb.com/title/${data.imdbID}`;
             document.getElementById('realPosterUrl').value = data.Poster;
@@ -429,100 +224,45 @@
         }
 
         window.clearSelection = function() {
-            previewBox.classList.remove('visible');
+            document.getElementById('moviePreview').classList.remove('visible');
             document.getElementById('realTitle').value = "";
-            document.getElementById('realLink').value = "";
         }
 
         searchInput.addEventListener('input', function() {
-            // --- FIX FOR BUTTON REAPPEARING ---
-            const btn = document.getElementById('vodBtn');
-            const successMsg = document.getElementById('vodSuccess');
-            if(btn.style.display === 'none') {
-                btn.style.display = 'block';
-                btn.disabled = false;
-                btn.innerText = 'Submit Request'; 
-                successMsg.style.display = 'none';
-            }
-            // ----------------------------------
+            document.getElementById('vodBtn').style.display = 'block';
+            document.getElementById('vodSuccess').style.display = 'none';
+            document.getElementById('vodBtn').innerText = "Submit Request";
+            document.getElementById('vodBtn').disabled = false;
 
             clearTimeout(debounceTimer);
-            let query = this.value.trim();
-
-            // Magic Link Logic
-            if (query.includes('imdb.com/title/')) {
-                const match = query.match(/tt\d+/);
-                if (match) { window.selectMovie(match[0]); return; }
-            }
-            if (query.startsWith('tt') && query.length > 6) {
-                window.selectMovie(query);
-                return;
-            }
-
-            if(query.length === 0) {
-                window.clearSelection();
-                resultsBox.style.display = 'none';
-                return;
-            }
-            if (query.length < 3) {
-                resultsBox.style.display = 'none';
-                return;
-            }
-            debounceTimer = setTimeout(() => fetchMovies(query), 300);
-        });
-
-        async function fetchMovies(query) {
-            try {
-                const res = await fetch(`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`);
+            let q = this.value.trim();
+            if (q.includes('imdb.com/title/')) { const m = q.match(/tt\d+/); if(m) window.selectMovie(m[0]); return; }
+            if (q.startsWith('tt') && q.length > 6) { window.selectMovie(q); return; }
+            if (q.length < 3) { resultsBox.style.display = 'none'; return; }
+            debounceTimer = setTimeout(async () => {
+                const res = await fetch(`https://www.omdbapi.com/?s=${q}&apikey=${API_KEY}`);
                 const data = await res.json();
                 if (data.Response === "True") {
-                    displayResults(data.Search);
-                } else {
-                    resultsBox.style.display = 'none';
+                    resultsBox.innerHTML = ''; resultsBox.style.display = 'block';
+                    data.Search.slice(0, 10).forEach(m => {
+                        const d = document.createElement('div'); d.className = 'result-item';
+                        d.innerHTML = `<img src="${m.Poster}"><div class="result-info"><div>${m.Title}</div><span>${m.Year}</span></div>`;
+                        d.onclick = () => window.selectMovie(m.imdbID);
+                        resultsBox.appendChild(d);
+                    });
                 }
-            } catch (err) { console.error(err); }
-        }
-
-        function displayResults(movies) {
-            resultsBox.innerHTML = '';
-            resultsBox.style.display = 'block';
-            movies.slice(0, 10).forEach(movie => {
-                const div = document.createElement('div');
-                div.className = 'result-item';
-                const poster = movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/45x70?text=No+Img";
-                div.innerHTML = `<img src="${poster}"><div class="result-info"><div>${movie.Title}</div><span>${movie.Year} • ${movie.Type}</span></div>`;
-                div.onclick = () => window.selectMovie(movie.imdbID);
-                resultsBox.appendChild(div);
-            });
-        }
-
-        document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
-                resultsBox.style.display = 'none';
-            }
+            }, 300);
         });
 
-        // --- PARTICLE SYSTEM (CONNECTED LINES) ---
+        // PARTICLES
         const canvas = document.getElementById("particle-canvas");
         const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        let particlesArray;
-
-        class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x; this.y = y;
-                this.directionX = directionX; this.directionY = directionY;
-                this.size = size; this.color = color;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
-            update() {
-                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-                this.x += this.directionX; this.y += this.directionY;
-                this.draw();
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let pArray = [];
+        class P { constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.vx=Math.random()*0.5-0.25;this.vy=Math.random()*0.5-0.25;this.s=Math.random()*2} update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>canvas.width)this.vx*=-1;if(this.y<0||this.y>canvas.height)this.vy*=-1} draw(){ctx.fillStyle='rgba(59,130,246,0.4)';ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fill()}}
+        function init(){pArray=[];for(let i=0;i<80;i++)pArray.push(new P())}
+        function anim(){ctx.clearRect(0,0,canvas.width,canvas.height);pArray.forEach(p=>{p.update();p.draw(); pArray.forEach(q=>{let dx=p.x-q.x,dy=p.y-q.y;if(dx*dx+dy*dy<15000){ctx.strokeStyle=`rgba(59,130,246,${1-(dx*dx+dy*dy)/15000})`;ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke()}})});requestAnimationFrame(anim)}
+        window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;init()}); init(); anim();
+    </script>
+</body>
+</html>
