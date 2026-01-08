@@ -4,23 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mila's Koala Kingdom 🐨</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
-        /* --- GLOBAL VARIABLES & RESET (Koala Palette) --- */
+        /* --- GLOBAL VARIABLES (Brighter & Friendlier) --- */
         :root {
-            --primary: #8BA989; /* Eucalyptus Leaf Green */
-            --secondary: #A8BCC3; /* Soft Koala Grey/Blue */
-            --accent: #FFCBA4; /* Soft fuzzy peach/pink for ears */
-            --dark: #2F3E46; /* Dark forest green/grey */
-            --light: #F3F8F3; /* Off-white mist */
-            --glass: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.25);
+            --primary: #8acb88; /* Minty Green */
+            --secondary: #a8e6cf; /* Light Aqua */
+            --accent: #ffaaa5; /* Salmon Pink */
+            --dark: #37474f; /* Soft Slate Grey (not harsh black) */
+            --light: #f4fbf7; /* Minty White */
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.4);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Applying the cute font everywhere */
+            font-family: 'Fredoka', sans-serif; 
             scroll-behavior: smooth;
         }
 
@@ -28,20 +32,27 @@
             background-color: var(--dark);
             color: var(--light);
             overflow-x: hidden;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🍃</text></svg>") 16 0, auto; /* Custom Leaf Cursor! */
         }
 
         /* --- ANIMATIONS --- */
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
         }
 
-        /* Misty Forest Gradient */
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes breathe {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes wobble {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
         }
 
         /* --- HERO SECTION --- */
@@ -54,99 +65,82 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-            
-            /* The Misty Eucalyptus Background */
-            background: linear-gradient(-45deg, #2F3E46, #354F52, #52796F, #84A98C, #CAD2C5);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
+            /* Softer, dreamier gradient */
+            background: linear-gradient(180deg, #647d87, #84a98c);
         }
 
-        /* Leafy Texture Overlay */
-        header::before {
-            content: "";
+        /* Moving Clouds/Fog */
+        .cloud {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Subtle dotted pattern */
-            background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            pointer-events: none;
-        }
-
-        .circle {
-            position: absolute;
+            background: rgba(255,255,255,0.1);
             border-radius: 50%;
-            background: linear-gradient(45deg, rgba(255,255,255,0.15), rgba(132, 169, 140, 0.2));
-            backdrop-filter: blur(5px);
-            animation: float 8s ease-in-out infinite;
-            z-index: 1;
+            filter: blur(20px);
+            animation: float 10s infinite ease-in-out;
         }
-        .c1 { width: 300px; height: 300px; top: -50px; left: -50px; }
-        .c2 { width: 400px; height: 400px; bottom: -100px; right: -50px; animation-delay: 2s; }
-        .c3 { width: 150px; height: 150px; top: 20%; right: 15%; animation-delay: 4s; background: rgba(255, 203, 164, 0.15); }
 
         .hero-content {
             z-index: 2;
             padding: 3rem;
-            border-radius: 30px;
-            background: rgba(47, 62, 70, 0.5); /* Darker glass for contrast */
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--glass-border);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
             max-width: 90%;
+            animation: breathe 4s infinite ease-in-out;
         }
 
         h1 {
-            font-size: 4.5rem;
-            text-transform: uppercase;
-            font-weight: 800;
-            letter-spacing: 2px;
+            font-size: 5rem;
             color: #fff;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-shadow: 3px 3px 0px var(--primary);
             margin-bottom: 0.5rem;
-            line-height: 1.1;
+            letter-spacing: 2px;
         }
 
         p.subtitle {
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 2rem;
-            color: var(--accent);
-            font-weight: bold;
+            color: var(--accent); /* Pink text */
+            font-weight: 600;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
         }
 
         .btn {
-            padding: 1rem 3rem;
-            font-size: 1.2rem;
+            padding: 1.2rem 3.5rem;
+            font-size: 1.5rem;
             border: none;
             border-radius: 50px;
-            background: var(--light);
-            color: var(--dark);
-            font-weight: bold;
+            background: #fff;
+            color: var(--primary);
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
             text-decoration: none;
             display: inline-block;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 0 #dcdcdc; /* 3D Button Effect */
         }
 
         .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 0 #dcdcdc;
             background: var(--accent);
-            color: var(--dark);
+            color: #fff;
+        }
+
+        .btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 5px 0 #dcdcdc;
         }
 
         /* --- SPOTLIGHT SECTION --- */
         .spotlight {
-            min-height: 80vh;
+            min-height: 85vh;
             padding: 4rem 2rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Dark Eucalyptus background */
-            background: #354F52; 
+            background: #4a6363;
             position: relative;
             transition: background 0.5s ease;
         }
@@ -161,95 +155,133 @@
 
         .animal-visual {
             flex: 1;
-            min-width: 300px;
+            min-width: 320px;
             height: 500px;
-            /* Initial Koala Fur Pattern */
-            background: radial-gradient(circle at 50% 50%, #A8BCC3 0%, #889a9f 100%);
-            border-radius: 30px;
-            box-shadow: 20px 20px 0 var(--primary);
+            background: radial-gradient(circle at 50% 50%, #b0bec5 0%, #78909c 100%);
+            border-radius: 40px;
+            border: 8px solid rgba(255,255,255,0.2);
             position: relative;
             transition: all 0.5s ease;
+            animation: breathe 5s infinite ease-in-out; /* The visual breathes! */
         }
 
         .animal-visual::after {
             content: "🐨";
             position: absolute;
-            font-size: 15rem;
+            font-size: 16rem;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3));
             transition: all 0.3s ease;
         }
 
-        .animal-info {
-            flex: 1;
-            min-width: 300px;
-            opacity: 1;
-            transition: opacity 0.3s ease;
+        /* SPEECH BUBBLE FOR THE KOALA */
+        .speech-bubble {
+            position: absolute;
+            top: -60px;
+            right: -20px;
+            background: white;
+            color: var(--dark);
+            padding: 15px 25px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
         }
-        
-        .fade-out { opacity: 0; transform: translateY(10px); }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: white transparent;
+            display: block;
+            width: 0;
+        }
+
+        .animal-visual:hover .speech-bubble {
+            opacity: 1;
+            transform: scale(1);
+        }
 
         .animal-info h2 {
-            font-size: 4rem;
+            font-size: 4.5rem;
             color: var(--accent);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
         }
 
         .tag {
-            display: inline-block;
-            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            background: var(--light);
             color: var(--dark);
+            padding: 8px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 1.5rem;
             font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .stat-box {
-            background: var(--glass);
-            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            padding: 1.2rem;
             margin: 1rem 0;
-            border-left: 5px solid var(--accent);
-            border-radius: 0 10px 10px 0;
+            border-radius: 15px;
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: transform 0.2s;
+        }
+
+        .stat-box:hover {
+            transform: translateX(10px);
+            background: rgba(255,255,255,0.2);
         }
 
         /* --- GRID SECTION --- */
         .gallery {
-            padding: 4rem 2rem;
-            background: #2F3E46; /* Darker forest floor */
+            padding: 5rem 2rem;
+            background: #37474f; 
         }
 
         .section-title {
             text-align: center;
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 3rem;
-            color: var(--primary);
+            color: var(--secondary);
+            text-shadow: 2px 2px 0 var(--dark);
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            gap: 2.5rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            padding: 2.5rem;
             text-align: center;
-            transition: 0.4s;
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255,255,255,0.1);
             cursor: pointer;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(139, 169, 137, 0.3);
+            transform: translateY(-15px) scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
         .card-emoji {
@@ -257,58 +289,59 @@
             margin-bottom: 1rem;
             display: inline-block;
             transition: 0.4s;
-            text-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
         }
-        
-        .card h3 { color: var(--secondary); }
 
         .click-hint {
-            font-size: 0.8rem;
-            color: var(--accent);
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
             opacity: 0;
+            transform: translateY(10px);
             transition: 0.3s;
-            margin-top: 10px;
+            display: inline-block;
+            margin-top: 15px;
         }
         
-        .card:hover .click-hint { opacity: 1; }
-        .card:hover .card-emoji { transform: scale(1.2) rotate(5deg); }
+        .card:hover .click-hint { opacity: 1; transform: translateY(0); }
+        .card:hover .card-emoji { animation: wobble 1s infinite; }
 
         footer {
             text-align: center;
-            padding: 2rem;
-            background: #1f2b30;
+            padding: 3rem;
+            background: #263238;
             color: var(--secondary);
-        }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 3rem; }
-            .animal-visual { height: 300px; }
-            .animal-info h2 { font-size: 3rem; }
+            font-size: 1.2rem;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="circle c1"></div>
-        <div class="circle c2"></div>
-        <div class="circle c3"></div>
-        
+        <div class="cloud" style="width: 100px; height: 100px; top: 10%; left: 10%;"></div>
+        <div class="cloud" style="width: 150px; height: 150px; top: 70%; right: 10%; animation-delay: 2s;"></div>
+        <div class="cloud" style="width: 60px; height: 60px; top: 30%; right: 30%; animation-delay: 4s;"></div>
+
         <div class="hero-content">
             <h1>Mila's Koala Kingdom</h1>
-            <p class="subtitle">Welcome to the fluffiest, sleepiest place on Earth, Mila! 🐨💖</p>
-            <a href="#spotlight" class="btn">Meet the Koalas</a>
+            <p class="subtitle">Hi Mila! Ready to meet the fluffiest friends?</p>
+            <a href="#spotlight" class="btn">Let's Go! 🐨</a>
         </div>
     </header>
 
     <section id="spotlight" class="spotlight">
         <div class="spotlight-container">
-            <div id="spotlight-visual" class="animal-visual"></div>
+            
+            <div id="spotlight-visual" class="animal-visual" onclick="talkToMila()">
+                <div id="koala-speech" class="speech-bubble">Hi Mila! 👋</div>
+            </div>
             
             <div id="spotlight-info" class="animal-info">
-                <span id="spotlight-tag" class="tag" style="background:var(--accent); padding: 5px 15px; border-radius: 20px;">The Sleepy Superstar</span>
+                <span id="spotlight-tag" class="tag">The Sleepy Superstar</span>
                 <h2 id="spotlight-name">The Koala</h2>
-                <p id="spotlight-desc">Hi Mila! I look like a teddy bear, but I'm actually a marsupial (like a kangaroo!). I spend most of my life high up in eucalyptus trees chilling out.</p>
+                <p id="spotlight-desc" style="font-size: 1.3rem; line-height: 1.6;">Hi Mila! I look like a teddy bear, but I'm actually a marsupial. I spend most of my life high up in eucalyptus trees chilling out.</p>
                 
                 <div class="stat-box" id="stat1">
                     <strong>Favorite Food:</strong> Eucalyptus leaves (Yum!)
@@ -320,123 +353,145 @@
                     <strong>Home:</strong> Australia 🇦🇺
                 </div>
                 <br>
-                <button class="btn" onclick="celebrate()">Give it some leaves! 🍃</button>
+                <button class="btn" style="padding: 1rem 2rem; font-size: 1.2rem;" onclick="celebrate()">Feed Me Leaves! 🍃</button>
             </div>
         </div>
     </section>
 
     <section class="gallery">
-        <h2 class="section-title">Mila's Koala Facts <br><span style="font-size:1rem; color:var(--secondary)">(Click to learn more about them!)</span></h2>
+        <h2 class="section-title">Mila's Fun Facts</h2>
         <div class="grid">
             
             <div class="card" 
                  onclick="updateSpotlight(this)"
                  data-name="The Classic Koala"
                  data-emoji="🐨"
+                 data-speech="I love naps!"
                  data-tag="The Sleepy Superstar"
                  data-desc="Hi Mila! I look like a teddy bear, but I'm actually a marsupial. I spend most of my life high up in eucalyptus trees chilling out."
                  data-s1="Favorite Food: Eucalyptus leaves"
                  data-s2="Sleep: Up to 20 hours a day!"
                  data-s3="Home: Australia 🇦🇺"
-                 data-bg="radial-gradient(circle at 50% 50%, #A8BCC3 0%, #889a9f 100%)"
-                 data-color="#FFCBA4">
+                 data-bg="radial-gradient(circle at 50% 50%, #b0bec5 0%, #78909c 100%)"
+                 data-color="#ffaaa5">
                 <div class="card-emoji">🐨</div>
                 <h3>The Classic</h3>
-                <div class="click-hint">Click to Feature</div>
+                <div class="click-hint">Click Me!</div>
             </div>
 
             <div class="card" 
                  onclick="updateSpotlight(this)"
                  data-name="The Picky Eater"
                  data-emoji="🌿"
+                 data-speech="Yum, smells good!"
                  data-tag="Snack Time Champion"
-                 data-desc="Koalas are super picky! There are over 700 types of eucalyptus trees, but koalas will only eat about 50 of them. They are food critics!"
+                 data-desc="Koalas are super picky! There are over 700 types of eucalyptus trees, but koalas will only eat about 50 of them."
                  data-s1="Amount Eaten: 1 kg of leaves per day"
                  data-s2="Smell Power: They sniff leaves to check for poison"
                  data-s3="Water: They get most water from the leaves!"
-                 data-bg="linear-gradient(120deg, #8BA989 0%, #52796F 100%)"
-                 data-color="#8BA989">
+                 data-bg="radial-gradient(circle, #a8e6cf 0%, #8acb88 100%)"
+                 data-color="#8acb88">
                 <div class="card-emoji">🌿</div>
                 <h3>The Eater</h3>
-                <div class="click-hint">Click to Feature</div>
+                <div class="click-hint">Click Me!</div>
             </div>
 
             <div class="card" 
                  onclick="updateSpotlight(this)"
                  data-name="The Baby Joey"
                  data-emoji="👶"
+                 data-speech="Where's my mom?"
                  data-tag="Tiny & Cute"
                  data-desc="A baby koala is called a 'joey'. When they are born, they are the size of a jellybean! They stay in their mom's pouch for 6 months."
                  data-s1="Birth Size: 2 centimeters long"
                  data-s2="Pouch Time: 6-7 Months"
-                 data-s3="Riding Style: On mom's back after leaving the pouch"
-                 data-bg="radial-gradient(circle, #FFCBA4 0%, #e0a884 100%)"
-                 data-color="#FFCBA4">
+                 data-s3="Riding Style: On mom's back!"
+                 data-bg="radial-gradient(circle, #ffe0b2 0%, #ffcc80 100%)"
+                 data-color="#ffcc80">
                 <div class="card-emoji">👶</div>
                 <h3>The Joey</h3>
-                <div class="click-hint">Click to Feature</div>
+                <div class="click-hint">Click Me!</div>
             </div>
 
             <div class="card" 
                  onclick="updateSpotlight(this)"
                  data-name="The Pro Napper"
                  data-emoji="💤"
+                 data-speech="Zzzzzzz..."
                  data-tag="Do Not Disturb"
                  data-desc="Why do they sleep so much? Eucalyptus leaves give them very little energy and are hard to digest. Sleeping saves their energy!"
                  data-s1="Awake Time: Only 4 hours a day"
                  data-s2="Activity: Mostly eating at night"
                  data-s3="Bed: A comfy tree fork"
-                 data-bg="linear-gradient(to top, #4a5e66 0%, #A8BCC3 100%)"
-                 data-color="#A8BCC3">
+                 data-bg="linear-gradient(to top, #78909c 0%, #b0bec5 100%)"
+                 data-color="#78909c">
                 <div class="card-emoji">💤</div>
                 <h3>The Sleeper</h3>
-                <div class="click-hint">Click to Feature</div>
+                <div class="click-hint">Click Me!</div>
             </div>
 
             <div class="card" 
                  onclick="updateSpotlight(this)"
                  data-name="The Tree Hugger"
                  data-emoji="🌳"
+                 data-speech="This tree is mine!"
                  data-tag="Acrobat Mode"
                  data-desc="They have super sharp claws and two thumbs on their front paws to help them grip branches tightly. They literally hug trees to stay cool!"
                  data-s1="Paws: Two opposable thumbs!"
                  data-s2="Claws: Very sharp for climbing"
                  data-s3="Cooling Trick: Hugging cold tree trunks"
-                 data-bg="repeating-linear-gradient(45deg, #6d4c41, #6d4c41 10px, #5d4037 10px, #5d4037 20px)"
-                 data-color="#FFCBA4">
+                 data-bg="repeating-linear-gradient(45deg, #8d6e63, #8d6e63 10px, #6d4c41 10px, #6d4c41 20px)"
+                 data-color="#8d6e63">
                 <div class="card-emoji">🌳</div>
                 <h3>The Climber</h3>
-                <div class="click-hint">Click to Feature</div>
+                <div class="click-hint">Click Me!</div>
             </div>
 
             <div class="card" 
                  onclick="updateSpotlight(this)"
                  data-name="The Secret Swimmer"
                  data-emoji="🏊"
+                 data-speech="Splash!"
                  data-tag="Rare Talent"
                  data-desc="Bet you didn't know this, Mila! Even though they live in trees, koalas are actually pretty good swimmers if they fall into water."
                  data-s1="Swimming Style: Doggy paddle"
                  data-s2="Frequency: Very rare!"
                  data-s3="Reason: Usually to escape danger"
-                 data-bg="linear-gradient(to bottom, #A8BCC3 0%, #52796F 100%)"
-                 data-color="#8BA989">
+                 data-bg="linear-gradient(to bottom, #81d4fa 0%, #29b6f6 100%)"
+                 data-color="#29b6f6">
                 <div class="card-emoji">🏊</div>
                 <h3>The Swimmer</h3>
-                <div class="click-hint">Click to Feature</div>
+                <div class="click-hint">Click Me!</div>
             </div>
 
         </div>
     </section>
 
     <footer>
-        <p>© 2026 Mila's Koala Kingdom - Made with 💖 and Eucalyptus 🍃</p>
+        <p>© 2026 Mila's Koala Kingdom • Made with 💖 and Eucalyptus 🍃</p>
     </footer>
 
     <script>
+        // Array of random things the Koala says to Mila
+        const koalaTalk = [
+            "Hi Mila! 👋",
+            "I'm hungry! 🌿",
+            "Time for a nap... 😴",
+            "You're cool, Mila! 😎",
+            "Eucalyptus is yummy! 🍃",
+            "Can I have a hug? 🐨"
+        ];
+
+        function talkToMila() {
+            const bubble = document.getElementById('koala-speech');
+            const randomMsg = koalaTalk[Math.floor(Math.random() * koalaTalk.length)];
+            bubble.innerText = randomMsg;
+        }
+
         function updateSpotlight(element) {
-            // 1. Get Data from clicked card
             const name = element.getAttribute('data-name');
             const emoji = element.getAttribute('data-emoji');
+            const speech = element.getAttribute('data-speech');
             const tag = element.getAttribute('data-tag');
             const desc = element.getAttribute('data-desc');
             const s1 = element.getAttribute('data-s1');
@@ -445,7 +500,6 @@
             const bgPattern = element.getAttribute('data-bg');
             const mainColor = element.getAttribute('data-color');
 
-            // 2. Select Spotlight Elements
             const infoBox = document.getElementById('spotlight-info');
             const visualBox = document.getElementById('spotlight-visual');
             const title = document.getElementById('spotlight-name');
@@ -454,63 +508,53 @@
             const stat1 = document.getElementById('stat1');
             const stat2 = document.getElementById('stat2');
             const stat3 = document.getElementById('stat3');
+            const bubble = document.getElementById('koala-speech');
 
-            // 3. Scroll to top smoothy
             document.getElementById('spotlight').scrollIntoView({ behavior: 'smooth' });
 
-            // 4. Add fade-out effect
-            infoBox.classList.add('fade-out');
-            visualBox.style.transform = "scale(0.9) rotate(-5deg)";
-            visualBox.style.opacity = "0";
-
-            // 5. Swap Content after short delay
+            infoBox.style.opacity = "0";
+            visualBox.style.transform = "scale(0.8) rotate(-10deg)";
+            
             setTimeout(() => {
-                // Update Text
                 title.innerText = name;
                 tagBox.innerText = tag;
                 description.innerText = desc;
                 stat1.innerHTML = `<strong>Fact 1:</strong> ${s1}`;
                 stat2.innerHTML = `<strong>Fact 2:</strong> ${s2}`;
                 stat3.innerHTML = `<strong>Fact 3:</strong> ${s3}`;
-
-                // Update Visuals
-                visualBox.style.background = bgPattern;
-                visualBox.style.boxShadow = `20px 20px 0 ${mainColor}`;
                 
-                // Inject emoji
+                // Update Speech Bubble
+                bubble.innerText = speech;
+
+                visualBox.style.background = bgPattern;
+                visualBox.style.borderColor = "rgba(255,255,255,0.4)";
+                
                 const styleSheet = document.createElement("style");
                 styleSheet.innerText = `#spotlight-visual::after { content: "${emoji}" !important; }`;
                 document.head.appendChild(styleSheet);
 
-                // Update Colors
                 title.style.color = mainColor;
-                tagBox.style.background = mainColor;
-                document.querySelectorAll('.stat-box').forEach(box => {
-                    box.style.borderLeftColor = mainColor;
-                });
-
-                // 6. Fade In
-                infoBox.classList.remove('fade-out');
+                tagBox.style.color = mainColor;
+                
+                infoBox.style.opacity = "1";
                 visualBox.style.transform = "scale(1) rotate(0deg)";
-                visualBox.style.opacity = "1";
             }, 300);
         }
 
         function celebrate() {
-            // Create a burst of LEAVES 🍃 instead of confetti
             for(let i=0; i<30; i++) {
                 createFloatingEmoji();
             }
+            talkToMila(); // Koala talks when fed!
         }
 
         function createFloatingEmoji() {
             const emoji = document.createElement('div');
-            emoji.innerText = "🍃"; // Eucalyptus leaf!
+            emoji.innerText = "🍃"; 
             emoji.style.position = 'fixed';
             emoji.style.left = Math.random() * 100 + 'vw';
             emoji.style.top = '100vh';
-            // Randomized size and rotation for natural look
-            emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+            emoji.style.fontSize = (Math.random() * 40 + 20) + 'px';
             emoji.style.transform = `rotate(${Math.random() * 360}deg)`;
             emoji.style.transition = 'all 3s ease-out';
             emoji.style.zIndex = '9999';
@@ -518,7 +562,6 @@
             document.body.appendChild(emoji);
 
             setTimeout(() => {
-                // Float up and slightly sideways
                 emoji.style.transform = `translate(${Math.random() * 200 - 100}px, -120vh) rotate(${Math.random() * 720}deg)`;
                 emoji.style.opacity = 0;
             }, 50);
