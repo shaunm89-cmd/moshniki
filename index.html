@@ -3,214 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entain Consultancy | Home Media Architects</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Entain Consultancy | Premier Media Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0b10;
-            --surface: #14151a;
-            --accent: #d4af37; /* Luxury Gold */
-            --text: #e0e0e0;
-            --text-muted: #888;
+            --bg: #050505;
+            --surface: #0f1014;
+            --accent: #cfb53b; /* Old Gold */
+            --text: #f0f0f0;
+            --text-muted: #9ca3af;
+            --border: rgba(255, 255, 255, 0.08);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
+        body { background-color: var(--bg); color: var(--text); line-height: 1.7; overflow-x: hidden; }
+
+        /* --- UTILITIES --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .text-accent { color: var(--accent); }
+        .btn {
+            display: inline-block; padding: 16px 40px; background: var(--accent); color: #000;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none;
+            transition: 0.3s; border: 1px solid var(--accent);
         }
+        .btn:hover { background: transparent; color: var(--accent); }
+        .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* NAVBAR */
-        nav {
-            padding: 25px 8%;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .logo { font-size: 1.4rem; font-weight: 700; letter-spacing: 1px; color: white; text-transform: uppercase; }
-        .logo span { color: var(--accent); }
+        /* --- NAV --- */
+        nav { padding: 30px 0; border-bottom: 1px solid var(--border); }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; }
 
-        /* HERO */
-        .hero {
-            padding: 100px 8%;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px; align-items: center;
-            min-height: 80vh;
-        }
-
-        h1 {
-            font-size: 3.5rem; line-height: 1.2; margin-bottom: 25px;
-            background: linear-gradient(to right, #fff, #aaa);
+        /* --- HERO --- */
+        .hero { padding: 120px 0; position: relative; overflow: hidden; }
+        .hero h1 {
+            font-size: 4rem; line-height: 1.1; margin-bottom: 30px;
+            background: linear-gradient(to right, #fff 30%, #666);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        .hero p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 40px; max-width: 90%; }
-
-        .btn {
-            background: var(--accent); color: #000;
-            padding: 15px 35px; border: none; font-weight: 700; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;
-            transition: 0.3s; display: inline-block; text-decoration: none;
-        }
-        .btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-
-        /* IMAGE PLACEHOLDER (CSS ART) */
-        .abstract-art {
-            width: 100%; height: 400px;
-            background: linear-gradient(135deg, var(--surface), #000);
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative; overflow: hidden;
-        }
-        .circle {
-            position: absolute; border-radius: 50%;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+        .hero p { font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin-bottom: 50px; }
+        
+        /* Background Glow */
+        .glow {
+            position: absolute; width: 600px; height: 600px; background: var(--accent);
+            opacity: 0.05; filter: blur(100px); border-radius: 50%; z-index: -1;
         }
 
-        /* SERVICES GRID */
-        .services { padding: 100px 8%; background: var(--surface); }
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px;
+        /* --- PROBLEM/SOLUTION --- */
+        .split-section { padding: 100px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .stat-box {
+            border-left: 4px solid var(--accent); padding-left: 30px; margin-bottom: 40px;
         }
-        .card {
-            background: var(--bg); padding: 40px; border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-        }
-        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
-        .card h3 { font-size: 1.3rem; margin-bottom: 15px; color: white; }
-        .card p { font-size: 0.9rem; color: var(--text-muted); }
-        .icon { font-size: 2rem; color: var(--accent); margin-bottom: 20px; }
+        .stat-num { font-size: 3rem; font-weight: 700; line-height: 1; }
+        .stat-label { color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; margin-top: 10px; display: block; }
 
-        /* FORM SECTION */
-        .contact-section { padding: 100px 8%; max-width: 800px; margin: 0 auto; text-align: center; }
-        .form-box {
-            background: var(--surface); padding: 50px; margin-top: 40px;
-            border: 1px solid rgba(255,255,255,0.05); text-align: left;
+        /* --- HARDWARE GUIDE --- */
+        .hardware { background: var(--surface); padding: 100px 0; }
+        .hardware-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+        .device-card {
+            background: var(--bg); border: 1px solid var(--border); padding: 40px 30px;
+            text-align: center; transition: 0.3s;
         }
+        .device-card:hover { border-color: var(--accent); transform: translateY(-10px); }
+        .device-badge {
+            background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px;
+            font-size: 0.8rem; display: inline-block; margin-bottom: 20px; color: var(--text-muted);
+        }
+        .device-badge.recommended { background: var(--accent); color: #000; font-weight: bold; }
+
+        /* --- CONTACT --- */
+        .contact { padding: 100px 0; }
+        .form-wrapper {
+            background: var(--surface); padding: 60px; max-width: 800px; margin: 0 auto;
+            border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        
+        .form-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
         input, select, textarea {
-            width: 100%; padding: 15px; margin-bottom: 20px;
-            background: #000; border: 1px solid #333; color: white;
-            font-family: 'Manrope', sans-serif;
+            width: 100%; background: #000; border: 1px solid #333; padding: 18px;
+            color: white; font-size: 1rem; transition: 0.3s;
         }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
-        
-        label { display: block; margin-bottom: 8px; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
-        footer { text-align: center; padding: 50px; color: #555; font-size: 0.8rem; border-top: 1px solid #222; }
+        /* --- FOOTER --- */
+        footer { padding: 50px 0; border-top: 1px solid var(--border); font-size: 0.9rem; color: #555; }
 
-        @media(max-width: 768px) {
-            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 50px; }
-            .hero p { margin-left: auto; margin-right: auto; }
-            h1 { font-size: 2.5rem; }
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 2.8rem; }
+            .split-section { grid-template-columns: 1fr; }
+            .hardware-grid { grid-template-columns: 1fr; }
+            .form-wrapper { padding: 30px; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">ENTAIN <span>CONSULTANCY</span></div>
-        <a href="#audit" style="color:white; text-decoration:none; font-size:0.9rem;">Client Portal</a>
+        <div class="container nav-inner">
+            <div class="logo">ENTAIN <span class="text-accent">CONSULTANCY</span></div>
+            <div>
+                <a href="#audit" class="btn-outline" style="padding: 10px 25px; text-decoration:none;">Client Login</a>
+            </div>
+        </div>
     </nav>
 
     <header class="hero">
-        <div>
-            <h1>The Cinema Experience.<br>Simplified.</h1>
-            <p>We architect high-performance home entertainment setups. Stop wrestling with buffering, multiple subscriptions, and complex remotes. We build unified systems for the modern viewer.</p>
-            <a href="#audit" class="btn">Get A Free System Audit</a>
-        </div>
-        <div class="abstract-art">
-            <div class="circle" style="width:300px; height:300px; top:50px; left:50px;"></div>
-            <div class="circle" style="width:200px; height:200px; top:100px; right:-50px; border-color: rgba(255,255,255,0.05);"></div>
-            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:rgba(255,255,255,0.1); font-size:5rem; font-weight:700;">4K HDR</div>
+        <div class="glow" style="top: -100px; right: -100px;"></div>
+        <div class="container">
+            <h1>Master Your <br>Digital Home.</h1>
+            <p>We architect high-performance media ecosystems. We help you consolidate subscriptions, upgrade hardware, and unlock borderless entertainment for a fraction of the cost.</p>
+            <div style="display: flex; gap: 20px;">
+                <a href="#audit" class="btn">Get A Free Audit</a>
+                <a href="#why-us" class="btn-outline" style="padding: 16px 40px; text-decoration:none;">Learn More</a>
+            </div>
         </div>
     </header>
 
-    <section class="services">
-        <p style="color:var(--accent); text-transform:uppercase; letter-spacing:2px; font-size:0.8rem; font-weight:700;">Our Capabilities</p>
-        <h2 style="font-size:2.5rem; margin-bottom:20px;">Why your setup is failing.</h2>
-        
-        <div class="grid">
-            <div class="card">
-                <div class="icon">📡</div>
-                <h3>Network Optimization</h3>
-                <p>Buffering ruins immersion. We analyze your bandwidth and recommend the correct ethernet or mesh infrastructure to ensure 4K streaming flows without interruption.</p>
+    <section class="container split-section" id="why-us">
+        <div>
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Subscription Fatigue is Real.</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">
+                The average household now manages 7+ streaming subscriptions. Costs are rising, but content is getting harder to find. It’s fragmented, expensive, and frustrating.
+            </p>
+            <p style="color: var(--text-muted);">
+                <strong>The Entain Method</strong> simplifies this chaos. We move you away from proprietary "walled gardens" and onto open-source, high-fidelity media servers. One interface. Unlimited potential.
+            </p>
+        </div>
+        <div>
+            <div class="stat-box">
+                <div class="stat-num">$1,200+</div>
+                <span class="stat-label">Average Annual Savings per Client</span>
             </div>
-            <div class="card">
-                <div class="icon">📺</div>
-                <h3>Hardware Selection</h3>
-                <p>Smart TVs are often underpowered. We guide you toward professional-grade media streaming devices (Nvidia Shield, FireStick 4K Max) that handle high-bitrate content.</p>
+            <div class="stat-box">
+                <div class="stat-num">4K HDR</div>
+                <span class="stat-label">Standard Delivery Quality</span>
             </div>
-            <div class="card">
-                <div class="icon">🧩</div>
-                <h3>Media Consolidation</h3>
-                <p>Tired of paying for 8 different apps? We consult on unified platform solutions that bring all your sports, movies, and live TV into a single, easy-to-use interface.</p>
+            <div class="stat-box">
+                <div class="stat-num">Zero</div>
+                <span class="stat-label">Regional Content Restrictions</span>
             </div>
         </div>
     </section>
 
-    <section class="contact-section" id="audit">
-        <h2 style="font-size:2.5rem;">Let's fix your living room.</h2>
-        <p style="color:var(--text-muted); margin-top:10px;">Fill out the form below for a complimentary consultation on how to upgrade your viewing experience.</p>
+    <section class="hardware">
+        <div class="container">
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <p class="text-accent" style="text-transform: uppercase; letter-spacing: 2px; font-weight: bold; font-size: 0.9rem;">Infrastructure First</p>
+                <h2 style="font-size: 2.5rem; margin-bottom: 20px;">We Don't Guess. We Engineer.</h2>
+                <p style="color: var(--text-muted);">A media setup is only as good as the hardware running it. We will advise you on the exact equipment needed to eliminate buffering.</p>
+            </div>
 
-        <div class="form-box">
-            <form id="leadForm" onsubmit="handleForm(event)">
-                <label>Name</label>
-                <input type="text" placeholder="John Doe" required>
+            <div class="hardware-grid">
+                <div class="device-card">
+                    <span class="device-badge">Entry Level</span>
+                    <h3 style="margin-bottom: 15px;">Amazon FireStick 4K</h3>
+                    <p style="color: #666; font-size: 0.9rem;">Capable for casual viewing in secondary rooms. We provide custom configuration to remove bloatware.</p>
+                </div>
+                <div class="device-card" style="border-color: var(--accent);">
+                    <span class="device-badge recommended">Entain Recommended</span>
+                    <h3 style="margin-bottom: 15px;">Nvidia Shield Pro</h3>
+                    <p style="color: #888; font-size: 0.9rem;">The gold standard. AI-upscaling to 4K, gigabit ethernet, and raw processing power for the ultimate server connection.</p>
+                </div>
+                <div class="device-card">
+                    <span class="device-badge">Ecosystem</span>
+                    <h3 style="margin-bottom: 15px;">Apple TV 4K</h3>
+                    <p style="color: #666; font-size: 0.9rem;">For the iOS integrated home. We deploy specialized private media players (TiviMate/Smarters) compatible with tvOS.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <label>Email Address</label>
-                <input type="email" placeholder="john@example.com" required>
-
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                    <div>
-                        <label>Current Device</label>
-                        <select>
-                            <option>Smart TV (Built-in)</option>
-                            <option>FireStick / ChromeCast</option>
-                            <option>Apple TV</option>
-                            <option>Nvidia Shield</option>
-                            <option>Other / Unsure</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Internet Speed</label>
-                        <select>
-                            <option>Under 50mbps</option>
-                            <option>50-100mbps</option>
-                            <option>100mbps+</option>
-                            <option>Fibre</option>
-                        </select>
-                    </div>
+    <section class="contact" id="audit">
+        <div class="container">
+            <div class="form-wrapper">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-size: 2.5rem;">Request Your Custom Plan</h2>
+                    <p style="color: var(--text-muted); margin-top: 10px;">Tell us about your current setup. We will email you a consolidation strategy within 24 hours.</p>
                 </div>
 
-                <label>Primary Frustration (Optional)</label>
-                <textarea rows="3" placeholder="e.g. Too many bills, sports are hard to find, buffering..."></textarea>
+                <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" name="name" required placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" name="email" required placeholder="name@company.com">
+                        </div>
+                    </div>
 
-                <button type="submit" class="btn" style="width:100%;">Request Setup Plan</button>
-            </form>
-            <p id="success-msg" style="display:none; color:var(--accent); margin-top:20px; text-align:center;">Request Received. A specialist will email your custom plan shortly.</p>
+                    <div class="form-group">
+                        <label>What is your current frustration?</label>
+                        <select name="frustration">
+                            <option value="cost">Too Expensive (Cost)</option>
+                            <option value="sports">Can't find Sports games</option>
+                            <option value="buffering">Constant Buffering</option>
+                            <option value="complexity">Too many apps/remotes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Internet Speed (Estimated)</label>
+                        <select name="speed">
+                            <option value="low">Under 50 Mbps</option>
+                            <option value="medium">50 - 100 Mbps</option>
+                            <option value="high">100 Mbps + (NBN/Fiber)</option>
+                            <option value="unsure">I don't know</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Additional Notes</label>
+                        <textarea name="message" rows="3" placeholder="Do you have specific channels or devices you need?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">Analyze My Setup</button>
+                    <p style="font-size: 0.8rem; color: #555; text-align: center; margin-top: 20px;">
+                        Strictly confidential. No spam. We respect your privacy.
+                    </p>
+                </form>
+            </div>
         </div>
     </section>
 
     <footer>
-        &copy; 2026 Entain Consultancy. All rights reserved. <br>
-        We are an independent audio-visual consultancy firm. We do not host or broadcast content.
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div>
+                <strong>ENTAIN CONSULTANCY</strong><br>
+                Sydney, Australia.
+            </div>
+            <div style="text-align: right;">
+                <p>&copy; 2026 Entain Consultancy.</p>
+                <p style="font-size: 0.8rem; opacity: 0.6;">We are hardware & network consultants. We do not host content.</p>
+            </div>
+        </div>
     </footer>
-
-    <script>
-        function handleForm(e) {
-            e.preventDefault();
-            // In a real site, this would send data to your email
-            const btn = e.target.querySelector('button');
-            const msg = document.getElementById('success-msg');
-            
-            btn.innerHTML = "Processing...";
-            setTimeout(() => {
-                btn.style.display = "none";
-                msg.style.display = "block";
-            }, 1500);
-        }
-    </script>
 
 </body>
 </html>
