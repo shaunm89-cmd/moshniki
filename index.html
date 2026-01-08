@@ -116,8 +116,10 @@
         .search-results {
             position: absolute; top: 100%; left: 0; width: 100%;
             background: #0a0a0c; border: 1px solid var(--accent); border-top: none;
-            border-radius: 0 0 12px 12px; z-index: 100; max-height: 350px;
-            overflow-y: auto; display: none; box-shadow: 0 20px 50px rgba(0,0,0,1);
+            border-radius: 0 0 12px 12px; z-index: 100; 
+            max-height: 300px; /* Limits height so it scrolls */
+            overflow-y: auto; /* Adds scrollbar */
+            display: none; box-shadow: 0 20px 50px rgba(0,0,0,1);
         }
         .result-item {
             padding: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer;
@@ -176,19 +178,10 @@
             .logo { font-size: 1.4rem; letter-spacing: 2px; }
             .form-content { padding: 25px; }
 
-            /* STACKED PREVIEW FOR MOBILE */
             .movie-preview {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
+                flex-direction: column; align-items: center; text-align: center;
             }
-            
-            .poster-img {
-                width: 130px; 
-                height: 190px;
-                margin-bottom: 10px;
-            }
-
+            .poster-img { width: 130px; height: 190px; margin-bottom: 10px; }
             .movie-meta { justify-content: center; }
         }
 
@@ -242,7 +235,6 @@
                 <input type="hidden" name="Confirmed_Title" id="realTitle">
                 <input type="hidden" name="IMDB_Link" id="realLink">
                 <input type="hidden" name="Poster_URL" id="realPosterUrl">
-                
                 <input type="hidden" name="Year" id="realYear">
                 <input type="hidden" name="Genre" id="realGenre">
                 <input type="hidden" name="Plot" id="realPlot">
@@ -264,7 +256,6 @@
 
         <div id="report" class="form-content">
             <form id="issueForm" onsubmit="window.handleFormSubmit(event, 'issueForm')">
-                
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
                 <input type="hidden" name="_subject" value="⚠️ SUPPORT TICKET FILED">
                 <input type="hidden" name="_template" value="box">
@@ -321,7 +312,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-        // YOUR FIREBASE CONFIG
         const firebaseConfig = {
           apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0",
           authDomain: "vodrequest.firebaseapp.com",
@@ -335,7 +325,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- FORM SUBMISSION LOGIC ---
         window.handleFormSubmit = async function(event, formId) {
             event.preventDefault();
             const form = document.getElementById(formId);
@@ -349,27 +338,22 @@
             const dataObj = Object.fromEntries(formData.entries());
 
             try {
-                // 1. SAVE TO FIREBASE
                 let collectionName = formId === 'vodForm' ? 'requests' : 'reports';
-                
                 await addDoc(collection(db, collectionName), {
                     ...dataObj,
                     timestamp: serverTimestamp(),
                     status: 'New'
                 });
 
-                // 2. SEND EMAIL (FORMSUBMIT)
                 await fetch("https://formsubmit.co/ajax/Austreams89@gmail.com", {
                     method: "POST",
                     body: formData
                 });
 
-                // Success State
                 btn.style.display = 'none';
                 successMsg.style.display = 'block';
                 form.reset();
                 if(formId === 'vodForm') window.clearSelection();
-
             } catch (error) {
                 console.error("Error:", error);
                 btn.innerText = "Error - Try Again";
@@ -378,7 +362,6 @@
             }
         };
 
-        // --- SEARCH & UI LOGIC ---
         const API_KEY = "b71b47e2";
         const searchInput = document.getElementById('searchInput');
         const resultsBox = document.getElementById('searchResults');
@@ -405,12 +388,10 @@
             document.getElementById('previewRating').innerText = `⭐ ${data.imdbRating}`;
             document.getElementById('previewPlot').innerText = data.Plot;
 
-            // Fill inputs
             searchInput.value = data.Title; 
             document.getElementById('realTitle').value = data.Title;
             document.getElementById('realLink').value = `https://www.imdb.com/title/${data.imdbID}`;
             document.getElementById('realPosterUrl').value = data.Poster;
-            // NEW FIELDS
             document.getElementById('realYear').value = data.Year;
             document.getElementById('realGenre').value = data.Genre;
             document.getElementById('realPlot').value = data.Plot;
@@ -422,7 +403,6 @@
             document.getElementById('realLink').value = "";
         }
 
-        // Auto Search
         searchInput.addEventListener('input', function() {
             clearTimeout(debounceTimer);
             const query = this.value.trim();
@@ -453,7 +433,8 @@
         function displayResults(movies) {
             resultsBox.innerHTML = '';
             resultsBox.style.display = 'block';
-            movies.slice(0, 6).forEach(movie => {
+            // CHANGED: Show top 10 results instead of 6 to find duplicates/remakes
+            movies.slice(0, 10).forEach(movie => {
                 const div = document.createElement('div');
                 div.className = 'result-item';
                 const poster = movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/45x70?text=No+Img";
@@ -496,7 +477,7 @@
             }
         }
 
-        function init() {
+        function initParticles() {
             particlesArray = [];
             let numberOfParticles = (canvas.height * canvas.width) / 9000; 
             for (let i = 0; i < numberOfParticles; i++) {
@@ -510,7 +491,7 @@
             }
         }
 
-        function connect() {
+        function connectParticles() {
             let opacityValue = 1;
             for (let a = 0; a < particlesArray.length; a++) {
                 for (let b = a; b < particlesArray.length; b++) {
@@ -529,22 +510,22 @@
             }
         }
 
-        function animate() {
-            requestAnimationFrame(animate);
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
             ctx.clearRect(0, 0, innerWidth, innerHeight);
             for (let i = 0; i < particlesArray.length; i++) {
                 particlesArray[i].update();
             }
-            connect();
+            connectParticles();
         }
 
         window.addEventListener('resize', function() {
             canvas.width = innerWidth; canvas.height = innerHeight;
-            init();
+            initParticles();
         });
 
-        init();
-        animate();
+        initParticles();
+        animateParticles();
     </script>
 </body>
 </html>
