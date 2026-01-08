@@ -52,32 +52,20 @@
         /* --- THE ULTRA-GLASS CONTAINER --- */
         .main-container {
             width: 100%; max-width: 650px;
-            
-            /* Hyper-Blur for thick glass effect */
             backdrop-filter: blur(60px) saturate(150%);
             -webkit-backdrop-filter: blur(60px) saturate(150%);
             background: rgba(10, 10, 16, 0.5);
-
-            /* Thick, multi-layered borders */
             border-top: 2px solid rgba(255, 255, 255, 0.6);
             border-left: 1px solid rgba(255, 255, 255, 0.2);
             border-right: 1px solid rgba(255, 255, 255, 0.2);
             border-bottom: 3px solid rgba(0, 0, 0, 0.5);
-            
-            /* Prismatic Reflections & Deep Shadows */
             box-shadow: 
-                /* Inner blue glow (internal reflection) */
                 inset 0 0 40px rgba(59, 130, 246, 0.15),
-                /* Sharp outer edge highlight */
                 0 0 0 1px rgba(255, 255, 255, 0.1),
-                /* Prismatic light spill (purple top-left, cyan bottom-right) */
                 -10px -10px 40px rgba(124, 58, 237, 0.15),
                 10px 10px 40px rgba(6, 182, 212, 0.15),
-                /* Deep shadow to lift it */
                 0 40px 80px rgba(0, 0, 0, 0.9),
-                /* Massive blue atmospheric glow */
                 0 0 100px rgba(59, 130, 246, 0.3);
-
             border-radius: 24px;
             overflow: visible;
             position: relative;
@@ -151,8 +139,7 @@
             box-shadow: inset 0 0 30px rgba(59, 130, 246, 0.15);
         }
         .movie-preview.visible { display: flex; }
-        /* Bigger Poster */
-        .poster-img { width: 110px; height: 160px; object-fit: cover; border-radius: 8px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .poster-img { width: 110px; height: 160px; object-fit: cover; border-radius: 8px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); flex-shrink: 0; }
         
         .movie-info { flex: 1; }
         .movie-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; color: white; line-height: 1.2; text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
@@ -178,6 +165,31 @@
             display: none; text-align: center; padding: 20px;
             background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981;
             color: #10b981; border-radius: 12px; margin-top: 25px; font-weight: 600;
+        }
+
+        /* --- MOBILE FIXES --- */
+        @media (max-width: 600px) {
+            body { padding: 20px 10px; }
+            .main-container { margin-top: 10px; }
+            
+            .header { padding: 25px 20px; }
+            .logo { font-size: 1.4rem; letter-spacing: 2px; }
+            .form-content { padding: 25px; }
+
+            /* STACKED PREVIEW FOR MOBILE */
+            .movie-preview {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .poster-img {
+                width: 130px; /* Larger poster when stacked */
+                height: 190px;
+                margin-bottom: 10px;
+            }
+
+            .movie-meta { justify-content: center; }
         }
 
     </style>
@@ -380,7 +392,6 @@
             document.getElementById('previewRating').innerText = `⭐ ${data.imdbRating}`;
             document.getElementById('previewPlot').innerText = data.Plot;
 
-            // Fill hidden inputs
             searchInput.value = data.Title; 
             document.getElementById('realTitle').value = data.Title;
             document.getElementById('realLink').value = `https://www.imdb.com/title/${data.imdbID}`;
