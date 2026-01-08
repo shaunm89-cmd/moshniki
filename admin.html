@@ -3,62 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reylo | Operations</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Reylo | Operations Console</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #020203; color: white; font-family: 'Space Grotesk', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-x: hidden; }
-        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        #login-gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .pin-input { padding: 15px; font-size: 1.5rem; text-align: center; letter-spacing: 5px; background: #111; border: 1px solid #333; color: white; border-radius: 8px; width: 200px; margin-bottom: 20px; }
-        .enter-btn { padding: 12px 30px; background: #3b82f6; border: none; color: white; font-weight: bold; border-radius: 8px; cursor: pointer; }
-        
-        .container { width: 100%; max-width: 1200px; display: none; }
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 30px; background: rgba(10,10,16,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; margin-bottom: 30px; backdrop-filter: blur(20px); }
-        .logo { font-size: 1.8rem; font-weight: 700; } .logo span { color: #3b82f6; }
-        .admin-search { padding: 10px 15px; background: rgba(255,255,255,0.1); border: 1px solid #333; color: white; border-radius: 8px; width: 250px; }
-        
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { padding: 10px 20px; background: rgba(255,255,255,0.05); border: 1px solid #333; color: #888; border-radius: 8px; cursor: pointer; }
-        .tab-btn.active { background: #3b82f6; color: white; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
-        .card { background: rgba(20,20,25,0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-        .card-body { display: flex; padding: 20px; gap: 20px; }
-        .poster { width: 150px; height: 220px; object-fit: cover; border-radius: 8px; }
-        .info { flex: 1; }
-        .title { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
-        .actions { padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; }
-        
-        .btn-complete { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid #10b981; padding: 8px 15px; border-radius: 6px; cursor: pointer; }
-        .btn-delete { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; padding: 8px 15px; border-radius: 6px; cursor: pointer; }
+        :root {
+            --bg: #020203;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.8); /* Boosted Glow */
+            --danger: #ef4444;
+            --success: #10b981;
+            --text: #ffffff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* FULL VFX PARTICLE BACKGROUND */
+        #particle-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+
+        /* LIVE INDICATOR */
+        .live-dot {
+            display: inline-block; width: 8px; height: 8px; background-color: var(--success);
+            border-radius: 50%; margin-left: 12px; box-shadow: 0 0 10px var(--success);
+            animation: blink 2s infinite; vertical-align: middle;
+        }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        /* LOGIN */
+        #login-gate {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 9999;
+            backdrop-filter: blur(20px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .pin-input {
+            padding: 15px; font-size: 1.5rem; text-align: center; letter-spacing: 5px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: white; border-radius: 12px;
+            width: 200px; margin-bottom: 20px; box-shadow: 0 0 30px var(--accent-glow);
+        }
+        .enter-btn {
+            padding: 12px 30px; background: var(--accent); border: none; color: white;
+            font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* DASHBOARD */
+        .container {
+            width: 100%; max-width: 1200px; display: none; animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .header {
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+            padding: 30px; background: rgba(10, 10, 16, 0.6); 
+            border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.4);
+            border-radius: 24px; margin-bottom: 30px;
+            backdrop-filter: blur(40px);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8); /* Darker shadow to pop against bright particles */
+        }
+        
+        .logo { font-size: 1.8rem; font-weight: 700; letter-spacing: 1px; line-height: 1; }
+        .logo span { color: var(--accent); text-shadow: 0 0 20px var(--accent); }
+        .subtitle {
+            font-size: 0.85rem; color: #666; margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
+        }
+
+        .admin-search {
+            padding: 12px 20px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            color: white; border-radius: 12px; width: 280px; font-size: 0.95rem;
+            transition: 0.3s;
+        }
+        .admin-search:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
+
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+        .tab-btn {
+            padding: 10px 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+            color: #aaa; border-radius: 30px; cursor: pointer; transition: 0.2s; font-weight: 600; font-size: 0.9rem;
+        }
+        .tab-btn:hover { color: white; border-color: white; text-shadow: 0 0 10px white; }
+        .tab-btn.active { 
+            background: rgba(59, 130, 246, 0.2); color: white; border-color: var(--accent); 
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 25px;
+        }
+
+        .card {
+            background: rgba(20, 20, 25, 0.6); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden;
+            display: flex; flex-direction: column; transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+
+        .card-body { display: flex; padding: 20px; gap: 20px; }
+        .poster {
+            width: 180px; height: 270px; object-fit: cover; border-radius: 12px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6); flex-shrink: 0;
+        }
+        .info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        
+        .title { font-weight: 700; font-size: 1.4rem; margin-bottom: 5px; line-height: 1.2; }
+        .year { font-size: 1rem; color: var(--accent); font-weight: 600; margin-bottom: 8px; display: block;}
+        .genre-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+        .tag { font-size: 0.75rem; padding: 3px 10px; border-radius: 10px; background: rgba(255,255,255,0.1); color: #ccc; }
+        .plot { font-size: 0.9rem; color: #999; line-height: 1.5; -webkit-line-clamp: 5; overflow: hidden; margin-bottom: 15px;}
+        .client-info { font-size: 0.85rem; color: #666; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+        .details-box { padding: 15px 20px; background: rgba(59, 130, 246, 0.05); font-size: 0.9rem; color: #ddd; font-style: italic; }
+
+        .actions {
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2); margin-top: auto;
+        }
+        .imdb-link { color: #f5c518; text-decoration: none; font-weight: bold; }
+        
+        .btn-complete {
+            background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid var(--success);
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s;
+        }
+        .btn-complete:hover { background: var(--success); color: black; box-shadow: 0 0 15px var(--success); }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger);
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s;
+        }
+        .btn-delete:hover { background: var(--danger); color: white; box-shadow: 0 0 15px var(--danger); }
+
+        /* MOBILE FIXES */
         @media (max-width: 600px) {
-            .header { flex-direction: column; text-align: center; gap: 15px; }
+            .header { flex-direction: column; text-align: center; }
             .grid { grid-template-columns: 1fr; }
+            .admin-search { width: 100%; }
             .card-body { flex-direction: column; align-items: center; text-align: center; }
-            .poster { width: 180px; height: 270px; }
+            .poster { width: 200px; height: 300px; margin-bottom: 10px; }
+            .actions { justify-content: center; gap:10px; }
         }
     </style>
 </head>
 <body>
+
     <canvas id="particle-canvas"></canvas>
 
     <div id="login-gate">
-        <div style="margin-bottom:10px;">SECURE ACCESS</div>
-        <input type="password" id="pin-input" class="pin-input">
-        <button onclick="checkPin()" class="enter-btn">ENTER</button>
+        <div style="margin-bottom:20px; color:#666; letter-spacing:2px;">SECURE ACCESS</div>
+        <input type="password" id="pin-input" class="pin-input" placeholder="PIN">
+        <button onclick="checkPin()" class="enter-btn">ENTER SYSTEM</button>
     </div>
 
     <div class="container" id="dashboard">
         <div class="header">
-            <div><div class="logo">REYLO <span>OPERATIONS</span></div><div style="font-size:0.8rem; color:#666;">System Online</div></div>
-            <input type="text" class="admin-search" placeholder="Search..." onkeyup="filterCards(this.value)">
+            <div>
+                <div class="logo">REYLO <span>OPERATIONS</span> <span class="live-dot" title="System Online"></span></div>
+                <div class="subtitle">Content Management System</div>
+            </div>
+            <input type="text" class="admin-search" placeholder="Search database..." onkeyup="filterCards(this.value)">
         </div>
+
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchView('active')">Active</button>
-            <button class="tab-btn" onclick="switchView('completed')">History</button>
-            <button class="tab-btn" onclick="switchView('reports')">Reports</button>
+            <button class="tab-btn active" onclick="switchView('active')">Active Requests</button>
+            <button class="tab-btn" onclick="switchView('completed')">History / Completed</button>
+            <button class="tab-btn" onclick="switchView('reports')">Issue Reports</button>
         </div>
+
         <div id="content-grid" class="grid"></div>
     </div>
 
@@ -66,67 +187,240 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0", projectId: "vodrequest", appId: "1:603036227000:web:340e481b47eb70cc742b4d" };
+        const firebaseConfig = {
+          apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0",
+          projectId: "vodrequest",
+          appId: "1:603036227000:web:340e481b47eb70cc742b4d",
+        };
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        let currentView = 'active';
+
+        let currentView = 'active'; 
+        let refreshInterval;
 
         window.checkPin = function() {
             if(document.getElementById('pin-input').value === "2024") {
-                document.getElementById('login-gate').style.display='none';
-                document.getElementById('dashboard').style.display='block';
-                loadData(); setInterval(() => loadData(true), 15000);
-            } else { alert("Wrong PIN"); }
+                document.getElementById('login-gate').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadData();
+                refreshInterval = setInterval(() => loadData(true), 15000); 
+            } else { alert("ACCESS DENIED"); }
         }
 
         window.switchView = function(view) {
             currentView = view;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
             loadData();
         }
 
-        window.loadData = async function(bg = false) {
+        window.loadData = async function(isBackgroundRefresh = false) {
             const grid = document.getElementById('content-grid');
-            if(!bg) grid.innerHTML = '<div style="padding:20px; color:#666;">Loading...</div>';
             
-            let col = currentView === 'reports' ? 'reports' : 'requests';
-            const q = query(collection(db, col), orderBy("timestamp", "desc"));
-            const snap = await getDocs(q);
+            if(!isBackgroundRefresh) {
+                grid.innerHTML = '<div style="color:#666; padding:20px;">Fetching records...</div>';
+            }
             
-            grid.innerHTML = '';
-            snap.forEach(doc => {
-                const d = doc.data();
-                const status = d.status || 'New';
-                if(currentView === 'active' && status === 'Completed') return;
-                if(currentView === 'completed' && status !== 'Completed') return;
+            try {
+                let collectionName = currentView === 'reports' ? 'reports' : 'requests';
+                const q = query(collection(db, collectionName), orderBy("timestamp", "desc"));
+                const querySnapshot = await getDocs(q);
                 
-                const card = document.createElement('div'); card.className = 'card';
-                
-                if(col === 'requests') {
-                    let btn = currentView === 'completed' ? `<button onclick="del('${doc.id}', 'requests')" class="btn-delete">Delete</button>` : `<button onclick="comp('${doc.id}')" class="btn-complete">Complete</button>`;
-                    card.innerHTML = `<div class="card-body"><img src="${d.Poster_URL||''}" class="poster"><div class="info"><div class="title">${d.Confirmed_Title||d.Search_Query}</div><div>${d.Year||''}</div><div style="margin-top:10px; font-size:0.9rem; color:#888;">${d.Plot||''}</div><div style="margin-top:10px; color:#3b82f6;">${d.Client_Name}</div></div></div><div class="actions"><a href="${d.IMDB_Link}" target="_blank" style="color:#f5c518; font-weight:bold;">IMDB</a>${btn}</div>`;
-                } else {
-                    card.innerHTML = `<div class="card-body"><div class="info"><div style="color:#ef4444; font-weight:bold;">${d.Issue_Type}</div><div class="title">${d.Channel_Name}</div><div style="margin-top:10px;">${d.Description}</div><div style="margin-top:10px; color:#888;">${d.Client_Email}</div></div></div><div class="actions"><span>${d.Source}</span><button onclick="del('${doc.id}', 'reports')" class="btn-delete">Resolve</button></div>`;
+                grid.innerHTML = '';
+                let count = 0;
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    const status = data.status || 'New';
+
+                    if(currentView === 'active' && status === 'Completed') return; 
+                    if(currentView === 'completed' && status !== 'Completed') return; 
+
+                    if(collectionName === 'requests') createRequestCard(id, data, currentView === 'completed');
+                    else createReportCard(id, data);
+                    count++;
+                });
+
+                if(count === 0) grid.innerHTML = '<div style="color:#444; padding:20px;">No records found in this view.</div>';
+
+                const currentSearch = document.querySelector('.admin-search').value;
+                if(currentSearch) filterCards(currentSearch);
+
+            } catch (error) {
+                console.error(error);
+                if(error.message.includes("index")) {
+                    const q2 = query(collection(db, currentView === 'reports' ? 'reports' : 'requests'));
+                    const snap2 = await getDocs(q2);
+                    grid.innerHTML = '';
+                    snap2.forEach(doc => {
+                        const data = doc.data();
+                        const status = data.status || 'New';
+                        if(currentView === 'active' && status !== 'Completed') createRequestCard(doc.id, data, false);
+                        else if(currentView === 'completed' && status === 'Completed') createRequestCard(doc.id, data, true);
+                        else if(currentView === 'reports') createReportCard(doc.id, data);
+                    });
                 }
-                grid.appendChild(card);
-            });
-            const search = document.querySelector('.admin-search').value;
-            if(search) window.filterCards(search);
+            }
         }
 
-        window.comp = async (id) => { if(confirm("Mark Complete?")) { await updateDoc(doc(db, "requests", id), {status:"Completed"}); loadData(true); }};
-        window.del = async (id, col) => { if(confirm("Delete Permanently?")) { await deleteDoc(doc(db, col, id)); loadData(true); }};
-        window.filterCards = (txt) => { document.querySelectorAll('.card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(txt.toLowerCase()) ? 'flex' : 'none'); }
+        function createRequestCard(id, data, isCompletedTab) {
+            const grid = document.getElementById('content-grid');
+            const posterUrl = data.Poster_URL && data.Poster_URL !== "N/A" ? data.Poster_URL : "https://via.placeholder.com/180x270?text=No+Img";
+            
+            let genreHtml = '';
+            if(data.Genre) data.Genre.split(',').slice(0,3).forEach(g => genreHtml += `<span class="tag">${g.trim()}</span>`);
 
-        // BRIGHT PARTICLES
+            let btnHtml = '';
+            if(isCompletedTab) {
+                btnHtml = `<button onclick="deleteItem('${id}', 'requests')" class="btn-delete">Delete Forever 🗑️</button>`;
+            } else {
+                btnHtml = `<button onclick="markComplete('${id}')" class="btn-complete">Mark Complete ✓</button>`;
+            }
+
+            const html = `
+                <div class="card" id="card-${id}">
+                    <div class="card-body">
+                        <img src="${posterUrl}" class="poster">
+                        <div class="info">
+                            <div class="title">${data.Confirmed_Title || data.Search_Query || "Unknown"}</div>
+                            <span class="year">${data.Year || ""}</span>
+                            <div class="genre-tags">${genreHtml}</div>
+                            <div class="plot">${data.Plot || "No plot info available."}</div>
+                            <div class="client-info">Requested by: <span style="color:#fff;">${data.Client_Name}</span></div>
+                        </div>
+                    </div>
+                    ${data.Request_Details ? `<div class="details-box">" ${data.Request_Details} "</div>` : ''}
+                    <div class="actions">
+                        ${data.IMDB_Link ? `<a href="${data.IMDB_Link}" target="_blank" class="imdb-link">IMDB ↗</a>` : '<span></span>'}
+                        ${btnHtml}
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += html;
+        }
+
+        function createReportCard(id, data) {
+            const grid = document.getElementById('content-grid');
+            const html = `
+                <div class="card" id="card-${id}" style="border-left: 4px solid #ef4444;">
+                    <div class="card-body" style="flex-direction:column; gap:10px;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:#ef4444; font-weight:bold;">${data.Issue_Type}</span>
+                            <span style="font-size:0.8rem; color:#666;">${data.Source}</span>
+                        </div>
+                        <div class="title">${data.Channel_Name}</div>
+                        <div style="font-size:0.9rem; color:#aaa;">${data.Category}</div>
+                        <div class="client-info">By: <span style="color:#fff;">${data.Client_Email || "Anon"}</span></div>
+                    </div>
+                    <div class="details-box">${data.Description || "No details."}</div>
+                    <div class="actions" style="justify-content:flex-end;">
+                        <button onclick="deleteItem('${id}', 'reports')" class="btn-delete">Resolve & Delete</button>
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += html;
+        }
+
+        window.markComplete = async function(id) {
+            if(!confirm("Mark this request as completed? It will move to History.")) return;
+            try {
+                await updateDoc(doc(db, "requests", id), { status: "Completed" });
+                loadData(true); 
+            } catch (error) { alert("Error: " + error.message); }
+        }
+
+        window.deleteItem = async function(id, collectionName) {
+            if(!confirm("Delete this record permanently?")) return;
+            try {
+                await deleteDoc(doc(db, collectionName, id));
+                loadData(true); 
+            } catch (error) { alert("Error: " + error.message); }
+        }
+
+        window.filterCards = function(text) {
+            const search = text.toLowerCase();
+            document.querySelectorAll('.card').forEach(card => {
+                const txt = card.innerText.toLowerCase();
+                card.style.display = txt.includes(search) ? 'flex' : 'none';
+            });
+        }
+
+        // --- SUPER CHARGED VFX PARTICLE SYSTEM ---
         const canvas = document.getElementById("particle-canvas");
         const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let particles = [];
-        class P { constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.vx=Math.random()*1-0.5;this.vy=Math.random()*1-0.5;this.s=Math.random()*3+2} update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>canvas.width)this.vx*=-1;if(this.y<0||this.y>canvas.height)this.vy*=-1} draw(){ctx.fillStyle='#3b82f6';ctx.shadowBlur=15;ctx.shadowColor='#3b82f6';ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;}}
-        function loop(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw(); particles.forEach(q=>{let dx=p.x-q.x,dy=p.y-q.y;if(dx*dx+dy*dy<20000){ctx.strokeStyle=`rgba(59,130,246,${1-(dx*dx+dy*dy)/20000})`;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke()}})});requestAnimationFrame(loop)}
-        for(let i=0;i<100;i++)particles.push(new P()); loop();
-        window.addEventListener('resize', ()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight});
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particlesArray;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 2; // BIGGER
+                this.speedX = Math.random() * 1 - 0.5; // FASTER
+                this.speedY = Math.random() * 1 - 0.5; 
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(100, 200, 255, 1)'; // BRIGHT BLUE
+                ctx.shadowBlur = 20; // NEON GLOW
+                ctx.shadowColor = '#3b82f6';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0; // Reset for performance
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            for (let i = 0; i < 100; i++) { // MORE PARTICLES
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                
+                // BRIGHTER CONNECTIONS
+                for (let j = i; j < particlesArray.length; j++) {
+                    const dx = particlesArray[i].x - particlesArray[j].x;
+                    const dy = particlesArray[i].y - particlesArray[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 150) { // CONNECT FURTHER
+                        ctx.strokeStyle = `rgba(100, 200, 255, ${1 - dist/150})`;
+                        ctx.lineWidth = 1.5; // THICKER LINES
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = '#3b82f6';
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        ctx.stroke();
+                        ctx.shadowBlur = 0;
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        initParticles();
+        animateParticles();
     </script>
 </body>
 </html>
