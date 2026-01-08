@@ -112,19 +112,25 @@
         }
         input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); background: rgba(59, 130, 246, 0.05); box-shadow: 0 0 20px var(--accent-glow); }
 
-        /* --- DROPDOWN FIX --- */
-        /* Force dropdown options to be dark so text is readable */
-        select option {
-            background-color: #0f1014;
+        /* --- STRONG DROPDOWN FIX --- */
+        select {
+            background-color: rgba(0,0,0,0.4); 
             color: white;
+        }
+        /* Force options to be black text on white background for maximum readability on all devices */
+        select option {
+            background-color: white !important;
+            color: black !important;
         }
 
         /* DROPDOWN RESULTS */
         .search-results {
             position: absolute; top: 100%; left: 0; width: 100%;
             background: #0a0a0c; border: 1px solid var(--accent); border-top: none;
-            border-radius: 0 0 12px 12px; z-index: 100; max-height: 350px;
-            overflow-y: auto; display: none; box-shadow: 0 20px 50px rgba(0,0,0,1);
+            border-radius: 0 0 12px 12px; z-index: 100; 
+            max-height: 300px; /* Limits height so it scrolls */
+            overflow-y: auto; /* Adds scrollbar */
+            display: none; box-shadow: 0 20px 50px rgba(0,0,0,1);
         }
         .result-item {
             padding: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer;
@@ -269,7 +275,6 @@
 
         <div id="report" class="form-content">
             <form id="issueForm" onsubmit="window.handleFormSubmit(event, 'issueForm')">
-                
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
                 <input type="hidden" name="_subject" value="⚠️ SUPPORT TICKET FILED">
                 <input type="hidden" name="_template" value="box">
@@ -353,7 +358,6 @@
 
             try {
                 let collectionName = formId === 'vodForm' ? 'requests' : 'reports';
-                
                 await addDoc(collection(db, collectionName), {
                     ...dataObj,
                     timestamp: serverTimestamp(),
@@ -369,7 +373,6 @@
                 successMsg.style.display = 'block';
                 form.reset();
                 if(formId === 'vodForm') window.clearSelection();
-
             } catch (error) {
                 console.error("Error:", error);
                 btn.innerText = "Error - Try Again";
@@ -393,8 +396,18 @@
 
         window.selectMovie = async function(imdbID) {
             resultsBox.style.display = 'none';
+            searchInput.value = "Searching Database..."; // User Feedback
+
             const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&plot=short&apikey=${API_KEY}`);
             const data = await res.json();
+
+            // --- ERROR CHECK: IF DATABASE DOESN'T HAVE IT ---
+            if (data.Response === "False") {
+                alert("This title is too new and hasn't been indexed by the database yet!\n\nPlease just type the name manually (e.g. 'Beatles 2025') and hit Submit.");
+                window.clearSelection(); 
+                searchInput.value = ""; 
+                return; 
+            }
 
             previewBox.classList.add('visible');
             document.getElementById('previewPoster').src = data.Poster !== "N/A" ? data.Poster : "";
@@ -420,24 +433,31 @@
         }
 
         searchInput.addEventListener('input', function() {
+            // --- FIX FOR BUTTON DISAPPEARING ---
+            const btn = document.getElementById('vodBtn');
+            const successMsg = document.getElementById('vodSuccess');
+            
+            // If button is hidden (success state), reset it immediately on typing
+            if(btn.style.display === 'none') {
+                btn.style.display = 'block';
+                btn.disabled = false;
+                btn.innerText = 'Submit Request'; // Reset text
+                successMsg.style.display = 'none';
+            }
+            // ----------------------------------
+
             clearTimeout(debounceTimer);
             let query = this.value.trim();
 
-            // --- MAGIC LINK DETECTOR ---
-            // If user pastes an IMDB URL, extract ID and fetch directly
+            // Magic Link Logic
             if (query.includes('imdb.com/title/')) {
                 const match = query.match(/tt\d+/);
-                if (match) {
-                    window.selectMovie(match[0]);
-                    return; 
-                }
+                if (match) { window.selectMovie(match[0]); return; }
             }
-            // Also works if they just paste "tt123456"
             if (query.startsWith('tt') && query.length > 6) {
                 window.selectMovie(query);
                 return;
             }
-            // ---------------------------
 
             if(query.length === 0) {
                 window.clearSelection();
@@ -551,8 +571,9 @@
             connectParticles();
         }
 
-        window.addEventListener('resize', function() {
-            canvas.width = innerWidth; canvas.height = innerHeight;
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             initParticles();
         });
 
