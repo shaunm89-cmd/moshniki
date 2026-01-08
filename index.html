@@ -11,7 +11,7 @@
             --bg: #020203;
             --surface: #0f1014;
             --accent: #3b82f6; /* Electric Blue */
-            --accent-glow: rgba(59, 130, 246, 0.2);
+            --accent-glow: rgba(59, 130, 246, 0.4);
             --text: #ffffff;
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
@@ -28,20 +28,36 @@
             overflow-x: hidden;
         }
 
-        /* DIGITAL PARTICLE BACKGROUND */
+        /* --- ATMOSPHERIC GLOW ENGINE --- */
+        #glow-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 50% -10%, rgba(59, 130, 246, 0.25) 0%, transparent 50%), /* Top Center Main */
+                radial-gradient(circle at 90% 40%, rgba(124, 58, 237, 0.1) 0%, transparent 40%),  /* Right Purple Hint */
+                radial-gradient(circle at 10% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);  /* Left Blue Hint */
+            animation: pulseGlow 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* DIGITAL PARTICLE CANVAS */
         #particle-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: radial-gradient(circle at 50% 0%, #111827 0%, #000000 80%);
         }
 
         .main-container {
             width: 100%; max-width: 650px;
-            background: rgba(15, 15, 20, 0.75);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
+            background: rgba(10, 10, 15, 0.6); /* Slightly darker for contrast */
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.15); /* Top Rim Light */
             border-radius: 24px;
             overflow: visible;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.7);
             position: relative;
             margin-top: 20px;
         }
@@ -49,11 +65,11 @@
         .header {
             text-align: center; padding: 35px;
             border-bottom: 1px solid var(--border);
-            background: rgba(0,0,0,0.2);
+            background: linear-gradient(to bottom, rgba(59, 130, 246, 0.05), transparent);
             border-radius: 24px 24px 0 0;
         }
         .logo { font-size: 1.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
-        .logo span { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
+        .logo span { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
 
         .tabs { display: flex; border-bottom: 1px solid var(--border); }
         .tab-btn {
@@ -62,7 +78,7 @@
             border-bottom: 3px solid transparent; font-size: 1rem;
         }
         .tab-btn:hover { background: rgba(255,255,255,0.03); color: white; }
-        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59, 130, 246, 0.08); }
 
         .form-content { padding: 40px; display: none; animation: fadeIn 0.4s ease; }
         .form-content.active { display: block; }
@@ -73,7 +89,7 @@
         label { display: block; margin-bottom: 10px; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
         
         input[type="text"], textarea, select, input[type="email"] {
-            width: 100%; padding: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            width: 100%; padding: 16px; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
             color: white; border-radius: 12px; font-size: 1rem; transition: 0.3s;
         }
         input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); background: rgba(59, 130, 246, 0.05); box-shadow: 0 0 15px var(--accent-glow); }
@@ -102,14 +118,14 @@
             border-radius: 16px; padding: 20px;
             margin-bottom: 25px;
             align-items: flex-start; gap: 20px;
-            box-shadow: inset 0 0 20px var(--accent-glow);
+            box-shadow: inset 0 0 30px rgba(59, 130, 246, 0.15);
         }
         .movie-preview.visible { display: flex; }
         /* Bigger Poster */
         .poster-img { width: 110px; height: 160px; object-fit: cover; border-radius: 8px; background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         
         .movie-info { flex: 1; }
-        .movie-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; color: white; line-height: 1.2; }
+        .movie-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; color: white; line-height: 1.2; text-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
         .movie-meta { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
         .meta-tag {
             font-size: 0.75rem; padding: 4px 10px; border-radius: 20px;
@@ -123,9 +139,9 @@
             width: 100%; padding: 18px; background: var(--accent); color: white;
             border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem;
             cursor: pointer; transition: 0.3s; margin-top: 15px; letter-spacing: 1px;
-            box-shadow: 0 0 20px var(--accent-glow);
+            box-shadow: 0 0 25px var(--accent-glow);
         }
-        .submit-btn:hover { opacity: 0.9; transform: translateY(-3px); box-shadow: 0 0 30px var(--accent-glow); }
+        .submit-btn:hover { opacity: 0.9; transform: translateY(-3px); box-shadow: 0 0 40px var(--accent-glow); }
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .success-msg {
@@ -138,6 +154,8 @@
 </head>
 <body>
 
+    <div id="glow-layer"></div>
+    
     <canvas id="particle-canvas"></canvas>
 
     <div class="main-container">
@@ -247,7 +265,7 @@
                     <input type="email" name="Client_Email" placeholder="Leave blank if not needed">
                 </div>
 
-                <button type="submit" class="submit-btn" style="background: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);" id="issueBtn">Report Issue</button>
+                <button type="submit" class="submit-btn" style="background: #ef4444; box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);" id="issueBtn">Report Issue</button>
                 <div class="success-msg" id="issueSuccess" style="border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.1);">Issue Reported. Our technicians are investigating.</div>
             </form>
         </div>
@@ -272,7 +290,6 @@
             clearTimeout(debounceTimer);
             const query = this.value.trim();
             
-            // If input is cleared, hide preview and clear hidden data
             if(query.length === 0) {
                 clearSelection();
                 resultsBox.style.display = 'none';
@@ -294,7 +311,6 @@
 
         async function fetchMovies(query) {
             try {
-                // Using 's' search for dropdown
                 const res = await fetch(`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`);
                 const data = await res.json();
                 if (data.Response === "True") {
@@ -308,7 +324,6 @@
         function displayResults(movies) {
             resultsBox.innerHTML = '';
             resultsBox.style.display = 'block';
-            // Show top 6 results
             movies.slice(0, 6).forEach(movie => {
                 const div = document.createElement('div');
                 div.className = 'result-item';
@@ -321,7 +336,6 @@
 
         async function selectMovie(imdbID) {
             resultsBox.style.display = 'none';
-            // Fetch full details using 'i' (ID) search
             const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&plot=short&apikey=${API_KEY}`);
             const data = await res.json();
 
@@ -333,7 +347,6 @@
             document.getElementById('previewRating').innerText = `⭐ ${data.imdbRating}`;
             document.getElementById('previewPlot').innerText = data.Plot;
 
-            // Fill hidden inputs
             searchInput.value = data.Title; 
             document.getElementById('realTitle').value = data.Title;
             document.getElementById('realLink').value = `https://www.imdb.com/title/${data.imdbID}`;
@@ -366,7 +379,7 @@
                 btn.style.display = 'none';
                 successMsg.style.display = 'block';
                 form.reset();
-                clearSelection(); // Clear preview after submit
+                clearSelection(); 
             })
             .catch(error => {
                 console.log(error);
@@ -376,7 +389,7 @@
             });
         }
 
-        // --- PARTICLE SYSTEM JS ---
+        // --- ENHANCED PARTICLE SYSTEM ---
         const canvas = document.getElementById("particle-canvas");
         const ctx = canvas.getContext("2d");
         canvas.width = window.innerWidth;
@@ -405,15 +418,15 @@
 
         function init() {
             particlesArray = [];
-            // Adjust number of particles based on screen size
-            let numberOfParticles = (canvas.height * canvas.width) / 15000; 
+            // Increased density (9000 instead of 15000 for more particles)
+            let numberOfParticles = (canvas.height * canvas.width) / 9000; 
             for (let i = 0; i < numberOfParticles; i++) {
                 let size = (Math.random() * 2) + 1;
                 let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
                 let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
                 let directionX = (Math.random() * 0.4) - 0.2;
                 let directionY = (Math.random() * 0.4) - 0.2;
-                let color = 'rgba(59, 130, 246, 0.4)'; // Accent color
+                let color = 'rgba(59, 130, 246, 0.4)'; 
                 particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
             }
         }
