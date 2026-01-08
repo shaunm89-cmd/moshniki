@@ -3,543 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rhonda Blackadder | Psychologist</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    
+    <title>Wild Wonders | The Coolest Animals</title>
     <style>
-        /* --- THEME COLORS --- */
+        /* --- GLOBAL VARIABLES & RESET --- */
         :root {
-            --gold-accent: #C5A059;       /* Gold from the watercolor style */
-            --deep-forest: #1B2E1B;       /* Dark Green for Text */
-            --cream-paper: #FDFDFB;       /* Warm White for boxes */
-            --white: #ffffff;
-            
-            /* YOUR BACKGROUND FILE */
-            --bg-image: url('background.png'); 
+            --primary: #FF6B6B; /* Vibrant Red/Pink */
+            --secondary: #4ECDC4; /* Teal */
+            --accent: #FFE66D; /* Yellow */
+            --dark: #292f36;
+            --light: #f7fff7;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
         body {
-            font-family: 'Lato', sans-serif;
-            color: var(--deep-forest);
-            line-height: 1.8;
-            
-            /* PARALLAX WALLPAPER SETTINGS */
-            background-image: var(--bg-image);
-            background-attachment: fixed; 
-            background-size: cover;       
-            background-position: center;
-            background-repeat: no-repeat;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
         }
 
-        a { text-decoration: none; transition: 0.3s; }
-        ul { list-style: none; }
-
-        /* --- LAYOUT --- */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 25px;
+        /* --- ANIMATIONS --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
         }
 
-        /* --- SECTIONS --- */
-        section {
-            background: var(--cream-paper);
-            padding: 80px 0;
-            margin: 60px 0; /* Gaps to see the background */
-            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
-            border-top: 1px solid rgba(0,0,0,0.05);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 10px var(--secondary); }
+            50% { box-shadow: 0 0 30px var(--secondary), 0 0 50px var(--primary); }
+            100% { box-shadow: 0 0 10px var(--secondary); }
         }
 
-        /* Hero is transparent to show the wallpaper */
-        .hero-section {
-            background: transparent;
-            margin: 0;
-            box-shadow: none;
-            border: none;
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
-        }
-
-        /* --- TYPOGRAPHY --- */
-        h1, h2, h3 {
-            font-family: 'Cinzel Decorative', serif;
-            color: var(--deep-forest);
-        }
-
-        h1 {
-            font-size: 2.8rem;
-            line-height: 1.2;
-            margin-bottom: 25px;
-            text-shadow: 0px 0px 20px rgba(255,255,255,0.8);
-        }
-
-        h2 {
-            font-size: 2.2rem;
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        /* Gold underline for headers */
-        h2::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 3px;
-            background: var(--gold-accent);
-            margin: 15px auto 0;
-        }
-
-        h3 { font-size: 1.4rem; margin-bottom: 15px; }
-
-        /* --- BUTTONS --- */
-        .btn {
-            display: inline-block;
-            background-color: var(--deep-forest);
-            color: var(--white);
-            padding: 15px 35px;
-            border-radius: 4px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-        .btn:hover {
-            background-color: var(--gold-accent);
-            color: var(--white);
-            transform: translateY(-2px);
-        }
-
-        /* --- HEADER --- */
+        /* --- HERO SECTION --- */
         header {
-            /* Crisp white with slight transparency */
-            background: rgba(255, 255, 255, 0.95); 
-            
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            
-            /* Gold border to make it feel premium */
-            border-bottom: 2px solid var(--gold-accent); 
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 90px;
-        }
-
-        /* Logo Stacking */
-        .logo {
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            line-height: 1.2;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            position: relative;
+            overflow: hidden;
         }
-        
-        .logo-main {
-            font-family: 'Cinzel Decorative', serif;
-            font-size: 1.4rem;
+
+        /* Animated Background Circles */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+        }
+        .c1 { width: 300px; height: 300px; top: -50px; left: -50px; }
+        .c2 { width: 200px; height: 200px; bottom: 50px; right: -50px; animation-delay: 1s; }
+        .c3 { width: 100px; height: 100px; top: 40%; right: 20%; animation-delay: 2s; background: var(--accent); }
+
+        .hero-content {
+            z-index: 2;
+            backdrop-filter: blur(5px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+        }
+
+        h1 {
+            font-size: 5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        p.subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--secondary);
+            color: var(--dark);
             font-weight: bold;
-            color: var(--deep-forest);
-        }
-        
-        .logo-sub {
-            font-family: 'Lato', sans-serif;
-            font-size: 0.75rem;
-            color: var(--gold-accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a {
-            font-size: 0.9rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--deep-forest);
-            text-transform: uppercase;
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--secondary);
         }
-        .nav-links a:hover { color: var(--gold-accent); }
 
-        /* --- HERO BOX --- */
-        .hero-box {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 60px;
-            border-radius: 5px;
+        /* --- GIRAFFE SPOTLIGHT (The Main Event) --- */
+        .spotlight {
+            min-height: 80vh;
+            padding: 4rem 2rem;
             display: flex;
             align-items: center;
-            gap: 50px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.8);
-        }
-
-        .hero-text { flex: 1; }
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: #444;
-            margin-bottom: 35px;
-        }
-
-        .hero-photo {
-            width: 350px;
-            height: 350px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 10px solid var(--white);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-
-        .credentials {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-align: center;
-            opacity: 0.8;
-        }
-
-        /* --- SERVICES GRID --- */
-        .services-intro {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 50px auto;
-            font-size: 1.1rem;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-        }
-        
-        .service-card {
-            background: var(--white);
-            padding: 40px;
-            border: 1px solid #f0f0f0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-            border-top: 4px solid var(--gold-accent); 
-        }
-        
-        .service-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: flex-start;
-        }
-        .service-list li::before {
-            content: '•';
-            margin-right: 15px;
-            color: var(--gold-accent);
-            font-size: 1.5rem;
-            line-height: 1rem;
-        }
-
-        /* --- SESSION GRID --- */
-        .session-grid {
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
             justify-content: center;
+            background: #202020;
+            position: relative;
         }
-        .session-card {
-            background: var(--white);
-            padding: 40px;
+
+        .spotlight-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .giraffe-visual {
             flex: 1;
             min-width: 300px;
-            max-width: 500px;
-            border: 1px solid #f0f0f0;
-            border-top: 4px solid var(--gold-accent);
+            height: 500px;
+            /* Using CSS Gradient to create abstract Giraffe art since we can't load external images reliably */
+            background: 
+                radial-gradient(circle at 70% 20%, black 2%, transparent 3%), /* Eye */
+                conic-gradient(from 45deg at 50% 50%, #e6a726 25%, #8b4513 25%, #8b4513 50%, #e6a726 50%, #e6a726 75%, #8b4513 75%); /* Pattern */
+            background-size: 100px 100px; 
+            border-radius: 30px;
+            box-shadow: 20px 20px 0 var(--accent);
+            position: relative;
+            transition: transform 0.5s;
         }
 
-        /* --- REFERRALS --- */
-        .referral-box { max-width: 800px; margin: 0 auto; background: var(--white); padding: 50px; border: 1px solid #f0f0f0; }
-        .referral-item {
-            margin-bottom: 25px;
-            padding-left: 20px;
-            border-left: 4px solid var(--gold-accent);
-        }
-        .referral-title {
-            display: block;
-            font-weight: bold;
-            color: var(--deep-forest);
-            margin-bottom: 5px;
-            font-size: 1.1rem;
+        .giraffe-visual:hover {
+            transform: rotate(-2deg) scale(1.02);
         }
 
-        /* --- FOOTER (Tidied Up 2-Column Layout) --- */
-        footer {
-            background: rgba(27, 46, 27, 0.95);
-            backdrop-filter: blur(5px);
-            color: var(--white);
-            padding: 80px 0 40px;
-            margin-top: 60px;
-            border-top: 4px solid var(--gold-accent);
+        .giraffe-visual::after {
+            content: "🦒";
+            position: absolute;
+            font-size: 15rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
-        
-        footer a { color: var(--white); border-bottom: 1px dotted rgba(255,255,255,0.5); }
-        
-        footer h2 { 
-            color: var(--white); 
-            text-align: left; 
-            margin-bottom: 5px;
+
+        .giraffe-info {
+            flex: 1;
+            min-width: 300px;
         }
-        footer h2::after { display: none; } 
-        
-        /* New tidied footer grid: 2 columns, centered, restricted width */
-        .footer-grid {
+
+        .giraffe-info h2 {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .stat-box {
+            background: var(--glass);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 5px solid var(--primary);
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* --- ANIMAL GRID --- */
+        .gallery {
+            padding: 4rem 2rem;
+            background: #1a1a2e;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: var(--secondary);
+        }
+
+        .grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Photo | Info */
-            gap: 60px;
-            align-items: center;
-            max-width: 800px; /* Prevents it from stretching too wide */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Footer Photo Styling */
-        .footer-photo img {
-            width: 100%;
-            max-width: 280px; /* Slightly smaller for balance */
-            height: auto;
-            border-radius: 4px;
-            border: 2px solid var(--gold-accent);
-            display: block;
-            margin: 0 auto; /* Centers photo in its column */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .footer-info { 
-            padding: 0 20px;
-            text-align: left;
-        }
-
-        .contact-item { margin-bottom: 25px; font-size: 1.1rem; }
-        .contact-label { 
-            display: block; 
-            font-size: 0.8rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            opacity: 0.6; 
-            color: #C5A059;
-            margin-bottom: 5px; 
-        }
-
-        .footer-abn {
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
             text-align: center;
-            font-size: 0.8rem;
-            opacity: 0.5;
+            transition: 0.4s;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
         }
 
-        /* --- MOBILE --- */
-        @media (max-width: 900px) {
-            .hero-box { flex-direction: column-reverse; text-align: center; gap: 30px; padding: 40px 20px; }
-            .hero-photo { width: 280px; height: 280px; }
-            h1 { font-size: 2.2rem; }
-            
-            /* Stack footer columns on mobile */
-            .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 40px;}
-            .footer-info { text-align: center; }
-            footer h2 { text-align: center; }
-            
-            .nav-links { display: none; }
-            nav { justify-content: center; }
-            .logo { align-items: center; }
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--secondary);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.2);
+        }
+
+        .card-emoji {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            transition: 0.4s;
+        }
+
+        .card:hover .card-emoji {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .tag {
+            background: var(--primary);
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* --- INTERACTIVE FACT SECTION --- */
+        .fun-zone {
+            padding: 4rem;
+            text-align: center;
+            background: radial-gradient(circle, #2a2a2a, #111);
+        }
+
+        #fact-display {
+            font-size: 1.5rem;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem auto;
+            max-width: 800px;
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #000;
+            color: #666;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .giraffe-visual { height: 300px; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="container">
-            <nav>
-                <div class="logo">
-                    <span class="logo-main">Rhonda Blackadder</span>
-                    <span class="logo-sub">Psychologist</span>
-                </div>
-                
-                <div class="nav-links">
-                    <a href="#about">About</a>
-                    <a href="#services">Services</a>
-                    <a href="#approach">Approach</a>
-                    <a href="#session">First Session</a>
-                    <a href="#contact">Contact</a>
-                </div>
-            </nav>
+        <div class="circle c1"></div>
+        <div class="circle c2"></div>
+        <div class="circle c3"></div>
+        
+        <div class="hero-content">
+            <h1>Wild Wonders</h1>
+            <p class="subtitle">Discover the coolest creatures on Earth (No Turtles Allowed!)</p>
+            <a href="#spotlight" class="btn">Start the Safari</a>
         </div>
     </header>
 
-    <section class="hero-section">
-        <div class="container">
-            <div class="hero-box">
-                <div class="hero-text">
-                    <h1>Nurturing Resilience & Wellbeing</h1>
-                    <p class="hero-subtitle">Supporting the emotional wellbeing of children, young people, university students, and their families in a safe, person-centred environment.</p>
-                    <a href="#contact" class="btn">Get in Touch</a>
+    <section id="spotlight" class="spotlight">
+        <div class="spotlight-container">
+            <div class="giraffe-visual">
                 </div>
-
-                <div class="hero-image-container">
-                    <img src="https://static.wixstatic.com/media/8d1054_ee7df96c9df8426c91fea3979c1ba28a~mv2.jpeg/v1/fill/w_371,h_335,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rhonda.jpeg" alt="Rhonda Blackadder" class="hero-photo">
-                    <p class="credentials">
-                        BAEng&Psy, BPsySt(Hons), DipProPrac<br>
-                        Registered Psychologist (AHPRA)
-                    </p>
+            <div class="giraffe-info">
+                <span class="tag">The Superstar</span>
+                <h2>The Giraffe</h2>
+                <p>The tallest mammals on Earth and the coolest neck-stretchers in the savannah. Did you know a giraffe's neck is too short to reach the ground? They have to spread their legs just to drink water!</p>
+                
+                <div class="stat-box">
+                    <strong>Height:</strong> Up to 5.5 meters (18 ft)
                 </div>
+                <div class="stat-box">
+                    <strong>Tongue Color:</strong> Purple/Black (Natural sunscreen!)
+                </div>
+                <div class="stat-box">
+                    <strong>Sleep:</strong> Only 30 minutes a day!
+                </div>
+                <button class="btn" onclick="celebrateGiraffe()">Give it a High Five! ✋</button>
             </div>
         </div>
     </section>
 
-    <section id="about">
-        <div class="container">
-            <h2>About Me</h2>
-            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-                <p>I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported. I tailor each session to the individual, recognising the unique experiences, strengths, and needs that every young person brings.</p>
-                <br>
-                <p>My career has taken me across a range of clinical and educational settings. I have supported university students managing both academic pressures and personal challenges, and I have worked as a psychologist within primary and secondary schools. These experiences have deepened my understanding of child and adolescent development, learning needs, and the emotional hurdles young people may encounter. This background allows me to provide sensitive, practical, and well-informed guidance to those I work with.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="services">
-        <div class="container">
-            <h2>Individual Therapy</h2>
+    <section class="gallery">
+        <h2 class="section-title">The Cool Crew</h2>
+        <div class="grid">
             
-            <div class="services-intro">
-                <p>I offer a calm, supportive space where you can talk openly about what’s been feeling heavy, overwhelming, or hard to put into words. Whether you’re seeking support for yourself or your child, you don’t have to navigate this alone.</p>
+            <div class="card">
+                <div class="card-emoji">🐘</div>
+                <h3>African Elephant</h3>
+                <p>They can recognize themselves in a mirror, proving they are self-aware and very smart.</p>
             </div>
 
-            <div class="services-grid">
-                
-                <div class="service-card">
-                    <h3>Who I Support</h3>
-                    <p style="margin-bottom: 20px;">I work with children and adolescents (ages 5–18), as well as university students, supporting concerns such as anxiety, academic stress, emotional regulation, grief, and self-esteem.</p>
-                    <p>Please feel free to get in touch to explore whether I may be the right fit for you.</p>
-                </div>
-
-                <div class="service-card">
-                    <h3>Areas of Special Interest</h3>
-                    <p style="margin-bottom: 20px; font-style: italic;">I believe meaningful therapy happens when people feel safe, understood, and able to be themselves. I offer a warm, compassionate approach grounded in evidence-based practice.</p>
-                    
-                    <ul class="service-list">
-                        <li>Anxiety</li>
-                        <li>Depression</li>
-                        <li>Adjustment difficulties</li>
-                        <li>Grief and Loss</li>
-                        <li>Acute stress and psychological distress</li>
-                        <li>Bullying</li>
-                        <li>Self-confidence and self-esteem issues</li>
-                    </ul>
-                </div>
-
+            <div class="card">
+                <div class="card-emoji">🐙</div>
+                <h3>Octopus</h3>
+                <p>They have three hearts and blue blood. Basically aliens that live underwater.</p>
             </div>
+
+            <div class="card">
+                <div class="card-emoji">🦥</div>
+                <h3>Sloth</h3>
+                <p>They move so slowly that algae actually grows on their fur, giving them a green tint.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-emoji">🦁</div>
+                <h3>Lion</h3>
+                <p>A lion's roar can be heard from 5 miles away. That's louder than a rock concert!</p>
+            </div>
+
+            <div class="card">
+                <div class="card-emoji">🐧</div>
+                <h3>Penguin</h3>
+                <p>Emperor penguins can dive over 500 meters deep and hold their breath for 20 minutes.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-emoji">🦄</div>
+                <h3>Narwhal</h3>
+                <p>Okay, it's real! The "unicorn of the sea." That tusk is actually a giant tooth.</p>
+            </div>
+
         </div>
     </section>
 
-    <section id="approach">
-        <div class="container">
-            <h2>Therapeutic Approach</h2>
-            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-                <p>My practice is informed by positive psychology and a strengths-focused perspective. I use evidence-based therapies, including Acceptance and Commitment Therapy (ACT) and Cognitive Behavioural Therapy (CBT), to help young people build resilience, develop emotional regulation skills, and learn strategies that support their overall wellbeing.</p>
-                <br>
-                <p>I value collaboration and believe that effective support often involves the wider network surrounding a young person. When appropriate, I work alongside families, educators, and other health professionals to ensure care is consistent, holistic, and responsive to each client’s needs.</p>
-            </div>
-        </div>
+    <section class="fun-zone">
+        <h2 style="color: white; margin-bottom: 1rem;">Wild Fact Generator</h2>
+        <p style="color: #aaa;">Click the button to learn something weird!</p>
+        
+        <div id="fact-display">"Giraffes have the same number of neck bones as humans (7), they are just way bigger!"</div>
+        
+        <button class="btn" onclick="newFact()">Spin the Wheel of Facts</button>
     </section>
 
-    <section id="session">
-        <div class="container">
-            <h2>First Session</h2>
-            <p style="text-align: center; max-width: 700px; margin: 0 auto 40px auto; font-style: italic; color: #666;">The first session focuses on understanding the presenting concerns and gathering important developmental, family, and background information to guide treatment planning.</p>
-            
-            <div class="session-grid">
-                <div class="session-card">
-                    <h3>Children under 14 years</h3>
-                    <p>The initial appointment is held with <strong>parents or caregivers only</strong> to discuss the child’s history, strengths, and areas of concern.</p>
-                </div>
-
-                <div class="session-card">
-                    <h3>Young people (14+ years)</h3>
-                    <p>The session is divided into:</p>
-                    <ul style="margin-top: 10px; margin-left: 20px; list-style: circle;">
-                        <li style="margin-bottom: 5px;">30 minutes with the young person</li>
-                        <li>30 minutes with parents or caregivers</li>
-                    </ul>
-                </div>
-            </div>
-            <p style="text-align: center; margin-top: 30px; font-style: 0.9rem;">Clients may also complete assessments or questionnaires to help clarify the presenting issues and support the development of an individualised treatment plan.</p>
-        </div>
-    </section>
-
-    <section id="referrals">
-        <div class="container">
-            <h2>Pathways to Referral</h2>
-            <div class="referral-box">
-                <p style="text-align: center; margin-bottom: 30px; font-weight: bold;">I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.</p>
-                
-                <div class="referral-item">
-                    <span class="referral-title">Mental Health Care Plans (MHCPs)</span>
-                    For children and young people seeking psychological support through Medicare.
-                </div>
-                
-                <div class="referral-item">
-                    <span class="referral-title">NDIS Referrals</span>
-                    I see both self-managed and plan-managed clients.
-                </div>
-                
-                <div class="referral-item">
-                    <span class="referral-title">Private Referrals</span>
-                    No formal referral is required—parents, caregivers, and students may self-refer.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-grid">
-                
-                <div class="footer-photo">
-                    <img src="https://raw.githubusercontent.com/shaunm89-cmd/moshniki/7880593cbb073c03a19481b7d3c46c2ea5d23f3e/rhonda2.png" alt="Rhonda Blackadder">
-                </div>
-
-                <div class="footer-info">
-                    <h2>Rhonda Blackadder</h2>
-                    <h3 style="font-size: 1.1rem; color: #C5A059; margin-bottom: 30px; margin-top: 0;">Psychologist</h3>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">Address</span>
-                        Uralla Cottage<br>3 Baker Street, Windsor, NSW 2756
-                    </div>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">Email</span>
-                        <a href="mailto:rhondablackadder@gmail.com">rhondablackadder@gmail.com</a>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">Mobile</span>
-                        <a href="tel:0421140107">0421 140 107</a>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="footer-abn">
-                ABN 75 872 154 399<br>
-                © 2026 Rhonda Blackadder Psychologist
-            </div>
-        </div>
+    <footer>
+        <p>© 2026 Wild Wonders - Made for Cool People Only</p>
     </footer>
 
+    <script>
+        // Array of fun facts
+        const facts = [
+            "A shrimp's heart is located in its head.",
+            "Elephants are the only animals that can't jump.",
+            "A rhinoceros' horn is made of hair (keratin).",
+            "A cow gives nearly 200,000 glasses of milk in a lifetime.",
+            "Bats are the only mammals that can fly.",
+            "Kangaroos can't walk backwards.",
+            "A blue whale's tongue weighs as much as an elephant!",
+            "Flamingos turn pink because of the shrimp they eat.",
+            "Giraffes have a unique spot pattern, like a human fingerprint."
+        ];
+
+        function newFact() {
+            const display = document.getElementById('fact-display');
+            const randomFact = facts[Math.floor(Math.random() * facts.length)];
+            
+            // Simple fade effect
+            display.style.opacity = 0;
+            setTimeout(() => {
+                display.innerText = `"${randomFact}"`;
+                display.style.opacity = 1;
+            }, 300);
+        }
+
+        function celebrateGiraffe() {
+            // Create a burst of emojis
+            for(let i=0; i<20; i++) {
+                createEmoji();
+            }
+            alert("🦒 The Giraffe appreciates your high five! 🦒");
+        }
+
+        function createEmoji() {
+            const emoji = document.createElement('div');
+            emoji.innerText = '🦒';
+            emoji.style.position = 'fixed';
+            emoji.style.left = Math.random() * 100 + 'vw';
+            emoji.style.top = '100vh';
+            emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+            emoji.style.transition = 'all 2s ease-out';
+            emoji.style.zIndex = '9999';
+            document.body.appendChild(emoji);
+
+            setTimeout(() => {
+                emoji.style.transform = `translateY(-120vh) rotate(${Math.random() * 360}deg)`;
+            }, 50);
+
+            setTimeout(() => {
+                emoji.remove();
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
