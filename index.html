@@ -3,246 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entain Consultancy | Premier Media Solutions</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Reylo Entertainment | Elite Media Systems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505;
-            --surface: #0f1014;
-            --accent: #cfb53b; /* Old Gold */
-            --text: #f0f0f0;
-            --text-muted: #9ca3af;
-            --border: rgba(255, 255, 255, 0.08);
+            --bg: #030305;
+            --card-bg: rgba(20, 20, 25, 0.6);
+            --accent: #3b82f6; /* Electric Blue */
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --text: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; scroll-behavior: smooth; }
 
-        body { background-color: var(--bg); color: var(--text); line-height: 1.7; overflow-x: hidden; }
-
-        /* --- UTILITIES --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .text-accent { color: var(--accent); }
-        .btn {
-            display: inline-block; padding: 16px 40px; background: var(--accent); color: #000;
-            font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none;
-            transition: 0.3s; border: 1px solid var(--accent);
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-size: 16px;
         }
-        .btn:hover { background: transparent; color: var(--accent); }
-        .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.3); }
-        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* --- COOL ANIMATED BACKGROUND --- */
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1a1b4b 0%, #000000 70%);
+        }
+        
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+            border-radius: 50%;
+        }
+        
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #4c1d95; animation-delay: 0s; }
+        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #0f4c75; animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: #be185d; opacity: 0.2; animation-delay: -10s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* --- GLASSMORPHISM UTILITIES --- */
+        .glass {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+        }
 
         /* --- NAV --- */
-        nav { padding: 30px 0; border-bottom: 1px solid var(--border); }
-        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; }
+        nav {
+            padding: 25px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: fixed; width: 100%; top: 0; z-index: 100;
+            background: rgba(3, 3, 5, 0.8); backdrop-filter: blur(10px);
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+        .logo span { color: var(--accent); }
 
         /* --- HERO --- */
-        .hero { padding: 120px 0; position: relative; overflow: hidden; }
-        .hero h1 {
-            font-size: 4rem; line-height: 1.1; margin-bottom: 30px;
-            background: linear-gradient(to right, #fff 30%, #666);
+        .hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 0 20px;
+            padding-top: 80px; /* Offset for fixed nav */
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            line-height: 1.1; margin-bottom: 25px; font-weight: 700;
+            background: linear-gradient(to bottom right, #fff, #aaa);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .hero p { font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin-bottom: 50px; }
+
+        .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin-bottom: 40px; }
+
+        .btn {
+            padding: 18px 45px; background: var(--accent); color: white;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            border-radius: 50px; text-decoration: none; transition: 0.3s;
+            box-shadow: 0 0 20px var(--accent-glow);
+            border: 1px solid var(--accent);
+        }
+        .btn:hover { background: transparent; box-shadow: 0 0 40px var(--accent-glow); transform: scale(1.05); }
+
+        /* --- HARDWARE SECTION --- */
+        .hardware { padding: 100px 5%; max-width: 1400px; margin: 0 auto; }
         
-        /* Background Glow */
-        .glow {
-            position: absolute; width: 600px; height: 600px; background: var(--accent);
-            opacity: 0.05; filter: blur(100px); border-radius: 50%; z-index: -1;
-        }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 15px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
 
-        /* --- PROBLEM/SOLUTION --- */
-        .split-section { padding: 100px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-        .stat-box {
-            border-left: 4px solid var(--accent); padding-left: 30px; margin-bottom: 40px;
-        }
-        .stat-num { font-size: 3rem; font-weight: 700; line-height: 1; }
-        .stat-label { color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; margin-top: 10px; display: block; }
-
-        /* --- HARDWARE GUIDE --- */
-        .hardware { background: var(--surface); padding: 100px 0; }
-        .hardware-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
         .device-card {
-            background: var(--bg); border: 1px solid var(--border); padding: 40px 30px;
-            text-align: center; transition: 0.3s;
+            border-radius: 20px; padding: 40px 30px;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            transition: 0.4s; position: relative; overflow: hidden;
         }
-        .device-card:hover { border-color: var(--accent); transform: translateY(-10px); }
-        .device-badge {
-            background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px;
-            font-size: 0.8rem; display: inline-block; margin-bottom: 20px; color: var(--text-muted);
-        }
-        .device-badge.recommended { background: var(--accent); color: #000; font-weight: bold; }
 
-        /* --- CONTACT --- */
-        .contact { padding: 100px 0; }
-        .form-wrapper {
-            background: var(--surface); padding: 60px; max-width: 800px; margin: 0 auto;
-            border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        .device-card:hover { transform: translateY(-10px); border-color: var(--accent); }
+        .device-card:hover::before { opacity: 0.2; }
+
+        /* Glow effect on hover */
+        .device-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, var(--accent), transparent 70%);
+            opacity: 0; transition: 0.4s; pointer-events: none;
+        }
+
+        .badge {
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
+            padding: 5px 12px; border-radius: 20px; margin-bottom: 20px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
         }
         
-        .form-group { margin-bottom: 25px; }
-        label { display: block; margin-bottom: 10px; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .device-img {
+            height: 150px; width: 100%; display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px; background: rgba(0,0,0,0.3); border-radius: 10px;
+            font-size: 3rem; color: #444; /* Placeholder for image */
+        }
+
+        /* --- CONTACT FORM --- */
+        .contact { padding: 100px 5%; display: flex; justify-content: center; }
+        .form-box {
+            width: 100%; max-width: 700px; padding: 60px; border-radius: 20px;
+        }
+
         input, select, textarea {
-            width: 100%; background: #000; border: 1px solid #333; padding: 18px;
-            color: white; font-size: 1rem; transition: 0.3s;
+            width: 100%; padding: 15px; background: rgba(0,0,0,0.4); border: 1px solid #333;
+            color: white; border-radius: 8px; margin-bottom: 20px; font-size: 1rem;
         }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+        label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
 
-        /* --- FOOTER --- */
-        footer { padding: 50px 0; border-top: 1px solid var(--border); font-size: 0.9rem; color: #555; }
+        footer { padding: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; color: #666; }
 
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .hero h1 { font-size: 2.8rem; }
-            .split-section { grid-template-columns: 1fr; }
-            .hardware-grid { grid-template-columns: 1fr; }
-            .form-wrapper { padding: 30px; }
-        }
     </style>
 </head>
 <body>
 
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
     <nav>
-        <div class="container nav-inner">
-            <div class="logo">ENTAIN <span class="text-accent">CONSULTANCY</span></div>
-            <div>
-                <a href="#audit" class="btn-outline" style="padding: 10px 25px; text-decoration:none;">Client Login</a>
-            </div>
-        </div>
+        <div class="logo">REYLO <span>ENTERTAINMENT</span></div>
+        <a href="#audit" style="color:white; text-decoration:none; font-weight:bold;">Client Login</a>
     </nav>
 
     <header class="hero">
-        <div class="glow" style="top: -100px; right: -100px;"></div>
-        <div class="container">
-            <h1>Master Your <br>Digital Home.</h1>
-            <p>We architect high-performance media ecosystems. We help you consolidate subscriptions, upgrade hardware, and unlock borderless entertainment for a fraction of the cost.</p>
-            <div style="display: flex; gap: 20px;">
-                <a href="#audit" class="btn">Get A Free Audit</a>
-                <a href="#why-us" class="btn-outline" style="padding: 16px 40px; text-decoration:none;">Learn More</a>
-            </div>
-        </div>
+        <div class="badge" style="color: var(--accent); border-color: var(--accent);">Next-Gen Media Architecture</div>
+        <h1>The Ultimate<br>Home Theater.</h1>
+        <p>Stop struggling with cheap sticks and buffering. Reylo Entertainment engineers high-performance, unified streaming systems powered by the world's most advanced dedicated media processors.</p>
+        <a href="#hardware" class="btn">View The Hardware</a>
     </header>
 
-    <section class="container split-section" id="why-us">
-        <div>
-            <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Subscription Fatigue is Real.</h2>
-            <p style="color: var(--text-muted); margin-bottom: 30px;">
-                The average household now manages 7+ streaming subscriptions. Costs are rising, but content is getting harder to find. It’s fragmented, expensive, and frustrating.
-            </p>
-            <p style="color: var(--text-muted);">
-                <strong>The Entain Method</strong> simplifies this chaos. We move you away from proprietary "walled gardens" and onto open-source, high-fidelity media servers. One interface. Unlimited potential.
-            </p>
+    <section class="hardware" id="hardware">
+        <div class="section-header">
+            <h2>The Formuler Advantage</h2>
+            <p style="color:var(--text-muted)">We exclusively deploy <strong>Formuler</strong> architecture. Why? Because generic Android boxes cannot handle the bitrate we deliver.</p>
         </div>
-        <div>
-            <div class="stat-box">
-                <div class="stat-num">$1,200+</div>
-                <span class="stat-label">Average Annual Savings per Client</span>
-            </div>
-            <div class="stat-box">
-                <div class="stat-num">4K HDR</div>
-                <span class="stat-label">Standard Delivery Quality</span>
-            </div>
-            <div class="stat-box">
-                <div class="stat-num">Zero</div>
-                <span class="stat-label">Regional Content Restrictions</span>
-            </div>
-        </div>
-    </section>
 
-    <section class="hardware">
-        <div class="container">
-            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-                <p class="text-accent" style="text-transform: uppercase; letter-spacing: 2px; font-weight: bold; font-size: 0.9rem;">Infrastructure First</p>
-                <h2 style="font-size: 2.5rem; margin-bottom: 20px;">We Don't Guess. We Engineer.</h2>
-                <p style="color: var(--text-muted);">A media setup is only as good as the hardware running it. We will advise you on the exact equipment needed to eliminate buffering.</p>
+        <div class="grid">
+            
+            <div class="device-card glass" style="border-color: var(--accent);">
+                <div class="badge" style="background: var(--accent); color: white; border:none;">Reylo Recommended</div>
+                <div class="device-img" style="color: var(--accent);">Z11</div> <h3>Formuler Z11 Pro Max</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-top:10px;">
+                    The undisputed king. 4GB RAM, Gigabit Ethernet, and WiFi 6. Powered by <strong>MyTVOnline3</strong> for instant channel zapping and professional DVR capabilities.
+                </p>
+                <div style="margin-top:20px; font-weight:bold; font-size:1.2rem;">Flagship Performance</div>
             </div>
 
-            <div class="hardware-grid">
-                <div class="device-card">
-                    <span class="device-badge">Entry Level</span>
-                    <h3 style="margin-bottom: 15px;">Amazon FireStick 4K</h3>
-                    <p style="color: #666; font-size: 0.9rem;">Capable for casual viewing in secondary rooms. We provide custom configuration to remove bloatware.</p>
-                </div>
-                <div class="device-card" style="border-color: var(--accent);">
-                    <span class="device-badge recommended">Entain Recommended</span>
-                    <h3 style="margin-bottom: 15px;">Nvidia Shield Pro</h3>
-                    <p style="color: #888; font-size: 0.9rem;">The gold standard. AI-upscaling to 4K, gigabit ethernet, and raw processing power for the ultimate server connection.</p>
-                </div>
-                <div class="device-card">
-                    <span class="device-badge">Ecosystem</span>
-                    <h3 style="margin-bottom: 15px;">Apple TV 4K</h3>
-                    <p style="color: #666; font-size: 0.9rem;">For the iOS integrated home. We deploy specialized private media players (TiviMate/Smarters) compatible with tvOS.</p>
-                </div>
+            <div class="device-card glass">
+                <div class="badge">Compact Powerhouse</div>
+                <div class="device-img">MINI</div> <h3>Formuler Z Mini</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-top:10px;">
+                    Don't let the size fool you. This dongle hides behind your TV but packs the same processor as the big boys. Includes the premium BT1 remote.
+                </p>
+                <div style="margin-top:20px; font-weight:bold; font-size:1.2rem;">Stealth Setup</div>
             </div>
+
+            <div class="device-card glass">
+                <div class="badge">Entry Level</div>
+                <div class="device-img">Z10</div> <h3>Formuler Z10 Pro</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-top:10px;">
+                    The reliability standard. Perfect for guest rooms or secondary setups. Delivers stable 4K decoding at an accessible entry point.
+                </p>
+                <div style="margin-top:20px; font-weight:bold; font-size:1.2rem;">Standard Definition</div>
+            </div>
+
         </div>
     </section>
 
     <section class="contact" id="audit">
-        <div class="container">
-            <div class="form-wrapper">
-                <div style="text-align: center; margin-bottom: 40px;">
-                    <h2 style="font-size: 2.5rem;">Request Your Custom Plan</h2>
-                    <p style="color: var(--text-muted); margin-top: 10px;">Tell us about your current setup. We will email you a consolidation strategy within 24 hours.</p>
+        <div class="form-box glass">
+            <h2 style="font-size:2rem; margin-bottom:10px; text-align:center;">Build Your System</h2>
+            <p style="color:var(--text-muted); text-align:center; margin-bottom:40px;">Tell us what you need. We'll design the package.</p>
+            
+            <form action="https://formspree.io/f/YOUR_ID_HERE" method="POST">
+                
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                    <div>
+                        <label>Name</label>
+                        <input type="text" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div>
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="john@email.com" required>
+                    </div>
                 </div>
 
-                <form action="https://formspree.io/f/xjgknlyn" method="POST">
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" name="name" required placeholder="Enter your name">
-                        </div>
-                        <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="email" name="email" required placeholder="name@company.com">
-                        </div>
-                    </div>
+                <label>Preferred Hardware</label>
+                <select name="device">
+                    <option value="Unsure">I need advice</option>
+                    <option value="Z11 Pro Max">Formuler Z11 Pro Max (Best)</option>
+                    <option value="Z Mini">Formuler Z Mini (Stealth)</option>
+                    <option value="Z10">Formuler Z10 (Budget)</option>
+                    <option value="Own Device">I already have a device</option>
+                </select>
 
-                    <div class="form-group">
-                        <label>What is your current frustration?</label>
-                        <select name="frustration">
-                            <option value="cost">Too Expensive (Cost)</option>
-                            <option value="sports">Can't find Sports games</option>
-                            <option value="buffering">Constant Buffering</option>
-                            <option value="complexity">Too many apps/remotes</option>
-                        </select>
-                    </div>
+                <label>Internet Connection Type</label>
+                <select name="internet">
+                    <option value="WiFi">WiFi (Wireless)</option>
+                    <option value="Ethernet">Ethernet (Hardwired)</option>
+                </select>
 
-                    <div class="form-group">
-                        <label>Current Internet Speed (Estimated)</label>
-                        <select name="speed">
-                            <option value="low">Under 50 Mbps</option>
-                            <option value="medium">50 - 100 Mbps</option>
-                            <option value="high">100 Mbps + (NBN/Fiber)</option>
-                            <option value="unsure">I don't know</option>
-                        </select>
-                    </div>
+                <label>Message / Requirements</label>
+                <textarea name="message" rows="3" placeholder="I want to watch sports, movies, etc..."></textarea>
 
-                    <div class="form-group">
-                        <label>Additional Notes</label>
-                        <textarea name="message" rows="3" placeholder="Do you have specific channels or devices you need?"></textarea>
-                    </div>
+                <button type="submit" class="btn" style="width:100%; cursor:pointer;">Request Consultation</button>
 
-                    <button type="submit" class="btn" style="width: 100%;">Analyze My Setup</button>
-                    <p style="font-size: 0.8rem; color: #555; text-align: center; margin-top: 20px;">
-                        Strictly confidential. No spam. We respect your privacy.
-                    </p>
-                </form>
+            </form>
             </div>
-        </div>
     </section>
 
     <footer>
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-            <div>
-                <strong>ENTAIN CONSULTANCY</strong><br>
-                Sydney, Australia.
-            </div>
-            <div style="text-align: right;">
-                <p>&copy; 2026 Entain Consultancy.</p>
-                <p style="font-size: 0.8rem; opacity: 0.6;">We are hardware & network consultants. We do not host content.</p>
-            </div>
-        </div>
+        &copy; 2026 Reylo Entertainment.<br>
+        We are hardware consultants. We do not host or broadcast any content.
     </footer>
 
 </body>
