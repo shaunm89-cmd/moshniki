@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Reylo | Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #020203;
+            --accent: #3b82f6;
+            --danger: #ef4444;
+            --text: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px;
+        }
+
+        /* --- LOGIN OVERLAY --- */
+        #login-gate {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .pin-input {
+            padding: 15px; font-size: 1.5rem; text-align: center; letter-spacing: 5px;
+            background: #111; border: 1px solid #333; color: white; border-radius: 8px;
+            width: 200px; margin-bottom: 20px;
+        }
+        .enter-btn {
+            padding: 12px 30px; background: var(--accent); border: none; color: white;
+            font-weight: bold; border-radius: 8px; cursor: pointer;
+        }
+
+        /* --- DASHBOARD UI --- */
+        .container {
+            width: 100%; max-width: 1200px;
+            display: none; /* Hidden until login */
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px; background: rgba(255,255,255,0.05); border-radius: 16px;
+            border: 1px solid var(--border); margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tabs { display: flex; gap: 20px; margin-bottom: 20px; }
+        .tab-btn {
+            padding: 10px 25px; background: transparent; border: 1px solid var(--border);
+            color: #888; border-radius: 30px; cursor: pointer; transition: 0.2s;
+        }
+        .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        /* GRID LAYOUT */
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;
+        }
+
+        .card {
+            background: rgba(20, 20, 25, 0.8); border: 1px solid var(--border);
+            border-radius: 12px; overflow: hidden; position: relative;
+            transition: 0.2s;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+
+        .card-header {
+            display: flex;
+        }
+        .poster {
+            width: 100px; height: 150px; object-fit: cover; background: #000;
+        }
+        .info {
+            padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: center;
+        }
+        .title { font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; line-height: 1.2; }
+        .meta { font-size: 0.8rem; color: #888; margin-bottom: 10px; }
+        .client { font-size: 0.85rem; color: var(--accent); }
+
+        .details-box {
+            padding: 15px; background: rgba(0,0,0,0.3); font-size: 0.9rem; color: #ccc;
+            border-top: 1px solid var(--border);
+        }
+
+        .actions {
+            padding: 15px; display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid var(--border); background: rgba(255,255,255,0.02);
+        }
+        .imdb-btn {
+            color: #f5c518; text-decoration: none; font-weight: bold; font-size: 0.9rem;
+        }
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger);
+            padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .delete-btn:hover { background: var(--danger); color: white; }
+
+        /* REPORTS SPECIFIC */
+        .report-badge {
+            display: inline-block; padding: 4px 10px; border-radius: 4px; 
+            font-size: 0.75rem; font-weight: bold; margin-bottom: 5px;
+        }
+        .badge-Buffering { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .badge-Audio { background: rgba(234, 179, 8, 0.2); color: #eab308; }
+        .badge-Other { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+
+    </style>
+</head>
+<body>
+
+    <div id="login-gate">
+        <div style="text-align:center; margin-bottom:20px; color:#666;">AUTHORIZATION REQUIRED</div>
+        <input type="password" id="pin-input" class="pin-input" placeholder="PIN">
+        <button onclick="checkPin()" class="enter-btn">ACCESS SYSTEM</button>
+    </div>
+
+    <div class="container" id="dashboard">
+        <div class="header">
+            <h2>REYLO ADMIN</h2>
+            <div style="font-size:0.9rem; color:#888;" id="status-text">Connecting to Mainframe...</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="loadData('requests')">VOD Requests</button>
+            <button class="tab-btn" onclick="loadData('reports')">Issue Reports</button>
+        </div>
+
+        <div id="content-grid" class="grid">
+            </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, deleteDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        // YOUR FIREBASE CONFIG
+        const firebaseConfig = {
+          apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0",
+          projectId: "vodrequest",
+          appId: "1:603036227000:web:340e481b47eb70cc742b4d",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- GLOBAL VARIABLES ---
+        let currentCollection = 'requests';
+
+        // --- AUTH LOGIC ---
+        window.checkPin = function() {
+            const pin = document.getElementById('pin-input').value;
+            // CHANGE "2024" TO WHATEVER PIN YOU WANT
+            if(pin === "2024") {
+                document.getElementById('login-gate').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadData('requests'); // Load data immediately
+            } else {
+                alert("ACCESS DENIED");
+                document.getElementById('pin-input').value = "";
+            }
+        }
+
+        // --- LOAD DATA FUNCTION ---
+        window.loadData = async function(collectionName) {
+            currentCollection = collectionName;
+            const grid = document.getElementById('content-grid');
+            const status = document.getElementById('status-text');
+            
+            // Update UI Tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if(btn.innerText.includes(collectionName === 'requests' ? 'VOD' : 'Issue')) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            grid.innerHTML = '<div style="color:#666;">Loading data...</div>';
+            status.innerText = "Syncing...";
+
+            try {
+                // Get data sorted by timestamp (newest first)
+                // Note: If this fails first time, it might ask you to create an index in Firebase console link provided in console
+                const q = query(collection(db, collectionName), orderBy("timestamp", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                grid.innerHTML = ''; // Clear loading text
+                status.innerText = `Online. ${querySnapshot.size} items found.`;
+
+                if (querySnapshot.empty) {
+                    grid.innerHTML = '<div style="color:#444;">No items found in database.</div>';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    
+                    if(collectionName === 'requests') {
+                        createRequestCard(id, data);
+                    } else {
+                        createReportCard(id, data);
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error getting documents: ", error);
+                grid.innerHTML = `<div style="color:red;">Error loading data. Check console. <br> ${error.message}</div>`;
+                
+                // Fallback for "Missing Index" error (common in new firestores)
+                if(error.message.includes("requires an index")) {
+                    const q2 = query(collection(db, collectionName)); // Try without sorting
+                    const querySnapshot2 = await getDocs(q2);
+                    grid.innerHTML = '';
+                    querySnapshot2.forEach((doc) => createRequestCard(doc.id, doc.data()));
+                }
+            }
+        }
+
+        // --- RENDER VOD CARD ---
+        function createRequestCard(id, data) {
+            const grid = document.getElementById('content-grid');
+            const posterUrl = data.Poster_URL && data.Poster_URL !== "N/A" ? data.Poster_URL : "https://via.placeholder.com/100x150?text=No+Img";
+            
+            const html = `
+                <div class="card" id="card-${id}">
+                    <div class="card-header">
+                        <img src="${posterUrl}" class="poster">
+                        <div class="info">
+                            <div class="title">${data.Confirmed_Title || data.Search_Query || "Unknown Title"}</div>
+                            <div class="meta">${data.Type || "Movie"} • ${data.Year || "?"}</div>
+                            <div class="client">👤 ${data.Client_Name}</div>
+                        </div>
+                    </div>
+                    ${data.Request_Details ? `<div class="details-box">"${data.Request_Details}"</div>` : ''}
+                    <div class="actions">
+                        ${data.IMDB_Link ? `<a href="${data.IMDB_Link}" target="_blank" class="imdb-btn">IMDB ↗</a>` : '<span></span>'}
+                        <button onclick="deleteItem('${id}')" class="delete-btn">Complete & Delete</button>
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += html;
+        }
+
+        // --- RENDER REPORT CARD ---
+        function createReportCard(id, data) {
+            const grid = document.getElementById('content-grid');
+            
+            let badgeClass = 'badge-Other';
+            if(data.Issue_Type && data.Issue_Type.includes('Buffer')) badgeClass = 'badge-Buffering';
+            if(data.Issue_Type && data.Issue_Type.includes('Audio')) badgeClass = 'badge-Audio';
+
+            const html = `
+                <div class="card" id="card-${id}" style="border-left: 4px solid #ef4444;">
+                    <div class="info">
+                        <span class="report-badge ${badgeClass}">${data.Issue_Type}</span>
+                        <div class="title">${data.Channel_Name}</div>
+                        <div class="meta">${data.Category}</div>
+                        <div class="client">👤 ${data.Client_Email || "Anonymous"}</div>
+                    </div>
+                    <div class="details-box">
+                        ${data.Description}
+                    </div>
+                    <div class="actions">
+                        <div style="font-size:0.8rem; color:#666;">Source: ${data.Source}</div>
+                        <button onclick="deleteItem('${id}')" class="delete-btn">Resolve & Delete</button>
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += html;
+        }
+
+        // --- DELETE FUNCTION ---
+        window.deleteItem = async function(id) {
+            if(!confirm("Are you sure this is done? It will be removed forever.")) return;
+            
+            try {
+                await deleteDoc(doc(db, currentCollection, id));
+                // Remove from UI instantly
+                document.getElementById(`card-${id}`).style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById(`card-${id}`).remove();
+                }, 300);
+            } catch (error) {
+                alert("Error deleting: " + error.message);
+            }
+        }
+    </script>
+
+</body>
+</html>
