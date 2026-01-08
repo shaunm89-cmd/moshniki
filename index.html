@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mila's Living Koala World</title>
+    <title>Mila's Koala World & Game Center</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 
@@ -17,6 +17,7 @@
             --koala-dark: #7986CB;
             --leaf: #66BB6A;
             --accent: #FF7043;
+            --game-bg: #81D4FA;
             --shadow: rgba(0,0,0,0.1);
         }
 
@@ -24,15 +25,16 @@
             /* NIGHT THEME */
             --bg: #263238;
             --text: #ECEFF1;
-            --card-bg: rgba(55, 71, 79, 0.8);
+            --card-bg: rgba(55, 71, 79, 0.9);
             --koala-grey: #5C6BC0;
             --koala-dark: #3949AB;
             --leaf: #2E7D32;
             --accent: #FFAB91;
+            --game-bg: #1a2327;
             --shadow: rgba(0,0,0,0.4);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Hiding default cursor */ }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
             font-family: 'Nunito', sans-serif;
@@ -52,11 +54,11 @@
             z-index: 9999;
             font-size: 2rem;
             transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-out;
+            transition: transform 0.05s linear;
             filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
         }
 
-        /* --- HEADER & TOGGLE --- */
+        /* --- NAV --- */
         nav {
             display: flex;
             justify-content: space-between;
@@ -66,11 +68,7 @@
             z-index: 10;
         }
 
-        h1 {
-            font-weight: 900;
-            font-size: 2.5rem;
-            color: var(--koala-dark);
-        }
+        h1 { font-weight: 900; font-size: 2.5rem; color: var(--koala-dark); }
 
         .toggle-btn {
             background: var(--card-bg);
@@ -81,12 +79,13 @@
             color: var(--text);
             box-shadow: 0 5px 0 var(--koala-dark);
             transition: 0.2s;
+            cursor: none;
         }
         .toggle-btn:active { transform: translateY(5px); box-shadow: 0 0 0; }
 
-        /* --- THE INTERACTIVE KOALA (CSS ART) --- */
+        /* --- SECTION 1: INTERACTIVE KOALA FACE --- */
         .hero-section {
-            height: 60vh;
+            height: 50vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -103,167 +102,170 @@
             transition: transform 0.2s;
         }
 
-        /* Ears */
         .ear {
-            width: 100px;
-            height: 100px;
+            width: 100px; height: 100px;
             background: var(--koala-grey);
             border-radius: 50%;
             position: absolute;
-            top: 0;
-            z-index: -1;
-            border: 8px solid var(--bg); /* Simulate fur separation */
+            top: 0; z-index: -1;
+            border: 8px solid var(--bg);
+            transition: border-color 0.5s;
         }
         .ear.left { left: -40px; }
         .ear.right { right: -40px; }
         
-        /* Inner Ear fluff */
         .ear::after {
-            content: '';
-            position: absolute;
-            width: 60%;
-            height: 60%;
-            background: white;
-            opacity: 0.3;
-            border-radius: 50%;
-            top: 20%;
-            left: 20%;
+            content: ''; position: absolute;
+            width: 60%; height: 60%;
+            background: white; opacity: 0.3;
+            border-radius: 50%; top: 20%; left: 20%;
         }
 
-        /* Eyes Container */
         .eyes {
-            display: flex;
-            justify-content: space-between;
-            width: 160px;
-            position: absolute;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
+            display: flex; justify-content: space-between;
+            width: 160px; position: absolute;
+            top: 80px; left: 50%; transform: translateX(-50%);
         }
 
-        /* The Eye Ball */
         .eye {
-            width: 50px;
-            height: 50px;
-            background: white;
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
+            width: 50px; height: 50px;
+            background: white; border-radius: 50%;
+            position: relative; overflow: hidden;
             box-shadow: inset 0 5px 10px rgba(0,0,0,0.2);
         }
 
-        /* The Pupil (This moves with JS) */
         .pupil {
-            width: 25px;
-            height: 25px;
-            background: #2c3e50;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
+            width: 25px; height: 25px;
+            background: #2c3e50; border-radius: 50%;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
 
-        /* The Big Nose */
         .nose {
-            width: 90px;
-            height: 120px;
+            width: 90px; height: 120px;
             background: #2c3e50;
             border-radius: 40px 40px 60px 60px;
-            position: absolute;
-            top: 100px;
-            left: 50%;
+            position: absolute; top: 100px; left: 50%;
             transform: translateX(-50%);
             box-shadow: 0 10px 0 rgba(0,0,0,0.1);
-            cursor: pointer; /* Interaction hint */
             transition: 0.1s;
         }
-        
         .nose:active { transform: translateX(-50%) scale(0.9); }
         .nose::after {
-            content: '';
-            width: 30px;
-            height: 15px;
+            content: ''; width: 30px; height: 15px;
             background: rgba(255,255,255,0.2);
             border-radius: 20px;
-            position: absolute;
-            top: 20px;
-            left: 20px;
+            position: absolute; top: 20px; left: 20px;
         }
 
-        /* Boop Counter Text */
         .boop-text {
-            position: absolute;
-            top: -60px;
-            left: 50%;
+            position: absolute; top: -60px; left: 50%;
             transform: translateX(-50%);
-            background: var(--accent);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            opacity: 0;
-            transition: 0.3s;
+            background: var(--accent); color: white;
+            padding: 10px 20px; border-radius: 20px;
+            font-weight: bold; opacity: 0; transition: 0.3s;
+            white-space: nowrap;
         }
-        
         .boop-active { animation: popUp 0.5s ease forwards; }
-
         @keyframes popUp {
             0% { transform: translateX(-50%) scale(0); opacity: 0; }
             50% { transform: translateX(-50%) scale(1.2); opacity: 1; }
             100% { transform: translateX(-50%) scale(1); opacity: 0; }
         }
 
-        /* --- 3D TILT CARDS --- */
-        .grid {
+        /* --- SECTION 2: THE GAME --- */
+        .game-wrapper {
+            background: var(--card-bg);
+            margin: 2rem 5%;
+            border-radius: 30px;
+            padding: 2rem;
+            text-align: center;
+            border: 4px solid var(--koala-dark);
+            box-shadow: 0 10px 0 rgba(0,0,0,0.1);
+        }
+
+        .game-header { margin-bottom: 1rem; }
+        .game-score { font-size: 1.5rem; color: var(--accent); font-weight: 900; }
+
+        canvas {
+            background: var(--game-bg);
+            border-radius: 20px;
+            cursor: none; /* Hide cursor inside game */
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+            max-width: 100%;
+        }
+
+        .btn-game {
+            background: var(--leaf);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            box-shadow: 0 5px 0 #2E7D32;
+            transition: 0.2s;
+        }
+        .btn-game:active { transform: translateY(5px); box-shadow: none; }
+
+        /* --- SECTION 3: READING & FUN --- */
+        .reading-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             padding: 2rem 5%;
-            perspective: 1000px;
-            padding-bottom: 100px;
+            margin-bottom: 50px;
         }
 
-        .card {
+        .info-card {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
             padding: 2rem;
-            text-align: center;
-            box-shadow: 0 15px 35px var(--shadow);
-            transition: transform 0.1s;
-            border: 1px solid rgba(255,255,255,0.3);
-            transform-style: preserve-3d;
+            border-radius: 20px;
+            border: 2px solid var(--koala-grey);
+            box-shadow: 0 10px 20px var(--shadow);
+            transition: transform 0.3s;
+        }
+        .info-card:hover { transform: translateY(-5px); }
+
+        .story-box {
+            height: 200px;
+            overflow-y: scroll;
+            background: rgba(255,255,255,0.5);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
-        .card h2 { color: var(--accent); margin-bottom: 1rem; font-size: 2rem; }
-        .card p { font-size: 1.2rem; line-height: 1.6; }
-        .card-icon { font-size: 4rem; display: block; margin-bottom: 1rem; transform: translateZ(20px); }
-
-        /* Floating Leaves Animation */
-        .leaf-bg {
-            position: absolute;
+        .joke-btn {
             width: 100%;
-            height: 100%;
-            top: 0; left: 0;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: -1;
+            padding: 10px;
+            background: var(--koala-dark);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            margin-top: 10px;
+            font-weight: bold;
         }
-        .falling-leaf {
-            position: absolute;
-            background: var(--leaf);
-            width: 20px;
-            height: 20px;
-            border-radius: 0 20px 0 20px;
-            opacity: 0.5;
-            animation: fall linear infinite;
+        
+        #joke-display {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            font-weight: bold;
+            color: var(--accent);
+            margin-top: 1rem;
         }
 
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.8; }
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--koala-dark);
+            font-weight: bold;
         }
 
     </style>
@@ -272,176 +274,243 @@
 
     <div id="cursor">🌿</div>
 
-    <div class="leaf-bg" id="leafContainer"></div>
-
     <nav>
-        <h1>Mila's World 🐨</h1>
-        <button class="toggle-btn" onclick="toggleTheme()">🌞 Day / 🌚 Night</button>
+        <h1>Mila's World</h1>
+        <button class="toggle-btn" onclick="toggleTheme()">🌞 / 🌚 Theme</button>
     </nav>
 
     <section class="hero-section">
         <div class="koala-head" id="koala">
             <div class="boop-text" id="boopMsg">Boop! +1</div>
-
             <div class="ear left"></div>
             <div class="ear right"></div>
-            
             <div class="eyes">
-                <div class="eye">
-                    <div class="pupil" id="pupil-left"></div>
-                </div>
-                <div class="eye">
-                    <div class="pupil" id="pupil-right"></div>
-                </div>
+                <div class="eye"><div class="pupil" id="pupil-left"></div></div>
+                <div class="eye"><div class="pupil" id="pupil-right"></div></div>
             </div>
-
             <div class="nose" onclick="boopNose()"></div>
         </div>
     </section>
 
-    <div class="grid">
-        <div class="card" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
-            <span class="card-icon">💤</span>
-            <h2>Sleepy Heads</h2>
-            <p>Koalas sleep for 20 hours a day! That's like sleeping from dinner time until... dinner time the next day!</p>
+    <section class="game-wrapper">
+        <div class="game-header">
+            <h2>🎮 Koala Catch!</h2>
+            <p>Move your mouse to help the Koala catch the yummy leaves! Don't miss them!</p>
+            <div class="game-score">Score: <span id="scoreDisplay">0</span></div>
+        </div>
+        
+        <div style="position: relative;">
+            <canvas id="gameCanvas" width="800" height="400"></canvas>
+            <div id="startScreen" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                <button class="btn-game" onclick="startGame()">▶ Play Game</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="reading-section">
+        
+        <div class="info-card">
+            <h3>📖 Koko's Big Dream</h3>
+            <div class="story-box">
+                <p>Once upon a time, there was a little Koala named Koko. Koko lived in a very tall gum tree.</p>
+                <p>One day, Koko looked up at the moon and said, "I want to touch the moon!"</p>
+                <p>His mom smiled. "But Koko, koalas are climbers, not flyers!"</p>
+                <p>So Koko climbed the very highest branch of the very highest tree. He stretched his paw out...</p>
+                <p>He didn't touch the moon, but he caught a beautiful falling star! 🌟</p>
+                <p>Koko realized that even if you can't fly, climbing high is pretty cool too.</p>
+                <p>THE END 🐨💤</p>
+            </div>
         </div>
 
-        <div class="card" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
-            <span class="card-icon">🍃</span>
-            <h2>Picky Eaters</h2>
-            <p>They only eat Eucalyptus leaves. But they are so picky, they smell every leaf first to make sure it's perfect.</p>
+        <div class="info-card">
+            <h3>🐨 Did You Know?</h3>
+            <ul style="list-style: none; text-align: left; padding: 10px;">
+                <li style="margin-bottom: 10px;">🍃 <strong>Fingerprints:</strong> Koalas have fingerprints just like humans!</li>
+                <li style="margin-bottom: 10px;">💧 <strong>Name:</strong> "Koala" means "no drink" because they get water from leaves!</li>
+                <li>🎒 <strong>Pouch:</strong> A koala pouch opens at the bottom, not the top!</li>
+            </ul>
         </div>
 
-        <div class="card" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
-            <span class="card-icon">👶</span>
-            <h2>Joey Power</h2>
-            <p>A baby Koala is the size of a jellybean! It lives in mom's pouch for 6 months before riding on her back.</p>
+        <div class="info-card">
+            <h3>😂 Koala Joke Box</h3>
+            <div id="joke-display">Click the button for a laugh!</div>
+            <button class="joke-btn" onclick="tellJoke()">Tell me a Joke!</button>
         </div>
-    </div>
+
+    </section>
+
+    <footer>
+        <p>Made for Mila 💖 2026</p>
+    </footer>
 
     <script>
-        // --- 1. MOUSE TRACKING EYES ---
-        document.addEventListener('mousemove', (e) => {
-            // Update Cursor
-            const cursor = document.getElementById('cursor');
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+        // --- MOUSE TRACKING & CURSOR ---
+        let mouseX = 0;
+        let mouseY = 0;
 
-            // Update Eyes
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Cursor
+            const cursor = document.getElementById('cursor');
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+
+            // Eyes
+            updateEyes(mouseX, mouseY);
+        });
+
+        function updateEyes(mx, my) {
             const pupils = [document.getElementById('pupil-left'), document.getElementById('pupil-right')];
-            
             pupils.forEach(pupil => {
-                // Get eye center
                 const eye = pupil.parentElement;
                 const rect = eye.getBoundingClientRect();
-                const eyeCenterX = rect.left + rect.width / 2;
-                const eyeCenterY = rect.top + rect.height / 2;
-
-                // Calculate angle to mouse
-                const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
                 
-                // Limit movement distance (radius)
-                const distance = Math.min(10, Math.hypot(e.clientX - eyeCenterX, e.clientY - eyeCenterY) / 10);
+                const angle = Math.atan2(my - centerY, mx - centerX);
+                const distance = Math.min(10, Math.hypot(mx - centerX, my - centerY) / 10);
                 
                 const moveX = Math.cos(angle) * distance;
                 const moveY = Math.sin(angle) * distance;
 
                 pupil.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
             });
-        });
+        }
 
-        // --- 2. BOOP MECHANIC ---
+        // --- BOOP MECHANIC ---
         let boopCount = 0;
         function boopNose() {
             boopCount++;
             const msg = document.getElementById('boopMsg');
             const koala = document.getElementById('koala');
             
-            // Text Feedback
             msg.innerText = `Boop! Score: ${boopCount}`;
             msg.classList.remove('boop-active');
-            void msg.offsetWidth; // Trigger reflow to restart animation
+            void msg.offsetWidth;
             msg.classList.add('boop-active');
 
-            // Visual Shake
             koala.style.transform = "scale(0.95)";
+            setTimeout(() => koala.style.transform = "scale(1)", 100);
+            
+            // Particles
+            for(let i=0; i<5; i++) createParticle();
+        }
+
+        function createParticle() {
+            const p = document.createElement('div');
+            p.innerText = "💖";
+            p.style.position = 'fixed';
+            p.style.left = '50%';
+            p.style.top = '30%';
+            p.style.pointerEvents = 'none';
+            p.style.transition = '1s ease-out';
+            p.style.zIndex = 1000;
+            document.body.appendChild(p);
             setTimeout(() => {
-                koala.style.transform = "scale(1)";
-            }, 100);
-
-            // Create explosion of emojis
-            createParticles();
+                p.style.transform = `translate(${(Math.random()-0.5)*200}px, ${(Math.random()-0.5)*200}px)`;
+                p.style.opacity = 0;
+            }, 10);
+            setTimeout(() => p.remove(), 1000);
         }
 
-        // --- 3. 3D TILT CARD EFFECT ---
-        function tiltCard(e, card) {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            // Calculate rotation based on mouse position
-            const xRotation = -((y - rect.height/2) / 10);
-            const yRotation = (x - rect.width/2) / 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg) scale(1.02)`;
-        }
-
-        function resetCard(card) {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-        }
-
-        // --- 4. THEME TOGGLE ---
+        // --- THEME TOGGLE ---
         function toggleTheme() {
             const body = document.body;
-            const current = body.getAttribute('data-theme');
-            if(current === 'night') {
-                body.setAttribute('data-theme', 'day');
-            } else {
-                body.setAttribute('data-theme', 'night');
-            }
+            body.setAttribute('data-theme', body.getAttribute('data-theme') === 'night' ? 'day' : 'night');
         }
 
-        // --- 5. PARTICLE SYSTEM (Background) ---
-        function createLeaves() {
-            const container = document.getElementById('leafContainer');
-            const leafCount = 20;
+        // --- JOKE GENERATOR ---
+        const jokes = [
+            "Why did the koala get fired? Because he would only do the bear minimum!",
+            "What is a koala's favorite drink? Coca-Koala!",
+            "Why do koalas carry babies on their back? Because they can't push a stroller up a tree!",
+            "What kind of bear has no teeth? A gummy bear (but koalas aren't bears!)"
+        ];
 
-            for(let i=0; i<leafCount; i++) {
-                const leaf = document.createElement('div');
-                leaf.classList.add('falling-leaf');
-                leaf.style.left = Math.random() * 100 + 'vw';
-                leaf.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                leaf.style.animationDelay = Math.random() * 5 + 's';
-                leaf.style.backgroundColor = Math.random() > 0.5 ? 'var(--leaf)' : 'var(--accent)';
-                container.appendChild(leaf);
-            }
+        function tellJoke() {
+            const display = document.getElementById('joke-display');
+            const random = jokes[Math.floor(Math.random() * jokes.length)];
+            display.innerText = random;
         }
 
-        function createParticles() {
-            // Little burst on boop
-            for(let i=0; i<10; i++) {
-                const p = document.createElement('div');
-                p.innerText = "💖";
-                p.style.position = 'fixed';
-                p.style.left = '50%';
-                p.style.top = '40%';
-                p.style.pointerEvents = 'none';
-                p.style.transition = '1s ease-out';
-                p.style.zIndex = 1000;
-                document.body.appendChild(p);
-                
-                setTimeout(() => {
-                    const x = (Math.random() - 0.5) * 200;
-                    const y = (Math.random() - 0.5) * 200;
-                    p.style.transform = `translate(${x}px, ${y}px) scale(0)`;
-                }, 10);
+        // --- GAME LOGIC (KOALA CATCH) ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let gameActive = false;
+        let score = 0;
+        let items = [];
+        let playerX = 400;
 
-                setTimeout(() => p.remove(), 1000);
-            }
+        // Player (Basket/Koala)
+        function drawPlayer() {
+            ctx.font = "50px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("🐨", playerX, 380);
         }
 
-        // Init
-        createLeaves();
+        function spawnItem() {
+            items.push({
+                x: Math.random() * 750 + 25,
+                y: -50,
+                speed: Math.random() * 2 + 2,
+                emoji: Math.random() > 0.9 ? "🌟" : "🍃" // 10% chance for star
+            });
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            // Clear Canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update Player Position based on global mouseX relative to canvas
+            const rect = canvas.getBoundingClientRect();
+            if(mouseX > rect.left && mouseX < rect.right) {
+                playerX = mouseX - rect.left;
+            }
+
+            // Draw Player
+            drawPlayer();
+
+            // Handle Items
+            if (Math.random() < 0.02) spawnItem();
+
+            for (let i = 0; i < items.length; i++) {
+                let item = items[i];
+                item.y += item.speed;
+
+                // Draw Item
+                ctx.font = "30px Arial";
+                ctx.fillText(item.emoji, item.x, item.y);
+
+                // Collision Detection
+                // Player is at item.x +/- 25px, item.y is at 380 +/- 25px
+                if (item.y > 350 && item.y < 390 && Math.abs(item.x - playerX) < 40) {
+                    // Caught!
+                    score += (item.emoji === "🌟" ? 5 : 1);
+                    document.getElementById('scoreDisplay').innerText = score;
+                    items.splice(i, 1);
+                    i--;
+                } else if (item.y > 420) {
+                    // Missed
+                    items.splice(i, 1);
+                    i--;
+                }
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            gameActive = true;
+            score = 0;
+            items = [];
+            document.getElementById('scoreDisplay').innerText = score;
+            gameLoop();
+        }
 
     </script>
 </body>
