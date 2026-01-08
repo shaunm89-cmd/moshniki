@@ -3,660 +3,474 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Ultimate Koala Planet</title>
+    <title>Mila's Koala Universe 🐨🪐</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            /* DAY THEME */
-            --bg: #E0F7FA;
-            --text: #263238;
-            --card-bg: #ffffff;
-            --header-bg: #B2DFDB;
-            --koala-grey: #90A4AE;
-            --koala-dark: #546E7A;
-            --tree-brown: #795548;
-            --leaf-green: #66BB6A;
-            --accent: #FF7043;
-            --shadow: rgba(0,0,0,0.1);
+            --primary: #4DB6AC; /* Teal */
+            --secondary: #81C784; /* Leaf Green */
+            --accent: #FF8A65; /* Salmon */
+            --dark: #37474F;
+            --light: #E0F2F1;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --font-main: 'Fredoka', sans-serif;
         }
 
-        [data-theme="night"] {
-            /* NIGHT THEME */
-            --bg: #263238;
-            --text: #ECEFF1;
-            --card-bg: #37474F;
-            --header-bg: #102027;
-            --koala-grey: #5C6BC0;
-            --koala-dark: #3949AB;
-            --tree-brown: #4E342E;
-            --leaf-green: #2E7D32;
-            --accent: #FFAB91;
-            --shadow: rgba(0,0,0,0.5);
+        /* SPACE MODE VARIABLES */
+        [data-theme="space"] {
+            --primary: #3949AB;
+            --secondary: #7E57C2;
+            --accent: #FFD740;
+            --dark: #ECEFF1;
+            --light: #1A237E;
+            --card-bg: rgba(30, 40, 80, 0.8);
+            --shadow: 0 10px 20px rgba(0,0,0,0.5);
+            background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+            radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+            radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px; 
+            background-color: #050510;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='32' height='32' viewport='0 0 100 100' style='fill:black;font-size:20px;'><text y='50%'>🍃</text></svg>") 16 0, auto; }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            transition: background 0.5s ease, color 0.5s ease;
+            font-family: var(--font-main);
+            background-color: var(--light);
+            color: var(--dark);
             overflow-x: hidden;
+            transition: background 0.5s;
         }
 
-        /* --- STICKY NAVIGATION --- */
-        nav {
-            position: sticky;
-            top: 0;
-            background: var(--header-bg);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .logo { font-size: 1.8rem; font-weight: 900; color: var(--koala-dark); }
+        /* --- UI COMPONENTS --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         
-        .nav-links button {
-            background: none;
+        button {
+            font-family: var(--font-main);
             border: none;
-            color: var(--text);
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-left: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .nav-links button:hover { color: var(--accent); }
-
-        .theme-toggle {
-            background: var(--text);
-            color: var(--bg);
-            border: none;
-            padding: 5px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* --- HERO: INTERACTIVE FACE --- */
-        .hero {
-            height: 60vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-        }
-
-        .koala-face {
-            width: 280px;
-            height: 240px;
-            background: var(--koala-grey);
-            border-radius: 140px;
-            position: relative;
-            margin-bottom: 2rem;
             cursor: pointer;
             transition: transform 0.1s;
         }
-        .koala-face:active { transform: scale(0.95); }
+        button:active { transform: scale(0.95); }
 
-        .ear {
-            width: 90px; height: 90px;
-            background: var(--koala-grey);
-            border-radius: 50%;
-            position: absolute; top: 0; z-index: -1;
-            border: 6px solid var(--bg);
+        .badge-grid {
+            display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+            margin-top: 20px;
         }
-        .ear.left { left: -30px; }
-        .ear.right { right: -30px; }
+        .badge {
+            background: #ccc; color: #666; padding: 5px 15px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: bold; opacity: 0.5;
+        }
+        .badge.unlocked {
+            background: var(--accent); color: white; opacity: 1;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2); animation: popIn 0.5s;
+        }
 
-        .eyes {
-            display: flex; justify-content: space-between;
-            width: 140px; position: absolute;
-            top: 80px; left: 50%; transform: translateX(-50%);
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 40px; background: var(--card-bg);
+            border-radius: 0 0 30px 30px; box-shadow: var(--shadow);
+            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
         }
-        .eye {
-            width: 40px; height: 40px;
-            background: white; border-radius: 50%;
-            position: relative; overflow: hidden;
+        .logo { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .menu gap { display: flex; gap: 20px; }
+        .nav-btn { background: none; font-size: 1.1rem; color: var(--dark); font-weight: 600; padding: 10px 20px; border-radius: 20px; }
+        .nav-btn:hover { background: var(--light); color: var(--primary); }
+        .mode-btn { background: var(--dark); color: var(--light); padding: 8px 16px; border-radius: 20px; }
+
+        /* --- HERO: MILA'S PET KOALA --- */
+        .hero {
+            text-align: center; padding: 60px 20px;
+            display: flex; flex-direction: column; align-items: center;
         }
-        .pupil {
-            width: 20px; height: 20px;
-            background: #222; border-radius: 50%;
-            position: absolute; top: 50%; left: 50%;
+        
+        .pet-container {
+            position: relative; width: 300px; height: 300px;
+        }
+        
+        /* CSS ART KOALA */
+        .koala-art {
+            width: 200px; height: 180px; background: #90A4AE;
+            border-radius: 100px; position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-        }
-        .nose {
-            width: 80px; height: 100px;
-            background: #333;
-            border-radius: 35px 35px 50px 50px;
-            position: absolute; top: 100px; left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        /* --- SECTION TITLES --- */
-        .section-header {
-            text-align: center;
-            margin: 4rem 0 2rem 0;
-            font-size: 2.5rem;
-            color: var(--koala-dark);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* --- THE ARCADE (GAME) --- */
-        .game-container {
-            background: var(--card-bg);
-            max-width: 800px;
-            margin: 0 auto;
-            border-radius: 20px;
-            padding: 1rem;
-            box-shadow: 0 10px 30px var(--shadow);
-            text-align: center;
-            border: 4px solid var(--koala-dark);
-        }
-
-        canvas {
-            background: #81D4FA; /* Sky blue */
-            border-radius: 10px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
-            cursor: pointer;
-            max-width: 100%;
-        }
-
-        .game-controls {
-            margin-top: 1rem;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        
-        .start-btn {
-            background: var(--leaf-green);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 900;
-            box-shadow: 0 5px 0 #2E7D32;
-            transition: 0.1s;
-        }
-        .start-btn:active { transform: translateY(5px); box-shadow: none; }
-
-        /* --- THE KOALAPEDIA (INFO) --- */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .info-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 5px 15px var(--shadow);
+            box-shadow: 0 10px 0 rgba(0,0,0,0.2);
             transition: transform 0.3s;
-            position: relative;
-            overflow: hidden;
-            border-top: 10px solid var(--accent);
         }
-        .info-card:hover { transform: translateY(-10px); }
-
-        .info-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--koala-dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-        .stat-label { font-weight: bold; color: var(--accent); }
-
-        .fun-fact {
-            background: rgba(255, 112, 67, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            font-style: italic;
-            font-size: 0.95rem;
-        }
-
-        /* --- QUIZ SECTION --- */
-        .quiz-section {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 3rem;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px var(--shadow);
-        }
-
-        .question { font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem; }
+        .k-ear { width: 70px; height: 70px; background: #90A4AE; border-radius: 50%; position: absolute; top: -10px; border: 5px solid var(--light); }
+        .k-ear.L { left: -20px; } .k-ear.R { right: -20px; }
+        .k-eye { width: 25px; height: 25px; background: #333; border-radius: 50%; position: absolute; top: 60px; animation: blink 4s infinite; }
+        .k-eye.L { left: 50px; } .k-eye.R { right: 50px; }
+        .k-nose { width: 50px; height: 70px; background: #333; border-radius: 30px; position: absolute; top: 70px; left: 75px; }
+        .k-mouth { width: 20px; height: 10px; border-bottom: 3px solid #333; border-radius: 50%; position: absolute; top: 150px; left: 90px; }
+        .k-blush { width: 30px; height: 15px; background: #FFCDD2; border-radius: 50%; position: absolute; top: 90px; opacity: 0; transition: 0.5s; }
+        .k-blush.L { left: 20px; } .k-blush.R { right: 20px; }
         
-        .options { display: flex; flex-direction: column; gap: 10px; }
-        
-        .option-btn {
-            padding: 15px;
-            border: 2px solid var(--koala-grey);
-            background: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: 0.2s;
-            color: var(--text);
-            font-weight: bold;
-        }
-        .option-btn:hover { background: var(--header-bg); }
-        .correct { background: var(--leaf-green) !important; color: white; border-color: var(--leaf-green); }
-        .wrong { background: var(--accent) !important; color: white; border-color: var(--accent); }
+        /* Happy State */
+        .koala-art.happy .k-blush { opacity: 1; }
+        .koala-art.happy { animation: bounce 1s infinite; }
 
-        /* --- FOOTER --- */
-        footer {
-            background: var(--koala-dark);
-            color: white;
-            text-align: center;
-            padding: 3rem;
-            margin-top: 5rem;
+        /* Status Bars */
+        .status-panel {
+            background: var(--card-bg); padding: 20px; border-radius: 20px;
+            margin-top: 20px; width: 300px; box-shadow: var(--shadow);
         }
+        .bar-container { background: #ddd; height: 15px; border-radius: 10px; margin: 5px 0 15px 0; overflow: hidden; }
+        .bar-fill { height: 100%; transition: width 0.5s; }
+        .bar-hunger { background: var(--accent); width: 50%; }
+        .bar-fun { background: var(--primary); width: 50%; }
+        
+        .action-btn { font-size: 1.5rem; padding: 10px 20px; border-radius: 15px; background: white; border: 2px solid #eee; margin: 5px; }
+        .action-btn:hover { background: var(--light); border-color: var(--primary); }
+
+        /* --- THE LIBRARY (CARDS) --- */
+        .library-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
+            padding: 40px 0;
+        }
+        .card {
+            background: var(--card-bg); padding: 30px; border-radius: 30px;
+            position: relative; overflow: hidden; transition: transform 0.3s;
+            border-bottom: 8px solid var(--secondary);
+            box-shadow: var(--shadow);
+        }
+        .card:hover { transform: translateY(-10px); }
+        .card h2 { color: var(--primary); margin-bottom: 15px; font-size: 1.8rem; }
+        .card p { line-height: 1.6; color: var(--dark); opacity: 0.8; }
+        .card-icon { position: absolute; top: -10px; right: -10px; font-size: 6rem; opacity: 0.1; transform: rotate(20deg); }
+
+        /* --- ARCADE SECTION --- */
+        .arcade-cabinet {
+            background: #222; border-radius: 30px; padding: 30px;
+            text-align: center; color: white; margin-top: 40px;
+            border: 4px solid var(--accent);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        canvas { background: #333; border-radius: 10px; max-width: 100%; cursor: pointer; }
+        .game-selector { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        .game-btn { background: #444; color: white; padding: 10px 20px; border-radius: 10px; font-weight: bold; }
+        .game-btn.active { background: var(--accent); color: #222; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes bounce { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -60%); } }
+        @keyframes blink { 0%, 96%, 100% { height: 25px; top: 60px; } 98% { height: 2px; top: 72px; } }
+        @keyframes popIn { 0% { transform: scale(0); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">🐨 KoalaPlanet</div>
-        <div class="nav-links">
-            <button onclick="document.getElementById('arcade').scrollIntoView({behavior:'smooth'})">🕹️ Game</button>
-            <button onclick="document.getElementById('encyclopedia').scrollIntoView({behavior:'smooth'})">📚 Stats</button>
-            <button onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">❓ Quiz</button>
-            <button class="theme-toggle" onclick="toggleTheme()">Day/Night</button>
+        <div class="logo">🐨 Koala Universe</div>
+        <div class="menu">
+            <button class="nav-btn" onclick="scrollToId('pet')">My Pet</button>
+            <button class="nav-btn" onclick="scrollToId('library')">Library</button>
+            <button class="nav-btn" onclick="scrollToId('arcade')">Arcade</button>
+            <button class="mode-btn" onclick="toggleSpace()">🚀 Galaxy Mode</button>
         </div>
     </nav>
 
-    <div class="hero">
-        <div class="koala-face" onclick="wiggleFace(this)">
-            <div class="ear left"></div>
-            <div class="ear right"></div>
-            <div class="eyes">
-                <div class="eye"><div class="pupil" id="pupil-left"></div></div>
-                <div class="eye"><div class="pupil" id="pupil-right"></div></div>
-            </div>
-            <div class="nose"></div>
-        </div>
-        <h1 style="font-size: 3rem; color: var(--koala-dark);">Mila's Ultimate Koala World</h1>
-        <p style="font-size: 1.5rem; margin-top: 10px;">The biggest, coolest Koala site ever.</p>
-    </div>
-
-    <h2 class="section-header" id="arcade">Tree Top Hop Arcade</h2>
-    <div class="game-container">
-        <canvas id="gameCanvas" width="600" height="400"></canvas>
-        <div class="game-controls">
-            <div>Score: <span id="score" style="color:var(--accent); font-size:2rem;">0</span></div>
-            <button class="start-btn" onclick="startGame()">PLAY NOW</button>
-            <div>High Score: <span id="highScore">0</span></div>
-        </div>
-        <p style="margin-top:10px; color: #888;">(Click or Tap the screen to switch sides! Avoid the branches!)</p>
-    </div>
-
-    <h2 class="section-header" id="encyclopedia">The Koalapedia</h2>
-    <div class="grid-container">
+    <div class="container">
         
-        <div class="info-card">
-            <h3>🧬 Koala Body Stats</h3>
-            <div class="stat-row">
-                <span class="stat-label">Scientific Name:</span>
-                <span>Phascolarctos cinereus</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Weight:</span>
-                <span>4kg - 15kg</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Length:</span>
-                <span>60cm - 85cm</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Fur:</span>
-                <span>Waterproof & thick</span>
-            </div>
-            <div class="fun-fact">
-                🧠 <strong>Smooth Brain:</strong> Koalas have very smooth brains. If you put a plate of leaves on a table, they won't know it's food. It has to be on a branch!
-            </div>
-        </div>
+        <section id="pet" class="hero">
+            <h1>Mila's Pet Koala</h1>
+            <p>Keep him happy! If he gets hungry, he gets sad.</p>
 
-        <div class="info-card">
-            <h3>🦸‍♂️ Secret Abilities</h3>
-            <div class="stat-row">
-                <span class="stat-label">Fingerprints:</span>
-                <span>Identical to humans!</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Smell:</span>
-                <span>Super sensitive nose</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Digestion:</span>
-                <span>Can eat poison leaves</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Climbing:</span>
-                <span>2 Thumbs on each hand</span>
-            </div>
-            <div class="fun-fact">
-                🔊 <strong>Loud Voice:</strong> Male koalas make a sound like a loud pig snoring/burping. It's very strange!
-            </div>
-        </div>
-
-        <div class="info-card">
-            <h3>👶 The Joey Life</h3>
-            <div class="stat-row">
-                <span class="stat-label">Baby Name:</span>
-                <span>Joey</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Birth Size:</span>
-                <span>Size of a jellybean</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">In Pouch:</span>
-                <span>6 - 7 Months</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">On Back:</span>
-                <span>Until 1 year old</span>
-            </div>
-            <div class="fun-fact">
-                🍬 <strong>Jellybean Baby:</strong> When born, they have no ears, no eyes, and no hair! They have to crawl into the pouch using only smell.
-            </div>
-        </div>
-
-        <div class="info-card">
-            <h3>💤 Sleep & Eat</h3>
-            <div class="stat-row">
-                <span class="stat-label">Diet:</span>
-                <span>Eucalyptus Leaves</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Sleep:</span>
-                <span>18 - 22 Hours/Day</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Amount Eaten:</span>
-                <span>1kg per day</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Water:</span>
-                <span>Rarely drink water</span>
-            </div>
-            <div class="fun-fact">
-                💩 <strong>Picky Eaters:</strong> Koalas smell every leaf before eating it. If it smells bad, they throw it away!
-            </div>
-        </div>
-
-    </div>
-
-    <h2 class="section-header" id="quiz">The Final Exam</h2>
-    <div class="quiz-section">
-        <div id="quiz-container">
-            <div class="question" id="question-text">Loading question...</div>
-            <div class="options" id="options-container">
+            <div class="pet-container">
+                <div class="koala-art" id="koala">
+                    <div class="k-ear L"></div><div class="k-ear R"></div>
+                    <div class="k-eye L"></div><div class="k-eye R"></div>
+                    <div class="k-blush L"></div><div class="k-blush R"></div>
+                    <div class="k-nose"></div>
+                    <div class="k-mouth"></div>
                 </div>
-            <p id="feedback" style="margin-top: 20px; font-weight: bold;"></p>
-        </div>
-    </div>
+            </div>
 
-    <footer>
-        <p>Created for Mila 💖 2026 | Save the Koalas!</p>
-    </footer>
+            <div class="status-panel">
+                <div style="display:flex; justify-content:space-between;"><span>Hunger</span> <span id="hunger-txt">50%</span></div>
+                <div class="bar-container"><div class="bar-fill bar-hunger" id="fill-hunger"></div></div>
+                
+                <div style="display:flex; justify-content:space-between;"><span>Happiness</span> <span id="fun-txt">50%</span></div>
+                <div class="bar-container"><div class="bar-fill bar-fun" id="fill-fun"></div></div>
+
+                <div>
+                    <button class="action-btn" onclick="feedPet()">🌿 Feed</button>
+                    <button class="action-btn" onclick="playPet()">🎾 Play</button>
+                    <button class="action-btn" onclick="petPet()">💖 Hug</button>
+                </div>
+            </div>
+
+            <div class="badge-grid" id="badgeContainer">
+                <div class="badge" id="b-feeder">Master Feeder</div>
+                <div class="badge" id="b-gamer">Arcade Pro</div>
+                <div class="badge" id="b-reader">Book Worm</div>
+                <div class="badge" id="b-space">Astronaut</div>
+            </div>
+        </section>
+
+        <section id="library">
+            <h2 style="text-align: center; font-size: 2.5rem; color: var(--dark); margin-top: 50px;">The Encyclopedia</h2>
+            <div class="library-grid">
+                <div class="card" onclick="unlockBadge('b-reader')">
+                    <div class="card-icon">🧠</div>
+                    <h2>Smooth Brains</h2>
+                    <p>Koalas have very smooth brains. This means they are not great at thinking. If you put leaves on a flat table, they won't eat them because they don't know it's food! It has to be on a branch.</p>
+                </div>
+                <div class="card" onclick="unlockBadge('b-reader')">
+                    <div class="card-icon">🖐️</div>
+                    <h2>Double Thumbs</h2>
+                    <p>Look at your hand. You have one thumb. Koalas have TWO thumbs on each front paw! This helps them grip trees super tight so they never fall down.</p>
+                </div>
+                <div class="card" onclick="unlockBadge('b-reader')">
+                    <div class="card-icon">🍼</div>
+                    <h2>Jellybean Babies</h2>
+                    <p>A newborn Joey is the size of a jellybean (2cm). It has no hair, no eyes, and no ears. It crawls into the pouch and stays there for 6 months!</p>
+                </div>
+                <div class="card" onclick="unlockBadge('b-reader')">
+                    <div class="card-icon">💤</div>
+                    <h2>Sleep Champions</h2>
+                    <p>They sleep 18-22 hours a day. Why? Because eucalyptus leaves have almost zero energy. They move in slow motion to save battery power!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="arcade" class="arcade-cabinet">
+            <h2 style="color: var(--accent); font-size: 3rem; margin-bottom: 20px;">🕹️ KOALA ARCADE 🕹️</h2>
+            
+            <div class="game-selector">
+                <button class="game-btn active" onclick="switchGame('jump')">Tree Hop</button>
+                <button class="game-btn" onclick="switchGame('catch')">Leaf Catch</button>
+            </div>
+
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+            
+            <div style="margin-top: 20px;">
+                <button style="padding: 15px 40px; font-size: 1.5rem; background: var(--primary); color: white; border-radius: 50px; font-weight: bold;" onclick="startGame()">START GAME</button>
+                <p style="margin-top: 10px; color: #888;">Score: <span id="score">0</span></p>
+            </div>
+        </section>
+
+    </div>
 
     <script>
-        // --- THEME TOGGLE ---
-        function toggleTheme() {
+        // --- SCROLL HELPER ---
+        function scrollToId(id) { document.getElementById(id).scrollIntoView({behavior: 'smooth'}); }
+
+        // --- TAMAGOTCHI LOGIC ---
+        let hunger = 50;
+        let fun = 50;
+        const koala = document.getElementById('koala');
+
+        function updateStats() {
+            // Decay over time
+            hunger = Math.max(0, hunger - 0.5);
+            fun = Math.max(0, fun - 0.5);
+
+            // Update UI
+            document.getElementById('fill-hunger').style.width = hunger + '%';
+            document.getElementById('hunger-txt').innerText = Math.floor(hunger) + '%';
+            document.getElementById('fill-fun').style.width = fun + '%';
+            document.getElementById('fun-txt').innerText = Math.floor(fun) + '%';
+
+            // Mood Check
+            if (hunger > 70 && fun > 70) {
+                koala.classList.add('happy');
+            } else {
+                koala.classList.remove('happy');
+            }
+
+            // Lose condition visuals
+            if(hunger < 20) document.getElementById('fill-hunger').style.backgroundColor = "red";
+            else document.getElementById('fill-hunger').style.backgroundColor = "var(--accent)";
+        }
+
+        function feedPet() {
+            hunger = Math.min(100, hunger + 15);
+            createFloaty("🌿");
+            if(hunger > 90) unlockBadge('b-feeder');
+            updateStats();
+        }
+
+        function playPet() {
+            fun = Math.min(100, fun + 15);
+            hunger = Math.max(0, hunger - 5); // Playing makes them hungry
+            createFloaty("🎾");
+            updateStats();
+        }
+
+        function petPet() {
+            fun = Math.min(100, fun + 5);
+            createFloaty("💖");
+            updateStats();
+        }
+
+        function createFloaty(emoji) {
+            const el = document.createElement('div');
+            el.innerText = emoji;
+            el.style.position = 'absolute';
+            el.style.left = '50%';
+            el.style.top = '50%';
+            el.style.fontSize = '2rem';
+            el.style.pointerEvents = 'none';
+            el.style.animation = 'bounce 1s ease-out';
+            document.querySelector('.pet-container').appendChild(el);
+            setTimeout(() => el.remove(), 1000);
+        }
+
+        setInterval(updateStats, 1000); // Game loop for pet
+
+        // --- BADGE SYSTEM ---
+        function unlockBadge(id) {
+            const badge = document.getElementById(id);
+            if (!badge.classList.contains('unlocked')) {
+                badge.classList.add('unlocked');
+                alert("🏆 ACHIEVEMENT UNLOCKED: " + badge.innerText);
+            }
+        }
+
+        // --- GALAXY MODE ---
+        function toggleSpace() {
             const body = document.body;
-            const current = body.getAttribute('data-theme');
-            body.setAttribute('data-theme', current === 'night' ? 'day' : 'night');
+            if (body.getAttribute('data-theme') === 'space') {
+                body.removeAttribute('data-theme');
+            } else {
+                body.setAttribute('data-theme', 'space');
+                unlockBadge('b-space');
+            }
         }
 
-        // --- FACE WIGGLE & EYES ---
-        function wiggleFace(face) {
-            face.style.transform = "rotate(10deg) scale(1.1)";
-            setTimeout(() => face.style.transform = "rotate(-10deg) scale(1.1)", 100);
-            setTimeout(() => face.style.transform = "rotate(0deg) scale(1)", 200);
-        }
-
-        document.addEventListener('mousemove', (e) => {
-            const pupils = [document.getElementById('pupil-left'), document.getElementById('pupil-right')];
-            pupils.forEach(pupil => {
-                const eye = pupil.parentElement;
-                const rect = eye.getBoundingClientRect();
-                const centerX = rect.left + rect.width/2;
-                const centerY = rect.top + rect.height/2;
-                const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
-                const dist = Math.min(5, Math.hypot(e.clientX-centerX, e.clientY-centerY)/10);
-                pupil.style.transform = `translate(calc(-50% + ${Math.cos(angle)*dist}px), calc(-50% + ${Math.sin(angle)*dist}px))`;
-            });
-        });
-
-        // --- GAME: TREE TOP HOP ---
+        // --- ARCADE LOGIC ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        
-        let gameActive = false;
+        let currentGame = 'jump';
+        let gameRunning = false;
         let score = 0;
-        let speed = 3;
-        let playerSide = 'left'; // 'left' or 'right'
+        let gameLoop;
+
+        // GAME 1: TREE HOP VARIABLES
+        let jumper = { x: 200, y: 300, side: 'left' };
         let obstacles = [];
-        let particles = [];
-        let frameCount = 0;
 
-        // Assets (Drawing with code)
-        function drawKoala(x, y) {
-            ctx.fillStyle = "#90A4AE"; // Grey
-            ctx.beginPath();
-            ctx.arc(x, y, 20, 0, Math.PI*2); // Head
-            ctx.fill();
-            ctx.fillStyle = "#333"; // Nose
-            ctx.beginPath();
-            ctx.ellipse(x, y+2, 6, 8, 0, 0, Math.PI*2);
-            ctx.fill();
-            ctx.fillStyle = "#222"; // Eyes
-            ctx.beginPath();
-            ctx.arc(x-8, y-5, 3, 0, Math.PI*2);
-            ctx.arc(x+8, y-5, 3, 0, Math.PI*2);
-            ctx.fill();
-            // Ears
-            ctx.fillStyle = "#90A4AE";
-            ctx.beginPath(); ctx.arc(x-20, y-15, 8, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(x+20, y-15, 8, 0, Math.PI*2); ctx.fill();
-        }
+        // GAME 2: CATCH VARIABLES
+        let catcher = { x: 300 };
+        let fallingItems = [];
 
-        function drawTree() {
-            ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--tree-brown').trim();
-            ctx.fillRect(250, 0, 100, 400); // Trunk center
-        }
-
-        function spawnObstacle() {
-            const side = Math.random() > 0.5 ? 'left' : 'right';
-            obstacles.push({
-                y: -50,
-                side: side,
-                type: 'branch'
-            });
+        function switchGame(game) {
+            currentGame = game;
+            gameRunning = false;
+            clearInterval(gameLoop);
+            ctx.clearRect(0,0,600,400);
+            ctx.fillStyle = "white";
+            ctx.font = "20px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(game === 'jump' ? "Tree Hop: Click to switch sides!" : "Catch: Move mouse to catch leaves!", 300, 200);
+            
+            // UI Update
+            document.querySelectorAll('.game-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
         }
 
         function startGame() {
-            if(gameActive) return;
-            gameActive = true;
+            if(gameRunning) return;
+            gameRunning = true;
             score = 0;
-            speed = 4;
             obstacles = [];
-            document.getElementById('score').innerText = 0;
-            animate();
+            fallingItems = [];
+            
+            if(currentGame === 'jump') gameLoop = setInterval(updateJump, 20);
+            else gameLoop = setInterval(updateCatch, 20);
         }
 
-        function animate() {
-            if(!gameActive) return;
-            
-            ctx.clearRect(0, 0, 600, 400);
-            
-            // Background
-            ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--bg').trim() === '#263238' ? '#102027' : '#81D4FA';
+        // --- GAME 1 ENGINE: JUMP ---
+        function updateJump() {
+            ctx.fillStyle = "#333";
             ctx.fillRect(0,0,600,400);
 
-            drawTree();
+            // Draw Tree
+            ctx.fillStyle = "#5D4037";
+            ctx.fillRect(250, 0, 100, 400);
 
-            // Player Logic
-            const playerX = playerSide === 'left' ? 230 : 370;
-            const playerY = 320;
-            drawKoala(playerX, playerY);
+            // Spawn Obstacles
+            if(Math.random() < 0.02) {
+                obstacles.push({ y: -20, side: Math.random() > 0.5 ? 'left' : 'right' });
+            }
 
-            // Obstacle Logic
-            if(frameCount % 50 === 0) spawnObstacle();
-            frameCount++;
-
-            // Increase speed slowly
-            if(frameCount % 500 === 0) speed += 0.5;
-
-            for(let i=0; i<obstacles.length; i++) {
-                let obs = obstacles[i];
-                obs.y += speed;
-
-                // Draw Branch
+            // Draw Obstacles
+            obstacles.forEach((obs, i) => {
+                obs.y += 5;
                 ctx.fillStyle = "green";
-                if(obs.side === 'left') {
-                    ctx.fillRect(150, obs.y, 100, 20); // Branch Left
-                } else {
-                    ctx.fillRect(350, obs.y, 100, 20); // Branch Right
-                }
+                if(obs.side === 'left') ctx.fillRect(150, obs.y, 100, 20);
+                else ctx.fillRect(350, obs.y, 100, 20);
 
                 // Collision
-                if(obs.y > 280 && obs.y < 340) {
-                    if(obs.side === playerSide) {
-                        gameOver();
-                    }
-                }
+                if(obs.y > 280 && obs.y < 320 && obs.side === jumper.side) endGame();
+                
+                // Score
+                if(obs.y > 400) { obstacles.splice(i, 1); score++; }
+            });
 
-                // Remove off screen
-                if(obs.y > 450) {
-                    obstacles.splice(i, 1);
-                    i--;
-                    score++;
-                    document.getElementById('score').innerText = score;
-                }
-            }
+            // Draw Player
+            ctx.fillStyle = "#90A4AE";
+            let px = jumper.side === 'left' ? 220 : 360;
+            ctx.beginPath(); ctx.arc(px, 300, 20, 0, Math.PI*2); ctx.fill();
 
-            requestAnimationFrame(animate);
+            document.getElementById('score').innerText = score;
         }
 
-        function gameOver() {
-            gameActive = false;
-            ctx.fillStyle = "rgba(0,0,0,0.7)";
-            ctx.fillRect(0,0,600,400);
-            ctx.fillStyle = "white";
-            ctx.font = "40px Nunito";
-            ctx.textAlign = "center";
-            ctx.fillText("OUCH! Game Over.", 300, 200);
-            ctx.font = "20px Nunito";
-            ctx.fillText("Click Start to try again", 300, 240);
-            
-            // Update High Score
-            const currentHigh = parseInt(document.getElementById('highScore').innerText);
-            if(score > currentHigh) document.getElementById('highScore').innerText = score;
-        }
-
-        // Controls
         canvas.addEventListener('mousedown', () => {
-            if(!gameActive) return;
-            playerSide = playerSide === 'left' ? 'right' : 'left';
+            if(currentGame === 'jump') jumper.side = jumper.side === 'left' ? 'right' : 'left';
         });
 
-        // --- QUIZ LOGIC ---
-        const questions = [
-            { q: "How many hours do Koalas sleep?", a: ["8 hours", "12 hours", "20 hours"], correct: 2 },
-            { q: "What do Koalas eat?", a: ["Burgers", "Eucalyptus Leaves", "Bamboo"], correct: 1 },
-            { q: "What is a baby Koala called?", a: ["Puppy", "Cub", "Joey"], correct: 2 },
-            { q: "Do Koalas have fingerprints?", a: ["Yes!", "No", "Only on feet"], correct: 0 },
-            { q: "Where do Koalas live?", a: ["USA", "Australia", "China"], correct: 1 }
-        ];
+        // --- GAME 2 ENGINE: CATCH ---
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            catcher.x = e.clientX - rect.left;
+        });
 
-        let currentQ = 0;
-        
-        function loadQuiz() {
-            const container = document.getElementById('options-container');
-            const qText = document.getElementById('question-text');
-            const feedback = document.getElementById('feedback');
-            
-            container.innerHTML = "";
-            feedback.innerText = "";
-            
-            if(currentQ >= questions.length) {
-                qText.innerText = "You finished the Quiz! 🎉";
-                container.innerHTML = "<button class='option-btn' onclick='resetQuiz()'>Restart Quiz</button>";
-                return;
+        function updateCatch() {
+            ctx.fillStyle = "#222";
+            ctx.fillRect(0,0,600,400);
+
+            // Spawn
+            if(Math.random() < 0.05) {
+                fallingItems.push({ x: Math.random()*580, y: -20 });
             }
 
-            const q = questions[currentQ];
-            qText.innerText = `${currentQ+1}. ${q.q}`;
+            // Draw Catcher
+            ctx.fillStyle = "#90A4AE";
+            ctx.fillRect(catcher.x - 25, 350, 50, 10);
 
-            q.a.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.classList.add('option-btn');
-                btn.innerText = opt;
-                btn.onclick = () => checkAnswer(index, btn);
-                container.appendChild(btn);
+            // Draw Items
+            fallingItems.forEach((item, i) => {
+                item.y += 3;
+                ctx.fillStyle = "#66BB6A";
+                ctx.beginPath(); ctx.arc(item.x, item.y, 10, 0, Math.PI*2); ctx.fill();
+
+                // Catch
+                if(item.y > 340 && item.y < 360 && Math.abs(item.x - catcher.x) < 30) {
+                    fallingItems.splice(i, 1);
+                    score++;
+                }
+                // Miss
+                else if(item.y > 400) {
+                    endGame();
+                }
             });
+            document.getElementById('score').innerText = score;
         }
 
-        function checkAnswer(index, btn) {
-            const correctIndex = questions[currentQ].correct;
-            const feedback = document.getElementById('feedback');
-            
-            if(index === correctIndex) {
-                btn.classList.add('correct');
-                feedback.innerText = "Correct! 🐨✅";
-                feedback.style.color = "green";
-                setTimeout(() => {
-                    currentQ++;
-                    loadQuiz();
-                }, 1000);
-            } else {
-                btn.classList.add('wrong');
-                feedback.innerText = "Try again! ❌";
-                feedback.style.color = "red";
-            }
+        function endGame() {
+            gameRunning = false;
+            clearInterval(gameLoop);
+            alert("Game Over! Score: " + score);
+            if(score > 10) unlockBadge('b-gamer');
         }
 
-        function resetQuiz() {
-            currentQ = 0;
-            loadQuiz();
-        }
-
-        // Init
-        loadQuiz();
+        // Init Text
+        switchGame('jump');
 
     </script>
 </body>
