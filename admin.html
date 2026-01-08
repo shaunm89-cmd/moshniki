@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Reylo | Command Center</title>
+    <title>Reylo | Operations Console</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #020203;
             --accent: #3b82f6;
-            --success: #10b981; /* Green for Complete */
+            --accent-glow: rgba(59, 130, 246, 0.6);
             --danger: #ef4444;
+            --success: #10b981;
             --text: #ffffff;
+            --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
         }
 
@@ -27,7 +29,18 @@
             overflow-x: hidden;
         }
 
-        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        /* FULL VFX PARTICLE BACKGROUND */
+        #particle-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+
+        /* LIVE INDICATOR */
+        .live-dot {
+            display: inline-block; width: 8px; height: 8px; background-color: var(--success);
+            border-radius: 50%; margin-left: 12px; box-shadow: 0 0 10px var(--success);
+            animation: blink 2s infinite; vertical-align: middle;
+        }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
         /* LOGIN */
         #login-gate {
@@ -54,18 +67,24 @@
 
         .header {
             display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
-            padding: 25px; background: rgba(10, 10, 16, 0.6); 
+            padding: 30px; background: rgba(10, 10, 16, 0.6); 
             border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.4);
             border-radius: 24px; margin-bottom: 30px;
             backdrop-filter: blur(40px);
         }
-        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; }
+        
+        .logo { font-size: 1.8rem; font-weight: 700; letter-spacing: 1px; line-height: 1; }
         .logo span { color: var(--accent); }
+        .subtitle {
+            font-size: 0.85rem; color: #666; margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
+        }
 
         .admin-search {
-            padding: 10px 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
-            color: white; border-radius: 10px; width: 250px;
+            padding: 12px 20px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            color: white; border-radius: 12px; width: 280px; font-size: 0.95rem;
+            transition: 0.3s;
         }
+        .admin-search:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
 
         .tabs { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
         .tab-btn {
@@ -146,10 +165,10 @@
     <div class="container" id="dashboard">
         <div class="header">
             <div>
-                <div class="logo">REYLO <span>ADMIN</span></div>
-                <div style="font-size:0.9rem; color:#888;" id="status-text">...</div>
+                <div class="logo">REYLO <span>OPERATIONS</span> <span class="live-dot" title="System Online"></span></div>
+                <div class="subtitle">Content Management System</div>
             </div>
-            <input type="text" class="admin-search" placeholder="Filter requests..." onkeyup="filterCards(this.value)">
+            <input type="text" class="admin-search" placeholder="Search database..." onkeyup="filterCards(this.value)">
         </div>
 
         <div class="tabs">
@@ -174,33 +193,34 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let currentView = 'active'; // active, completed, reports
+        let currentView = 'active'; 
+        let refreshInterval;
 
         window.checkPin = function() {
             if(document.getElementById('pin-input').value === "2024") {
                 document.getElementById('login-gate').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 loadData();
+                refreshInterval = setInterval(() => loadData(true), 15000); 
             } else { alert("ACCESS DENIED"); }
         }
 
         window.switchView = function(view) {
             currentView = view;
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            // Highlight the clicked button
             event.target.classList.add('active');
             loadData();
         }
 
-        window.loadData = async function() {
+        window.loadData = async function(isBackgroundRefresh = false) {
             const grid = document.getElementById('content-grid');
-            grid.innerHTML = '<div style="color:#666; padding:20px;">Fetching records...</div>';
+            
+            if(!isBackgroundRefresh) {
+                grid.innerHTML = '<div style="color:#666; padding:20px;">Fetching records...</div>';
+            }
             
             try {
-                // DECIDE COLLECTION & FILTER
                 let collectionName = currentView === 'reports' ? 'reports' : 'requests';
-                
-                // Get ALL items (Client-side filtering avoids index errors)
                 const q = query(collection(db, collectionName), orderBy("timestamp", "desc"));
                 const querySnapshot = await getDocs(q);
                 
@@ -212,28 +232,26 @@
                     const id = doc.id;
                     const status = data.status || 'New';
 
-                    // FILTER LOGIC
-                    if(currentView === 'active' && status === 'Completed') return; // Skip completed in Active tab
-                    if(currentView === 'completed' && status !== 'Completed') return; // Skip active in History tab
+                    if(currentView === 'active' && status === 'Completed') return; 
+                    if(currentView === 'completed' && status !== 'Completed') return; 
 
-                    // RENDER
                     if(collectionName === 'requests') createRequestCard(id, data, currentView === 'completed');
                     else createReportCard(id, data);
                     count++;
                 });
 
-                document.getElementById('status-text').innerText = `${count} Records Found.`;
-                if(count === 0) grid.innerHTML = '<div style="color:#444; padding:20px;">Nothing to see here.</div>';
+                if(count === 0) grid.innerHTML = '<div style="color:#444; padding:20px;">No records found in this view.</div>';
+
+                const currentSearch = document.querySelector('.admin-search').value;
+                if(currentSearch) filterCards(currentSearch);
 
             } catch (error) {
-                // Fallback for missing index error
                 console.error(error);
                 if(error.message.includes("index")) {
                     const q2 = query(collection(db, currentView === 'reports' ? 'reports' : 'requests'));
                     const snap2 = await getDocs(q2);
                     grid.innerHTML = '';
                     snap2.forEach(doc => {
-                        // Simple fallback render (no sorting)
                         const data = doc.data();
                         const status = data.status || 'New';
                         if(currentView === 'active' && status !== 'Completed') createRequestCard(doc.id, data, false);
@@ -248,17 +266,13 @@
             const grid = document.getElementById('content-grid');
             const posterUrl = data.Poster_URL && data.Poster_URL !== "N/A" ? data.Poster_URL : "https://via.placeholder.com/180x270?text=No+Img";
             
-            // Tag Logic
             let genreHtml = '';
             if(data.Genre) data.Genre.split(',').slice(0,3).forEach(g => genreHtml += `<span class="tag">${g.trim()}</span>`);
 
-            // Button Logic
             let btnHtml = '';
             if(isCompletedTab) {
-                // History Tab -> Delete Button
                 btnHtml = `<button onclick="deleteItem('${id}', 'requests')" class="btn-delete">Delete Forever 🗑️</button>`;
             } else {
-                // Active Tab -> Complete Button
                 btnHtml = `<button onclick="markComplete('${id}')" class="btn-complete">Mark Complete ✓</button>`;
             }
 
@@ -270,7 +284,7 @@
                             <div class="title">${data.Confirmed_Title || data.Search_Query || "Unknown"}</div>
                             <span class="year">${data.Year || ""}</span>
                             <div class="genre-tags">${genreHtml}</div>
-                            <div class="plot">${data.Plot || "No plot info."}</div>
+                            <div class="plot">${data.Plot || "No plot info available."}</div>
                             <div class="client-info">Requested by: <span style="color:#fff;">${data.Client_Name}</span></div>
                         </div>
                     </div>
@@ -306,14 +320,11 @@
             grid.innerHTML += html;
         }
 
-        // --- ACTIONS ---
         window.markComplete = async function(id) {
             if(!confirm("Mark this request as completed? It will move to History.")) return;
             try {
                 await updateDoc(doc(db, "requests", id), { status: "Completed" });
-                // Animate removal
-                document.getElementById(`card-${id}`).style.opacity = '0';
-                setTimeout(() => document.getElementById(`card-${id}`).remove(), 300);
+                loadData(true); 
             } catch (error) { alert("Error: " + error.message); }
         }
 
@@ -321,8 +332,7 @@
             if(!confirm("Delete this record permanently?")) return;
             try {
                 await deleteDoc(doc(db, collectionName, id));
-                document.getElementById(`card-${id}`).style.opacity = '0';
-                setTimeout(() => document.getElementById(`card-${id}`).remove(), 300);
+                loadData(true); 
             } catch (error) { alert("Error: " + error.message); }
         }
 
@@ -334,14 +344,82 @@
             });
         }
 
-        // Visuals
+        // --- FULL VFX PARTICLE SYSTEM (CONNECTED LINES) ---
         const canvas = document.getElementById("particle-canvas");
         const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let particles = [];
-        class P { constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.vx=Math.random()*0.5-0.25;this.vy=Math.random()*0.5-0.25;this.s=Math.random()*2} update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>canvas.width)this.vx*=-1;if(this.y<0||this.y>canvas.height)this.vy*=-1} draw(){ctx.fillStyle='rgba(59,130,246,0.2)';ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fill()}}
-        function loop(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(loop)}
-        for(let i=0;i<60;i++)particles.push(new P()); loop();
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particlesArray;
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x; this.y = y;
+                this.directionX = directionX; this.directionY = directionY;
+                this.size = size; this.color = color;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                this.x += this.directionX; this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000; 
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 0.4) - 0.2;
+                let directionY = (Math.random() * 0.4) - 0.2;
+                let color = 'rgba(59, 130, 246, 0.4)'; 
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function connectParticles() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
+                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width/9) * (canvas.height/9)) {
+                        opacityValue = 1 - (distance / 15000);
+                        ctx.strokeStyle = 'rgba(59, 130, 246,' + opacityValue + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connectParticles();
+        }
+
+        window.addEventListener('resize', function() {
+            canvas.width = innerWidth; canvas.height = innerHeight;
+            initParticles();
+        });
+
+        initParticles();
+        animateParticles();
     </script>
 </body>
 </html>
