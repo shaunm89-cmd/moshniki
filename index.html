@@ -4,199 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Reylo's | Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Reylo's | Request Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #050510;
-            --glass: rgba(20, 25, 40, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --primary: #00f2ea; /* Cyan Neon */
-            --secondary: #7000ff; /* Purple Neon */
+            --bg: #030305;
+            --surface: #0f1014;
+            --accent: #3b82f6;
             --text: #ffffff;
-            --text-muted: #a0a0c0;
-            --input-bg: rgba(0, 0, 0, 0.4);
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
 
         body {
-            background-color: var(--bg-deep);
+            background-color: var(--bg);
             color: var(--text);
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
             padding: 40px 20px;
-            overflow-x: hidden;
         }
 
-        /* --- CANVAS PARTICLES --- */
-        #particle-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 50% 10%, #1a1a40 0%, #000000 90%);
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #000000 80%);
         }
 
-        /* --- MAIN CONTAINER --- */
         .main-container {
-            width: 100%; max-width: 550px;
-            background: var(--glass);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: 0 0 40px rgba(0, 242, 234, 0.1);
+            width: 100%; max-width: 600px;
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: visible;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             position: relative;
-            z-index: 10;
-            overflow: visible; /* CRITICAL FOR DROPDOWN */
         }
 
-        /* --- HEADER --- */
         .header {
-            text-align: center; padding: 35px 30px 25px;
-            border-bottom: 1px solid var(--glass-border);
+            text-align: center; padding: 30px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0,0,0,0.2);
+            border-radius: 20px 20px 0 0;
         }
-        .logo { 
-            font-size: 1.8rem; font-weight: 700; letter-spacing: 3px; 
-            text-transform: uppercase; background: linear-gradient(90deg, #fff, var(--primary)); 
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .subtitle { font-size: 0.9rem; color: var(--text-muted); margin-top: 5px; letter-spacing: 1px; }
+        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+        .logo span { color: var(--accent); }
 
-        /* --- TABS --- */
-        .tabs { display: flex; padding: 10px 20px 0; gap: 10px; }
+        .tabs { display: flex; border-bottom: 1px solid var(--border); }
         .tab-btn {
-            flex: 1; padding: 15px; background: transparent; border: none;
+            flex: 1; padding: 20px; background: transparent; border: none;
             color: var(--text-muted); font-weight: 600; cursor: pointer; transition: 0.3s;
-            position: relative;
-            font-size: 0.95rem;
+            border-bottom: 2px solid transparent;
         }
-        .tab-btn::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px;
-            background: var(--primary); transform: scaleX(0); transition: 0.3s;
-            box-shadow: 0 0 10px var(--primary);
-        }
-        .tab-btn:hover { color: white; }
-        .tab-btn.active { color: white; }
-        .tab-btn.active::after { transform: scaleX(1); }
+        .tab-btn:hover { background: rgba(255,255,255,0.03); color: white; }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
 
-        /* --- FORMS --- */
-        .form-content { padding: 30px; display: none; animation: slideUp 0.4s ease; }
+        .form-content { padding: 30px; display: none; animation: fadeIn 0.4s ease; }
         .form-content.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .form-group { margin-bottom: 25px; position: relative; }
-        label { 
-            display: block; margin-bottom: 8px; color: var(--primary); 
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        input, textarea, select {
-            width: 100%; padding: 16px; 
-            background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
-            color: white; border-radius: 12px; font-size: 1rem; transition: 0.3s;
-        }
-        input:focus, textarea:focus, select:focus { 
-            outline: none; border-color: var(--primary); 
-            box-shadow: 0 0 15px rgba(0, 242, 234, 0.2);
-            background: rgba(0,0,0,0.6);
-        }
-
-        /* --- DROPDOWN SEARCH FIX --- */
-        .search-wrapper { position: relative; z-index: 100; }
+        .form-group { margin-bottom: 20px; position: relative; }
+        label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
         
+        input[type="text"], textarea, select, input[type="email"] {
+            width: 100%; padding: 14px; background: #050507; border: 1px solid #333;
+            color: white; border-radius: 8px; font-size: 1rem; transition: 0.3s;
+        }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); }
+
+        /* DROPDOWN RESULTS */
         .search-results {
-            position: absolute; top: 110%; left: 0; width: 100%;
-            background: #0f0f15;
-            border: 1px solid var(--primary);
-            border-radius: 12px;
-            max-height: 280px; overflow-y: auto;
+            position: absolute;
+            top: 100%; left: 0; width: 100%;
+            background: #111;
+            border: 1px solid var(--accent);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            z-index: 100;
+            max-height: 300px;
+            overflow-y: auto;
             display: none;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            z-index: 999; /* Super high priority */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
         
         .result-item {
-            padding: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer;
-            border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s;
+            padding: 10px; display: flex; align-items: center; gap: 10px; cursor: pointer;
+            border-bottom: 1px solid #222; transition: 0.2s;
         }
-        .result-item:hover { background: rgba(0, 242, 234, 0.1); }
-        .result-item img { width: 40px; height: 60px; object-fit: cover; border-radius: 4px; }
-        .result-info div { font-weight: 600; color: white; }
-        .result-info span { font-size: 0.8rem; color: #888; }
+        .result-item:hover { background: var(--accent); color: white; }
+        .result-item img { width: 40px; height: 60px; object-fit: cover; border-radius: 4px; background: #333; }
+        .result-info div { font-weight: bold; font-size: 0.9rem; }
+        .result-info span { font-size: 0.8rem; opacity: 0.7; }
 
-        /* --- MOVIE PREVIEW --- */
+        /* PREVIEW */
         .movie-preview {
             display: none;
-            background: linear-gradient(45deg, rgba(0, 242, 234, 0.05), rgba(112, 0, 255, 0.05));
-            border: 1px solid var(--primary);
-            border-radius: 12px; padding: 20px; margin-bottom: 25px;
-            align-items: flex-start; gap: 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 10px; padding: 15px;
+            margin-bottom: 20px;
+            align-items: flex-start; gap: 15px;
         }
         .movie-preview.visible { display: flex; }
-        .poster-img { width: 90px; height: 135px; object-fit: cover; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .movie-info h4 { font-size: 1.3rem; margin-bottom: 5px; color: white; }
+        .poster-img { width: 80px; height: 120px; object-fit: cover; border-radius: 5px; background: #000; }
+        .movie-info h4 { font-size: 1.2rem; margin-bottom: 5px; color: var(--accent); }
         .movie-info p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 5px; }
 
-        /* --- RADIO GROUP --- */
-        .radio-group { display: flex; gap: 15px; }
-        .radio-label {
-            flex: 1; padding: 14px; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
-            text-align: center; cursor: pointer; color: var(--text-muted); transition: 0.3s; font-weight: 600;
-        }
-        input[type="radio"]:checked + .radio-label {
-            background: var(--primary); color: #000; border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(0, 242, 234, 0.4);
-        }
-        input[type="radio"] { display: none; }
-
-        /* --- BUTTONS --- */
         .submit-btn {
-            width: 100%; padding: 18px; 
-            background: linear-gradient(90deg, var(--primary), #00c2bb);
-            color: #000; border: none; border-radius: 12px; 
-            font-weight: 800; font-size: 1rem; letter-spacing: 1px;
+            width: 100%; padding: 16px; background: var(--accent); color: white;
+            border: none; border-radius: 8px; font-weight: 700; font-size: 1rem;
             cursor: pointer; transition: 0.3s; margin-top: 10px;
-            text-transform: uppercase;
         }
-        .submit-btn:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 0 30px rgba(0, 242, 234, 0.4);
-        }
-        .submit-btn.danger { background: linear-gradient(90deg, #ff0050, #ff4b2b); color: white; }
-        .submit-btn.danger:hover { box-shadow: 0 0 30px rgba(255, 0, 80, 0.4); }
+        .submit-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .success-msg {
-            display: none; text-align: center; padding: 15px;
+            display: none; text-align: center; padding: 20px;
             background: rgba(0, 255, 0, 0.1); border: 1px solid #00ff00;
-            color: #00ff00; border-radius: 8px; margin-top: 20px; font-weight: 600;
+            color: #00ff00; border-radius: 8px; margin-top: 20px;
         }
 
     </style>
 </head>
 <body>
 
-    <canvas id="particle-canvas"></canvas>
+    <div class="bg-animation"></div>
 
     <div class="main-container">
         <div class="header">
             <div class="logo">REYLO'S <span>PORTAL</span></div>
-            <div class="subtitle">Service Request & Support Center</div>
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-top:5px;">Service Request & Support Center</p>
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('request')">REQUEST CONTENT</button>
-            <button class="tab-btn" onclick="switchTab('report')">REPORT ISSUE</button>
+            <button class="tab-btn active" onclick="switchTab('request')">Request Content</button>
+            <button class="tab-btn" onclick="switchTab('report')">Report Issue</button>
         </div>
 
         <div id="request" class="form-content active">
             <form id="vodForm" onsubmit="handleFormSubmit(event, 'vodForm')">
+                
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
                 <input type="hidden" name="_subject" value="NEW VOD REQUEST">
                 <input type="hidden" name="_template" value="table">
                 <input type="text" name="_honey" style="display:none">
+                <input type="hidden" name="_captcha" value="false">
 
-                <div class="form-group search-wrapper">
-                    <label>Search Movie / TV Show</label>
-                    <input type="text" id="searchInput" placeholder="Start typing name..." autocomplete="off">
+                <div class="form-group">
+                    <label>Search Title</label>
+                    <input type="text" name="Search_Query" id="searchInput" placeholder="e.g. Breaking Bad" autocomplete="off">
                     <div id="searchResults" class="search-results"></div>
                 </div>
 
@@ -205,58 +163,39 @@
                     <div class="movie-info">
                         <h4 id="previewTitle">Title</h4>
                         <p id="previewYear">Year</p>
-                        <p id="previewPlot" style="font-size:0.8rem; opacity:0.7; max-height:60px; overflow:hidden;">Plot</p>
+                        <p style="font-size:0.8rem; color:#888;">IMDB Link Attached</p>
                     </div>
                 </div>
 
-                <input type="hidden" name="Title" id="realTitle">
-                <input type="hidden" name="Year" id="realYear">
-                <input type="hidden" name="IMDB_ID" id="realID">
-                <input type="hidden" name="Poster_URL" id="realPoster">
-
-                <div class="form-group">
-                    <label>Content Type</label>
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="Type" value="Movie" checked>
-                            <div class="radio-label">MOVIE</div>
-                        </label>
-                        <label>
-                            <input type="radio" name="Type" value="Series">
-                            <div class="radio-label">TV SERIES</div>
-                        </label>
-                    </div>
-                </div>
+                <input type="hidden" name="Confirmed_Title" id="realTitle">
+                <input type="hidden" name="IMDB_Link" id="realLink">
 
                 <div class="form-group">
                     <label>Your Name (Required)</label>
                     <input type="text" name="Client_Name" required placeholder="Who is this for?">
                 </div>
 
-                <button type="submit" class="submit-btn" id="vodBtn">SUBMIT REQUEST</button>
+                <button type="submit" class="submit-btn" id="vodBtn">Submit Request</button>
                 <div class="success-msg" id="vodSuccess">Request Sent Successfully!</div>
             </form>
         </div>
 
         <div id="report" class="form-content">
             <form id="issueForm" onsubmit="handleFormSubmit(event, 'issueForm')">
+                
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
-                <input type="hidden" name="_subject" value="⚠️ SUPPORT TICKET">
+                <input type="hidden" name="_subject" value="⚠️ SUPPORT TICKET FILED">
                 <input type="hidden" name="_template" value="box">
                 <input type="text" name="_honey" style="display:none">
+                <input type="hidden" name="_captcha" value="false">
 
                 <div class="form-group">
                     <label>Problem Source</label>
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="Source" value="Live TV" checked>
-                            <div class="radio-label">LIVE TV</div>
-                        </label>
-                        <label>
-                            <input type="radio" name="Source" value="VOD">
-                            <div class="radio-label">VOD</div>
-                        </label>
-                    </div>
+                    <select name="Source">
+                        <option value="Live TV">Live TV</option>
+                        <option value="Movie">Movie (VOD)</option>
+                        <option value="Series">TV Series (VOD)</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -271,138 +210,75 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Channel Name / Content Title</label>
+                    <label>Channel Category / Country</label>
+                    <input type="text" name="Category" placeholder="e.g. UK Sports, USA Ent..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Channel Name / Title</label>
                     <input type="text" name="Channel_Name" placeholder="e.g. Sky Sports Main Event" required>
                 </div>
 
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea name="Description" rows="3" placeholder="Describe the issue..."></textarea>
+                    <textarea name="Description" rows="3" placeholder="Describe what is happening..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>Email (Optional)</label>
-                    <input type="email" name="Client_Email" placeholder="If you want updates...">
+                    <label>Email for Updates (Optional)</label>
+                    <input type="email" name="Client_Email" placeholder="Optional">
                 </div>
 
-                <button type="submit" class="submit-btn danger" id="issueBtn">REPORT ISSUE</button>
-                <div class="success-msg" id="issueSuccess">Report Sent. We are investigating.</div>
+                <button type="submit" class="submit-btn" style="background: #ef4444;" id="issueBtn">Report Issue</button>
+                <div class="success-msg" id="issueSuccess">Issue Reported. We are investigating.</div>
             </form>
         </div>
     </div>
 
     <script>
-        // --- 1. PARTICLE BACKGROUND ENGINE ---
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const particlesArray = [];
-        const numberOfParticles = 80;
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1 - 0.5;
-                this.color = Math.random() > 0.5 ? '#00f2ea' : '#7000ff';
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
-                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.globalAlpha = 0.6;
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            for (let i = 0; i < numberOfParticles; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-        initParticles();
-        animateParticles();
-
-
-        // --- 2. SEARCH LOGIC (FIXED) ---
         const API_KEY = "b71b47e2";
         const searchInput = document.getElementById('searchInput');
         const resultsBox = document.getElementById('searchResults');
         let debounceTimer;
 
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('.form-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Auto Search
         searchInput.addEventListener('input', function() {
             clearTimeout(debounceTimer);
             const query = this.value.trim();
-            
-            // Clear if empty
             if (query.length < 3) {
                 resultsBox.style.display = 'none';
                 return;
             }
-
-            // Show simple loading state
-            // Debounce for 300ms
-            debounceTimer = setTimeout(() => fetchMovies(query), 300);
+            debounceTimer = setTimeout(() => fetchMovies(query), 500);
         });
 
         async function fetchMovies(query) {
             try {
-                // Ensure HTTPS
                 const res = await fetch(`https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`);
                 const data = await res.json();
-                
                 if (data.Response === "True") {
                     displayResults(data.Search);
                 } else {
-                    // Hide if no results to avoid ugly empty box
                     resultsBox.style.display = 'none';
                 }
-            } catch (err) {
-                console.error("OMDB Error:", err);
-            }
+            } catch (err) { console.error(err); }
         }
 
         function displayResults(movies) {
             resultsBox.innerHTML = '';
-            resultsBox.style.display = 'block'; // Make sure this is triggered
-
-            // Show top 5 results
+            resultsBox.style.display = 'block';
             movies.slice(0, 5).forEach(movie => {
                 const div = document.createElement('div');
                 div.className = 'result-item';
-                
                 const poster = movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/40x60?text=No+Img";
-                
-                div.innerHTML = `
-                    <img src="${poster}">
-                    <div class="result-info">
-                        <div>${movie.Title}</div>
-                        <span>${movie.Year} • ${movie.Type}</span>
-                    </div>
-                `;
-
+                div.innerHTML = `<img src="${poster}"><div class="result-info"><div>${movie.Title}</div><span>${movie.Year} • ${movie.Type}</span></div>`;
                 div.onclick = () => selectMovie(movie.imdbID);
                 resultsBox.appendChild(div);
             });
@@ -410,47 +286,36 @@
 
         async function selectMovie(imdbID) {
             resultsBox.style.display = 'none';
-            searchInput.value = "Loading info..."; // Feedback
-            
+            searchInput.value = "Loading...";
             const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${API_KEY}`);
             const data = await res.json();
 
-            // Show Preview
             document.getElementById('moviePreview').classList.add('visible');
             document.getElementById('previewPoster').src = data.Poster !== "N/A" ? data.Poster : "";
             document.getElementById('previewTitle').innerText = data.Title;
             document.getElementById('previewYear').innerText = data.Year;
-            document.getElementById('previewPlot').innerText = data.Plot;
 
-            // Fill Data
-            searchInput.value = data.Title;
+            // Fill inputs
+            searchInput.value = data.Title; 
             document.getElementById('realTitle').value = data.Title;
-            document.getElementById('realYear').value = data.Year;
-            document.getElementById('realID').value = data.imdbID;
-            document.getElementById('realPoster').value = data.Poster;
-
-            // Select Radio
-            const typeRadios = document.getElementsByName('Type');
-            if(data.Type === 'series' || data.Type === 'episode') { typeRadios[1].checked = true; } 
-            else { typeRadios[0].checked = true; }
+            // Generate full IMDB Link automatically
+            document.getElementById('realLink').value = `https://www.imdb.com/title/${data.imdbID}`;
         }
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
+        document.addEventListener('click', function(e) {
             if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
                 resultsBox.style.display = 'none';
             }
         });
 
-        // --- 3. FORM SUBMIT LOGIC ---
+        // AJAX Submission
         function handleFormSubmit(event, formId) {
             event.preventDefault();
             const form = document.getElementById(formId);
             const btn = form.querySelector('.submit-btn');
             const successMsg = form.querySelector('.success-msg');
             
-            btn.innerText = "SENDING...";
-            btn.style.opacity = "0.7";
+            btn.innerText = "Sending...";
             btn.disabled = true;
 
             const formData = new FormData(form);
@@ -468,19 +333,10 @@
             })
             .catch(error => {
                 console.log(error);
-                btn.innerText = "ERROR - TRY AGAIN";
+                btn.innerText = "Error - Try Again";
                 btn.disabled = false;
-                btn.style.opacity = "1";
-                alert("Connection Error. Please check internet.");
+                alert("Something went wrong. Please check your internet connection.");
             });
-        }
-
-        // --- 4. TABS ---
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            document.querySelectorAll('.form-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
         }
     </script>
 
