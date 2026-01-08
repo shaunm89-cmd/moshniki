@@ -211,7 +211,7 @@
         </div>
 
         <div id="request" class="form-content active">
-            <form id="vodForm" onsubmit="handleFormSubmit(event, 'vodForm')">
+            <form id="vodForm" onsubmit="window.handleFormSubmit(event, 'vodForm')">
                 
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
                 <input type="hidden" name="_subject" value="NEW VOD REQUEST">
@@ -241,6 +241,7 @@
 
                 <input type="hidden" name="Confirmed_Title" id="realTitle">
                 <input type="hidden" name="IMDB_Link" id="realLink">
+                <input type="hidden" name="Poster_URL" id="realPosterUrl">
 
                 <div class="form-group">
                     <label>Specific Details (Optional)</label>
@@ -258,7 +259,7 @@
         </div>
 
         <div id="report" class="form-content">
-            <form id="issueForm" onsubmit="handleFormSubmit(event, 'issueForm')">
+            <form id="issueForm" onsubmit="window.handleFormSubmit(event, 'issueForm')">
                 
                 <input type="hidden" name="_target" value="Austreams89@gmail.com">
                 <input type="hidden" name="_subject" value="⚠️ SUPPORT TICKET FILED">
@@ -312,40 +313,124 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0",
+          authDomain: "vodrequest.firebaseapp.com",
+          projectId: "vodrequest",
+          storageBucket: "vodrequest.firebasestorage.app",
+          messagingSenderId: "603036227000",
+          appId: "1:603036227000:web:340e481b47eb70cc742b4d",
+          measurementId: "G-RBV2G25ZYB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make this function global so HTML onsubmit can see it
+        window.handleFormSubmit = async function(event, formId) {
+            event.preventDefault();
+            const form = document.getElementById(formId);
+            const btn = form.querySelector('.submit-btn');
+            const successMsg = form.querySelector('.success-msg');
+            
+            btn.innerText = "Sending...";
+            btn.disabled = true;
+
+            const formData = new FormData(form);
+            const dataObj = Object.fromEntries(formData.entries());
+
+            try {
+                // 1. SEND TO FIREBASE
+                let collectionName = formId === 'vodForm' ? 'requests' : 'reports';
+                
+                await addDoc(collection(db, collectionName), {
+                    ...dataObj,
+                    timestamp: serverTimestamp(),
+                    status: 'New'
+                });
+
+                // 2. SEND TO EMAIL (FormSubmit)
+                await fetch("https://formsubmit.co/ajax/Austreams89@gmail.com", {
+                    method: "POST",
+                    body: formData
+                });
+
+                // Success
+                btn.style.display = 'none';
+                successMsg.style.display = 'block';
+                form.reset();
+                if(formId === 'vodForm') clearSelection();
+
+            } catch (error) {
+                console.error("Error:", error);
+                btn.innerText = "Error - Try Again";
+                btn.disabled = false;
+                alert("Something went wrong. Please check your connection.");
+            }
+        };
+
+        // --- GLOBAL FUNCTIONS FOR SEARCH ---
         const API_KEY = "b71b47e2";
         const searchInput = document.getElementById('searchInput');
         const resultsBox = document.getElementById('searchResults');
         const previewBox = document.getElementById('moviePreview');
         let debounceTimer;
 
-        function switchTab(tabName) {
+        // Must attach these to window because they are called by HTML onclicks
+        window.switchTab = function(tabName) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             document.querySelectorAll('.form-content').forEach(content => content.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
         }
 
+        window.selectMovie = async function(imdbID) {
+            resultsBox.style.display = 'none';
+            const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&plot=short&apikey=${API_KEY}`);
+            const data = await res.json();
+
+            previewBox.classList.add('visible');
+            document.getElementById('previewPoster').src = data.Poster !== "N/A" ? data.Poster : "";
+            document.getElementById('previewTitle').innerText = data.Title;
+            document.getElementById('previewYear').innerText = data.Year;
+            document.getElementById('previewGenre').innerText = data.Genre;
+            document.getElementById('previewRating').innerText = `⭐ ${data.imdbRating}`;
+            document.getElementById('previewPlot').innerText = data.Plot;
+
+            searchInput.value = data.Title; 
+            document.getElementById('realTitle').value = data.Title;
+            document.getElementById('realLink').value = `https://www.imdb.com/title/${data.imdbID}`;
+            document.getElementById('realPosterUrl').value = data.Poster;
+        }
+
+        window.clearSelection = function() {
+            previewBox.classList.remove('visible');
+            document.getElementById('realTitle').value = "";
+            document.getElementById('realLink').value = "";
+        }
+
+        // Search Logic
         searchInput.addEventListener('input', function() {
             clearTimeout(debounceTimer);
             const query = this.value.trim();
+            
             if(query.length === 0) {
-                clearSelection();
+                window.clearSelection();
                 resultsBox.style.display = 'none';
                 return;
             }
+
             if (query.length < 3) {
                 resultsBox.style.display = 'none';
                 return;
             }
             debounceTimer = setTimeout(() => fetchMovies(query), 300);
         });
-
-        function clearSelection() {
-            previewBox.classList.remove('visible');
-            document.getElementById('realTitle').value = "";
-            document.getElementById('realLink').value = "";
-        }
 
         async function fetchMovies(query) {
             try {
@@ -367,27 +452,9 @@
                 div.className = 'result-item';
                 const poster = movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/45x70?text=No+Img";
                 div.innerHTML = `<img src="${poster}"><div class="result-info"><div>${movie.Title}</div><span>${movie.Year} • ${movie.Type}</span></div>`;
-                div.onclick = () => selectMovie(movie.imdbID);
+                div.onclick = () => window.selectMovie(movie.imdbID);
                 resultsBox.appendChild(div);
             });
-        }
-
-        async function selectMovie(imdbID) {
-            resultsBox.style.display = 'none';
-            const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&plot=short&apikey=${API_KEY}`);
-            const data = await res.json();
-
-            previewBox.classList.add('visible');
-            document.getElementById('previewPoster').src = data.Poster !== "N/A" ? data.Poster : "";
-            document.getElementById('previewTitle').innerText = data.Title;
-            document.getElementById('previewYear').innerText = data.Year;
-            document.getElementById('previewGenre').innerText = data.Genre;
-            document.getElementById('previewRating').innerText = `⭐ ${data.imdbRating}`;
-            document.getElementById('previewPlot').innerText = data.Plot;
-
-            searchInput.value = data.Title; 
-            document.getElementById('realTitle').value = data.Title;
-            document.getElementById('realLink').value = `https://www.imdb.com/title/${data.imdbID}`;
         }
 
         document.addEventListener('click', function(e) {
@@ -395,36 +462,6 @@
                 resultsBox.style.display = 'none';
             }
         });
-
-        function handleFormSubmit(event, formId) {
-            event.preventDefault();
-            const form = document.getElementById(formId);
-            const btn = form.querySelector('.submit-btn');
-            const successMsg = form.querySelector('.success-msg');
-            
-            btn.innerText = "Sending...";
-            btn.disabled = true;
-
-            const formData = new FormData(form);
-
-            fetch("https://formsubmit.co/ajax/Austreams89@gmail.com", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                btn.style.display = 'none';
-                successMsg.style.display = 'block';
-                form.reset();
-                clearSelection(); 
-            })
-            .catch(error => {
-                console.log(error);
-                btn.innerText = "Error - Try Again";
-                btn.disabled = false;
-                alert("Connection error. Please try again.");
-            });
-        }
 
         // --- PARTICLE SYSTEM ---
         const canvas = document.getElementById("particle-canvas");
@@ -453,7 +490,7 @@
             }
         }
 
-        function init() {
+        function initParticles() {
             particlesArray = [];
             let numberOfParticles = (canvas.height * canvas.width) / 9000; 
             for (let i = 0; i < numberOfParticles; i++) {
@@ -467,7 +504,7 @@
             }
         }
 
-        function connect() {
+        function connectParticles() {
             let opacityValue = 1;
             for (let a = 0; a < particlesArray.length; a++) {
                 for (let b = a; b < particlesArray.length; b++) {
@@ -486,23 +523,22 @@
             }
         }
 
-        function animate() {
-            requestAnimationFrame(animate);
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
             ctx.clearRect(0, 0, innerWidth, innerHeight);
             for (let i = 0; i < particlesArray.length; i++) {
                 particlesArray[i].update();
             }
-            connect();
+            connectParticles();
         }
 
         window.addEventListener('resize', function() {
             canvas.width = innerWidth; canvas.height = innerHeight;
-            init();
+            initParticles();
         });
 
-        init();
-        animate();
+        initParticles();
+        animateParticles();
     </script>
-
 </body>
 </html>
