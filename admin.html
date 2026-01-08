@@ -72,7 +72,7 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .header {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
             padding: 25px; background: rgba(10, 10, 16, 0.6); 
             border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.4);
             border-radius: 24px; margin-bottom: 30px;
@@ -81,6 +81,12 @@
         }
         .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; }
         .logo span { color: var(--accent); text-shadow: 0 0 15px var(--accent); }
+
+        /* SEARCH BAR */
+        .admin-search {
+            padding: 10px 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            color: white; border-radius: 10px; width: 250px;
+        }
 
         .tabs { display: flex; gap: 15px; margin-bottom: 30px; }
         .tab-btn {
@@ -159,6 +165,13 @@
         .badge-Audio { color: #eab308; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.2); padding: 4px 10px; border-radius: 4px; font-size:0.75rem; }
         .badge-Other { color: #3b82f6; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); padding: 4px 10px; border-radius: 4px; font-size:0.75rem; }
 
+        /* --- MOBILE FIXES --- */
+        @media (max-width: 600px) {
+            .header { flex-direction: column; text-align: center; }
+            .grid { grid-template-columns: 1fr; } /* Stack cards */
+            .admin-search { width: 100%; }
+        }
+
     </style>
 </head>
 <body>
@@ -174,8 +187,11 @@
 
     <div class="container" id="dashboard">
         <div class="header">
-            <div class="logo">REYLO <span>ADMIN</span></div>
-            <div style="font-size:0.9rem; color:#888;" id="status-text">Connecting to Database...</div>
+            <div>
+                <div class="logo">REYLO <span>ADMIN</span></div>
+                <div style="font-size:0.9rem; color:#888;" id="status-text">Connecting to Database...</div>
+            </div>
+            <input type="text" class="admin-search" placeholder="Filter requests..." onkeyup="filterCards(this.value)">
         </div>
 
         <div class="tabs">
@@ -215,6 +231,21 @@
                 alert("ACCESS DENIED");
                 document.getElementById('pin-input').value = "";
             }
+        }
+
+        // --- FILTER FUNCTION ---
+        window.filterCards = function(text) {
+            const cards = document.querySelectorAll('.card');
+            const search = text.toLowerCase();
+            cards.forEach(card => {
+                const title = card.querySelector('.title').innerText.toLowerCase();
+                const client = card.querySelector('.client-info').innerText.toLowerCase();
+                if(title.includes(search) || client.includes(search)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
 
         // --- LOAD DATA ---
@@ -389,7 +420,6 @@
             for (let i = 0; i < particlesArray.length; i++) {
                 particlesArray[i].update();
                 particlesArray[i].draw();
-                // Connect particles
                 for (let j = i; j < particlesArray.length; j++) {
                     const dx = particlesArray[i].x - particlesArray[j].x;
                     const dy = particlesArray[i].y - particlesArray[j].y;
