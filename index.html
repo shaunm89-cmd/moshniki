@@ -242,6 +242,10 @@
                 <input type="hidden" name="Confirmed_Title" id="realTitle">
                 <input type="hidden" name="IMDB_Link" id="realLink">
                 <input type="hidden" name="Poster_URL" id="realPosterUrl">
+                
+                <input type="hidden" name="Year" id="realYear">
+                <input type="hidden" name="Genre" id="realGenre">
+                <input type="hidden" name="Plot" id="realPlot">
 
                 <div class="form-group">
                     <label>Specific Details (Optional)</label>
@@ -317,6 +321,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
+        // YOUR FIREBASE CONFIG
         const firebaseConfig = {
           apiKey: "AIzaSyDJlsmsRNuIVDOIrgdRyaSClqXsLj94MB0",
           authDomain: "vodrequest.firebaseapp.com",
@@ -327,11 +332,10 @@
           measurementId: "G-RBV2G25ZYB"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Make this function global so HTML onsubmit can see it
+        // --- FORM SUBMISSION LOGIC ---
         window.handleFormSubmit = async function(event, formId) {
             event.preventDefault();
             const form = document.getElementById(formId);
@@ -345,7 +349,7 @@
             const dataObj = Object.fromEntries(formData.entries());
 
             try {
-                // 1. SEND TO FIREBASE
+                // 1. SAVE TO FIREBASE
                 let collectionName = formId === 'vodForm' ? 'requests' : 'reports';
                 
                 await addDoc(collection(db, collectionName), {
@@ -354,17 +358,17 @@
                     status: 'New'
                 });
 
-                // 2. SEND TO EMAIL (FormSubmit)
+                // 2. SEND EMAIL (FORMSUBMIT)
                 await fetch("https://formsubmit.co/ajax/Austreams89@gmail.com", {
                     method: "POST",
                     body: formData
                 });
 
-                // Success
+                // Success State
                 btn.style.display = 'none';
                 successMsg.style.display = 'block';
                 form.reset();
-                if(formId === 'vodForm') clearSelection();
+                if(formId === 'vodForm') window.clearSelection();
 
             } catch (error) {
                 console.error("Error:", error);
@@ -374,14 +378,13 @@
             }
         };
 
-        // --- GLOBAL FUNCTIONS FOR SEARCH ---
+        // --- SEARCH & UI LOGIC ---
         const API_KEY = "b71b47e2";
         const searchInput = document.getElementById('searchInput');
         const resultsBox = document.getElementById('searchResults');
         const previewBox = document.getElementById('moviePreview');
         let debounceTimer;
 
-        // Must attach these to window because they are called by HTML onclicks
         window.switchTab = function(tabName) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
@@ -402,10 +405,15 @@
             document.getElementById('previewRating').innerText = `⭐ ${data.imdbRating}`;
             document.getElementById('previewPlot').innerText = data.Plot;
 
+            // Fill inputs
             searchInput.value = data.Title; 
             document.getElementById('realTitle').value = data.Title;
             document.getElementById('realLink').value = `https://www.imdb.com/title/${data.imdbID}`;
             document.getElementById('realPosterUrl').value = data.Poster;
+            // NEW FIELDS
+            document.getElementById('realYear').value = data.Year;
+            document.getElementById('realGenre').value = data.Genre;
+            document.getElementById('realPlot').value = data.Plot;
         }
 
         window.clearSelection = function() {
@@ -414,17 +422,15 @@
             document.getElementById('realLink').value = "";
         }
 
-        // Search Logic
+        // Auto Search
         searchInput.addEventListener('input', function() {
             clearTimeout(debounceTimer);
             const query = this.value.trim();
-            
             if(query.length === 0) {
                 window.clearSelection();
                 resultsBox.style.display = 'none';
                 return;
             }
-
             if (query.length < 3) {
                 resultsBox.style.display = 'none';
                 return;
@@ -490,7 +496,7 @@
             }
         }
 
-        function initParticles() {
+        function init() {
             particlesArray = [];
             let numberOfParticles = (canvas.height * canvas.width) / 9000; 
             for (let i = 0; i < numberOfParticles; i++) {
@@ -504,7 +510,7 @@
             }
         }
 
-        function connectParticles() {
+        function connect() {
             let opacityValue = 1;
             for (let a = 0; a < particlesArray.length; a++) {
                 for (let b = a; b < particlesArray.length; b++) {
@@ -523,22 +529,22 @@
             }
         }
 
-        function animateParticles() {
-            requestAnimationFrame(animateParticles);
+        function animate() {
+            requestAnimationFrame(animate);
             ctx.clearRect(0, 0, innerWidth, innerHeight);
             for (let i = 0; i < particlesArray.length; i++) {
                 particlesArray[i].update();
             }
-            connectParticles();
+            connect();
         }
 
         window.addEventListener('resize', function() {
             canvas.width = innerWidth; canvas.height = innerHeight;
-            initParticles();
+            init();
         });
 
-        initParticles();
-        animateParticles();
+        init();
+        animate();
     </script>
 </body>
 </html>
