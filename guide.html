@@ -3,243 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reylo TV Guide</title>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>LIVE NOW | Global Sports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050508; --surface: #0f0f13;
-            --accent: #3b82f6; --accent-red: #ef4444;
-            --text: #ffffff; --border: rgba(255, 255, 255, 0.08);
-            --chan-width: 140px; --hour-width: 300px;
+            --bg: #050508;
+            --surface: #0a0a0f;
+            --live-red: #ef4444; /* The Core Color */
+            --live-glow: rgba(239, 68, 68, 0.5);
+            --text: #ffffff;
+            --border: rgba(255, 255, 255, 0.08);
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
-        body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* HEADER */
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- BACKGROUND VFX --- */
+        #bg-pulse {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.05) 0%, transparent 70%);
+            animation: pulseBg 4s infinite alternate;
+        }
+        @keyframes pulseBg { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* --- HEADER --- */
         .header {
-            height: 70px; background: rgba(10,10,15,0.95); border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between; padding: 0 25px; z-index: 50;
+            padding: 30px 40px; display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid var(--border); background: rgba(5,5,8,0.9); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
         }
-        .logo { font-family: 'Teko'; font-size: 2.2rem; letter-spacing: 2px; }
-        .logo span { color: var(--accent); }
+
+        .logo {
+            font-family: 'Teko', sans-serif; font-size: 3rem; letter-spacing: 2px;
+            text-transform: uppercase; line-height: 1; display: flex; align-items: center; gap: 15px;
+        }
+        .logo span { color: var(--live-red); text-shadow: 0 0 20px var(--live-red); }
         
-        .search-box { position: relative; width: 300px; }
-        .search-box input {
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: white;
-            padding: 10px 15px; border-radius: 8px; outline: none; transition: 0.3s;
+        .live-indicator {
+            padding: 5px 15px; border: 1px solid var(--live-red); border-radius: 4px;
+            color: var(--live-red); font-weight: bold; font-size: 0.9rem; letter-spacing: 2px;
+            box-shadow: 0 0 15px var(--live-glow); animation: blink 2s infinite;
+            display: flex; align-items: center; gap: 10px;
         }
-        .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(59,130,246,0.3); }
-
-        /* GUIDE CONTAINER */
-        .guide-container { flex: 1; display: flex; position: relative; overflow: hidden; }
-
-        /* LEFT: CHANNELS */
-        .channels-col {
-            width: var(--chan-width); background: var(--surface); border-right: 1px solid var(--border);
-            z-index: 20; box-shadow: 5px 0 20px rgba(0,0,0,0.5); display: flex; flex-direction: column;
-        }
-        .chan-header { height: 50px; background: #08080c; border-bottom: 1px solid var(--border); }
-        .chan-list { flex: 1; overflow: hidden; }
-        .chan-item {
-            height: 80px; display: flex; align-items: center; justify-content: center;
-            border-bottom: 1px solid var(--border); padding: 10px;
-        }
-        .chan-logo { max-width: 80%; max-height: 50px; object-fit: contain; }
-
-        /* RIGHT: TIMELINE GRID */
-        .guide-area {
-            flex: 1; overflow-x: auto; overflow-y: scroll; position: relative;
-            background: #08080a; scrollbar-width: none;
-        }
-        .guide-area::-webkit-scrollbar { display: none; }
-
-        .timeline-header {
-            height: 50px; background: #08080c; border-bottom: 1px solid var(--border);
-            display: flex; position: sticky; top: 0; width: 7200px; z-index: 10; /* 24 Hours wide */
-        }
-        .time-marker {
-            width: var(--hour-width); height: 100%; display: flex; align-items: center; padding-left: 10px;
-            color: #666; font-size: 0.85rem; border-left: 1px solid rgba(255,255,255,0.03);
-        }
-
-        .program-rows { width: 7200px; position: relative; }
-        .program-row { height: 80px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.03); }
-
-        /* SHOW CARDS */
-        .program-card {
-            position: absolute; height: 60px; top: 10px;
-            background: #15151a; border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 6px; padding: 8px 12px; overflow: hidden;
-            transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; justify-content: center;
-        }
-        .program-card:hover {
-            background: #202028; border-color: var(--accent); transform: scale(1.02); z-index: 5;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
+        .dot { width: 8px; height: 8px; background: var(--live-red); border-radius: 50%; }
         
-        .prog-title { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
-        .prog-time { font-size: 0.75rem; color: #888; margin-top: 4px; }
+        @keyframes blink { 0% { opacity: 1; box-shadow: 0 0 15px var(--live-glow); } 50% { opacity: 0.5; box-shadow: none; } 100% { opacity: 1; box-shadow: 0 0 15px var(--live-glow); } }
+
+        /* --- GRID --- */
+        .container {
+            padding: 40px; max-width: 1600px; margin: 0 auto; width: 100%;
+        }
+
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px;
+        }
+
+        /* --- EMPTY STATE --- */
+        .empty-state {
+            text-align: center; color: #444; margin-top: 100px; display: none;
+        }
+        .empty-state h2 { font-size: 2rem; margin-bottom: 10px; color: #666; }
+
+        /* --- MATCH CARD --- */
+        .card {
+            background: #121216; border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+            position: relative; transition: 0.3s; opacity: 0; animation: fadeUp 0.5s forwards;
+            display: flex; flex-direction: column;
+        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card:hover {
+            transform: translateY(-5px); border-color: var(--live-red);
+            box-shadow: 0 10px 40px rgba(239, 68, 68, 0.2);
+        }
+
+        /* CARD HEADER (Image) */
+        .card-header {
+            height: 180px; position: relative; overflow: hidden;
+        }
+        .card-bg {
+            width: 100%; height: 100%; object-fit: cover; transition: 0.5s;
+        }
+        .card:hover .card-bg { transform: scale(1.05); }
+        .card-overlay {
+            position: absolute; inset: 0; background: linear-gradient(to top, #121216 10%, transparent);
+        }
+
+        /* LIVE BADGE ON CARD */
+        .card-live-tag {
+            position: absolute; top: 15px; right: 15px;
+            background: var(--live-red); color: white; padding: 5px 10px;
+            font-weight: 700; font-size: 0.8rem; border-radius: 4px;
+            box-shadow: 0 0 15px var(--live-red); animation: blink 2s infinite;
+        }
+
+        /* CARD BODY */
+        .card-body { padding: 20px; position: relative; z-index: 2; margin-top: -20px; }
         
-        .program-card.dimmed { opacity: 0.1; filter: grayscale(100%); } /* Search Effect */
-
-        /* RED LINE */
-        .now-line {
-            position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent-red);
-            box-shadow: 0 0 15px var(--accent-red); z-index: 40; pointer-events: none;
+        .league-name {
+            color: #888; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;
         }
-        .now-tag {
-            position: absolute; top: 50px; left: 4px; background: var(--accent-red); color: black;
-            font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 3px;
+        .match-title {
+            font-size: 1.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 15px;
         }
 
-        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--accent); font-size: 1.5rem; display: none; }
+        .team-row {
+            display: flex; align-items: center; justify-content: space-between; 
+            background: rgba(255,255,255,0.03); padding: 10px 15px; border-radius: 8px; margin-bottom: 5px;
+        }
+        .team-info { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .team-logo { width: 30px; height: 30px; object-fit: contain; }
+        
+        /* Simulated Score (Random for demo if API empty) */
+        .score { font-family: 'Teko'; font-size: 1.5rem; color: var(--live-red); }
+
+        .progress-bar {
+            height: 4px; background: #333; margin-top: 15px; border-radius: 2px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; background: var(--live-red); width: 0%;
+            box-shadow: 0 0 10px var(--live-red);
+            animation: loadProgress 1s ease forwards;
+        }
+        @keyframes loadProgress { from { width: 0; } to { width: var(--p); } }
+
+        .time-elapsed { text-align: right; font-size: 0.8rem; color: var(--live-red); margin-top: 5px; font-weight: bold; }
+
+        @media (max-width: 600px) {
+            .header { padding: 20px; }
+            .logo { font-size: 2rem; }
+            .container { padding: 20px; }
+        }
     </style>
 </head>
 <body>
 
+    <div id="bg-pulse"></div>
+
     <div class="header">
-        <div class="logo">REYLO <span>EPG</span></div>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search Guide..." onkeyup="searchGuide()">
+        <div class="logo">LIVE <span>NOW</span></div>
+        <div class="live-indicator">
+            <div class="dot"></div> <span id="eventCount">SEARCHING...</span>
         </div>
     </div>
 
-    <div class="guide-container">
-        <div class="channels-col">
-            <div class="chan-header"></div>
-            <div class="chan-list" id="chanList"></div>
-        </div>
+    <div class="container">
+        <div id="loading" style="text-align:center; color:#666; margin-top:50px;">Scanning Global Feeds...</div>
+        
+        <div class="grid" id="liveGrid">
+            </div>
 
-        <div class="guide-area" id="guideArea">
-            <div class="now-line" id="nowLine"><div class="now-tag">NOW</div></div>
-            <div class="timeline-header" id="timeline"></div>
-            <div class="program-rows" id="programGrid"></div>
-            <div id="loading">Fetching Live Data...</div>
+        <div class="empty-state" id="emptyState">
+            <h2>NO LIVE SPORTS DETECTED</h2>
+            <p>The world is quiet right now. Check back shortly.</p>
         </div>
     </div>
 
     <script>
-        const API_KEY = "3"; // Public Test Key
-        const HOUR_WIDTH = 300; 
+        const API_KEY = "3"; // Public Key
         
-        // MAPPING: We map specific Leagues to specific "Channels" to simulate a TV Guide
-        const CHANNELS = [
-            { name: "Sky Sports PL", id: "4328", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Sky_Sports_Premier_League.svg/1200px-Sky_Sports_Premier_League.svg.png" }, // EPL
-            { name: "TNT Sports 1", id: "4401", logo: "https://upload.wikimedia.org/wikipedia/commons/2/22/TNT_Sports_%28UK%29_logo.svg" }, // UCL (Simulated with League 4401 or generic)
-            { name: "Sky Sports F1", id: "4370", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/Sky_Sports_F1_logo.svg/1200px-Sky_Sports_F1_logo.svg.png" }, // F1
-            { name: "Fox Cricket", id: "4429", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Fox_Cricket_logo.svg/1200px-Fox_Cricket_logo.svg.png" }, // Cricket
-            { name: "Fox League", id: "4356", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Fox_League_logo.svg/1200px-Fox_League_logo.svg.png" }, // NRL (Using A-League ID for demo if NRL empty)
-            { name: "ESPN", id: "4387", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a2/ESPN_wordmark.svg" }, // NBA
-            { name: "Optus Sport", id: "4335", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Optus_Sport_logo.svg" } // La Liga
+        // LEAGUE IDs to scan (Add more as needed)
+        // EPL, NBA, NFL, La Liga, Bundesliga, Serie A, F1, UFC, NRL, AFL, MLB, NHL
+        const LEAGUES = [
+            "4328", "4387", "4391", "4335", "4331", "4332", "4370", "4479", "4356", "4351", "4424", "4380"
         ];
 
-        function init() {
-            renderTimeline();
-            renderChannels();
-            fetchData();
-            
-            // Sync scrolling
-            const guide = document.getElementById('guideArea');
-            const chans = document.getElementById('chanList');
-            guide.addEventListener('scroll', () => { chans.scrollTop = guide.scrollTop; });
+        let activeEvents = 0;
 
-            // Set Initial Time Line
-            const now = new Date();
-            const startOfDay = new Date(now); startOfDay.setHours(0,0,0,0);
-            const hoursPassed = (now - startOfDay) / 3600000;
-            const offset = hoursPassed * HOUR_WIDTH;
-            document.getElementById('nowLine').style.left = offset + "px";
-            guide.scrollLeft = offset - 200; 
-        }
-
-        function renderChannels() {
-            const list = document.getElementById('chanList');
-            CHANNELS.forEach(c => {
-                list.innerHTML += `<div class="chan-item"><img src="${c.logo}" class="chan-logo"></div>`;
-            });
-        }
-
-        function renderTimeline() {
-            const tl = document.getElementById('timeline');
-            for(let i=0; i<24; i++) {
-                let t = i === 0 ? "12 AM" : i > 12 ? (i-12)+" PM" : i === 12 ? "12 PM" : i+" AM";
-                tl.innerHTML += `<div class="time-marker">${t}</div>`;
-            }
-        }
-
-        async function fetchData() {
-            const grid = document.getElementById('programGrid');
+        async function scanForLiveSports() {
+            const grid = document.getElementById('liveGrid');
             const loader = document.getElementById('loading');
-            loader.style.display = 'block';
-
-            // Loop through our channels and fetch the specific league for that channel
-            for (const channel of CHANNELS) {
-                let rowHtml = `<div class="program-row">`;
-                
-                try {
-                    // Fetch next 15 events for this League ID
-                    const res = await fetch(`https://www.thesportsdb.com/api/v1/json/${API_KEY}/eventsnextleague.php?id=${channel.id}`);
-                    const data = await res.json();
-
-                    if(data.events) {
-                        data.events.forEach(ev => {
-                            // Parse Dates
-                            // API returns Date (YYYY-MM-DD) and Time (HH:MM:SS) separately
-                            // We need to calculate position on the 24h grid
-                            
-                            const eventDate = new Date(ev.dateEvent + "T" + ev.strTime);
-                            const today = new Date();
-                            
-                            // Only show if it's "Today" (for this simple demo grid)
-                            // In a real app, you'd handle multiple days
-                            if(eventDate.getDate() === today.getDate()) {
-                                
-                                const startHour = eventDate.getHours() + (eventDate.getMinutes()/60);
-                                const duration = 2; // Default to 2 hours (API doesn't always give duration)
-                                
-                                const left = startHour * HOUR_WIDTH;
-                                const width = (duration * HOUR_WIDTH) - 4; // Gap
-
-                                rowHtml += `
-                                    <div class="program-card" style="left:${left}px; width:${width}px;" title="${ev.strEvent}">
-                                        <div class="prog-title">${ev.strEvent}</div>
-                                        <div class="prog-time">${ev.strTime.substring(0,5)}</div>
-                                    </div>
-                                `;
-                            }
-                        });
-                    } else {
-                        // Fill empty rows with "No Scheduled Events" placeholder
-                        rowHtml += `<div class="program-card dimmed" style="left:0; width:100%;">No Live Events Scheduled Today</div>`;
-                    }
-
-                } catch (e) {
-                    console.log("Error loading channel", channel.name);
-                }
-
-                rowHtml += `</div>`;
-                grid.innerHTML += rowHtml;
-            }
-            loader.style.display = 'none';
-        }
-
-        // Search Functionality
-        window.searchGuide = function() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.program-card');
+            const empty = document.getElementById('emptyState');
             
-            cards.forEach(card => {
-                if(card.innerText.toLowerCase().includes(term) || term === "") {
-                    card.classList.remove('dimmed');
-                    card.style.opacity = "1";
-                } else {
-                    card.classList.add('dimmed');
-                    card.style.opacity = "0.1";
+            // Clear grid only on first load or full refresh logic
+            // keeping it simple: clear every time to avoid duplicates for now
+            grid.innerHTML = '';
+            activeEvents = 0;
+            loader.style.display = 'block';
+            empty.style.display = 'none';
+
+            const fetches = LEAGUES.map(id => 
+                fetch(`https://www.thesportsdb.com/api/v1/json/${API_KEY}/eventsnextleague.php?id=${id}`)
+                .then(res => res.json())
+                .catch(err => ({ events: null }))
+            );
+
+            const results = await Promise.all(fetches);
+            loader.style.display = 'none';
+
+            results.forEach(data => {
+                if (data.events) {
+                    data.events.forEach(event => {
+                        if (checkIfLive(event)) {
+                            renderCard(event);
+                            activeEvents++;
+                        }
+                    });
                 }
             });
+
+            updateCounter();
         }
 
-        init();
+        function checkIfLive(event) {
+            // 1. Get Event Start Time
+            const startTime = new Date(event.dateEvent + "T" + event.strTime);
+            const now = new Date();
+
+            // 2. Guess Duration (2.5 Hours is safe for most sports)
+            // If API provided duration, we'd use it, but they often don't.
+            const durationMs = 2.5 * 60 * 60 * 1000; 
+            const endTime = new Date(startTime.getTime() + durationMs);
+
+            // 3. Logic: Did it start? Has it NOT finished?
+            if (now >= startTime && now < endTime) {
+                // Calculate % progress for the bar
+                event.progress = ((now - startTime) / durationMs) * 100;
+                // Calculate elapsed minutes
+                event.elapsed = Math.floor((now - startTime) / 60000);
+                return true;
+            }
+            return false;
+        }
+
+        function renderCard(event) {
+            const grid = document.getElementById('liveGrid');
+            
+            const thumb = event.strThumb || event.strPoster || "https://via.placeholder.com/600x400/111/333?text=Live+Event";
+            const homeBadge = event.strHomeTeamBadge || "";
+            const awayBadge = event.strAwayTeamBadge || "";
+            const league = event.strLeague || "Unknown League";
+
+            const html = `
+                <div class="card">
+                    <div class="card-header">
+                        <img src="${thumb}" class="card-bg">
+                        <div class="card-overlay"></div>
+                        <div class="card-live-tag">LIVE</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="league-name">${league}</div>
+                        <div class="match-title">${event.strEvent}</div>
+                        
+                        <div class="team-row">
+                            <div class="team-info">
+                                <img src="${homeBadge}" class="team-logo" onerror="this.style.display='none'"> 
+                                ${event.strHomeTeam}
+                            </div>
+                            <div class="score">?</div>
+                        </div>
+                        <div class="team-row">
+                            <div class="team-info">
+                                <img src="${awayBadge}" class="team-logo" onerror="this.style.display='none'"> 
+                                ${event.strAwayTeam}
+                            </div>
+                            <div class="score">?</div>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="--p:${event.progress}%"></div>
+                        </div>
+                        <div class="time-elapsed">${event.elapsed}' ELAPSED</div>
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += html;
+        }
+
+        function updateCounter() {
+            const countLabel = document.getElementById('eventCount');
+            const empty = document.getElementById('emptyState');
+            
+            if (activeEvents === 0) {
+                countLabel.innerText = "OFF AIR";
+                countLabel.style.color = "#666";
+                countLabel.parentElement.style.borderColor = "#666";
+                document.querySelector('.dot').style.background = "#666";
+                empty.style.display = 'block';
+            } else {
+                countLabel.innerText = `${activeEvents} EVENTS ACTIVE`;
+            }
+        }
+
+        // --- DEMO MODE (REMOVE THIS IF YOU WANT PURE REALITY) ---
+        // If 0 events are found (common with Public Key 3), this adds a fake one
+        // so you can see the design working.
+        setTimeout(() => {
+            if(activeEvents === 0) {
+                // Uncomment line below to force a fake card for testing design
+                // injectFakeEvent(); 
+            }
+        }, 2000);
+
+        function injectFakeEvent() {
+            const fake = {
+                strEvent: "Demo: Man City vs Liverpool",
+                dateEvent: new Date().toISOString().split('T')[0], // Today
+                strTime: new Date(Date.now() - 3600000).toTimeString().split(' ')[0], // Started 1 hour ago
+                strThumb: "https://www.thesportsdb.com/images/media/event/thumb/rsqrsq1516455627.jpg",
+                strLeague: "Premier League",
+                strHomeTeam: "Man City", strAwayTeam: "Liverpool",
+                strHomeTeamBadge: "https://www.thesportsdb.com/images/media/team/badge/vwpvry1467462651.png",
+                strAwayTeamBadge: "https://www.thesportsdb.com/images/media/team/badge/uvxrqq1448813372.png"
+            };
+            if(checkIfLive(fake)) { renderCard(fake); activeEvents++; updateCounter(); }
+        }
+
+        // Run
+        scanForLiveSports();
+        // Auto Refresh every 60s
+        setInterval(scanForLiveSports, 60000);
+
     </script>
 </body>
 </html>
