@@ -3,197 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PieTV Sports Guide</title>
+    <title>Reylo TV Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050508; --surface: #0a0a0f;
+            --bg: #050508; --surface: #0f0f13;
             --accent: #3b82f6; --accent-red: #ef4444;
             --text: #ffffff; --border: rgba(255, 255, 255, 0.08);
+            --chan-width: 140px; --hour-width: 300px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
         /* HEADER */
         .header {
-            height: 70px; background: rgba(5, 5, 10, 0.95); border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
+            height: 70px; background: rgba(10,10,15,0.95); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 25px; z-index: 50;
         }
-        .logo { font-family: 'Teko', sans-serif; font-size: 2rem; letter-spacing: 1px; text-transform: uppercase; }
+        .logo { font-family: 'Teko'; font-size: 2.2rem; letter-spacing: 2px; }
         .logo span { color: var(--accent); }
-
-        /* LAYOUT */
-        .layout { display: flex; height: 100%; }
-
-        /* SIDEBAR (LEAGUES) */
-        .sidebar {
-            width: 250px; background: #08080c; border-right: 1px solid var(--border); overflow-y: auto;
-        }
-        .league-item {
-            padding: 15px; display: flex; align-items: center; gap: 10px; cursor: pointer;
-            border-bottom: 1px solid rgba(255,255,255,0.02); transition: 0.2s;
-        }
-        .league-item:hover { background: rgba(59, 130, 246, 0.1); }
-        .league-item.active { border-left: 3px solid var(--accent); background: rgba(59, 130, 246, 0.15); }
-        .league-icon { width: 25px; height: 25px; object-fit: contain; }
-
-        /* MAIN CONTENT (MATCHES) */
-        .content { flex: 1; padding: 20px; overflow-y: auto; background: radial-gradient(circle at 50% 0%, rgba(59,130,246,0.1), transparent 70%); }
         
-        .section-title { font-family: 'Teko'; font-size: 1.8rem; margin-bottom: 20px; color: var(--accent); }
+        .search-box { position: relative; width: 300px; }
+        .search-box input {
+            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: white;
+            padding: 10px 15px; border-radius: 8px; outline: none; transition: 0.3s;
+        }
+        .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(59,130,246,0.3); }
 
-        .match-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;
+        /* GUIDE CONTAINER */
+        .guide-container { flex: 1; display: flex; position: relative; overflow: hidden; }
+
+        /* LEFT: CHANNELS */
+        .channels-col {
+            width: var(--chan-width); background: var(--surface); border-right: 1px solid var(--border);
+            z-index: 20; box-shadow: 5px 0 20px rgba(0,0,0,0.5); display: flex; flex-direction: column;
+        }
+        .chan-header { height: 50px; background: #08080c; border-bottom: 1px solid var(--border); }
+        .chan-list { flex: 1; overflow: hidden; }
+        .chan-item {
+            height: 80px; display: flex; align-items: center; justify-content: center;
+            border-bottom: 1px solid var(--border); padding: 10px;
+        }
+        .chan-logo { max-width: 80%; max-height: 50px; object-fit: contain; }
+
+        /* RIGHT: TIMELINE GRID */
+        .guide-area {
+            flex: 1; overflow-x: auto; overflow-y: scroll; position: relative;
+            background: #08080a; scrollbar-width: none;
+        }
+        .guide-area::-webkit-scrollbar { display: none; }
+
+        .timeline-header {
+            height: 50px; background: #08080c; border-bottom: 1px solid var(--border);
+            display: flex; position: sticky; top: 0; width: 7200px; z-index: 10; /* 24 Hours wide */
+        }
+        .time-marker {
+            width: var(--hour-width); height: 100%; display: flex; align-items: center; padding-left: 10px;
+            color: #666; font-size: 0.85rem; border-left: 1px solid rgba(255,255,255,0.03);
         }
 
-        /* MATCH CARD */
-        .match-card {
-            background: #15151a; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
-            position: relative; transition: 0.3s;
+        .program-rows { width: 7200px; position: relative; }
+        .program-row { height: 80px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.03); }
+
+        /* SHOW CARDS */
+        .program-card {
+            position: absolute; height: 60px; top: 10px;
+            background: #15151a; border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 6px; padding: 8px 12px; overflow: hidden;
+            transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; justify-content: center;
         }
-        .match-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .program-card:hover {
+            background: #202028; border-color: var(--accent); transform: scale(1.02); z-index: 5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
         
-        .match-bg {
-            height: 140px; background-size: cover; background-position: center; position: relative;
-        }
-        .match-bg::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to top, #15151a, transparent);
-        }
+        .prog-title { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; }
+        .prog-time { font-size: 0.75rem; color: #888; margin-top: 4px; }
         
-        /* STATUS BADGE */
-        .status-badge {
-            position: absolute; top: 10px; right: 10px;
-            background: rgba(0,0,0,0.8); color: #aaa;
-            padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;
-            border: 1px solid rgba(255,255,255,0.1);
+        .program-card.dimmed { opacity: 0.1; filter: grayscale(100%); } /* Search Effect */
+
+        /* RED LINE */
+        .now-line {
+            position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent-red);
+            box-shadow: 0 0 15px var(--accent-red); z-index: 40; pointer-events: none;
         }
-        .status-badge.live {
-            background: var(--accent-red); color: white; border: none;
-            box-shadow: 0 0 10px var(--accent-red); animation: pulse 2s infinite;
+        .now-tag {
+            position: absolute; top: 50px; left: 4px; background: var(--accent-red); color: black;
+            font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 3px;
         }
 
-        .match-info { padding: 15px; position: relative; }
-        .teams { font-weight: 700; font-size: 1.1rem; margin-bottom: 5px; line-height: 1.2; }
-        .meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #888; }
-        
-        .team-logos {
-            position: absolute; top: -30px; right: 15px; display: flex; gap: -10px;
-        }
-        .team-logo {
-            width: 50px; height: 50px; border-radius: 50%; background: #222; border: 2px solid #15151a;
-            object-fit: padding; padding: 5px;
-        }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--accent); font-size: 1.5rem; display: none; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo">PTV <span>GUIDE</span></div>
-        <div style="color: #666; font-size: 0.9rem;">Live Data Preview</div>
+        <div class="logo">REYLO <span>EPG</span></div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search Guide..." onkeyup="searchGuide()">
+        </div>
     </div>
 
-    <div class="layout">
-        <div class="sidebar" id="sidebar">
-            </div>
-        <div class="content">
-            <div class="section-title" id="pageTitle">Select a League</div>
-            <div class="match-grid" id="matchGrid">
-                </div>
+    <div class="guide-container">
+        <div class="channels-col">
+            <div class="chan-header"></div>
+            <div class="chan-list" id="chanList"></div>
+        </div>
+
+        <div class="guide-area" id="guideArea">
+            <div class="now-line" id="nowLine"><div class="now-tag">NOW</div></div>
+            <div class="timeline-header" id="timeline"></div>
+            <div class="program-rows" id="programGrid"></div>
+            <div id="loading">Fetching Live Data...</div>
         </div>
     </div>
 
     <script>
-        // THIS IS THE RAW DATA EXTRACTED FROM YOUR SOURCE CODE
-        // I cleaned it up into a usable Javascript Object
-        const rawData = {
-            "Spanish La Liga": {
-                badge: "https://r2.thesportsdb.com/images/media/league/badge/ja4it51687628717.png",
-                events: [
-                    { strEvent: "Getafe vs Real Sociedad", strThumb: "https://r2.thesportsdb.com/images/media/event/thumb/8lcen71751450143.jpg", strStatus: "Not Started", strTimeLocal: "21:00", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/eyh2891655594452.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/vptvpr1473502986.png" }
-                ]
-            },
-            "FA Cup": {
-                badge: "https://r2.thesportsdb.com/images/media/league/badge/vk7isd1598802862.png",
-                events: [
-                    { strEvent: "Preston North End vs Wigan Athletic", strThumb: "https://www.thesportsdb.com/images/media/event/thumb/m7vi3i1767339272.jpg", strStatus: "1H", strTimeLocal: "19:30", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/wqtwvw1448811512.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/wtxwyw1448759640.png" },
-                    { strEvent: "MK Dons vs Oxford United", strThumb: "https://www.thesportsdb.com/images/media/event/thumb/veslke1767339254.jpg", strStatus: "1H", strTimeLocal: "19:30", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/9hx41b1748524969.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/la34wg1601726102.png" },
-                    { strEvent: "Wrexham vs Nottingham Forest", strThumb: "https://www.thesportsdb.com/images/media/event/thumb/5usxto1767339305.jpg", strStatus: "HT", strTimeLocal: "19:30", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/ezpymt1675092551.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/bk4qjs1546440351.png" }
-                ]
-            },
-            "German Bundesliga": {
-                badge: "https://r2.thesportsdb.com/images/media/league/badge/teqh1b1679952008.png",
-                events: [
-                    { strEvent: "Eintracht Frankfurt vs Borussia Dortmund", strThumb: "https://r2.thesportsdb.com/images/media/event/thumb/2xh0w31754041302.jpg", strStatus: "1H", strTimeLocal: "20:30", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/rurwpy1473453269.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/tqo8ge1716960353.png" }
-                ]
-            },
-            "Australian A-League": {
-                badge: "https://r2.thesportsdb.com/images/media/league/badge/2u78lm1638459575.png",
-                events: [
-                    { strEvent: "Brisbane Roar vs Auckland FC", strThumb: "https://www.thesportsdb.com/images/media/event/thumb/s3cbdu1758094854.jpg", strStatus: "Match Finished", strTimeLocal: "18:35", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/sypxsu1473454634.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/f36lst1730017502.png" }
-                ]
-            }
-        };
+        const API_KEY = "3"; // Public Test Key
+        const HOUR_WIDTH = 300; 
+        
+        // MAPPING: We map specific Leagues to specific "Channels" to simulate a TV Guide
+        const CHANNELS = [
+            { name: "Sky Sports PL", id: "4328", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Sky_Sports_Premier_League.svg/1200px-Sky_Sports_Premier_League.svg.png" }, // EPL
+            { name: "TNT Sports 1", id: "4401", logo: "https://upload.wikimedia.org/wikipedia/commons/2/22/TNT_Sports_%28UK%29_logo.svg" }, // UCL (Simulated with League 4401 or generic)
+            { name: "Sky Sports F1", id: "4370", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/Sky_Sports_F1_logo.svg/1200px-Sky_Sports_F1_logo.svg.png" }, // F1
+            { name: "Fox Cricket", id: "4429", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Fox_Cricket_logo.svg/1200px-Fox_Cricket_logo.svg.png" }, // Cricket
+            { name: "Fox League", id: "4356", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Fox_League_logo.svg/1200px-Fox_League_logo.svg.png" }, // NRL (Using A-League ID for demo if NRL empty)
+            { name: "ESPN", id: "4387", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a2/ESPN_wordmark.svg" }, // NBA
+            { name: "Optus Sport", id: "4335", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Optus_Sport_logo.svg" } // La Liga
+        ];
 
         function init() {
-            renderSidebar();
-            // Load first category by default
-            loadCategory("FA Cup"); 
+            renderTimeline();
+            renderChannels();
+            fetchData();
+            
+            // Sync scrolling
+            const guide = document.getElementById('guideArea');
+            const chans = document.getElementById('chanList');
+            guide.addEventListener('scroll', () => { chans.scrollTop = guide.scrollTop; });
+
+            // Set Initial Time Line
+            const now = new Date();
+            const startOfDay = new Date(now); startOfDay.setHours(0,0,0,0);
+            const hoursPassed = (now - startOfDay) / 3600000;
+            const offset = hoursPassed * HOUR_WIDTH;
+            document.getElementById('nowLine').style.left = offset + "px";
+            guide.scrollLeft = offset - 200; 
         }
 
-        function renderSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            Object.keys(rawData).forEach(leagueName => {
-                const data = rawData[leagueName];
-                sidebar.innerHTML += `
-                    <div class="league-item" onclick="loadCategory('${leagueName}', this)">
-                        <img src="${data.badge}" class="league-icon">
-                        <span>${leagueName}</span>
-                    </div>
-                `;
+        function renderChannels() {
+            const list = document.getElementById('chanList');
+            CHANNELS.forEach(c => {
+                list.innerHTML += `<div class="chan-item"><img src="${c.logo}" class="chan-logo"></div>`;
             });
         }
 
-        window.loadCategory = function(leagueName, element) {
-            // Update Active State in Sidebar
-            document.querySelectorAll('.league-item').forEach(el => el.classList.remove('active'));
-            if(element) element.classList.add('active');
+        function renderTimeline() {
+            const tl = document.getElementById('timeline');
+            for(let i=0; i<24; i++) {
+                let t = i === 0 ? "12 AM" : i > 12 ? (i-12)+" PM" : i === 12 ? "12 PM" : i+" AM";
+                tl.innerHTML += `<div class="time-marker">${t}</div>`;
+            }
+        }
 
-            // Update Title
-            document.getElementById('pageTitle').innerText = leagueName;
+        async function fetchData() {
+            const grid = document.getElementById('programGrid');
+            const loader = document.getElementById('loading');
+            loader.style.display = 'block';
 
-            // Render Matches
-            const grid = document.getElementById('matchGrid');
-            grid.innerHTML = '';
+            // Loop through our channels and fetch the specific league for that channel
+            for (const channel of CHANNELS) {
+                let rowHtml = `<div class="program-row">`;
+                
+                try {
+                    // Fetch next 15 events for this League ID
+                    const res = await fetch(`https://www.thesportsdb.com/api/v1/json/${API_KEY}/eventsnextleague.php?id=${channel.id}`);
+                    const data = await res.json();
+
+                    if(data.events) {
+                        data.events.forEach(ev => {
+                            // Parse Dates
+                            // API returns Date (YYYY-MM-DD) and Time (HH:MM:SS) separately
+                            // We need to calculate position on the 24h grid
+                            
+                            const eventDate = new Date(ev.dateEvent + "T" + ev.strTime);
+                            const today = new Date();
+                            
+                            // Only show if it's "Today" (for this simple demo grid)
+                            // In a real app, you'd handle multiple days
+                            if(eventDate.getDate() === today.getDate()) {
+                                
+                                const startHour = eventDate.getHours() + (eventDate.getMinutes()/60);
+                                const duration = 2; // Default to 2 hours (API doesn't always give duration)
+                                
+                                const left = startHour * HOUR_WIDTH;
+                                const width = (duration * HOUR_WIDTH) - 4; // Gap
+
+                                rowHtml += `
+                                    <div class="program-card" style="left:${left}px; width:${width}px;" title="${ev.strEvent}">
+                                        <div class="prog-title">${ev.strEvent}</div>
+                                        <div class="prog-time">${ev.strTime.substring(0,5)}</div>
+                                    </div>
+                                `;
+                            }
+                        });
+                    } else {
+                        // Fill empty rows with "No Scheduled Events" placeholder
+                        rowHtml += `<div class="program-card dimmed" style="left:0; width:100%;">No Live Events Scheduled Today</div>`;
+                    }
+
+                } catch (e) {
+                    console.log("Error loading channel", channel.name);
+                }
+
+                rowHtml += `</div>`;
+                grid.innerHTML += rowHtml;
+            }
+            loader.style.display = 'none';
+        }
+
+        // Search Functionality
+        window.searchGuide = function() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.program-card');
             
-            const events = rawData[leagueName].events;
-            
-            events.forEach(match => {
-                const isLive = match.strStatus === '1H' || match.strStatus === '2H' || match.strStatus === 'HT';
-                const statusClass = isLive ? 'live' : '';
-                const statusText = isLive ? 'LIVE • ' + match.strStatus : match.strStatus;
-
-                const html = `
-                    <div class="match-card">
-                        <div class="match-bg" style="background-image: url('${match.strThumb}');">
-                            <div class="status-badge ${statusClass}">${statusText}</div>
-                        </div>
-                        <div class="team-logos">
-                            <img src="${match.homeBadge}" class="team-logo">
-                            <img src="${match.awayBadge}" class="team-logo" style="margin-left: -15px;">
-                        </div>
-                        <div class="match-info">
-                            <div class="teams">${match.strEvent}</div>
-                            <div class="meta">
-                                <span>${match.strTimeLocal}</span>
-                                <button style="background:var(--accent); border:none; color:white; padding:4px 10px; border-radius:4px; cursor:pointer;">Watch</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.innerHTML += html;
+            cards.forEach(card => {
+                if(card.innerText.toLowerCase().includes(term) || term === "") {
+                    card.classList.remove('dimmed');
+                    card.style.opacity = "1";
+                } else {
+                    card.classList.add('dimmed');
+                    card.style.opacity = "0.1";
+                }
             });
         }
 
