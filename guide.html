@@ -3,244 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reylo Guide</title>
+    <title>PieTV Sports Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050508; --surface: #0a0a0f; --surface-light: #15151a;
+            --bg: #050508; --surface: #0a0a0f;
             --accent: #3b82f6; --accent-red: #ef4444;
-            --text: #ffffff; --text-muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.08);
-            --cat-width: 200px; /* Width of Category Sidebar */
-            --chan-width: 100px; /* Width of Channel Logos */
-            --hour-width: 250px;
+            --text: #ffffff; --border: rgba(255, 255, 255, 0.08);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+        body { background-color: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
         /* HEADER */
         .header {
             height: 70px; background: rgba(5, 5, 10, 0.95); border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 50;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
         }
         .logo { font-family: 'Teko', sans-serif; font-size: 2rem; letter-spacing: 1px; text-transform: uppercase; }
-        .logo span { color: var(--accent); text-shadow: 0 0 15px var(--accent); }
-        .clock { font-family: 'Teko', sans-serif; font-size: 1.8rem; color: var(--accent-red); text-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
+        .logo span { color: var(--accent); }
 
-        /* LAYOUT CONTAINER */
-        .main-layout { flex: 1; display: flex; overflow: hidden; position: relative; }
+        /* LAYOUT */
+        .layout { display: flex; height: 100%; }
 
-        /* 1. CATEGORY SIDEBAR (NEW) */
-        .category-sidebar {
-            width: var(--cat-width); background: #020203; border-right: 1px solid var(--border);
-            display: flex; flex-direction: column; z-index: 40;
+        /* SIDEBAR (LEAGUES) */
+        .sidebar {
+            width: 250px; background: #08080c; border-right: 1px solid var(--border); overflow-y: auto;
         }
-        .cat-header { padding: 15px; font-weight: bold; color: var(--accent); border-bottom: 1px solid var(--border); letter-spacing: 1px; font-size: 0.9rem; }
-        .cat-list { flex: 1; overflow-y: auto; }
-        .cat-item {
-            padding: 12px 15px; cursor: pointer; color: #888; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.02); transition: 0.2s;
+        .league-item {
+            padding: 15px; display: flex; align-items: center; gap: 10px; cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.02); transition: 0.2s;
         }
-        .cat-item:hover { background: rgba(255,255,255,0.05); color: white; }
-        .cat-item.active { background: rgba(59, 130, 246, 0.1); color: var(--accent); border-left: 3px solid var(--accent); }
+        .league-item:hover { background: rgba(59, 130, 246, 0.1); }
+        .league-item.active { border-left: 3px solid var(--accent); background: rgba(59, 130, 246, 0.15); }
+        .league-icon { width: 25px; height: 25px; object-fit: contain; }
 
-        /* 2. CHANNELS COLUMN */
-        .channels-col {
-            width: var(--chan-width); background: var(--surface); border-right: 1px solid var(--border);
-            z-index: 30; box-shadow: 5px 0 20px rgba(0,0,0,0.5); display: flex; flex-direction: column;
-        }
-        .chan-list { flex: 1; overflow: hidden; } /* Syncs scroll with guide */
-        .chan-item { height: 80px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); }
-        .chan-logo { width: 60px; height: 40px; object-fit: contain; opacity: 0.9; }
-
-        /* 3. GUIDE AREA */
-        .guide-area {
-            flex: 1; overflow-x: auto; overflow-y: scroll; /* Allow Vertical Scroll */
-            position: relative; scrollbar-width: none; background: #08080a;
-        }
-        .guide-area::-webkit-scrollbar { display: none; }
-
-        /* TIMELINE HEADER */
-        .timeline-header {
-            height: 50px; background: var(--surface); border-bottom: 1px solid var(--border);
-            display: flex; position: sticky; top: 0; width: 5000px; z-index: 20;
-        }
-        .time-marker {
-            width: var(--hour-width); height: 100%; display: flex; align-items: center; padding-left: 10px;
-            color: #666; font-size: 0.85rem; border-left: 1px solid rgba(255,255,255,0.03);
-        }
-
-        /* GRID */
-        .program-rows { width: 5000px; position: relative; }
-        .program-row { height: 80px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.03); }
-
-        /* CARDS */
-        .program-card {
-            position: absolute; height: 60px; top: 10px; background: #15151a; border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 6px; padding: 8px 12px; overflow: hidden; transition: 0.2s; cursor: pointer;
-        }
-        .program-card:hover { background: #202028; border-color: var(--accent); transform: scale(1.02); z-index: 10; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .program-card.live { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--accent-red); box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.1); }
-        .program-card.live .prog-title { color: var(--accent-red); text-shadow: 0 0 5px rgba(239,68,68,0.3); }
+        /* MAIN CONTENT (MATCHES) */
+        .content { flex: 1; padding: 20px; overflow-y: auto; background: radial-gradient(circle at 50% 0%, rgba(59,130,246,0.1), transparent 70%); }
         
-        .prog-title { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .prog-time { font-size: 0.75rem; color: #666; margin-top: 2px; }
+        .section-title { font-family: 'Teko'; font-size: 1.8rem; margin-bottom: 20px; color: var(--accent); }
 
-        /* RED LINE */
-        .now-line {
-            position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent-red);
-            box-shadow: 0 0 15px var(--accent-red); z-index: 50; pointer-events: none;
+        .match-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;
         }
-        .now-tag {
-            position: absolute; top: 50px; left: 4px; background: var(--accent-red); color: black;
-            font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 3px;
+
+        /* MATCH CARD */
+        .match-card {
+            background: #15151a; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+            position: relative; transition: 0.3s;
         }
+        .match-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        .match-bg {
+            height: 140px; background-size: cover; background-position: center; position: relative;
+        }
+        .match-bg::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to top, #15151a, transparent);
+        }
+        
+        /* STATUS BADGE */
+        .status-badge {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(0,0,0,0.8); color: #aaa;
+            padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .status-badge.live {
+            background: var(--accent-red); color: white; border: none;
+            box-shadow: 0 0 10px var(--accent-red); animation: pulse 2s infinite;
+        }
+
+        .match-info { padding: 15px; position: relative; }
+        .teams { font-weight: 700; font-size: 1.1rem; margin-bottom: 5px; line-height: 1.2; }
+        .meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #888; }
+        
+        .team-logos {
+            position: absolute; top: -30px; right: 15px; display: flex; gap: -10px;
+        }
+        .team-logo {
+            width: 50px; height: 50px; border-radius: 50%; background: #222; border: 2px solid #15151a;
+            object-fit: padding; padding: 5px;
+        }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo">REYLO <span>GUIDE</span></div>
-        <div class="clock" id="liveClock">00:00</div>
+        <div class="logo">PTV <span>GUIDE</span></div>
+        <div style="color: #666; font-size: 0.9rem;">Live Data Preview</div>
     </div>
 
-    <div class="main-layout">
-        <div class="category-sidebar">
-            <div class="cat-header">CATEGORIES</div>
-            <div class="cat-list" id="catList">
+    <div class="layout">
+        <div class="sidebar" id="sidebar">
+            </div>
+        <div class="content">
+            <div class="section-title" id="pageTitle">Select a League</div>
+            <div class="match-grid" id="matchGrid">
                 </div>
-        </div>
-
-        <div class="channels-col">
-            <div style="height:50px; border-bottom:1px solid rgba(255,255,255,0.1); background:#0a0a0f;"></div>
-            <div class="chan-list" id="channelList">
-                </div>
-        </div>
-
-        <div class="guide-area" id="guideArea">
-            <div class="now-line" id="nowLine"><div class="now-tag">LIVE</div></div>
-            <div class="timeline-header" id="timeline"></div>
-            <div class="program-rows" id="programGrid"></div>
         </div>
     </div>
 
     <script>
-        const HOUR_WIDTH = 250; 
-        const START_HOUR = 10; 
-
-        // --- FAKE DATA SIMULATING REAL API ---
-        const database = {
-            "Sports UK": [
-                { name: "Sky Sports PL", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Sky_Sports_Premier_League.svg/1200px-Sky_Sports_Premier_League.svg.png" },
-                { name: "Sky Sports F1", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/Sky_Sports_F1_logo.svg/1200px-Sky_Sports_F1_logo.svg.png" },
-                { name: "TNT Sports 1", logo: "https://upload.wikimedia.org/wikipedia/commons/2/22/TNT_Sports_%28UK%29_logo.svg" },
-            ],
-            "Sports AU": [
-                { name: "Fox Cricket", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Fox_Cricket_logo.svg/1200px-Fox_Cricket_logo.svg.png" },
-                { name: "Fox League", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Fox_League_logo.svg/1200px-Fox_League_logo.svg.png" },
-                { name: "Optus Sport", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Optus_Sport_logo.svg" },
-            ],
-            "Movies": [
-                { name: "Sky Cinema Action", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Sky_Cinema_Action.svg/1200px-Sky_Cinema_Action.svg.png" },
-                { name: "Sky Cinema Comedy", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Sky_Cinema_Comedy.svg/1200px-Sky_Cinema_Comedy.svg.png" },
-            ],
-            "Entertainment": [
-                { name: "BBC One", logo: "https://upload.wikimedia.org/wikipedia/commons/4/43/BBC_One_logo_2021.svg" },
-                { name: "ITV 1", logo: "https://upload.wikimedia.org/wikipedia/commons/9/92/ITV1_logo_2022.svg" },
-            ]
+        // THIS IS THE RAW DATA EXTRACTED FROM YOUR SOURCE CODE
+        // I cleaned it up into a usable Javascript Object
+        const rawData = {
+            "Spanish La Liga": {
+                badge: "https://r2.thesportsdb.com/images/media/league/badge/ja4it51687628717.png",
+                events: [
+                    { strEvent: "Getafe vs Real Sociedad", strThumb: "https://r2.thesportsdb.com/images/media/event/thumb/8lcen71751450143.jpg", strStatus: "Not Started", strTimeLocal: "21:00", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/eyh2891655594452.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/vptvpr1473502986.png" }
+                ]
+            },
+            "FA Cup": {
+                badge: "https://r2.thesportsdb.com/images/media/league/badge/vk7isd1598802862.png",
+                events: [
+                    { strEvent: "Preston North End vs Wigan Athletic", strThumb: "https://www.thesportsdb.com/images/media/event/thumb/m7vi3i1767339272.jpg", strStatus: "1H", strTimeLocal: "19:30", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/wqtwvw1448811512.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/wtxwyw1448759640.png" },
+                    { strEvent: "MK Dons vs Oxford United", strThumb: "https://www.thesportsdb.com/images/media/event/thumb/veslke1767339254.jpg", strStatus: "1H", strTimeLocal: "19:30", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/9hx41b1748524969.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/la34wg1601726102.png" },
+                    { strEvent: "Wrexham vs Nottingham Forest", strThumb: "https://www.thesportsdb.com/images/media/event/thumb/5usxto1767339305.jpg", strStatus: "HT", strTimeLocal: "19:30", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/ezpymt1675092551.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/bk4qjs1546440351.png" }
+                ]
+            },
+            "German Bundesliga": {
+                badge: "https://r2.thesportsdb.com/images/media/league/badge/teqh1b1679952008.png",
+                events: [
+                    { strEvent: "Eintracht Frankfurt vs Borussia Dortmund", strThumb: "https://r2.thesportsdb.com/images/media/event/thumb/2xh0w31754041302.jpg", strStatus: "1H", strTimeLocal: "20:30", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/rurwpy1473453269.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/tqo8ge1716960353.png" }
+                ]
+            },
+            "Australian A-League": {
+                badge: "https://r2.thesportsdb.com/images/media/league/badge/2u78lm1638459575.png",
+                events: [
+                    { strEvent: "Brisbane Roar vs Auckland FC", strThumb: "https://www.thesportsdb.com/images/media/event/thumb/s3cbdu1758094854.jpg", strStatus: "Match Finished", strTimeLocal: "18:35", homeBadge: "https://r2.thesportsdb.com/images/media/team/badge/sypxsu1473454634.png", awayBadge: "https://r2.thesportsdb.com/images/media/team/badge/f36lst1730017502.png" }
+                ]
+            }
         };
 
-        const programs = ["Live Match", "News Hour", "The Big Show", "Classic Replay", "Live Event", "Highlights", "Documentary"];
-
         function init() {
-            renderCategories();
-            renderTimeline();
-            loadCategory("Sports UK"); // Load default
-            setInterval(updateClock, 1000);
-            
-            // Sync scrolling (Vertical scroll of guide moves channels)
-            const guide = document.getElementById('guideArea');
-            const chans = document.getElementById('channelList');
-            guide.addEventListener('scroll', () => {
-                chans.scrollTop = guide.scrollTop;
+            renderSidebar();
+            // Load first category by default
+            loadCategory("FA Cup"); 
+        }
+
+        function renderSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            Object.keys(rawData).forEach(leagueName => {
+                const data = rawData[leagueName];
+                sidebar.innerHTML += `
+                    <div class="league-item" onclick="loadCategory('${leagueName}', this)">
+                        <img src="${data.badge}" class="league-icon">
+                        <span>${leagueName}</span>
+                    </div>
+                `;
             });
         }
 
-        function renderCategories() {
-            const list = document.getElementById('catList');
-            Object.keys(database).forEach(cat => {
-                const div = document.createElement('div');
-                div.className = 'cat-item';
-                div.innerText = cat;
-                div.onclick = () => loadCategory(cat);
-                list.appendChild(div);
-            });
-        }
+        window.loadCategory = function(leagueName, element) {
+            // Update Active State in Sidebar
+            document.querySelectorAll('.league-item').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
 
-        function loadCategory(catName) {
-            // Highlight active category
-            document.querySelectorAll('.cat-item').forEach(el => {
-                el.classList.remove('active');
-                if(el.innerText === catName) el.classList.add('active');
-            });
+            // Update Title
+            document.getElementById('pageTitle').innerText = leagueName;
 
-            // Get channels
-            const channels = database[catName];
-            
-            // Render Channels
-            const cList = document.getElementById('channelList');
-            cList.innerHTML = '';
-            const grid = document.getElementById('programGrid');
+            // Render Matches
+            const grid = document.getElementById('matchGrid');
             grid.innerHTML = '';
+            
+            const events = rawData[leagueName].events;
+            
+            events.forEach(match => {
+                const isLive = match.strStatus === '1H' || match.strStatus === '2H' || match.strStatus === 'HT';
+                const statusClass = isLive ? 'live' : '';
+                const statusText = isLive ? 'LIVE • ' + match.strStatus : match.strStatus;
 
-            channels.forEach(ch => {
-                // Add Channel Logo
-                cList.innerHTML += `<div class="chan-item"><img src="${ch.logo}" class="chan-logo"></div>`;
-                
-                // Add Guide Row
-                let row = document.createElement('div'); row.className = 'program-row';
-                let timeCursor = START_HOUR;
-                while(timeCursor < START_HOUR + 12) {
-                    let dur = Math.random() > 0.6 ? 2 : 1; 
-                    let title = programs[Math.floor(Math.random() * programs.length)];
-                    let width = (dur * HOUR_WIDTH) - 4;
-                    let left = (timeCursor - START_HOUR) * HOUR_WIDTH;
-                    let isLive = (timeCursor <= 13.25 && timeCursor + dur > 13.25);
-                    
-                    row.innerHTML += `
-                        <div class="program-card ${isLive ? 'live' : ''}" style="left:${left}px; width:${width}px;">
-                            <div class="prog-title">${title}</div>
-                            <div class="prog-time">${formatTime(timeCursor)} - ${formatTime(timeCursor+dur)}</div>
-                        </div>`;
-                    timeCursor += dur;
-                }
-                grid.appendChild(row);
+                const html = `
+                    <div class="match-card">
+                        <div class="match-bg" style="background-image: url('${match.strThumb}');">
+                            <div class="status-badge ${statusClass}">${statusText}</div>
+                        </div>
+                        <div class="team-logos">
+                            <img src="${match.homeBadge}" class="team-logo">
+                            <img src="${match.awayBadge}" class="team-logo" style="margin-left: -15px;">
+                        </div>
+                        <div class="match-info">
+                            <div class="teams">${match.strEvent}</div>
+                            <div class="meta">
+                                <span>${match.strTimeLocal}</span>
+                                <button style="background:var(--accent); border:none; color:white; padding:4px 10px; border-radius:4px; cursor:pointer;">Watch</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += html;
             });
-
-            // Set Red Line
-            let nowOffset = (13.25 - START_HOUR) * HOUR_WIDTH;
-            document.getElementById('nowLine').style.left = nowOffset + "px";
-            document.getElementById('guideArea').scrollLeft = nowOffset - 150;
-        }
-
-        function renderTimeline() {
-            const tl = document.getElementById('timeline');
-            for(let i=START_HOUR; i<START_HOUR+12; i++) {
-                let t = i > 12 ? (i-12)+" PM" : i+" AM";
-                if(i===12) t="12 PM";
-                tl.innerHTML += `<div class="time-marker">${t}</div>`;
-            }
-        }
-
-        function formatTime(h) {
-            let s = h >= 12 ? "PM" : "AM";
-            let hr = h > 12 ? h - 12 : h;
-            return `${hr}:00 ${s}`;
-        }
-
-        function updateClock() {
-            const d = new Date();
-            document.getElementById('liveClock').innerText = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
         }
 
         init();
