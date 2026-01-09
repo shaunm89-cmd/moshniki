@@ -1,0 +1,201 @@
+:root {
+    --bg-dark: #0f172a;
+    --bg-panel: #1e293b;
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.3);
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --font-stack: 'Segoe UI', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-stack);
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Layout */
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    text-shadow: 0 0 15px var(--accent-glow);
+}
+
+.nav-links li {
+    list-style: none;
+    padding: 1rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.nav-links li:hover, .nav-links li.active {
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--accent);
+}
+
+.user-profile {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--accent), #818cf8);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 60%);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header-tools {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.clock {
+    font-family: monospace;
+    font-size: 1.2rem;
+    color: var(--accent);
+}
+
+.btn-primary {
+    background: var(--accent);
+    border: none;
+    padding: 10px 20px;
+    color: #0f172a;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-primary:active { transform: scale(0.95); }
+
+/* Dashboard Grid */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1.5rem;
+}
+
+.card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    backdrop-filter: blur(5px);
+}
+
+.card h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+/* Specific Card Styles */
+.kpi-card .value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.trend { font-size: 0.8rem; font-weight: 600; }
+.trend.up { color: var(--success); }
+.trend.down { color: var(--danger); }
+
+.wide-card { grid-column: span 3; }
+.tall-card { grid-column: span 1; grid-row: span 2; }
+
+/* Chart Styling */
+.chart-container {
+    height: 250px;
+    width: 100%;
+    position: relative;
+}
+
+svg { width: 100%; height: 100%; overflow: visible; }
+polyline {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 8px var(--accent-glow));
+    transition: all 0.5s ease;
+}
+
+/* Logs */
+.activity-list li {
+    list-style: none;
+    font-size: 0.85rem;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: var(--text-muted);
+}
+.activity-list li span { color: var(--text-main); font-weight: bold; }
+
+/* Progress Bars */
+.progress-wrapper { margin-bottom: 1.5rem; }
+.progress-wrapper .label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+}
+.bar-bg {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.bar-fill {
+    height: 100%;
+    background: var(--success);
+    border-radius: 4px;
+}
+.bar-fill.warning { background: #fbbf24; }
