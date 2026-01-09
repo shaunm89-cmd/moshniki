@@ -4,319 +4,275 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reylo Sports Guide</title>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050508;
-            --surface: #121218;
-            --accent: #00ff88; /* Sports Green */
-            --accent-red: #ff3333; /* Live Red */
+            --bg: #010102;
+            --surface: #0a0a0f;
+            --accent: #3b82f6; /* Electric Blue */
+            --accent-red: #ef4444; /* Live Red */
             --text: #ffffff;
-            --border: rgba(255, 255, 255, 0.1);
-            --channel-width: 120px;
-            --hour-width: 250px; /* How wide 1 hour is */
+            --border: rgba(255, 255, 255, 0.08);
+            --channel-width: 100px;
+            --hour-width: 250px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Roboto', sans-serif;
-            overflow: hidden; /* Prevent body scroll, we handle it manually */
+            overflow: hidden;
             height: 100vh;
             display: flex; flex-direction: column;
         }
 
-        /* --- HEADER --- */
+        /* --- HEADER WITH SEARCH --- */
         .header {
-            height: 70px;
-            background: linear-gradient(to bottom, #1a1a20, #0a0a0e);
+            height: 80px;
+            background: rgba(5, 5, 10, 0.95);
             border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 30px;
-            z-index: 20;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            padding: 0 20px; z-index: 20;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
 
         .logo { 
-            font-family: 'Teko', sans-serif; font-size: 2.2rem; letter-spacing: 2px; 
-            text-transform: uppercase; background: -webkit-linear-gradient(#fff, #aaa); 
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-family: 'Teko', sans-serif; font-size: 2rem; letter-spacing: 1px; 
+            text-transform: uppercase; color: white; display: flex; align-items: center; gap: 10px;
         }
-        .logo span { color: var(--accent); -webkit-text-fill-color: var(--accent); }
+        .logo span { color: var(--accent); text-shadow: 0 0 15px var(--accent); }
 
+        /* SEARCH BAR */
+        .search-box {
+            position: relative; width: 300px;
+        }
+        .search-box input {
+            width: 100%; padding: 10px 15px; padding-left: 40px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            color: white; border-radius: 8px; font-size: 0.9rem; transition: 0.3s;
+        }
+        .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); outline: none; }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5; }
+
+        /* CLOCK */
         .clock {
-            font-family: 'Teko', sans-serif; font-size: 2rem; color: var(--accent);
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+            font-family: 'Teko', sans-serif; font-size: 1.8rem; color: var(--accent-red);
+            text-shadow: 0 0 15px rgba(239, 68, 68, 0.4); min-width: 80px; text-align: right;
         }
 
-        /* --- MAIN EPG CONTAINER --- */
+        /* --- MAIN EPG --- */
         .epg-container {
-            flex: 1;
-            display: flex;
-            position: relative;
-            overflow: hidden;
+            flex: 1; display: flex; position: relative; overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 60%);
         }
 
-        /* LEFT: CHANNELS FIXED COLUMN */
+        /* CHANNELS COLUMN */
         .channels-col {
-            width: var(--channel-width);
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            z-index: 10;
-            position: relative;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            width: var(--channel-width); background: #050508;
+            border-right: 1px solid var(--border); z-index: 10;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.5);
         }
-        .channel-header { height: 50px; background: #1a1a20; border-bottom: 1px solid var(--border); }
-        .channel-list { overflow: hidden; }
+        .channel-header { height: 50px; border-bottom: 1px solid var(--border); background: #08080c; }
         .channel-item {
-            height: 80px; /* Fixed row height */
-            display: flex; align-items: center; justify-content: center;
+            height: 80px; display: flex; align-items: center; justify-content: center;
             border-bottom: 1px solid var(--border);
-            background: var(--surface);
         }
-        .channel-logo { width: 70px; height: 50px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(255,255,255,0.1)); }
+        .channel-logo { width: 60px; height: 40px; object-fit: contain; opacity: 0.8; }
 
-        /* RIGHT: SCROLLABLE GUIDE */
+        /* GUIDE AREA */
         .guide-area {
-            flex: 1;
-            overflow-x: auto; /* Allows dragging/scrolling */
-            overflow-y: hidden;
-            position: relative;
-            background: #08080a;
+            flex: 1; overflow-x: auto; overflow-y: hidden; position: relative;
+            scrollbar-width: none; /* Firefox */
         }
+        .guide-area::-webkit-scrollbar { display: none; } /* Chrome */
 
-        /* TIMELINE HEADER */
+        /* TIMELINE */
         .timeline-header {
-            height: 50px;
-            background: #1a1a20;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            position: sticky; top: 0;
-            width: 5000px; /* Massive width for timeline */
+            height: 50px; background: #08080c; border-bottom: 1px solid var(--border);
+            display: flex; position: sticky; top: 0; width: 5000px; z-index: 5;
         }
         .time-marker {
-            width: var(--hour-width); /* 1 Hour */
-            height: 100%;
+            width: var(--hour-width); height: 100%;
             display: flex; align-items: center; padding-left: 10px;
-            font-weight: bold; color: #888;
-            border-left: 1px solid var(--border);
-            font-size: 0.9rem;
+            color: #666; font-size: 0.85rem; border-left: 1px solid rgba(255,255,255,0.03);
         }
 
         /* PROGRAM GRID */
-        .program-rows {
-            width: 5000px; /* Match timeline width */
-            position: relative;
-        }
-        .program-row {
-            height: 80px;
-            display: flex;
-            position: relative;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-        }
+        .program-rows { width: 5000px; position: relative; }
+        .program-row { height: 80px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.03); }
 
-        /* INDIVIDUAL SHOW CARD */
+        /* PROGRAM CARD */
         .program-card {
-            position: absolute;
-            height: 70px; top: 5px; /* Margin for spacing */
-            background: #1e1e24;
-            border-radius: 6px;
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 10px;
-            overflow: hidden;
-            transition: 0.2s;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            position: absolute; height: 60px; top: 10px;
+            background: #15151a; border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 6px; padding: 8px 12px;
+            overflow: hidden; transition: 0.2s; cursor: pointer;
         }
         .program-card:hover {
-            background: #2a2a32;
-            border-color: var(--accent);
-            z-index: 2; transform: scale(1.02);
-        }
-        /* Style for LIVE SHOWS */
-        .program-card.live {
-            background: rgba(0, 50, 20, 0.6);
-            border: 1px solid var(--accent);
-            box-shadow: inset 0 0 20px rgba(0, 255, 136, 0.1);
+            background: #202028; border-color: var(--accent);
+            transform: scale(1.02); z-index: 10;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
         
-        .prog-title { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .prog-time { font-size: 0.75rem; color: #aaa; margin-top: 4px; }
-        .prog-desc { font-size: 0.75rem; color: #666; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        /* LIVE STATUS */
+        .program-card.live {
+            background: rgba(239, 68, 68, 0.1); /* Red tint */
+            border: 1px solid var(--accent-red);
+            box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.1);
+        }
+        .program-card.live .prog-title { color: var(--accent-red); text-shadow: 0 0 5px rgba(239,68,68,0.3); }
 
-        /* THE RED "NOW" LINE */
+        /* DIMMED STATE (FOR SEARCH) */
+        .program-card.dimmed { opacity: 0.1; filter: grayscale(100%); }
+
+        .prog-title { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .prog-time { font-size: 0.75rem; color: #666; margin-top: 2px; }
+
+        /* RED LINE "NOW" INDICATOR */
         .now-line {
-            position: absolute;
-            top: 0; bottom: 0;
-            width: 2px;
+            position: absolute; top: 0; bottom: 0; width: 2px;
             background: var(--accent-red);
-            box-shadow: 0 0 10px var(--accent-red);
-            z-index: 50;
-            pointer-events: none;
+            box-shadow: 0 0 15px var(--accent-red);
+            z-index: 50; pointer-events: none;
         }
         .now-tag {
-            position: absolute; top: 0; left: 2px;
-            background: var(--accent-red); color: white;
-            font-size: 0.7rem; font-weight: bold; padding: 2px 6px;
-            border-radius: 0 4px 4px 0;
+            position: absolute; top: 50px; left: 4px;
+            background: var(--accent-red); color: black;
+            font-size: 0.7rem; font-weight: 800; padding: 2px 6px;
+            border-radius: 3px; letter-spacing: 1px;
         }
 
+        /* MOBILE TWEAKS */
+        @media (max-width: 600px) {
+            .header { padding: 0 15px; height: 70px; }
+            .logo { font-size: 1.5rem; }
+            .search-box { width: 140px; }
+            .clock { font-size: 1.4rem; min-width: 60px; }
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo">REYLO <span>SPORTS</span></div>
-        <div class="clock" id="liveClock">00:00:00</div>
+        <div class="logo">REYLO <span>GUIDE</span></div>
+        
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Search sports..." onkeyup="filterGuide()">
+        </div>
+
+        <div class="clock" id="liveClock">00:00</div>
     </div>
 
     <div class="epg-container">
         <div class="channels-col">
             <div class="channel-header"></div>
-            <div class="channel-list" id="channelList">
-                </div>
+            <div class="channel-list" id="channelList"></div>
         </div>
 
         <div class="guide-area" id="guideArea">
-            <div class="now-line" id="nowLine">
-                <div class="now-tag">LIVE</div>
-            </div>
-
-            <div class="timeline-header" id="timeline">
-                </div>
-            
-            <div class="program-rows" id="programGrid">
-                </div>
+            <div class="now-line" id="nowLine"><div class="now-tag">LIVE</div></div>
+            <div class="timeline-header" id="timeline"></div>
+            <div class="program-rows" id="programGrid"></div>
         </div>
     </div>
 
     <script>
-        // --- CONFIGURATION ---
-        const HOUR_WIDTH_PX = 250; // Width of 1 hour in pixels
-        const START_HOUR = 12; // Guide starts at 12:00 PM (Simulated)
-        
-        // FAKE DATA (Simulating XMLTV)
+        const HOUR_WIDTH = 250; 
+        const START_HOUR = 10; // Guide starts at 10 AM for demo
+
+        // FAKE SPORTS DATA (Simulating Sky/TNT/Fox)
         const channels = [
-            { id: 'sky_pl', name: 'Sky Sports PL', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Sky_Sports_Premier_League.svg/1200px-Sky_Sports_Premier_League.svg.png' },
-            { id: 'sky_f1', name: 'Sky Sports F1', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/2/23/Sky_Sports_F1_logo.svg/1200px-Sky_Sports_F1_logo.svg.png' },
-            { id: 'tnt_1', name: 'TNT Sports 1', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/22/TNT_Sports_%28UK%29_logo.svg' },
-            { id: 'fox_501', name: 'Fox Cricket', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Fox_Cricket_logo.svg/1200px-Fox_Cricket_logo.svg.png' },
-            { id: 'fox_502', name: 'Fox League', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Fox_League_logo.svg/1200px-Fox_League_logo.svg.png' }
+            { name: "Sky Sports PL", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Sky_Sports_Premier_League.svg/1200px-Sky_Sports_Premier_League.svg.png" },
+            { name: "Sky Sports F1", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/Sky_Sports_F1_logo.svg/1200px-Sky_Sports_F1_logo.svg.png" },
+            { name: "TNT Sports 1", logo: "https://upload.wikimedia.org/wikipedia/commons/2/22/TNT_Sports_%28UK%29_logo.svg" },
+            { name: "Fox Cricket", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Fox_Cricket_logo.svg/1200px-Fox_Cricket_logo.svg.png" },
+            { name: "Fox League", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Fox_League_logo.svg/1200px-Fox_League_logo.svg.png" },
+            { name: "Optus Sport", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Optus_Sport_logo.svg" }
         ];
 
-        // Randomly generated shows for visual demo
-        const shows = [
-            { title: "Live: Man Utd vs Liverpool", start: 13.5, duration: 2.5, type: "Live" }, // Starts 1:30 PM, 2.5hrs
-            { title: "The F1 Show", start: 12, duration: 1, type: "Show" },
-            { title: "Live: GP Practice 1", start: 13, duration: 1.5, type: "Live" },
-            { title: "UFC Fight Night", start: 12, duration: 3, type: "Live" },
-            { title: "Big Bash League", start: 14, duration: 4, type: "Live" },
-            { title: "NRL 360", start: 12, duration: 1, type: "Show" },
-            { title: "Matty Johns Show", start: 13, duration: 1, type: "Show" },
-            { title: "Classic Match: 2005", start: 14, duration: 2, type: "Replay" }
+        const programs = [
+            "Live: Man City vs Arsenal", "Premier League Review", "The F1 Show", "Live: Monaco GP Practice", 
+            "Live: UFC 300 Prelims", "Live: Boxing Night", "Big Bash: Sixers vs Heat", "Classic Ashes 2005",
+            "NRL 360", "Live: Panthers vs Storm", "Live: Liverpool Press Conference", "NBA: Lakers vs Warriors"
         ];
 
         function init() {
-            renderChannels();
-            renderTimeline();
-            renderPrograms();
-            updateClock();
-            setInterval(updateClock, 1000);
-            
-            // Set initial scroll position to "Now"
-            // For demo, we assume "Now" is 1:15 PM (13.25)
-            const demoTime = 13.25; 
-            setNowLine(demoTime);
-        }
-
-        function renderChannels() {
-            const list = document.getElementById('channelList');
-            channels.forEach(ch => {
-                list.innerHTML += `
-                    <div class="channel-item">
-                        <img src="${ch.logo}" class="channel-logo" alt="${ch.name}">
-                    </div>
-                `;
+            // 1. Render Channels
+            const cList = document.getElementById('channelList');
+            channels.forEach(c => {
+                cList.innerHTML += `<div class="channel-item"><img src="${c.logo}" class="channel-logo"></div>`;
             });
-        }
 
-        function renderTimeline() {
+            // 2. Render Timeline (12 Hours)
             const tl = document.getElementById('timeline');
-            // Create 24 hours of timeline markers
             for(let i=START_HOUR; i<START_HOUR+12; i++) {
-                let timeLabel = i + ":00";
-                if(i > 12) timeLabel = (i-12) + ":00 PM";
-                else if(i === 12) timeLabel = "12:00 PM";
-                else timeLabel = i + ":00 AM";
-
-                tl.innerHTML += `<div class="time-marker">${timeLabel}</div>`;
+                let time = i > 12 ? (i-12)+" PM" : i+" AM";
+                if(i===12) time = "12 PM";
+                tl.innerHTML += `<div class="time-marker">${time}</div>`;
             }
-        }
 
-        function renderPrograms() {
+            // 3. Render Programs
             const grid = document.getElementById('programGrid');
-            
-            channels.forEach((ch, index) => {
-                let rowHtml = `<div class="program-row">`;
+            channels.forEach(() => {
+                let row = document.createElement('div'); row.className = 'program-row';
+                let timeCursor = START_HOUR;
                 
-                // Just for demo, scattering random shows
-                let currentTime = START_HOUR;
-                for(let i=0; i<5; i++) {
-                    // Pick random show template
-                    const template = shows[Math.floor(Math.random() * shows.length)];
-                    const width = template.duration * HOUR_WIDTH_PX;
-                    const left = (currentTime - START_HOUR) * HOUR_WIDTH_PX;
+                // Fill 12 hours with random shows
+                while(timeCursor < START_HOUR + 12) {
+                    let dur = Math.random() > 0.5 ? 2 : 1; // 1 or 2 hour shows
+                    let title = programs[Math.floor(Math.random() * programs.length)];
+                    let width = (dur * HOUR_WIDTH) - 4; // -4 for gap
+                    let left = (timeCursor - START_HOUR) * HOUR_WIDTH;
                     
-                    // Logic to see if "Live" (overlapping the red line at 13.25)
-                    let isLive = false;
-                    if(currentTime <= 13.25 && (currentTime + template.duration) > 13.25) {
-                        isLive = true;
-                    }
-
-                    rowHtml += `
-                        <div class="program-card ${isLive ? 'live' : ''}" style="left: ${left}px; width: ${width-4}px;">
-                            <div class="prog-title">${template.title}</div>
-                            <div class="prog-time">${formatTime(currentTime)} - ${formatTime(currentTime + template.duration)}</div>
-                            <div class="prog-desc">${isLive ? '• LIVE NOW' : 'Upcoming Event'}</div>
+                    // Live Logic (Hardcoded 'Now' is 13:15 for demo)
+                    let isLive = (timeCursor <= 13.25 && timeCursor + dur > 13.25);
+                    
+                    row.innerHTML += `
+                        <div class="program-card ${isLive ? 'live' : ''}" style="left:${left}px; width:${width}px;">
+                            <div class="prog-title">${title}</div>
+                            <div class="prog-time">${formatTime(timeCursor)} - ${formatTime(timeCursor+dur)}</div>
                         </div>
                     `;
-                    
-                    currentTime += template.duration;
+                    timeCursor += dur;
                 }
-                
-                rowHtml += `</div>`;
-                grid.innerHTML += rowHtml;
+                grid.appendChild(row);
             });
+
+            // 4. Set "Now" Line
+            let nowOffset = (13.25 - START_HOUR) * HOUR_WIDTH; // 1:15 PM
+            document.getElementById('nowLine').style.left = nowOffset + "px";
+            document.getElementById('guideArea').scrollLeft = nowOffset - 150; // Scroll to now
+
+            // 5. Clock
+            setInterval(() => {
+                const d = new Date();
+                document.getElementById('liveClock').innerText = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            }, 1000);
         }
 
-        function formatTime(decimalTime) {
-            let hrs = Math.floor(decimalTime);
-            let mins = Math.round((decimalTime - hrs) * 60);
-            if(mins < 10) mins = "0" + mins;
-            let suffix = "PM"; // simplified
-            if(hrs > 12) { hrs -= 12; }
-            return `${hrs}:${mins} ${suffix}`;
+        function formatTime(h) {
+            let suffix = h >= 12 ? "PM" : "AM";
+            let hour = h > 12 ? h - 12 : h;
+            return `${hour}:00 ${suffix}`;
         }
 
-        function setNowLine(decimalTime) {
-            const guide = document.getElementById('guideArea');
-            const line = document.getElementById('nowLine');
+        // --- SEARCH FUNCTION ---
+        function filterGuide() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.program-card');
             
-            // Calculate where the red line should be
-            // (Time - Start) * Width of 1 hour
-            const offset = (decimalTime - START_HOUR) * HOUR_WIDTH_PX;
-            
-            line.style.left = offset + "px";
-            
-            // Scroll the guide so the red line is near the middle/left
-            guide.scrollLeft = offset - 100; // Keep 100px buffer to the left
-        }
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('liveClock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            cards.forEach(card => {
+                const title = card.querySelector('.prog-title').innerText.toLowerCase();
+                if (term === "") {
+                    card.classList.remove('dimmed');
+                } else if (title.includes(term)) {
+                    card.classList.remove('dimmed');
+                } else {
+                    card.classList.add('dimmed');
+                }
+            });
         }
 
         init();
