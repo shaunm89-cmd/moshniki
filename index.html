@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obsidian Nexus | Command Center</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo">NEXUS</div>
+            <ul class="nav-links">
+                <li class="active">Overview</li>
+                <li>Analytics</li>
+                <li>Transactions</li>
+                <li>Settings</li>
+            </ul>
+            <div class="user-profile">
+                <div class="avatar"></div>
+                <div class="user-info">
+                    <h4>Admin User</h4>
+                    <p>Standard Access</p>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header>
+                <h1>System Overview</h1>
+                <div class="header-tools">
+                    <div id="clock" class="clock">00:00:00</div>
+                    <button class="btn-primary" onclick="app.refreshData()">Refresh Stream</button>
+                </div>
+            </header>
+
+            <div class="grid-container">
+                
+                <div class="card kpi-card">
+                    <h3>Total Revenue</h3>
+                    <div class="value" id="kpi-revenue">$0</div>
+                    <div class="trend up">+12.5%</div>
+                </div>
+                <div class="card kpi-card">
+                    <h3>Active Users</h3>
+                    <div class="value" id="kpi-users">0</div>
+                    <div class="trend down">-2.1%</div>
+                </div>
+                <div class="card kpi-card">
+                    <h3>Server Load</h3>
+                    <div class="value" id="kpi-server">0%</div>
+                    <div class="trend flat">Stable</div>
+                </div>
+
+                <div class="card wide-card">
+                    <div class="card-header">
+                        <h3>Traffic Analysis (Real-time)</h3>
+                        <div class="tabs">
+                            <span class="active">Live</span>
+                            <span>Hourly</span>
+                        </div>
+                    </div>
+                    <div class="chart-container" id="mainChartContainer">
+                        </div>
+                </div>
+
+                <div class="card tall-card">
+                    <h3>System Logs</h3>
+                    <ul class="activity-list" id="activityLog">
+                        </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Project Delta</h3>
+                    <div class="progress-wrapper">
+                        <div class="label"><span>Completion</span><span>78%</span></div>
+                        <div class="bar-bg"><div class="bar-fill" style="width: 78%"></div></div>
+                    </div>
+                    <div class="progress-wrapper">
+                        <div class="label"><span>Budget</span><span>42%</span></div>
+                        <div class="bar-bg"><div class="bar-fill warning" style="width: 42%"></div></div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
