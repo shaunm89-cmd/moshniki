@@ -3,362 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElectroCompare AU | Live Electronics Pricing</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>THE ENERGY ARENA - Ultimate Comparison</title>
     <style>
         :root {
-            --primary: #0056b3; /* Tech Blue */
-            --secondary: #ffcc00; /* Contrast Yellow (JB style) */
-            --bg: #f4f7f6;
-            --surface: #ffffff;
-            --text-main: #333333;
-            --text-sub: #666666;
-            --success: #28a745;
-            --radius: 12px;
-            --shadow: 0 4px 20px rgba(0,0,0,0.05);
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff41;
+            --neon-yellow: #fcee0a;
+            --bg-dark: #0a0a0f;
+            --card-bg: #13131f;
+            --text-main: #e0e0e0;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
 
-        body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
-
-        /* --- Header Section --- */
+        /* Glitch Header */
         header {
-            background: linear-gradient(135deg, #004a99 0%, #007bff 100%);
-            padding: 40px 20px;
             text-align: center;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        header h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 700; letter-spacing: -1px; }
-        header p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; }
-
-        /* --- Search Box --- */
-        .search-container {
-            max-width: 700px;
-            margin: 0 auto;
+            padding: 40px 0;
             position: relative;
         }
-
-        .search-box {
-            width: 100%;
-            padding: 20px 30px;
-            border-radius: 50px;
-            border: none;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .search-box:focus { transform: scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
-        .search-icon { position: absolute; right: 25px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 1.2rem; cursor: pointer; }
-
-        /* --- Main Content --- */
-        main { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-
-        /* --- Results Grid --- */
-        #results-area { display: grid; gap: 20px; }
         
-        .product-card {
-            background: var(--surface);
-            border-radius: var(--radius);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            display: grid;
-            grid-template-columns: 100px 1fr 180px;
-            gap: 25px;
-            align-items: center;
-            transition: transform 0.2s;
-            animation: fadeIn 0.4s ease-out;
+        h1 {
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin: 0;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            animation: flicker 1.5s infinite alternate;
         }
 
-        .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        p.subtitle {
+            color: var(--neon-pink);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
 
-        .product-img {
-            width: 100px;
-            height: 100px;
-            background: #eee;
-            border-radius: 8px;
+        /* Controls */
+        .controls {
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: #ccc;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
         }
 
-        .product-info h3 { font-size: 1.3rem; margin-bottom: 5px; color: var(--text-main); }
-        .product-info .meta { font-size: 0.9rem; color: var(--text-sub); display: flex; gap: 10px; }
-        .badge { background: #eef2f7; padding: 4px 10px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; color: var(--primary); }
+        button {
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 10px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-        /* --- Retailer List inside Card --- */
-        .retailer-list {
-            grid-column: 1 / -1;
-            margin-top: 15px;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
+        button:hover {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        button.active {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink) inset;
+        }
+
+        /* Grid Layout */
+        .grid {
             display: grid;
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .retailer-row {
+        /* Drink Card */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            border: 1px solid transparent;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
         }
 
-        .retailer-row.best-price {
-            background: #e6f9ec;
-            border-color: #c3e6cb;
+        .drink-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0;
+            color: #fff;
         }
 
-        .retailer-name { font-weight: 600; display: flex; align-items: center; gap: 10px; }
-        .retailer-logo-icon { width: 24px; text-align: center; }
-        
-        /* Retailer specific colors for icons */
-        .jb-icon { color: #FFCC00; background: #000; padding: 2px; border-radius: 4px; }
-        .office-icon { color: #0033CC; }
-        .harvey-icon { color: #E2001A; }
-        .good-icon { color: #ED1C24; }
-        
-        .price-tag { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
-        .best-price .price-tag { color: var(--success); }
-        
-        .deal-btn {
-            background: var(--text-main);
-            color: white;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            transition: background 0.2s;
+        .drink-size {
+            font-size: 0.9rem;
+            color: #888;
         }
-        .best-price .deal-btn { background: var(--success); }
-        .deal-btn:hover { opacity: 0.9; }
 
-        /* --- Loading Spinner --- */
-        .loader {
-            display: none;
+        /* Stat Bars */
+        .stat-row {
+            margin-bottom: 15px;
+        }
+
+        .stat-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 10px;
+            background: #222;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 1s cubic-bezier(0.1, 0.7, 1.0, 0.1);
+            position: relative;
+        }
+
+        .bar-caffeine { background: linear-gradient(90deg, #ff4d4d, #ff0000); box-shadow: 0 0 10px #ff0000; }
+        .bar-sugar { background: linear-gradient(90deg, #00f3ff, #0077ff); box-shadow: 0 0 10px #00f3ff; }
+        .bar-calories { background: linear-gradient(90deg, #fcee0a, #ffbb00); }
+
+        /* Kick Score Badge */
+        .kick-score {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.5);
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
             text-align: center;
-            padding: 50px;
         }
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border-left-color: var(--primary);
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+        .kick-score span { display: block; font-size: 1.2rem; }
+
+        /* Floating particles (Graphic intense vibe) */
+        .bg-fx {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.1), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 243, 255, 0.05), transparent 25%);
+            z-index: -1;
+            pointer-events: none;
         }
 
-        /* --- Empty State --- */
-        .empty-state {
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.5; }
+        }
+        
+        .disclaimer {
             text-align: center;
-            padding: 60px 20px;
-            color: var(--text-sub);
-        }
-        .empty-state i { font-size: 3rem; margin-bottom: 20px; opacity: 0.3; }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Mobile Responsive */
-        @media (max-width: 600px) {
-            .product-card { grid-template-columns: 1fr; text-align: center; }
-            .product-img { margin: 0 auto; }
-            .product-info .meta { justify-content: center; }
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 50px;
+            padding-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
+<div class="bg-fx"></div>
+
 <header>
-    <div class="header-content">
-        <h1>ElectroCompare<span style="color: #ffcc00;">.au</span></h1>
-        <p>Compare prices across JB Hi-Fi, Officeworks, Harvey Norman & more instantly.</p>
-        
-        <div class="search-container">
-            <input type="text" id="searchInput" class="search-box" placeholder="Enter product (e.g., iPhone 15, PS5, Samsung TV)...">
-            <i class="fas fa-search search-icon" onclick="performSearch()"></i>
-        </div>
-    </div>
+    <h1>The Energy Arena</h1>
+    <p class="subtitle">Data-Driven Performance Comparison</p>
 </header>
 
-<main>
-    <div id="loader" class="loader">
-        <div class="spinner"></div>
-        <p>Scanning Australian Retailers...</p>
+<div class="controls">
+    <button onclick="sortData('caffeine')" id="btn-caffeine">Highest Caffeine</button>
+    <button onclick="sortData('sugar')" id="btn-sugar">Highest Sugar</button>
+    <button onclick="sortData('sugarLow')" id="btn-sugarLow">Lowest Sugar</button>
+    <button onclick="sortData('density')" id="btn-density">Most Potent (mg/oz)</button>
+</div>
+
+<div class="grid" id="grid">
     </div>
 
-    <div id="results-area">
-        <div class="empty-state">
-            <i class="fas fa-laptop-medical"></i>
-            <h2>Start your search</h2>
-            <p>Type a product name above to find the best Australian deals.</p>
-        </div>
-    </div>
-</main>
+<div class="disclaimer">
+    <p>Data based on standard US market versions (2025/2026). Formulations may vary by region.</p>
+</div>
 
 <script>
-    // --- MOCK DATABASE (Simulating a Backend) ---
-    // In a real app, this data would come from Python/Node.js scrapers
-    const productsDB = [
+    // FACTUAL DATASET
+    const drinks = [
         {
-            id: 1,
-            name: "Apple iPhone 15 (128GB) - Black",
-            category: "Mobile",
-            imageIcon: "fa-mobile-alt",
-            prices: [
-                { retailer: "JB Hi-Fi", price: 1499, iconClass: "jb-icon fa-solid fa-bold" },
-                { retailer: "Officeworks", price: 1477, iconClass: "office-icon fa-solid fa-paperclip" },
-                { retailer: "The Good Guys", price: 1499, iconClass: "good-icon fa-solid fa-thumbs-up" },
-                { retailer: "Amazon AU", price: 1449, iconClass: "fa-brands fa-amazon" }
-            ]
+            name: "Red Bull",
+            size: "8.4 oz",
+            sizeOz: 8.4,
+            caffeine: 80, // mg
+            sugar: 27, // g
+            calories: 110,
+            color: "#silver"
         },
         {
-            id: 2,
-            name: "Sony PlayStation 5 Slim Console",
-            category: "Gaming",
-            imageIcon: "fa-gamepad",
-            prices: [
-                { retailer: "JB Hi-Fi", price: 799, iconClass: "jb-icon fa-solid fa-bold" },
-                { retailer: "Harvey Norman", price: 799, iconClass: "harvey-icon fa-solid fa-store" },
-                { retailer: "Big W", price: 790, iconClass: "fa-solid fa-tag" },
-                { retailer: "Amazon AU", price: 765, iconClass: "fa-brands fa-amazon" }
-            ]
+            name: "Monster Original",
+            size: "16 oz",
+            sizeOz: 16,
+            caffeine: 160,
+            sugar: 54,
+            calories: 210,
+            color: "#green"
         },
         {
-            id: 3,
-            name: "Samsung 65\" CU8000 4K Crystal UHD Smart TV",
-            category: "TV & Audio",
-            imageIcon: "fa-tv",
-            prices: [
-                { retailer: "JB Hi-Fi", price: 995, iconClass: "jb-icon fa-solid fa-bold" },
-                { retailer: "Bing Lee", price: 990, iconClass: "fa-solid fa-bolt" },
-                { retailer: "Appliances Online", price: 1050, iconClass: "fa-solid fa-truck" }
-            ]
+            name: "Celsius",
+            size: "12 oz",
+            sizeOz: 12,
+            caffeine: 200,
+            sugar: 0,
+            calories: 10,
+            color: "#white"
         },
         {
-            id: 4,
-            name: "Sony WH-1000XM5 Noise Cancelling Headphones",
-            category: "Audio",
-            imageIcon: "fa-headphones",
-            prices: [
-                { retailer: "JB Hi-Fi", price: 549, iconClass: "jb-icon fa-solid fa-bold" },
-                { retailer: "Officeworks", price: 499, iconClass: "office-icon fa-solid fa-paperclip" },
-                { retailer: "Amazon AU", price: 485, iconClass: "fa-brands fa-amazon" }
-            ]
+            name: "Prime Energy",
+            size: "12 oz",
+            sizeOz: 12,
+            caffeine: 200,
+            sugar: 0,
+            calories: 10,
+            color: "#blue"
         },
         {
-            id: 5,
-            name: "Nintendo Switch OLED Model - White",
-            category: "Gaming",
-            imageIcon: "fa-gamepad",
-            prices: [
-                { retailer: "Target", price: 539, iconClass: "fa-solid fa-bullseye" },
-                { retailer: "Big W", price: 539, iconClass: "fa-solid fa-tag" },
-                { retailer: "EB Games", price: 549, iconClass: "fa-solid fa-ghost" },
-                { retailer: "Amazon AU", price: 499, iconClass: "fa-brands fa-amazon" }
-            ]
+            name: "Bang Energy",
+            size: "16 oz",
+            sizeOz: 16,
+            caffeine: 300,
+            sugar: 0,
+            calories: 0,
+            color: "#rainbow"
+        },
+        {
+            name: "Rockstar Original",
+            size: "16 oz",
+            sizeOz: 16,
+            caffeine: 160,
+            sugar: 63,
+            calories: 260,
+            color: "#gold"
+        },
+        {
+            name: "Ghost Energy",
+            size: "16 oz",
+            sizeOz: 16,
+            caffeine: 200,
+            sugar: 0,
+            calories: 5,
+            color: "#cyan"
+        },
+        {
+            name: "Reign Total Body",
+            size: "16 oz",
+            sizeOz: 16,
+            caffeine: 300,
+            sugar: 0,
+            calories: 10,
+            color: "#red"
         }
     ];
 
-    const searchInput = document.getElementById('searchInput');
-    const resultsArea = document.getElementById('results-area');
-    const loader = document.getElementById('loader');
+    // MAX VALUES FOR BARS (to calculate percentage)
+    const MAX_CAFFEINE = 300;
+    const MAX_SUGAR = 65; 
+    const MAX_CALORIES = 260;
 
-    // Event Listener for Enter Key
-    searchInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            performSearch();
-        }
-    });
+    const grid = document.getElementById('grid');
 
-    function performSearch() {
-        const query = searchInput.value.toLowerCase().trim();
-        if (!query) return;
+    function renderCards(data) {
+        grid.innerHTML = '';
+        data.forEach(drink => {
+            // Calculate percentages
+            const cafPct = (drink.caffeine / MAX_CAFFEINE) * 100;
+            const sugPct = (drink.sugar / MAX_SUGAR) * 100;
+            const calPct = (drink.calories / MAX_CALORIES) * 100;
+            
+            // Calculate Potency (mg per oz)
+            const potency = (drink.caffeine / drink.sizeOz).toFixed(1);
 
-        // 1. Show Loader, Hide Results
-        resultsArea.style.display = 'none';
-        loader.style.display = 'block';
-
-        // 2. Simulate Network Delay (800ms)
-        setTimeout(() => {
-            const filteredProducts = productsDB.filter(product => 
-                product.name.toLowerCase().includes(query) || 
-                product.category.toLowerCase().includes(query)
-            );
-
-            renderResults(filteredProducts);
-            loader.style.display = 'none';
-            resultsArea.style.display = 'grid';
-        }, 800);
-    }
-
-    function renderResults(products) {
-        resultsArea.innerHTML = '';
-
-        if (products.length === 0) {
-            resultsArea.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-search-minus"></i>
-                    <h2>No products found</h2>
-                    <p>Try searching for "iPhone", "Sony", "Samsung", or "Switch".</p>
-                </div>
-            `;
-            return;
-        }
-
-        products.forEach(product => {
-            // Find lowest price
-            const lowestPrice = Math.min(...product.prices.map(p => p.price));
-
-            // Generate Retailer HTML
-            const retailersHTML = product.prices.map(retailer => {
-                const isBestPrice = retailer.price === lowestPrice;
-                return `
-                    <div class="retailer-row ${isBestPrice ? 'best-price' : ''}">
-                        <div class="retailer-name">
-                            <i class="${retailer.iconClass} retailer-logo-icon"></i>
-                            ${retailer.retailer}
-                            ${isBestPrice ? '<span class="badge" style="margin-left:8px; color:#28a745; background:#fff; border:1px solid #28a745">BEST DEAL</span>' : ''}
-                        </div>
-                        <div style="display:flex; align-items:center; gap:15px;">
-                            <div class="price-tag">$${retailer.price}</div>
-                            <a href="#" class="deal-btn">Go to Store</a>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            // Generate Card HTML
             const card = document.createElement('div');
-            card.className = 'product-card';
+            card.className = 'card';
             card.innerHTML = `
-                <div class="product-img">
-                    <i class="fas ${product.imageIcon}"></i>
+                <div class="kick-score">
+                    PWR LEVEL
+                    <span>${potency}</span>
                 </div>
-                <div class="product-info">
-                    <h3>${product.name}</h3>
-                    <div class="meta">
-                        <span class="badge">${product.category}</span>
-                        <span>Compare ${product.prices.length} stores</span>
+                <div class="card-header">
+                    <div>
+                        <h2 class="drink-name">${drink.name}</h2>
+                        <span class="drink-size">${drink.size} Can</span>
                     </div>
-                    <div class="retailer-list">
-                        ${retailersHTML}
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-label">
+                        <span>Caffeine</span>
+                        <span>${drink.caffeine}mg</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill bar-caffeine" style="width: ${cafPct}%"></div>
+                    </div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-label">
+                        <span>Sugar</span>
+                        <span>${drink.sugar}g</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill bar-sugar" style="width: ${sugPct}%"></div>
+                    </div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-label">
+                        <span>Calories</span>
+                        <span>${drink.calories}</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill bar-calories" style="width: ${calPct}%"></div>
                     </div>
                 </div>
             `;
-            resultsArea.appendChild(card);
+            grid.appendChild(card);
         });
     }
-</script>
 
+    function sortData(criteria) {
+        // Reset buttons
+        document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        
+        let sorted = [...drinks];
+        if (criteria === 'caffeine') {
+            sorted.sort((a, b) => b.caffeine - a.caffeine);
+            document.getElementById('btn-caffeine').classList.add('active');
+        } else if (criteria === 'sugar') {
+            sorted.sort((a, b) => b.sugar - a.sugar);
+            document.getElementById('btn-sugar').classList.add('active');
+        } else if (criteria === 'sugarLow') {
+            sorted.sort((a, b) => a.sugar - b.sugar);
+            document.getElementById('btn-sugarLow').classList.add('active');
+        } else if (criteria === 'density') {
+            sorted.sort((a, b) => (b.caffeine / b.sizeOz) - (a.caffeine / a.sizeOz));
+            document.getElementById('btn-density').classList.add('active');
+        }
+        renderCards(sorted);
+    }
+
+    // Initial Load (Default by Potency)
+    sortData('density');
+
+</script>
 </body>
 </html>
