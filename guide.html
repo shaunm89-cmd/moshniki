@@ -3,152 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reylo Sports Guide</title>
+    <title>Reylo Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #010102;
-            --surface: #0a0a0f;
-            --accent: #3b82f6; /* Electric Blue */
-            --accent-red: #ef4444; /* Live Red */
-            --text: #ffffff;
+            --bg: #050508; --surface: #0a0a0f; --surface-light: #15151a;
+            --accent: #3b82f6; --accent-red: #ef4444;
+            --text: #ffffff; --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.08);
-            --channel-width: 100px;
+            --cat-width: 200px; /* Width of Category Sidebar */
+            --chan-width: 100px; /* Width of Channel Logos */
             --hour-width: 250px;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            overflow: hidden;
-            height: 100vh;
-            display: flex; flex-direction: column;
-        }
-
-        /* --- HEADER WITH SEARCH --- */
+        /* HEADER */
         .header {
-            height: 80px;
-            background: rgba(5, 5, 10, 0.95);
-            border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 20px; z-index: 20;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            height: 70px; background: rgba(5, 5, 10, 0.95); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 50;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
-
-        .logo { 
-            font-family: 'Teko', sans-serif; font-size: 2rem; letter-spacing: 1px; 
-            text-transform: uppercase; color: white; display: flex; align-items: center; gap: 10px;
-        }
+        .logo { font-family: 'Teko', sans-serif; font-size: 2rem; letter-spacing: 1px; text-transform: uppercase; }
         .logo span { color: var(--accent); text-shadow: 0 0 15px var(--accent); }
+        .clock { font-family: 'Teko', sans-serif; font-size: 1.8rem; color: var(--accent-red); text-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
 
-        /* SEARCH BAR */
-        .search-box {
-            position: relative; width: 300px;
-        }
-        .search-box input {
-            width: 100%; padding: 10px 15px; padding-left: 40px;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            color: white; border-radius: 8px; font-size: 0.9rem; transition: 0.3s;
-        }
-        .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); outline: none; }
-        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5; }
+        /* LAYOUT CONTAINER */
+        .main-layout { flex: 1; display: flex; overflow: hidden; position: relative; }
 
-        /* CLOCK */
-        .clock {
-            font-family: 'Teko', sans-serif; font-size: 1.8rem; color: var(--accent-red);
-            text-shadow: 0 0 15px rgba(239, 68, 68, 0.4); min-width: 80px; text-align: right;
+        /* 1. CATEGORY SIDEBAR (NEW) */
+        .category-sidebar {
+            width: var(--cat-width); background: #020203; border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; z-index: 40;
         }
-
-        /* --- MAIN EPG --- */
-        .epg-container {
-            flex: 1; display: flex; position: relative; overflow: hidden;
-            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 60%);
+        .cat-header { padding: 15px; font-weight: bold; color: var(--accent); border-bottom: 1px solid var(--border); letter-spacing: 1px; font-size: 0.9rem; }
+        .cat-list { flex: 1; overflow-y: auto; }
+        .cat-item {
+            padding: 12px 15px; cursor: pointer; color: #888; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.02); transition: 0.2s;
         }
+        .cat-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .cat-item.active { background: rgba(59, 130, 246, 0.1); color: var(--accent); border-left: 3px solid var(--accent); }
 
-        /* CHANNELS COLUMN */
+        /* 2. CHANNELS COLUMN */
         .channels-col {
-            width: var(--channel-width); background: #050508;
-            border-right: 1px solid var(--border); z-index: 10;
-            box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+            width: var(--chan-width); background: var(--surface); border-right: 1px solid var(--border);
+            z-index: 30; box-shadow: 5px 0 20px rgba(0,0,0,0.5); display: flex; flex-direction: column;
         }
-        .channel-header { height: 50px; border-bottom: 1px solid var(--border); background: #08080c; }
-        .channel-item {
-            height: 80px; display: flex; align-items: center; justify-content: center;
-            border-bottom: 1px solid var(--border);
-        }
-        .channel-logo { width: 60px; height: 40px; object-fit: contain; opacity: 0.8; }
+        .chan-list { flex: 1; overflow: hidden; } /* Syncs scroll with guide */
+        .chan-item { height: 80px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); }
+        .chan-logo { width: 60px; height: 40px; object-fit: contain; opacity: 0.9; }
 
-        /* GUIDE AREA */
+        /* 3. GUIDE AREA */
         .guide-area {
-            flex: 1; overflow-x: auto; overflow-y: hidden; position: relative;
-            scrollbar-width: none; /* Firefox */
+            flex: 1; overflow-x: auto; overflow-y: scroll; /* Allow Vertical Scroll */
+            position: relative; scrollbar-width: none; background: #08080a;
         }
-        .guide-area::-webkit-scrollbar { display: none; } /* Chrome */
+        .guide-area::-webkit-scrollbar { display: none; }
 
-        /* TIMELINE */
+        /* TIMELINE HEADER */
         .timeline-header {
-            height: 50px; background: #08080c; border-bottom: 1px solid var(--border);
-            display: flex; position: sticky; top: 0; width: 5000px; z-index: 5;
+            height: 50px; background: var(--surface); border-bottom: 1px solid var(--border);
+            display: flex; position: sticky; top: 0; width: 5000px; z-index: 20;
         }
         .time-marker {
-            width: var(--hour-width); height: 100%;
-            display: flex; align-items: center; padding-left: 10px;
+            width: var(--hour-width); height: 100%; display: flex; align-items: center; padding-left: 10px;
             color: #666; font-size: 0.85rem; border-left: 1px solid rgba(255,255,255,0.03);
         }
 
-        /* PROGRAM GRID */
+        /* GRID */
         .program-rows { width: 5000px; position: relative; }
         .program-row { height: 80px; position: relative; border-bottom: 1px solid rgba(255,255,255,0.03); }
 
-        /* PROGRAM CARD */
+        /* CARDS */
         .program-card {
-            position: absolute; height: 60px; top: 10px;
-            background: #15151a; border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 6px; padding: 8px 12px;
-            overflow: hidden; transition: 0.2s; cursor: pointer;
+            position: absolute; height: 60px; top: 10px; background: #15151a; border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 6px; padding: 8px 12px; overflow: hidden; transition: 0.2s; cursor: pointer;
         }
-        .program-card:hover {
-            background: #202028; border-color: var(--accent);
-            transform: scale(1.02); z-index: 10;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        
-        /* LIVE STATUS */
-        .program-card.live {
-            background: rgba(239, 68, 68, 0.1); /* Red tint */
-            border: 1px solid var(--accent-red);
-            box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.1);
-        }
+        .program-card:hover { background: #202028; border-color: var(--accent); transform: scale(1.02); z-index: 10; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .program-card.live { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--accent-red); box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.1); }
         .program-card.live .prog-title { color: var(--accent-red); text-shadow: 0 0 5px rgba(239,68,68,0.3); }
-
-        /* DIMMED STATE (FOR SEARCH) */
-        .program-card.dimmed { opacity: 0.1; filter: grayscale(100%); }
-
+        
         .prog-title { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .prog-time { font-size: 0.75rem; color: #666; margin-top: 2px; }
 
-        /* RED LINE "NOW" INDICATOR */
+        /* RED LINE */
         .now-line {
-            position: absolute; top: 0; bottom: 0; width: 2px;
-            background: var(--accent-red);
-            box-shadow: 0 0 15px var(--accent-red);
-            z-index: 50; pointer-events: none;
+            position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent-red);
+            box-shadow: 0 0 15px var(--accent-red); z-index: 50; pointer-events: none;
         }
         .now-tag {
-            position: absolute; top: 50px; left: 4px;
-            background: var(--accent-red); color: black;
-            font-size: 0.7rem; font-weight: 800; padding: 2px 6px;
-            border-radius: 3px; letter-spacing: 1px;
-        }
-
-        /* MOBILE TWEAKS */
-        @media (max-width: 600px) {
-            .header { padding: 0 15px; height: 70px; }
-            .logo { font-size: 1.5rem; }
-            .search-box { width: 140px; }
-            .clock { font-size: 1.4rem; min-width: 60px; }
+            position: absolute; top: 50px; left: 4px; background: var(--accent-red); color: black;
+            font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 3px;
         }
     </style>
 </head>
@@ -156,19 +101,20 @@
 
     <div class="header">
         <div class="logo">REYLO <span>GUIDE</span></div>
-        
-        <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="Search sports..." onkeyup="filterGuide()">
-        </div>
-
         <div class="clock" id="liveClock">00:00</div>
     </div>
 
-    <div class="epg-container">
+    <div class="main-layout">
+        <div class="category-sidebar">
+            <div class="cat-header">CATEGORIES</div>
+            <div class="cat-list" id="catList">
+                </div>
+        </div>
+
         <div class="channels-col">
-            <div class="channel-header"></div>
-            <div class="channel-list" id="channelList"></div>
+            <div style="height:50px; border-bottom:1px solid rgba(255,255,255,0.1); background:#0a0a0f;"></div>
+            <div class="chan-list" id="channelList">
+                </div>
         </div>
 
         <div class="guide-area" id="guideArea">
@@ -180,99 +126,121 @@
 
     <script>
         const HOUR_WIDTH = 250; 
-        const START_HOUR = 10; // Guide starts at 10 AM for demo
+        const START_HOUR = 10; 
 
-        // FAKE SPORTS DATA (Simulating Sky/TNT/Fox)
-        const channels = [
-            { name: "Sky Sports PL", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Sky_Sports_Premier_League.svg/1200px-Sky_Sports_Premier_League.svg.png" },
-            { name: "Sky Sports F1", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/Sky_Sports_F1_logo.svg/1200px-Sky_Sports_F1_logo.svg.png" },
-            { name: "TNT Sports 1", logo: "https://upload.wikimedia.org/wikipedia/commons/2/22/TNT_Sports_%28UK%29_logo.svg" },
-            { name: "Fox Cricket", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Fox_Cricket_logo.svg/1200px-Fox_Cricket_logo.svg.png" },
-            { name: "Fox League", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Fox_League_logo.svg/1200px-Fox_League_logo.svg.png" },
-            { name: "Optus Sport", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Optus_Sport_logo.svg" }
-        ];
+        // --- FAKE DATA SIMULATING REAL API ---
+        const database = {
+            "Sports UK": [
+                { name: "Sky Sports PL", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Sky_Sports_Premier_League.svg/1200px-Sky_Sports_Premier_League.svg.png" },
+                { name: "Sky Sports F1", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/2/23/Sky_Sports_F1_logo.svg/1200px-Sky_Sports_F1_logo.svg.png" },
+                { name: "TNT Sports 1", logo: "https://upload.wikimedia.org/wikipedia/commons/2/22/TNT_Sports_%28UK%29_logo.svg" },
+            ],
+            "Sports AU": [
+                { name: "Fox Cricket", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Fox_Cricket_logo.svg/1200px-Fox_Cricket_logo.svg.png" },
+                { name: "Fox League", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Fox_League_logo.svg/1200px-Fox_League_logo.svg.png" },
+                { name: "Optus Sport", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Optus_Sport_logo.svg" },
+            ],
+            "Movies": [
+                { name: "Sky Cinema Action", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Sky_Cinema_Action.svg/1200px-Sky_Cinema_Action.svg.png" },
+                { name: "Sky Cinema Comedy", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Sky_Cinema_Comedy.svg/1200px-Sky_Cinema_Comedy.svg.png" },
+            ],
+            "Entertainment": [
+                { name: "BBC One", logo: "https://upload.wikimedia.org/wikipedia/commons/4/43/BBC_One_logo_2021.svg" },
+                { name: "ITV 1", logo: "https://upload.wikimedia.org/wikipedia/commons/9/92/ITV1_logo_2022.svg" },
+            ]
+        };
 
-        const programs = [
-            "Live: Man City vs Arsenal", "Premier League Review", "The F1 Show", "Live: Monaco GP Practice", 
-            "Live: UFC 300 Prelims", "Live: Boxing Night", "Big Bash: Sixers vs Heat", "Classic Ashes 2005",
-            "NRL 360", "Live: Panthers vs Storm", "Live: Liverpool Press Conference", "NBA: Lakers vs Warriors"
-        ];
+        const programs = ["Live Match", "News Hour", "The Big Show", "Classic Replay", "Live Event", "Highlights", "Documentary"];
 
         function init() {
-            // 1. Render Channels
-            const cList = document.getElementById('channelList');
-            channels.forEach(c => {
-                cList.innerHTML += `<div class="channel-item"><img src="${c.logo}" class="channel-logo"></div>`;
+            renderCategories();
+            renderTimeline();
+            loadCategory("Sports UK"); // Load default
+            setInterval(updateClock, 1000);
+            
+            // Sync scrolling (Vertical scroll of guide moves channels)
+            const guide = document.getElementById('guideArea');
+            const chans = document.getElementById('channelList');
+            guide.addEventListener('scroll', () => {
+                chans.scrollTop = guide.scrollTop;
+            });
+        }
+
+        function renderCategories() {
+            const list = document.getElementById('catList');
+            Object.keys(database).forEach(cat => {
+                const div = document.createElement('div');
+                div.className = 'cat-item';
+                div.innerText = cat;
+                div.onclick = () => loadCategory(cat);
+                list.appendChild(div);
+            });
+        }
+
+        function loadCategory(catName) {
+            // Highlight active category
+            document.querySelectorAll('.cat-item').forEach(el => {
+                el.classList.remove('active');
+                if(el.innerText === catName) el.classList.add('active');
             });
 
-            // 2. Render Timeline (12 Hours)
-            const tl = document.getElementById('timeline');
-            for(let i=START_HOUR; i<START_HOUR+12; i++) {
-                let time = i > 12 ? (i-12)+" PM" : i+" AM";
-                if(i===12) time = "12 PM";
-                tl.innerHTML += `<div class="time-marker">${time}</div>`;
-            }
-
-            // 3. Render Programs
+            // Get channels
+            const channels = database[catName];
+            
+            // Render Channels
+            const cList = document.getElementById('channelList');
+            cList.innerHTML = '';
             const grid = document.getElementById('programGrid');
-            channels.forEach(() => {
+            grid.innerHTML = '';
+
+            channels.forEach(ch => {
+                // Add Channel Logo
+                cList.innerHTML += `<div class="chan-item"><img src="${ch.logo}" class="chan-logo"></div>`;
+                
+                // Add Guide Row
                 let row = document.createElement('div'); row.className = 'program-row';
                 let timeCursor = START_HOUR;
-                
-                // Fill 12 hours with random shows
                 while(timeCursor < START_HOUR + 12) {
-                    let dur = Math.random() > 0.5 ? 2 : 1; // 1 or 2 hour shows
+                    let dur = Math.random() > 0.6 ? 2 : 1; 
                     let title = programs[Math.floor(Math.random() * programs.length)];
-                    let width = (dur * HOUR_WIDTH) - 4; // -4 for gap
+                    let width = (dur * HOUR_WIDTH) - 4;
                     let left = (timeCursor - START_HOUR) * HOUR_WIDTH;
-                    
-                    // Live Logic (Hardcoded 'Now' is 13:15 for demo)
                     let isLive = (timeCursor <= 13.25 && timeCursor + dur > 13.25);
                     
                     row.innerHTML += `
                         <div class="program-card ${isLive ? 'live' : ''}" style="left:${left}px; width:${width}px;">
                             <div class="prog-title">${title}</div>
                             <div class="prog-time">${formatTime(timeCursor)} - ${formatTime(timeCursor+dur)}</div>
-                        </div>
-                    `;
+                        </div>`;
                     timeCursor += dur;
                 }
                 grid.appendChild(row);
             });
 
-            // 4. Set "Now" Line
-            let nowOffset = (13.25 - START_HOUR) * HOUR_WIDTH; // 1:15 PM
+            // Set Red Line
+            let nowOffset = (13.25 - START_HOUR) * HOUR_WIDTH;
             document.getElementById('nowLine').style.left = nowOffset + "px";
-            document.getElementById('guideArea').scrollLeft = nowOffset - 150; // Scroll to now
+            document.getElementById('guideArea').scrollLeft = nowOffset - 150;
+        }
 
-            // 5. Clock
-            setInterval(() => {
-                const d = new Date();
-                document.getElementById('liveClock').innerText = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-            }, 1000);
+        function renderTimeline() {
+            const tl = document.getElementById('timeline');
+            for(let i=START_HOUR; i<START_HOUR+12; i++) {
+                let t = i > 12 ? (i-12)+" PM" : i+" AM";
+                if(i===12) t="12 PM";
+                tl.innerHTML += `<div class="time-marker">${t}</div>`;
+            }
         }
 
         function formatTime(h) {
-            let suffix = h >= 12 ? "PM" : "AM";
-            let hour = h > 12 ? h - 12 : h;
-            return `${hour}:00 ${suffix}`;
+            let s = h >= 12 ? "PM" : "AM";
+            let hr = h > 12 ? h - 12 : h;
+            return `${hr}:00 ${s}`;
         }
 
-        // --- SEARCH FUNCTION ---
-        function filterGuide() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.program-card');
-            
-            cards.forEach(card => {
-                const title = card.querySelector('.prog-title').innerText.toLowerCase();
-                if (term === "") {
-                    card.classList.remove('dimmed');
-                } else if (title.includes(term)) {
-                    card.classList.remove('dimmed');
-                } else {
-                    card.classList.add('dimmed');
-                }
-            });
+        function updateClock() {
+            const d = new Date();
+            document.getElementById('liveClock').innerText = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
         }
 
         init();
