@@ -2,205 +2,349 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NEON GRAVITY ENGINE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nicole's Treats | Custom Cookies & Slices</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #000; 
-            overflow: hidden; 
-            font-family: 'Courier New', Courier, monospace;
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --primary: #d63384; /* Deep Pink */
+            --secondary: #fce4ec; /* Light Pink Background */
+            --accent: #fff0f6; /* Very light pink */
+            --text-dark: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
-        canvas { display: block; }
-        
-        #ui {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: #0ff;
-            pointer-events: none;
-            text-shadow: 0 0 10px #0ff;
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-            border: 1px solid #0ff;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        h1 { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
-        p { font-size: 10px; opacity: 0.8; }
-        
-        #controls {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--accent);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #b02a6b;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: var(--white);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo Image Style */
+        .logo-img {
+            height: 50px; /* Adjust height as needed */
+            width: auto;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background-color: var(--secondary);
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about {
+            background-color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .quality-badge {
+            background: var(--accent);
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* --- PRODUCTS SECTION --- */
+        .products {
+            padding: 80px 0;
+            background-color: var(--accent);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-img {
+            height: 200px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 1.2rem;
+        }
+
+        /* Placeholder colors for images */
+        .img-cookie { background-color: #ffe0b2; }
+        .img-mars { background-color: #d7ccc8; }
+        .img-rocky { background-color: #f8bbd0; }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-info h3 {
+            font-size: 1.5rem;
+        }
+
+        .price {
+            display: block;
+            margin: 10px 0;
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* --- CONTACT/ORDER --- */
+        .contact {
+            padding: 80px 0;
+            background: var(--white);
+            text-align: center;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #333;
             color: white;
-            font-size: 12px;
-            text-align: right;
-            pointer-events: none;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
         }
+
     </style>
 </head>
 <body>
 
-    <div id="ui">
-        <h1>System: ONLINE</h1>
-        <p>Particles: <span id="count">0</span></p>
-        <p>FPS: <span id="fps">60</span></p>
-    </div>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#">
+                    <img src="image_0.png" alt="Nicole's Treats Logo" class="logo-img">
+                </a>
+                <div class="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#products">Menu</a>
+                    <a href="#order">Order Now</a>
+                </div>
+            </nav>
+        </div>
+    </header>
 
-    <div id="controls">
-        [MOUSE] Move to attract | [CLICK] to explode
-    </div>
+    <section class="hero">
+        <div class="container">
+            <h1>Handcrafted Sweetness</h1>
+            <p>From custom-designed cookies to indulgent slices. Personally baked by Nicole using only the highest quality ingredients.</p>
+            <a href="#products" class="btn">View The Menu</a>
+        </div>
+    </section>
 
-    <canvas id="canvas1"></canvas>
+    <section id="about" class="about">
+        <div class="container">
+            <div class="quality-badge">✨ Baked Fresh Daily</div>
+            <h2>Personally Baked by Nicole</h2>
+            <p style="max-width: 700px; margin: 0 auto;">
+                At Nicole's Treats, we don't cut corners. Every single cookie and slice is handmade in my kitchen using premium chocolate, farm-fresh eggs, and high-quality butter. I believe you can taste the difference when something is made with care and passion.
+            </p>
+        </div>
+    </section>
 
-    <script>
-        const canvas = document.getElementById('canvas1');
-        const ctx = canvas.getContext('2d');
-        const uiCount = document.getElementById('count');
-        const uiFps = document.getElementById('fps');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let particlesArray;
-        let hue = 0;
-
-        // Mouse interaction
-        const mouse = {
-            x: undefined,
-            y: undefined,
-            radius: 150
-        }
-
-        window.addEventListener('mousemove', function(event) {
-            mouse.x = event.x;
-            mouse.y = event.y;
-        });
-
-        window.addEventListener('click', function() {
-            // Push particles away on click (Explosion effect)
-            for (let i = 0; i < particlesArray.length; i++) {
-                let dx = particlesArray[i].x - mouse.x;
-                let dy = particlesArray[i].y - mouse.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < mouse.radius * 2) {
-                    particlesArray[i].speedX += dx * 0.5;
-                    particlesArray[i].speedY += dy * 0.5;
-                }
-            }
-        });
-
-        // The Particle Class (The DNA of the website)
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.1; // Random size
-                this.speedX = (Math.random() * 3) - 1.5;
-                this.speedY = (Math.random() * 3) - 1.5;
-                this.color = 'hsl(' + hue + ', 100%, 50%)';
-            }
+    <section id="products" class="products">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
             
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-img img-cookie">
+                        [Cookie Image]
+                    </div>
+                    <div class="product-info">
+                        <h3>Custom Design Cookies</h3>
+                        <span class="price">From $4.00 ea</span>
+                        <p>Fully customizable sugar cookies. Choose your fondant color, toppings, and add <strong>Letters & Numbers</strong> for birthdays or events.</p>
+                    </div>
+                </div>
 
-                // Wall collision (Bounce)
-                if (this.x + this.size > canvas.width || this.x - this.size < 0) {
-                    this.speedX = -this.speedX;
-                }
-                if (this.y + this.size > canvas.height || this.y - this.size < 0) {
-                    this.speedY = -this.speedY;
-                }
+                <div class="product-card">
+                    <div class="product-img img-mars">
+                        [Mars Bar Slice Image]
+                    </div>
+                    <div class="product-info">
+                        <h3>Classic Mars Bar Slice</h3>
+                        <span class="price">$5.00 / slice</span>
+                        <p>A gooey, chocolatey caramel delight. Made with real Mars Bars and high-quality milk chocolate for that perfect crunch.</p>
+                    </div>
+                </div>
 
-                // Mouse Interaction (Physics)
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < mouse.radius) {
-                    // Create a gravity well effect
-                    const forceDirectionX = dx / distance;
-                    const forceDirectionY = dy / distance;
-                    const force = (mouse.radius - distance) / mouse.radius;
-                    const directionX = forceDirectionX * force * 3; // Strength of pull
-                    const directionY = forceDirectionY * force * 3;
+                <div class="product-card">
+                    <div class="product-img img-rocky">
+                        [Rocky Road Image]
+                    </div>
+                    <div class="product-info">
+                        <h3>Nicole's Rocky Road</h3>
+                        <span class="price">$6.00 / slice</span>
+                        <p>Loaded with fluffy marshmallows, nuts, and jellies, all enveloped in premium chocolate. A texture sensation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    this.speedX += directionX * 0.1;
-                    this.speedY += directionY * 0.1;
-                }
-            }
-
-            draw() {
-                ctx.fillStyle = this.color; // pulsing color
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            particlesArray = [];
-            // Spawn 1500 particles (Adjust this if your computer is slow)
-            let numberOfParticles = (canvas.width * canvas.height) / 9000; 
-            for (let i = 0; i < numberOfParticles * 1.5; i++) {
-                particlesArray.push(new Particle());
-            }
-            uiCount.innerText = Math.floor(numberOfParticles * 1.5);
-        }
-
-        function connect() {
-            let opacityValue = 1;
-            for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a; b < particlesArray.length; b++) {
-                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
-                    + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-                    
-                    // If particles are close, draw a line
-                    if (distance < (canvas.width/7) * (canvas.height/7)) {
-                        opacityValue = 1 - (distance/10000);
-                        ctx.strokeStyle = 'rgba(0, 255, 255,' + opacityValue + ')'; // Cyan glow
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        let lastTime = 0;
-        function animate(timeStamp) {
-            // Calculate FPS
-            const deltaTime = timeStamp - lastTime;
-            lastTime = timeStamp;
-            if (deltaTime) uiFps.innerText = Math.round(1000 / deltaTime);
-
-            // Clear screen but leave a trail (Motion blur effect)
-            ctx.fillStyle = 'rgba(0,0,0,0.1)'; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+    <section id="order" class="contact">
+        <div class="container">
+            <h2>Place a Custom Order</h2>
+            <p style="margin-bottom: 30px;">Tell me what you need, and I'll bake it to perfection.</p>
             
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
-            // Use this strictly for high-end PCs. If it lags, comment out connect();
-            // connect(); 
-            
-            // Cycle colors
-            hue += 0.5; 
-            
-            requestAnimationFrame(animate);
-        }
+            <div class="contact-form">
+                <form>
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" placeholder="Jane Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="jane@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>What are you craving?</label>
+                        <select>
+                            <option>Custom Cookies (Letters/Numbers)</option>
+                            <option>Mars Bar Slice</option>
+                            <option>Rocky Road</option>
+                            <option>Mixed Box</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Custom Details (Letters, Numbers, Toppings)</label>
+                        <textarea rows="4" placeholder="e.g., Pink fondant with 'HARRY 5' stamped on them..."></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Send Enquiry</button>
+                </form>
+            </div>
+        </div>
+    </section>
 
-        init();
-        animate(0);
+    <footer>
+        <p>&copy; 2026 Nicole's Treats. Personally Baked with Love.</p>
+    </footer>
 
-        // Handle resize
-        window.addEventListener('resize', function() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        });
-    </script>
 </body>
 </html>
