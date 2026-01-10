@@ -13,6 +13,7 @@
             --text-dark: #333;
             --text-light: #666;
             --white: #ffffff;
+            --black: #000000;
             --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
@@ -27,6 +28,7 @@
             background-color: var(--accent);
             color: var(--text-dark);
             line-height: 1.6;
+            overflow-x: hidden; /* Prevents scrollbar from falling items */
         }
 
         /* --- UTILITIES --- */
@@ -49,21 +51,27 @@
             text-decoration: none;
             border-radius: 25px;
             font-weight: bold;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
         }
 
         .btn:hover {
-            background-color: #b02a6b;
+            background-color: var(--white);
+            color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(214, 51, 132, 0.4);
         }
 
-        /* --- HEADER --- */
+        /* --- HEADER (UPDATED TO BLACK) --- */
         header {
-            background-color: var(--white);
+            /* Changed to black to blend the logo background */
+            background-color: var(--black); 
             padding: 10px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 3px solid var(--primary);
         }
 
         nav {
@@ -74,16 +82,22 @@
 
         /* Logo Image Style */
         .logo-img {
-            height: 70px; /* Increased slightly for better visibility */
+            height: 80px; 
             width: auto;
             display: block;
+            /* This ensures it blends if there are slight color differences */
+            mix-blend-mode: normal; 
         }
 
         .nav-links a {
             margin-left: 20px;
             text-decoration: none;
-            color: var(--text-dark);
+            color: var(--white); /* White text to show on black header */
             font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
         }
 
         .nav-links a:hover {
@@ -95,20 +109,38 @@
             background-color: var(--secondary);
             text-align: center;
             padding: 100px 20px;
+            position: relative;
         }
 
         .hero h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 0px #fff;
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--text-light);
             margin-bottom: 30px;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        /* --- FALLING COOKIES ANIMATION --- */
+        .falling-sweet {
+            position: fixed;
+            top: -50px;
+            font-size: 24px;
+            z-index: 9999; /* On top of everything */
+            pointer-events: none; /* Let clicks pass through */
+            animation: fall linear forwards;
+            opacity: 0.7;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
         /* --- ABOUT SECTION --- */
@@ -126,8 +158,8 @@
             margin-bottom: 20px;
             color: var(--primary);
             font-weight: bold;
-            /* Added a subtle border to make it pop */
             border: 2px solid var(--secondary); 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         /* --- PRODUCTS SECTION --- */
@@ -156,30 +188,36 @@
             transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
+            border: 1px solid #ffeef5;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(214, 51, 132, 0.15);
         }
 
-        /* UPDATED IMAGE STYLES */
         .product-img {
-            height: 250px; /* Fixed height for uniformity */
+            height: 250px; 
             width: 100%;
-            background-color: #f0f0f0; /* Fallback color */
+            background-color: #f0f0f0; 
             position: relative;
+            overflow: hidden;
         }
 
         .product-img img {
             width: 100%;
             height: 100%;
-            /* object-fit: cover ensures images fill the space nicely without stretching */
             object-fit: cover; 
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-img img {
+            transform: scale(1.1); /* Zoom effect on hover */
         }
 
         .product-info {
             padding: 25px;
-            flex-grow: 1; /* Ensures cards are similar height */
+            flex-grow: 1; 
         }
 
         .product-info h3 {
@@ -205,6 +243,9 @@
             max-width: 600px;
             margin: 0 auto;
             text-align: left;
+            background: var(--accent);
+            padding: 40px;
+            border-radius: 20px;
         }
 
         .form-group {
@@ -215,6 +256,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
+            color: var(--primary);
         }
 
         .form-group input, 
@@ -222,19 +264,28 @@
         .form-group select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
             font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, 
+        .form-group textarea:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         /* --- FOOTER --- */
         footer {
-            background-color: #333;
+            background-color: var(--black);
             color: white;
             text-align: center;
             padding: 20px;
             margin-top: auto;
+            border-top: 3px solid var(--primary);
         }
 
     </style>
@@ -296,7 +347,7 @@
                     </div>
                     <div class="product-info">
                         <h3>Classic Mars Bar Slice</h3>
-                        <span class="price">$50.00 / Tray</span>
+                        <span class="price">$5.00 / slice</span>
                         <p>A gooey, chocolatey caramel delight. Made with real Mars Bars and high-quality milk chocolate for that perfect crunch.</p>
                     </div>
                 </div>
@@ -307,7 +358,7 @@
                     </div>
                     <div class="product-info">
                         <h3>Nicole's Rocky Road</h3>
-                        <span class="price">$50.00 /20 x slice's</span>
+                        <span class="price">$6.00 / slice</span>
                         <p>Loaded with fluffy marshmallows, nuts, and jellies, all enveloped in premium chocolate. A texture sensation.</p>
                     </div>
                 </div>
@@ -352,6 +403,30 @@
     <footer>
         <p>&copy; 2026 Nicole's Treats. Personally Baked with Love.</p>
     </footer>
+
+    <script>
+        function createSweet() {
+            const sweets = ['🍪', '🍬', '🍫', '🧁', '🍩'];
+            const sweet = document.createElement('div');
+            sweet.classList.add('falling-sweet');
+            sweet.innerText = sweets[Math.floor(Math.random() * sweets.length)];
+            
+            // Randomize position and animation properties
+            sweet.style.left = Math.random() * 100 + 'vw';
+            sweet.style.animationDuration = Math.random() * 3 + 4 + 's'; // Between 4 and 7 seconds
+            sweet.style.fontSize = Math.random() * 20 + 20 + 'px'; // Size between 20px and 40px
+            
+            document.body.appendChild(sweet);
+
+            // Remove the element after animation ends to keep browser fast
+            setTimeout(() => {
+                sweet.remove();
+            }, 7000);
+        }
+
+        // Create a new sweet every 400 milliseconds
+        setInterval(createSweet, 400);
+    </script>
 
 </body>
 </html>
