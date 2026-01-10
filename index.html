@@ -59,7 +59,7 @@
         /* --- HEADER --- */
         header {
             background-color: var(--white);
-            padding: 20px 0;
+            padding: 10px 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
@@ -74,8 +74,9 @@
 
         /* Logo Image Style */
         .logo-img {
-            height: 50px; /* Adjust height as needed */
+            height: 70px; /* Increased slightly for better visibility */
             width: auto;
+            display: block;
         }
 
         .nav-links a {
@@ -125,6 +126,8 @@
             margin-bottom: 20px;
             color: var(--primary);
             font-weight: bold;
+            /* Added a subtle border to make it pop */
+            border: 2px solid var(--secondary); 
         }
 
         /* --- PRODUCTS SECTION --- */
@@ -151,29 +154,32 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
         }
 
+        /* UPDATED IMAGE STYLES */
         .product-img {
-            height: 200px;
-            background-color: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 1.2rem;
+            height: 250px; /* Fixed height for uniformity */
+            width: 100%;
+            background-color: #f0f0f0; /* Fallback color */
+            position: relative;
         }
 
-        /* Placeholder colors for images */
-        .img-cookie { background-color: #ffe0b2; }
-        .img-mars { background-color: #d7ccc8; }
-        .img-rocky { background-color: #f8bbd0; }
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            /* object-fit: cover ensures images fill the space nicely without stretching */
+            object-fit: cover; 
+        }
 
         .product-info {
             padding: 25px;
+            flex-grow: 1; /* Ensures cards are similar height */
         }
 
         .product-info h3 {
@@ -219,6 +225,7 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
+            font-family: inherit;
         }
 
         /* --- FOOTER --- */
@@ -259,7 +266,7 @@
 
     <section id="about" class="about">
         <div class="container">
-            <div class="quality-badge">✨ Baked Fresh Daily</div>
+            <div class="quality-badge">✨ Baked Fresh by Order</div>
             <h2>Personally Baked by Nicole</h2>
             <p style="max-width: 700px; margin: 0 auto;">
                 At Nicole's Treats, we don't cut corners. Every single cookie and slice is handmade in my kitchen using premium chocolate, farm-fresh eggs, and high-quality butter. I believe you can taste the difference when something is made with care and passion.
@@ -273,8 +280,8 @@
             
             <div class="product-grid">
                 <div class="product-card">
-                    <div class="product-img img-cookie">
-                        [Cookie Image]
+                    <div class="product-img">
+                        <img src="cookie.png" alt="Custom Design Cookies example">
                     </div>
                     <div class="product-info">
                         <h3>Custom Design Cookies</h3>
@@ -284,8 +291,8 @@
                 </div>
 
                 <div class="product-card">
-                    <div class="product-img img-mars">
-                        [Mars Bar Slice Image]
+                    <div class="product-img">
+                        <img src="https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg" alt="Classic Mars Bar Slice">
                     </div>
                     <div class="product-info">
                         <h3>Classic Mars Bar Slice</h3>
@@ -295,8 +302,8 @@
                 </div>
 
                 <div class="product-card">
-                    <div class="product-img img-rocky">
-                        [Rocky Road Image]
+                    <div class="product-img">
+                        <img src="https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg" alt="Nicole's Rocky Road">
                     </div>
                     <div class="product-info">
                         <h3>Nicole's Rocky Road</h3>
