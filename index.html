@@ -278,7 +278,7 @@
             border-radius: 15px;
         }
 
-        /* --- NEW: BOX BUILDER STYLES --- */
+        /* --- TRAY STYLES --- */
         .contact {
             padding: 80px 0;
             background: var(--white);
@@ -296,75 +296,97 @@
 
         .builder-controls {
             margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
         }
         
         .treat-btn {
             background: white;
             border: 2px solid #ddd;
             border-radius: 15px;
-            padding: 10px 20px;
-            margin: 5px;
+            padding: 15px 25px;
             cursor: pointer;
             font-family: var(--font-body);
             font-weight: bold;
             font-size: 1rem;
             transition: all 0.2s;
-            display: inline-flex;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
+            min-width: 140px;
         }
 
         .treat-btn:hover { border-color: var(--primary); transform: translateY(-3px); color: var(--primary); }
-        .treat-btn img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+        .treat-btn span.cost { font-size: 0.8rem; color: #888; font-weight: normal; }
 
-        /* The Box Display */
-        .the-box {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 across */
+        .the-tray {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 15px;
             background-color: var(--secondary);
             padding: 20px;
             border-radius: 20px;
-            max-width: 500px;
+            min-height: 150px;
             margin: 0 auto;
             position: relative;
+            align-items: flex-start;
         }
 
-        .box-slot {
-            aspect-ratio: 1/1;
-            background: rgba(255,255,255,0.7);
-            border: 2px dashed #d63384;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .tray-item {
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             position: relative;
-            overflow: hidden;
-        }
-
-        .box-slot:hover { background: white; }
-        
-        .box-slot img {
-            width: 90%;
-            height: 90%;
-            object-fit: contain;
             animation: popIn 0.3s ease;
         }
+        
+        .tray-item:hover { transform: scale(1.1) rotate(5deg); }
 
-        .slot-empty-text {
-            color: #d63384;
-            opacity: 0.5;
-            font-size: 0.8rem;
+        .item-cookie {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        .item-slab {
+            width: 100px; height: 60px; 
+            border-radius: 10px;
+            border: 2px solid white;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        .empty-msg {
+            width: 100%;
+            text-align: center;
+            color: #999;
+            margin-top: 40px;
             font-weight: bold;
         }
 
         .box-total {
             margin-top: 20px;
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: var(--primary);
             font-weight: bold;
+            font-family: var(--font-heading);
+        }
+        
+        .discount-badge {
+            display: none; 
+            background: #FFD700;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 5px;
+            animation: pulse 1.5s infinite;
         }
 
         .reset-box {
@@ -373,7 +395,7 @@
             color: #999;
             text-decoration: underline;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 0.9rem;
         }
 
@@ -407,6 +429,12 @@
             100% { transform: scale(1); }
         }
 
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         .falling-sweet {
             position: fixed; top: -50px; font-size: 24px; z-index: 9999;
             pointer-events: none; animation: fall linear forwards; opacity: 0.7;
@@ -430,6 +458,37 @@
         .close-lightbox {
             position: absolute; top: 20px; right: 35px; color: #f1f1f1;
             font-size: 40px; font-weight: bold; cursor: pointer;
+        }
+
+        /* --- MOBILE FIXES (NEW) --- */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column; /* Stack logo on top of links */
+                padding-bottom: 10px;
+                gap: 15px;
+            }
+
+            .logo-img {
+                height: 60px; /* Make logo slightly smaller on mobile */
+                margin-bottom: 0;
+            }
+
+            .nav-links {
+                display: flex;
+                gap: 15px; /* Even spacing between text links */
+                justify-content: center;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .nav-links a {
+                margin-left: 0; /* Remove side margin */
+                font-size: 0.9rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem; /* Fix huge text on phone */
+            }
         }
     </style>
 </head>
@@ -489,7 +548,7 @@
                     <div class="product-info">
                         <h3>Custom Cookies</h3>
                         <span class="price">$4.00 ea</span>
-                        <p>Fully customizable sugar cookies with fondant, letters & numbers.</p>
+                        <p>Fully customizable sugar cookies with fondant. <strong>Bulk Deal: 20 for $70!</strong></p>
                     </div>
                 </div>
                 <div class="product-card">
@@ -499,8 +558,8 @@
                     </div>
                     <div class="product-info">
                         <h3>Mars Bar Slice</h3>
-                        <span class="price">$5.00 / slice</span>
-                        <p>A gooey, chocolatey caramel delight made with real Mars Bars.</p>
+                        <span class="price">$50 / Full Slab</span>
+                        <p>A gooey, chocolatey caramel delight made with real Mars Bars. Perfect for parties.</p>
                     </div>
                 </div>
                 <div class="product-card">
@@ -510,7 +569,7 @@
                     </div>
                     <div class="product-info">
                         <h3>Rocky Road</h3>
-                        <span class="price">$6.00 / slice</span>
+                        <span class="price">$50 / Full Slab</span>
                         <p>Loaded with marshmallows, nuts, and jellies in premium chocolate.</p>
                     </div>
                 </div>
@@ -520,33 +579,32 @@
 
     <section id="order" class="contact">
         <div class="container">
-            <h2>Build Your Own Box</h2>
-            <p style="margin-bottom: 30px;">Tap the buttons to fill your box (Pack of 6)!</p>
+            <h2>Start Your Order</h2>
+            <p style="margin-bottom: 30px;">Add items to your tray. Bulk cookie discount applies automatically!</p>
             
             <div class="box-builder-container">
                 <div class="builder-controls">
-                    <button class="treat-btn" onclick="addToBox('cookie', 4, 'cookie.png')">
-                        🍪 Add Cookie (+$4)
+                    <button class="treat-btn" onclick="addItem('cookie')">
+                        🍪 Add Cookie
+                        <span class="cost">$4.00 ea</span>
                     </button>
-                    <button class="treat-btn" onclick="addToBox('mars', 5, 'https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg')">
-                        🍫 Add Mars (+$5)
+                    <button class="treat-btn" onclick="addItem('mars')">
+                        🍫 Add Mars Slab
+                        <span class="cost">$50.00 / Slab</span>
                     </button>
-                    <button class="treat-btn" onclick="addToBox('rocky', 6, 'https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg')">
-                        🍬 Add Rocky (+$6)
+                    <button class="treat-btn" onclick="addItem('rocky')">
+                        🍬 Add Rocky Slab
+                        <span class="cost">$50.00 / Slab</span>
                     </button>
                 </div>
 
-                <div class="the-box" id="boxGrid">
-                    <div class="box-slot" onclick="removeFromBox(0)"><span class="slot-empty-text">Empty</span></div>
-                    <div class="box-slot" onclick="removeFromBox(1)"><span class="slot-empty-text">Empty</span></div>
-                    <div class="box-slot" onclick="removeFromBox(2)"><span class="slot-empty-text">Empty</span></div>
-                    <div class="box-slot" onclick="removeFromBox(3)"><span class="slot-empty-text">Empty</span></div>
-                    <div class="box-slot" onclick="removeFromBox(4)"><span class="slot-empty-text">Empty</span></div>
-                    <div class="box-slot" onclick="removeFromBox(5)"><span class="slot-empty-text">Empty</span></div>
+                <div class="the-tray" id="orderTray">
+                    <div class="empty-msg">Your tray is empty. Tap a treat above!</div>
                 </div>
 
                 <div class="box-total">Total: $<span id="totalPrice">0</span></div>
-                <button class="reset-box" onclick="resetBox()">Clear Box</button>
+                <div class="discount-badge" id="discountBadge">🎉 Bulk Discount Applied!</div>
+                <button class="reset-box" onclick="resetTray()">Clear Tray</button>
             </div>
 
             <div class="contact-form">
@@ -562,10 +620,10 @@
                         <input type="email" placeholder="jane@example.com" required>
                     </div>
                     <div class="form-group">
-                        <label>Custom Details (Colors, Names, etc.)</label>
-                        <textarea rows="4" placeholder="e.g., Pink fondant for the cookies..."></textarea>
+                        <label>Custom Details (Colors, Names, Date required)</label>
+                        <textarea rows="4" placeholder="e.g., I need this for a birthday on Saturday..."></textarea>
                     </div>
-                    <button type="submit" class="btn" style="width: 100%;">Send Order</button>
+                    <button type="submit" class="btn" style="width: 100%;">Send Order Request</button>
                 </form>
             </div>
         </div>
@@ -581,62 +639,87 @@
     </div>
 
     <script>
-        // --- BOX BUILDER LOGIC ---
-        let box = [null, null, null, null, null, null]; // 6 slots
-        let prices = { 'cookie': 4, 'mars': 5, 'rocky': 6 };
-        
-        function addToBox(type, price, imgUrl) {
-            // Find first empty slot
-            const emptyIndex = box.findIndex(slot => slot === null);
+        // --- ORDER LOGIC ---
+        let orderItems = []; 
+        const PRICES = { 'cookie': 4, 'mars': 50, 'rocky': 50 };
+        const IMAGES = {
+            'cookie': 'cookie.png',
+            'mars': 'https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg',
+            'rocky': 'https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg'
+        };
+
+        function addItem(type) {
+            orderItems.push(type);
+            renderTray();
+        }
+
+        function removeItem(index) {
+            orderItems.splice(index, 1);
+            renderTray();
+        }
+
+        function resetTray() {
+            orderItems = [];
+            renderTray();
+        }
+
+        function renderTray() {
+            const tray = document.getElementById('orderTray');
+            tray.innerHTML = ""; // Clear existing
+
+            let cookieCount = 0;
+            let slabCount = 0;
+            let slabTotal = 0;
             
-            if (emptyIndex !== -1) {
-                // Fill slot
-                box[emptyIndex] = { type: type, price: price, img: imgUrl };
-                renderBox();
-            } else {
-                alert("Box is full! Click an item in the box to remove it.");
-            }
-        }
-
-        function removeFromBox(index) {
-            if (box[index] !== null) {
-                box[index] = null;
-                renderBox();
-            }
-        }
-
-        function resetBox() {
-            box = [null, null, null, null, null, null];
-            renderBox();
-        }
-
-        function renderBox() {
-            const grid = document.getElementById('boxGrid');
-            const slots = grid.children;
-            let total = 0;
-            let summary = "";
-
-            box.forEach((item, index) => {
-                const slot = slots[index];
-                slot.innerHTML = ""; // Clear slot
-
-                if (item) {
-                    // Item exists
-                    const img = document.createElement('img');
-                    img.src = item.img;
-                    slot.appendChild(img);
-                    total += item.price;
-                    summary += item.type + ", ";
-                } else {
-                    // Empty slot
-                    slot.innerHTML = '<span class="slot-empty-text">Empty</span>';
+            // Count items first
+            orderItems.forEach(item => {
+                if (item === 'cookie') cookieCount++;
+                else {
+                    slabCount++;
+                    slabTotal += PRICES[item];
                 }
             });
 
-            // Update Total
-            document.getElementById('totalPrice').innerText = total;
-            // Update Hidden Input for Form
-            document.getElementById('boxContentsInput').value = summary + " (Total: $" + total + ")";
+            // --- CALCULATE PRICE ---
+            // Cookies: 20 for $70. Remainder $4 each.
+            const cookieBundles = Math.floor(cookieCount / 20);
+            const cookieRemainder = cookieCount % 20;
+            const cookieTotal = (cookieBundles * 70) + (cookieRemainder * 4);
+            
+            const finalTotal = slabTotal + cookieTotal;
+
+            // --- RENDER ITEMS ---
+            if (orderItems.length === 0) {
+                tray.innerHTML = '<div class="empty-msg">Your tray is empty. Tap a treat above!</div>';
+            } else {
+                orderItems.forEach((item, index) => {
+                    const img = document.createElement('img');
+                    img.src = IMAGES[item];
+                    img.classList.add('tray-item');
+                    // Add specific class for shape (round vs slab)
+                    if(item === 'cookie') img.classList.add('item-cookie');
+                    else img.classList.add('item-slab');
+                    
+                    img.onclick = () => removeItem(index);
+                    tray.appendChild(img);
+                });
+            }
+
+            // Update Text
+            document.getElementById('totalPrice').innerText = finalTotal;
+            
+            // Show Discount Badge?
+            const badge = document.getElementById('discountBadge');
+            if (cookieBundles > 0) {
+                badge.style.display = "inline-block";
+                badge.innerText = "🎉 Bulk Discount Applied! (" + cookieBundles + "x Bundle)";
+            } else {
+                badge.style.display = "none";
+            }
+
+            // Update Hidden Input for Email
+            let summaryText = `Order: ${slabCount} Slabs, ${cookieCount} Cookies. Total: $${finalTotal}`;
+            document.getElementById('boxContentsInput').value = summaryText;
         }
 
         // --- FALLING SWEETS ---
