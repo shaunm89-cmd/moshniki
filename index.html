@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nicole's Treats | Custom Cookies & Slices</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+
     <style>
         /* --- RESET & VARIABLES --- */
         :root {
@@ -11,11 +16,12 @@
             --primary-hover: #b02a6b;
             --secondary: #fce4ec; /* Light Pink Background */
             --accent: #fff0f6; /* Very light pink */
-            --text-dark: #333;
-            --text-light: #666;
+            --text-dark: #4a4a4a; /* Softer dark grey */
+            --text-light: #777;
             --white: #ffffff;
             --black: #000000;
-            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --font-heading: 'Pacifico', cursive; /* NEW FUN FONT */
+            --font-body: 'Fredoka', sans-serif; /* NEW BUBBLY FONT */
         }
 
         * {
@@ -29,10 +35,10 @@
         }
 
         body {
-            font-family: var(--font-main);
+            font-family: var(--font-body); /* Applied rounded font everywhere */
             background-color: var(--accent);
             color: var(--text-dark);
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-x: hidden;
         }
 
@@ -44,28 +50,37 @@
         }
 
         h1, h2, h3 {
+            font-family: var(--font-heading); /* Apply curly font to headers */
             color: var(--primary);
             margin-bottom: 15px;
+            font-weight: 400; /* Pacifico is naturally bold */
         }
 
         .btn {
             display: inline-block;
             background-color: var(--primary);
             color: var(--white);
-            padding: 12px 30px;
+            padding: 15px 35px;
             text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
+            border-radius: 50px; /* Extra round */
+            font-weight: 600;
             transition: all 0.3s ease;
-            border: 2px solid var(--primary);
+            border: 3px solid var(--primary);
             cursor: pointer;
+            box-shadow: 0 5px 0 rgba(176, 42, 107, 1); /* 3D Button effect */
+            transform: translateY(0);
         }
 
         .btn:hover {
             background-color: var(--white);
             color: var(--primary);
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(214, 51, 132, 0.4);
+            transform: translateY(2px); /* Push down effect */
+            box-shadow: 0 2px 0 rgba(176, 42, 107, 1);
+        }
+
+        .btn:active {
+            transform: translateY(5px);
+            box-shadow: none;
         }
 
         /* --- HEADER (BLACK) --- */
@@ -76,7 +91,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 3px solid var(--primary);
+            border-bottom: 4px solid var(--primary);
         }
 
         nav {
@@ -100,6 +115,7 @@
             font-size: 0.9rem;
             letter-spacing: 1px;
             transition: color 0.3s;
+            font-family: 'Fredoka', sans-serif;
         }
 
         .nav-links a:hover {
@@ -108,84 +124,113 @@
 
         /* --- PARALLAX HERO SECTION --- */
         .hero {
-            /* Parallax Background Image */
-            background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1600&auto=format&fit=crop');
-            background-attachment: fixed; /* This creates the parallax effect */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1600&auto=format&fit=crop');
+            background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
-            
             text-align: center;
-            padding: 150px 20px;
+            padding: 160px 20px 180px 20px; /* Extra padding at bottom for wave */
             position: relative;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 0px #fff;
+            text-shadow: 3px 3px 0px #fff;
+            color: var(--primary);
         }
 
         .hero p {
-            font-size: 1.4rem;
-            color: #444;
-            font-weight: 600;
-            margin-bottom: 30px;
-            max-width: 600px;
+            font-size: 1.5rem;
+            color: #555;
+            font-weight: 500;
+            margin-bottom: 40px;
+            max-width: 650px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* --- FALLING COOKIES ANIMATION --- */
-        .falling-sweet {
-            position: fixed;
-            top: -50px;
-            font-size: 24px;
-            z-index: 9999;
-            pointer-events: none;
-            animation: fall linear forwards;
-            opacity: 0.7;
+        /* --- WAVE DIVIDER SVG --- */
+        .wave-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
         }
 
-        @keyframes fall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        .wave-bottom svg {
+            position: relative;
+            display: block;
+            width: calc(138% + 1.3px);
+            height: 60px;
         }
 
-        /* --- ABOUT SECTION --- */
+        .wave-bottom .shape-fill {
+            fill: #ffffff; /* Matches the About section background */
+        }
+
+        /* --- FUN ABOUT SECTION --- */
         .about {
             background-color: var(--white);
+            /* POLKA DOT PATTERN */
+            background-image: radial-gradient(#ffeef5 20%, transparent 20%), radial-gradient(#ffeef5 20%, transparent 20%);
+            background-position: 0 0, 25px 25px;
+            background-size: 50px 50px;
+            
             padding: 80px 0;
             text-align: center;
+            position: relative;
         }
 
+        /* CUTE BADGE STYLE */
         .quality-badge {
-            background: var(--accent);
+            background: #fff;
             display: inline-block;
-            padding: 10px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding: 10px 25px;
+            border-radius: 50px;
+            margin-bottom: 25px;
             color: var(--primary);
-            font-weight: bold;
-            border: 2px solid var(--secondary); 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 2px dashed var(--primary); /* Dashed like a coupon/sticker */
+            transform: rotate(-3deg); /* Playful tilt */
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .quality-badge:hover {
+            transform: rotate(0deg) scale(1.1);
+        }
+
+        .about p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
         }
 
         /* --- PARALLAX DIVIDER --- */
         .parallax-quote {
-            background-image: linear-gradient(rgba(214, 51, 132, 0.8), rgba(214, 51, 132, 0.8)), url('https://images.unsplash.com/photo-1579372786545-d24232daf58c?q=80&w=1600&auto=format&fit=crop');
+            background-image: linear-gradient(rgba(214, 51, 132, 0.85), rgba(214, 51, 132, 0.85)), url('https://images.unsplash.com/photo-1579372786545-d24232daf58c?q=80&w=1600&auto=format&fit=crop');
             background-attachment: fixed;
             background-position: center;
             background-size: cover;
             padding: 100px 20px;
             text-align: center;
             color: white;
+            border-top: 5px solid white;
+            border-bottom: 5px solid white;
         }
 
         .parallax-quote h2 {
             color: white;
-            font-size: 2.5rem;
-            font-style: italic;
+            font-size: 3rem;
+            font-family: var(--font-heading);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
         }
 
         /* --- PRODUCTS SECTION --- */
@@ -196,7 +241,7 @@
 
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 50px;
         }
 
@@ -208,18 +253,19 @@
 
         .product-card {
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 20px rgba(214, 51, 132, 0.1);
             transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
-            border: 1px solid #ffeef5;
+            border: 2px solid white;
         }
 
         .product-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(214, 51, 132, 0.15);
+            box-shadow: 0 20px 40px rgba(214, 51, 132, 0.2);
+            border-color: var(--secondary);
         }
 
         .product-img {
@@ -228,7 +274,7 @@
             background-color: #f0f0f0; 
             position: relative;
             overflow: hidden;
-            cursor: pointer; /* Indicates it's clickable */
+            cursor: pointer;
         }
 
         .product-img img {
@@ -246,25 +292,36 @@
             position: absolute;
             bottom: 10px;
             right: 10px;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.8rem;
+            font-weight: bold;
             pointer-events: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .product-info {
             padding: 25px;
             flex-grow: 1; 
+            text-align: center; /* Centered text looks better for cards */
+        }
+
+        .product-info h3 {
+            font-size: 1.6rem;
+            margin-bottom: 5px;
         }
 
         .price {
-            display: block;
-            margin: 10px 0;
-            font-size: 1.2rem;
+            display: inline-block;
+            margin: 5px 0 15px 0;
+            font-size: 1.3rem;
             color: var(--primary);
-            font-weight: bold;
+            font-weight: 800;
+            background: var(--secondary);
+            padding: 5px 15px;
+            border-radius: 15px;
         }
 
         /* --- VISUAL ORDER FORM --- */
@@ -278,10 +335,11 @@
             max-width: 700px;
             margin: 0 auto;
             text-align: left;
-            background: var(--accent);
+            background: var(--white);
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(214, 51, 132, 0.15);
+            border: 2px dashed #fce4ec; /* Cute dashed border */
         }
 
         .form-group {
@@ -293,24 +351,28 @@
             margin-bottom: 10px;
             font-weight: bold;
             color: var(--primary);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-family: var(--font-heading); /* Fancy font for labels */
         }
 
         .form-group input, 
         .form-group textarea {
             width: 100%;
             padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            border: 2px solid #eee;
+            border-radius: 15px;
             font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.3s;
+            font-family: var(--font-body);
+            transition: all 0.3s;
+            background-color: #fdfdfd;
         }
 
         .form-group input:focus, 
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(214, 51, 132, 0.1);
         }
 
         /* Visual Selection Buttons */
@@ -322,18 +384,20 @@
 
         .option-btn {
             background: white;
-            border: 2px solid #ddd;
+            border: 2px solid #eee;
             padding: 15px 10px;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
             font-weight: bold;
             color: #555;
             transition: all 0.2s;
+            font-family: var(--font-body);
         }
 
         .option-btn:hover {
             border-color: var(--primary);
             color: var(--primary);
+            transform: translateY(-2px);
         }
 
         .option-btn.selected {
@@ -350,12 +414,28 @@
             text-align: center;
             padding: 30px;
             margin-top: auto;
-            border-top: 3px solid var(--primary);
+            border-top: 4px solid var(--primary);
+        }
+
+        /* --- FALLING SWEETS ANIMATION --- */
+        .falling-sweet {
+            position: fixed;
+            top: -50px;
+            font-size: 24px;
+            z-index: 9999;
+            pointer-events: none;
+            animation: fall linear forwards;
+            opacity: 0.7;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
         /* --- LIGHTBOX (IMAGE POPUP) --- */
         .lightbox {
-            display: none; /* Hidden by default */
+            display: none; 
             position: fixed;
             z-index: 10001;
             padding-top: 50px;
@@ -425,14 +505,22 @@
             <p>From custom-designed cookies to indulgent slices. Personally baked by Nicole using only the highest quality ingredients.</p>
             <a href="#products" class="btn">View The Menu</a>
         </div>
+        
+        <div class="wave-bottom">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
     </section>
 
     <section id="about" class="about">
         <div class="container">
             <div class="quality-badge">✨ Baked Fresh by Order</div>
+            
             <h2>Personally Baked by Nicole</h2>
-            <p style="max-width: 700px; margin: 0 auto;">
-                At Nicole's Treats, we don't cut corners. Every single cookie and slice is handmade in my kitchen using premium chocolate, farm-fresh eggs, and high-quality butter. I believe you can taste the difference when something is made with care and passion.
+            <p>
+                At Nicole's Treats, we don't cut corners! Every single cookie and slice is handmade in my kitchen using premium chocolate, farm-fresh eggs, and high-quality butter. <br><br>
+                I believe you can taste the difference when something is made with <strong>care, passion, and a little bit of magic.</strong>
             </p>
         </div>
     </section>
@@ -446,7 +534,7 @@
     <section id="products" class="products">
         <div class="container">
             <h2 class="section-title">Our Menu</h2>
-            <p style="text-align: center; margin-bottom: 30px; color: #777;">(Click any image to zoom in)</p>
+            <p style="text-align: center; margin-bottom: 30px; color: #777; font-family: var(--font-body);">(Click any treat to see it up close!)</p>
             
             <div class="product-grid">
                 <div class="product-card">
@@ -455,7 +543,7 @@
                         <div class="zoom-hint">🔍 Zoom</div>
                     </div>
                     <div class="product-info">
-                        <h3>Custom Design Cookies</h3>
+                        <h3>Custom Cookies</h3>
                         <span class="price">From $4.00 ea</span>
                         <p>Fully customizable sugar cookies. Choose your fondant color, toppings, and add <strong>Letters & Numbers</strong>.</p>
                     </div>
@@ -467,7 +555,7 @@
                         <div class="zoom-hint">🔍 Zoom</div>
                     </div>
                     <div class="product-info">
-                        <h3>Classic Mars Bar Slice</h3>
+                        <h3>Mars Bar Slice</h3>
                         <span class="price">$5.00 / slice</span>
                         <p>A gooey, chocolatey caramel delight. Made with real Mars Bars and high-quality milk chocolate.</p>
                     </div>
@@ -479,7 +567,7 @@
                         <div class="zoom-hint">🔍 Zoom</div>
                     </div>
                     <div class="product-info">
-                        <h3>Nicole's Rocky Road</h3>
+                        <h3>Rocky Road</h3>
                         <span class="price">$6.00 / slice</span>
                         <p>Loaded with fluffy marshmallows, nuts, and jellies, all enveloped in premium chocolate.</p>
                     </div>
@@ -560,7 +648,7 @@
 
         function openLightbox(element) {
             const img = element.querySelector('img');
-            lightbox.style.display = "flex"; // Flex centers it
+            lightbox.style.display = "flex"; 
             lightbox.style.alignItems = "center";
             lightboxImg.src = img.src;
         }
@@ -569,7 +657,6 @@
             lightbox.style.display = "none";
         }
 
-        // Close if clicking outside the image
         lightbox.onclick = function(event) {
             if (event.target === lightbox) {
                 closeLightbox();
@@ -578,14 +665,9 @@
 
         // --- VISUAL FORM SELECTION ---
         function selectOption(btn, value) {
-            // Remove 'selected' class from all buttons
             const buttons = document.querySelectorAll('.option-btn');
             buttons.forEach(b => b.classList.remove('selected'));
-            
-            // Add 'selected' class to clicked button
             btn.classList.add('selected');
-            
-            // Update hidden input
             document.getElementById('cravingInput').value = value;
         }
     </script>
