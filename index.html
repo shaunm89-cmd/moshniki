@@ -16,12 +16,11 @@
             --primary-hover: #b02a6b;
             --secondary: #fce4ec; /* Light Pink Background */
             --accent: #fff0f6; /* Very light pink */
-            --text-dark: #4a4a4a; /* Softer dark grey */
-            --text-light: #777;
+            --text-dark: #4a4a4a; 
             --white: #ffffff;
             --black: #000000;
-            --font-heading: 'Pacifico', cursive; /* NEW FUN FONT */
-            --font-body: 'Fredoka', sans-serif; /* NEW BUBBLY FONT */
+            --font-heading: 'Pacifico', cursive; 
+            --font-body: 'Fredoka', sans-serif; 
         }
 
         * {
@@ -30,12 +29,10 @@
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: var(--font-body); /* Applied rounded font everywhere */
+            font-family: var(--font-body);
             background-color: var(--accent);
             color: var(--text-dark);
             line-height: 1.7;
@@ -50,10 +47,10 @@
         }
 
         h1, h2, h3 {
-            font-family: var(--font-heading); /* Apply curly font to headers */
+            font-family: var(--font-heading);
             color: var(--primary);
             margin-bottom: 15px;
-            font-weight: 400; /* Pacifico is naturally bold */
+            font-weight: 400;
         }
 
         .btn {
@@ -62,19 +59,20 @@
             color: var(--white);
             padding: 15px 35px;
             text-decoration: none;
-            border-radius: 50px; /* Extra round */
+            border-radius: 50px;
             font-weight: 600;
             transition: all 0.3s ease;
             border: 3px solid var(--primary);
             cursor: pointer;
-            box-shadow: 0 5px 0 rgba(176, 42, 107, 1); /* 3D Button effect */
+            box-shadow: 0 5px 0 rgba(176, 42, 107, 1);
             transform: translateY(0);
+            font-size: 1.1rem;
         }
 
         .btn:hover {
             background-color: var(--white);
             color: var(--primary);
-            transform: translateY(2px); /* Push down effect */
+            transform: translateY(2px);
             box-shadow: 0 2px 0 rgba(176, 42, 107, 1);
         }
 
@@ -83,7 +81,7 @@
             box-shadow: none;
         }
 
-        /* --- HEADER (BLACK) --- */
+        /* --- HEADER --- */
         header {
             background-color: var(--black); 
             padding: 10px 0;
@@ -100,11 +98,7 @@
             align-items: center;
         }
 
-        .logo-img {
-            height: 80px; 
-            width: auto;
-            display: block;
-        }
+        .logo-img { height: 80px; width: auto; display: block; }
 
         .nav-links a {
             margin-left: 20px;
@@ -118,11 +112,9 @@
             font-family: 'Fredoka', sans-serif;
         }
 
-        .nav-links a:hover {
-            color: var(--primary);
-        }
+        .nav-links a:hover { color: var(--primary); }
 
-        /* --- PARALLAX HERO SECTION --- */
+        /* --- PARALLAX HERO --- */
         .hero {
             background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1600&auto=format&fit=crop');
             background-attachment: fixed;
@@ -130,7 +122,7 @@
             background-repeat: no-repeat;
             background-size: cover;
             text-align: center;
-            padding: 160px 20px 180px 20px; /* Extra padding at bottom for wave */
+            padding: 160px 20px 180px 20px;
             position: relative;
         }
 
@@ -147,11 +139,9 @@
             font-weight: 500;
             margin-bottom: 40px;
             max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto 40px auto;
         }
 
-        /* --- WAVE DIVIDER SVG --- */
         .wave-bottom {
             position: absolute;
             bottom: 0;
@@ -169,24 +159,18 @@
             height: 60px;
         }
 
-        .wave-bottom .shape-fill {
-            fill: #ffffff; /* Matches the About section background */
-        }
+        .wave-bottom .shape-fill { fill: #ffffff; }
 
-        /* --- FUN ABOUT SECTION --- */
+        /* --- ABOUT --- */
         .about {
             background-color: var(--white);
-            /* POLKA DOT PATTERN */
             background-image: radial-gradient(#ffeef5 20%, transparent 20%), radial-gradient(#ffeef5 20%, transparent 20%);
             background-position: 0 0, 25px 25px;
             background-size: 50px 50px;
-            
             padding: 80px 0;
             text-align: center;
-            position: relative;
         }
 
-        /* CUTE BADGE STYLE */
         .quality-badge {
             background: #fff;
             display: inline-block;
@@ -196,24 +180,16 @@
             color: var(--primary);
             font-weight: 600;
             font-size: 1.1rem;
-            border: 2px dashed var(--primary); /* Dashed like a coupon/sticker */
-            transform: rotate(-3deg); /* Playful tilt */
+            border: 2px dashed var(--primary);
+            transform: rotate(-3deg);
             box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
             transition: transform 0.3s;
         }
         
-        .quality-badge:hover {
-            transform: rotate(0deg) scale(1.1);
-        }
+        .quality-badge:hover { transform: rotate(0deg) scale(1.1); }
+        .about p { font-size: 1.2rem; max-width: 700px; margin: 0 auto; color: #666; }
 
-        .about p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto;
-            color: #666;
-        }
-
-        /* --- PARALLAX DIVIDER --- */
+        /* --- PARALLAX QUOTE --- */
         .parallax-quote {
             background-image: linear-gradient(rgba(214, 51, 132, 0.85), rgba(214, 51, 132, 0.85)), url('https://images.unsplash.com/photo-1579372786545-d24232daf58c?q=80&w=1600&auto=format&fit=crop');
             background-attachment: fixed;
@@ -229,21 +205,16 @@
         .parallax-quote h2 {
             color: white;
             font-size: 3rem;
-            font-family: var(--font-heading);
             text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
         }
 
-        /* --- PRODUCTS SECTION --- */
+        /* --- PRODUCTS GRID --- */
         .products {
             padding: 80px 0;
             background-color: var(--accent);
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 50px;
-        }
+        .section-title { text-align: center; font-size: 3rem; margin-bottom: 50px; }
 
         .product-grid {
             display: grid;
@@ -278,41 +249,24 @@
         }
 
         .product-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
-            transition: transform 0.5s ease;
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
         }
 
-        .product-card:hover .product-img img {
-            transform: scale(1.1);
-        }
+        .product-card:hover .product-img img { transform: scale(1.1); }
 
         .zoom-hint {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
+            position: absolute; bottom: 10px; right: 10px;
             background: rgba(255, 255, 255, 0.9);
             color: var(--primary);
             padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            font-size: 0.8rem; font-weight: bold;
             pointer-events: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .product-info {
-            padding: 25px;
-            flex-grow: 1; 
-            text-align: center; /* Centered text looks better for cards */
-        }
-
-        .product-info h3 {
-            font-size: 1.6rem;
-            margin-bottom: 5px;
-        }
-
+        .product-info { padding: 25px; flex-grow: 1; text-align: center; }
+        .product-info h3 { font-size: 1.6rem; margin-bottom: 5px; }
+        
         .price {
             display: inline-block;
             margin: 5px 0 15px 0;
@@ -324,162 +278,159 @@
             border-radius: 15px;
         }
 
-        /* --- VISUAL ORDER FORM --- */
+        /* --- NEW: BOX BUILDER STYLES --- */
         .contact {
             padding: 80px 0;
             background: var(--white);
             text-align: center;
         }
 
+        .box-builder-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(214, 51, 132, 0.1);
+            border: 4px dashed #fce4ec;
+            margin-bottom: 40px;
+        }
+
+        .builder-controls {
+            margin-bottom: 30px;
+        }
+        
+        .treat-btn {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .treat-btn:hover { border-color: var(--primary); transform: translateY(-3px); color: var(--primary); }
+        .treat-btn img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+
+        /* The Box Display */
+        .the-box {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 across */
+            gap: 15px;
+            background-color: var(--secondary);
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .box-slot {
+            aspect-ratio: 1/1;
+            background: rgba(255,255,255,0.7);
+            border: 2px dashed #d63384;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box-slot:hover { background: white; }
+        
+        .box-slot img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+            animation: popIn 0.3s ease;
+        }
+
+        .slot-empty-text {
+            color: #d63384;
+            opacity: 0.5;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .box-total {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .reset-box {
+            background: none;
+            border: none;
+            color: #999;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* --- CONTACT FORM --- */
         .contact-form {
-            max-width: 700px;
+            max-width: 600px;
             margin: 0 auto;
             text-align: left;
-            background: var(--white);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 15px 50px rgba(214, 51, 132, 0.15);
-            border: 2px dashed #fce4ec; /* Cute dashed border */
         }
-
-        .form-group {
-            margin-bottom: 25px;
+        
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 10px; font-weight: bold; color: var(--primary); font-family: var(--font-heading); font-size: 1.3rem;}
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 15px;
+            font-size: 1rem; font-family: var(--font-body); background-color: #fdfdfd;
         }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 1.2rem;
-            font-family: var(--font-heading); /* Fancy font for labels */
-        }
-
-        .form-group input, 
-        .form-group textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #eee;
-            border-radius: 15px;
-            font-size: 1rem;
-            font-family: var(--font-body);
-            transition: all 0.3s;
-            background-color: #fdfdfd;
-        }
-
-        .form-group input:focus, 
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            background-color: #fff;
-            box-shadow: 0 0 0 4px rgba(214, 51, 132, 0.1);
-        }
-
-        /* Visual Selection Buttons */
-        .option-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-        }
-
-        .option-btn {
-            background: white;
-            border: 2px solid #eee;
-            padding: 15px 10px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #555;
-            transition: all 0.2s;
-            font-family: var(--font-body);
-        }
-
-        .option-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .option-btn.selected {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--primary); background-color: #fff;
         }
 
         /* --- FOOTER --- */
         footer {
-            background-color: var(--black);
-            color: white;
-            text-align: center;
-            padding: 30px;
-            margin-top: auto;
-            border-top: 4px solid var(--primary);
+            background-color: var(--black); color: white; text-align: center;
+            padding: 30px; margin-top: auto; border-top: 4px solid var(--primary);
         }
 
-        /* --- FALLING SWEETS ANIMATION --- */
+        /* --- ANIMATIONS --- */
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
         .falling-sweet {
-            position: fixed;
-            top: -50px;
-            font-size: 24px;
-            z-index: 9999;
-            pointer-events: none;
-            animation: fall linear forwards;
-            opacity: 0.7;
+            position: fixed; top: -50px; font-size: 24px; z-index: 9999;
+            pointer-events: none; animation: fall linear forwards; opacity: 0.7;
         }
-
         @keyframes fall {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
-        /* --- LIGHTBOX (IMAGE POPUP) --- */
+        /* LIGHTBOX */
         .lightbox {
-            display: none; 
-            position: fixed;
-            z-index: 10001;
-            padding-top: 50px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(5px);
+            display: none; position: fixed; z-index: 10001; padding-top: 50px;
+            left: 0; top: 0; width: 100%; height: 100%; overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9); backdrop-filter: blur(5px);
         }
-
         .lightbox-content {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 800px;
-            max-height: 80vh;
-            object-fit: contain;
-            border-radius: 10px;
-            border: 3px solid white;
-            animation: zoomIn 0.3s;
+            margin: auto; display: block; width: 80%; max-width: 800px;
+            max-height: 80vh; object-fit: contain; border-radius: 10px;
+            border: 3px solid white; animation: zoomIn 0.3s;
         }
-
         .close-lightbox {
-            position: absolute;
-            top: 20px;
-            right: 35px;
-            color: #f1f1f1;
-            font-size: 40px;
-            font-weight: bold;
-            transition: 0.3s;
-            cursor: pointer;
+            position: absolute; top: 20px; right: 35px; color: #f1f1f1;
+            font-size: 40px; font-weight: bold; cursor: pointer;
         }
-
-        .close-lightbox:hover {
-            color: var(--primary);
-        }
-
-        @keyframes zoomIn {
-            from {transform:scale(0)} 
-            to {transform:scale(1)}
-        }
-
     </style>
 </head>
 <body>
@@ -505,7 +456,6 @@
             <p>From custom-designed cookies to indulgent slices. Personally baked by Nicole using only the highest quality ingredients.</p>
             <a href="#products" class="btn">View The Menu</a>
         </div>
-        
         <div class="wave-bottom">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
@@ -516,12 +466,8 @@
     <section id="about" class="about">
         <div class="container">
             <div class="quality-badge">✨ Baked Fresh by Order</div>
-            
             <h2>Personally Baked by Nicole</h2>
-            <p>
-                At Nicole's Treats, we don't cut corners! Every single cookie and slice is handmade in my kitchen using premium chocolate, farm-fresh eggs, and high-quality butter. <br><br>
-                I believe you can taste the difference when something is made with <strong>care, passion, and a little bit of magic.</strong>
-            </p>
+            <p>At Nicole's Treats, we don't cut corners! Every single cookie and slice is handmade in my kitchen using premium chocolate, farm-fresh eggs, and high-quality butter.</p>
         </div>
     </section>
 
@@ -534,8 +480,6 @@
     <section id="products" class="products">
         <div class="container">
             <h2 class="section-title">Our Menu</h2>
-            <p style="text-align: center; margin-bottom: 30px; color: #777; font-family: var(--font-body);">(Click any treat to see it up close!)</p>
-            
             <div class="product-grid">
                 <div class="product-card">
                     <div class="product-img" onclick="openLightbox(this)">
@@ -544,11 +488,10 @@
                     </div>
                     <div class="product-info">
                         <h3>Custom Cookies</h3>
-                        <span class="price">From $4.00 ea</span>
-                        <p>Fully customizable sugar cookies. Choose your fondant color, toppings, and add <strong>Letters & Numbers</strong>.</p>
+                        <span class="price">$4.00 ea</span>
+                        <p>Fully customizable sugar cookies with fondant, letters & numbers.</p>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="product-img" onclick="openLightbox(this)">
                         <img src="https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg" alt="Classic Mars Bar Slice">
@@ -557,10 +500,9 @@
                     <div class="product-info">
                         <h3>Mars Bar Slice</h3>
                         <span class="price">$5.00 / slice</span>
-                        <p>A gooey, chocolatey caramel delight. Made with real Mars Bars and high-quality milk chocolate.</p>
+                        <p>A gooey, chocolatey caramel delight made with real Mars Bars.</p>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="product-img" onclick="openLightbox(this)">
                         <img src="https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg" alt="Nicole's Rocky Road">
@@ -569,7 +511,7 @@
                     <div class="product-info">
                         <h3>Rocky Road</h3>
                         <span class="price">$6.00 / slice</span>
-                        <p>Loaded with fluffy marshmallows, nuts, and jellies, all enveloped in premium chocolate.</p>
+                        <p>Loaded with marshmallows, nuts, and jellies in premium chocolate.</p>
                     </div>
                 </div>
             </div>
@@ -578,39 +520,52 @@
 
     <section id="order" class="contact">
         <div class="container">
-            <h2>Place a Custom Order</h2>
-            <p style="margin-bottom: 30px;">Select your treat and tell me what you need!</p>
+            <h2>Build Your Own Box</h2>
+            <p style="margin-bottom: 30px;">Tap the buttons to fill your box (Pack of 6)!</p>
             
+            <div class="box-builder-container">
+                <div class="builder-controls">
+                    <button class="treat-btn" onclick="addToBox('cookie', 4, 'cookie.png')">
+                        🍪 Add Cookie (+$4)
+                    </button>
+                    <button class="treat-btn" onclick="addToBox('mars', 5, 'https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg')">
+                        🍫 Add Mars (+$5)
+                    </button>
+                    <button class="treat-btn" onclick="addToBox('rocky', 6, 'https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg')">
+                        🍬 Add Rocky (+$6)
+                    </button>
+                </div>
+
+                <div class="the-box" id="boxGrid">
+                    <div class="box-slot" onclick="removeFromBox(0)"><span class="slot-empty-text">Empty</span></div>
+                    <div class="box-slot" onclick="removeFromBox(1)"><span class="slot-empty-text">Empty</span></div>
+                    <div class="box-slot" onclick="removeFromBox(2)"><span class="slot-empty-text">Empty</span></div>
+                    <div class="box-slot" onclick="removeFromBox(3)"><span class="slot-empty-text">Empty</span></div>
+                    <div class="box-slot" onclick="removeFromBox(4)"><span class="slot-empty-text">Empty</span></div>
+                    <div class="box-slot" onclick="removeFromBox(5)"><span class="slot-empty-text">Empty</span></div>
+                </div>
+
+                <div class="box-total">Total: $<span id="totalPrice">0</span></div>
+                <button class="reset-box" onclick="resetBox()">Clear Box</button>
+            </div>
+
             <div class="contact-form">
                 <form>
+                    <input type="hidden" id="boxContentsInput" name="box_contents">
+                    
                     <div class="form-group">
                         <label>Your Name</label>
                         <input type="text" placeholder="Jane Doe" required>
                     </div>
-                    
                     <div class="form-group">
                         <label>Email Address</label>
                         <input type="email" placeholder="jane@example.com" required>
                     </div>
-
                     <div class="form-group">
-                        <label>What are you craving?</label>
-                        <input type="hidden" id="cravingInput" name="craving" required>
-                        
-                        <div class="option-grid">
-                            <button type="button" class="option-btn" onclick="selectOption(this, 'Cookies')">🍪 Cookies</button>
-                            <button type="button" class="option-btn" onclick="selectOption(this, 'Mars Bar')">🍫 Mars Bar</button>
-                            <button type="button" class="option-btn" onclick="selectOption(this, 'Rocky Road')">🍬 Rocky Road</button>
-                            <button type="button" class="option-btn" onclick="selectOption(this, 'Mixed Box')">🎁 Mixed Box</button>
-                        </div>
+                        <label>Custom Details (Colors, Names, etc.)</label>
+                        <textarea rows="4" placeholder="e.g., Pink fondant for the cookies..."></textarea>
                     </div>
-
-                    <div class="form-group">
-                        <label>Custom Details (Letters, Numbers, Toppings)</label>
-                        <textarea rows="4" placeholder="e.g., Pink fondant with 'HARRY 5' stamped on them..."></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn" style="width: 100%;">Send Enquiry</button>
+                    <button type="submit" class="btn" style="width: 100%;">Send Order</button>
                 </form>
             </div>
         </div>
@@ -626,51 +581,87 @@
     </div>
 
     <script>
+        // --- BOX BUILDER LOGIC ---
+        let box = [null, null, null, null, null, null]; // 6 slots
+        let prices = { 'cookie': 4, 'mars': 5, 'rocky': 6 };
+        
+        function addToBox(type, price, imgUrl) {
+            // Find first empty slot
+            const emptyIndex = box.findIndex(slot => slot === null);
+            
+            if (emptyIndex !== -1) {
+                // Fill slot
+                box[emptyIndex] = { type: type, price: price, img: imgUrl };
+                renderBox();
+            } else {
+                alert("Box is full! Click an item in the box to remove it.");
+            }
+        }
+
+        function removeFromBox(index) {
+            if (box[index] !== null) {
+                box[index] = null;
+                renderBox();
+            }
+        }
+
+        function resetBox() {
+            box = [null, null, null, null, null, null];
+            renderBox();
+        }
+
+        function renderBox() {
+            const grid = document.getElementById('boxGrid');
+            const slots = grid.children;
+            let total = 0;
+            let summary = "";
+
+            box.forEach((item, index) => {
+                const slot = slots[index];
+                slot.innerHTML = ""; // Clear slot
+
+                if (item) {
+                    // Item exists
+                    const img = document.createElement('img');
+                    img.src = item.img;
+                    slot.appendChild(img);
+                    total += item.price;
+                    summary += item.type + ", ";
+                } else {
+                    // Empty slot
+                    slot.innerHTML = '<span class="slot-empty-text">Empty</span>';
+                }
+            });
+
+            // Update Total
+            document.getElementById('totalPrice').innerText = total;
+            // Update Hidden Input for Form
+            document.getElementById('boxContentsInput').value = summary + " (Total: $" + total + ")";
+        }
+
         // --- FALLING SWEETS ---
         function createSweet() {
             const sweets = ['🍪', '🍬', '🍫', '🧁', '🍩'];
             const sweet = document.createElement('div');
             sweet.classList.add('falling-sweet');
             sweet.innerText = sweets[Math.floor(Math.random() * sweets.length)];
-            
             sweet.style.left = Math.random() * 100 + 'vw';
             sweet.style.animationDuration = Math.random() * 3 + 4 + 's'; 
             sweet.style.fontSize = Math.random() * 20 + 20 + 'px'; 
-            
             document.body.appendChild(sweet);
             setTimeout(() => { sweet.remove(); }, 7000);
         }
         setInterval(createSweet, 400);
 
-        // --- LIGHTBOX GALLERY ---
+        // --- LIGHTBOX ---
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
-
         function openLightbox(element) {
-            const img = element.querySelector('img');
-            lightbox.style.display = "flex"; 
-            lightbox.style.alignItems = "center";
-            lightboxImg.src = img.src;
+            lightbox.style.display = "flex"; lightbox.style.alignItems = "center";
+            lightboxImg.src = element.querySelector('img').src;
         }
-
-        function closeLightbox() {
-            lightbox.style.display = "none";
-        }
-
-        lightbox.onclick = function(event) {
-            if (event.target === lightbox) {
-                closeLightbox();
-            }
-        }
-
-        // --- VISUAL FORM SELECTION ---
-        function selectOption(btn, value) {
-            const buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            document.getElementById('cravingInput').value = value;
-        }
+        function closeLightbox() { lightbox.style.display = "none"; }
+        lightbox.onclick = function(e) { if (e.target === lightbox) closeLightbox(); }
     </script>
-
 </body>
 </html>
