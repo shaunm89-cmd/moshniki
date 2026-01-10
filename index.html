@@ -322,6 +322,15 @@
         .treat-btn:hover { border-color: var(--primary); transform: translateY(-3px); color: var(--primary); }
         .treat-btn span.cost { font-size: 0.8rem; color: #888; font-weight: normal; }
 
+        .treat-btn.bulk-btn {
+            border-color: #ffd700;
+            background-color: #fffdf0;
+        }
+        .treat-btn.bulk-btn:hover {
+            border-color: #ffaa00;
+            background-color: #fff8c0;
+        }
+
         .the-tray {
             display: flex;
             flex-wrap: wrap;
@@ -416,6 +425,20 @@
             outline: none; border-color: var(--primary); background-color: #fff;
         }
 
+        /* NEW POLICY NOTE STYLE */
+        .policy-note {
+            background-color: #fffdf0;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            color: #856404;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         /* --- FOOTER --- */
         footer {
             background-color: var(--black); color: white; text-align: center;
@@ -460,34 +483,34 @@
             font-size: 40px; font-weight: bold; cursor: pointer;
         }
 
-        /* --- MOBILE FIXES (NEW) --- */
+        /* --- MOBILE FIXES --- */
         @media (max-width: 768px) {
             nav {
-                flex-direction: column; /* Stack logo on top of links */
+                flex-direction: column; 
                 padding-bottom: 10px;
                 gap: 15px;
             }
 
             .logo-img {
-                height: 60px; /* Make logo slightly smaller on mobile */
+                height: 60px; 
                 margin-bottom: 0;
             }
 
             .nav-links {
                 display: flex;
-                gap: 15px; /* Even spacing between text links */
+                gap: 15px; 
                 justify-content: center;
                 width: 100%;
                 flex-wrap: wrap;
             }
 
             .nav-links a {
-                margin-left: 0; /* Remove side margin */
+                margin-left: 0;
                 font-size: 0.9rem;
             }
             
             .hero h1 {
-                font-size: 2.8rem; /* Fix huge text on phone */
+                font-size: 2.8rem; 
             }
         }
     </style>
@@ -588,6 +611,10 @@
                         🍪 Add Cookie
                         <span class="cost">$4.00 ea</span>
                     </button>
+                    <button class="treat-btn bulk-btn" onclick="addBulkCookies()">
+                        🎁 Bulk Pack (20)
+                        <span class="cost">$70.00 (Save $10)</span>
+                    </button>
                     <button class="treat-btn" onclick="addItem('mars')">
                         🍫 Add Mars Slab
                         <span class="cost">$50.00 / Slab</span>
@@ -623,6 +650,11 @@
                         <label>Custom Details (Colors, Names, Date required)</label>
                         <textarea rows="4" placeholder="e.g., I need this for a birthday on Saturday..."></textarea>
                     </div>
+
+                    <div class="policy-note">
+                        <p><strong>📝 A Little Note:</strong> To ensure every treat is baked fresh just for you, we kindly ask for a <strong>50% deposit</strong> to secure your order. Since we start prepping your goodies early, deposits are non-refundable for cancellations made within 24 hours of pickup. Thank you!</p>
+                    </div>
+
                     <button type="submit" class="btn" style="width: 100%;">Send Order Request</button>
                 </form>
             </div>
@@ -650,6 +682,14 @@
 
         function addItem(type) {
             orderItems.push(type);
+            renderTray();
+        }
+
+        // --- NEW FUNCTION: ADD 20 COOKIES AT ONCE ---
+        function addBulkCookies() {
+            for (let i = 0; i < 20; i++) {
+                orderItems.push('cookie');
+            }
             renderTray();
         }
 
