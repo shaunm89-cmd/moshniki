@@ -3,409 +3,398 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WealthWise | Smart Budgeting & Saving</title>
+    <title>WealthWise | Take Control of Your Financial Future</title>
     <style>
+        /* --- DESIGN SECRET #3: VISUALLY APPEALING --- 
+           Restricting to 2-3 main colors for a professional look[cite: 464]. */
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --success: #10b981;
-            --danger: #ef4444;
-            --bg: #f8fafc;
-            --surface: #ffffff;
-            --text-main: #1e293b;
+            --brand-primary: #0f172a; /* Deep Navy - Trustworthy */
+            --brand-accent: #10b981;  /* Emerald - Growth/Money */
+            --brand-light: #f1f5f9;
+            --text-dark: #334155;
             --text-light: #64748b;
+            --white: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+        
+        body { background-color: var(--brand-light); color: var(--text-dark); line-height: 1.7; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        /* --- Header & Navigation --- */
+        /* --- HEADER & NAV [cite: 607] --- */
         header {
-            background: var(--surface);
-            padding: 1rem 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            background: var(--white);
+            padding: 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -0.5px;
-        }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--brand-primary); letter-spacing: -1px; }
+        .logo span { color: var(--brand-accent); }
 
-        nav ul {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
+        nav ul { display: flex; gap: 2rem; list-style: none; }
+        nav a { text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+        nav a:hover { color: var(--brand-accent); }
 
-        nav a {
+        .btn-cta {
+            background: var(--brand-accent);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
             text-decoration: none;
-            color: var(--text-main);
             font-weight: 600;
-            transition: color 0.3s;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
         }
+        .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
 
-        nav a:hover {
-            color: var(--primary);
-        }
-
-        /* --- Hero Section --- */
+        /* --- HERO SECTION [cite: 568] --- 
+           Uses a Benefit-Driven Tagline "Stop Wondering..."  */
         .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, #1e293b 100%);
+            color: var(--white);
+            padding: 6rem 5% 4rem;
             text-align: center;
-            margin-bottom: 2rem;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
         }
 
         .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .hero p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: 1.25rem;
+            color: #cbd5e1;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 0 auto 2.5rem;
         }
 
-        /* --- Main Layout --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
+        /* --- PROBLEM/SOLUTION SECTION [cite: 586] --- */
+        .problem-solution {
+            padding: 4rem 5%;
+            text-align: center;
+        }
+        .section-title { font-size: 2rem; margin-bottom: 1rem; color: var(--brand-primary); }
+        .sub-text { max-width: 700px; margin: 0 auto 3rem; color: var(--text-light); }
+
+        /* --- THE APP (CALCULATOR) --- */
+        .app-container {
+            max-width: 1000px;
+            margin: -3rem auto 3rem; /* Overlap effect */
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 2rem;
+            overflow: hidden;
+            position: relative;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            nav { display: none; } /* Simplified for mobile */
-        }
+        .app-main { padding: 2.5rem; }
+        .app-sidebar { background: #f8fafc; padding: 2.5rem; border-left: 1px solid #e2e8f0; }
 
-        /* --- Cards --- */
-        .card {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .card h2 {
-            margin-bottom: 1rem;
-            font-size: 1.25rem;
-            color: var(--text-main);
-            border-bottom: 2px solid var(--bg);
-            padding-bottom: 0.5rem;
-        }
-
-        /* --- Dashboard Stats --- */
-        .stats-grid {
+        .stat-group {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .stat-box {
-            background: var(--surface);
-            padding: 1.5rem;
+        .stat-card {
+            background: var(--white);
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: block;
-            margin-top: 0.5rem;
-        }
+        .stat-label { display: block; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;}
+        .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--brand-primary); }
+        .text-green { color: var(--brand-accent); }
+        .text-red { color: #ef4444; }
 
-        .income-text { color: var(--success); }
-        .expense-text { color: var(--danger); }
-        .balance-text { color: var(--primary); }
-
-        /* --- Form Elements --- */
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1rem;
-        }
-
+        /* Form Inputs */
+        .input-row { display: flex; gap: 10px; margin-bottom: 1rem; }
         input, select {
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
             width: 100%;
-            font-size: 1rem;
+            padding: 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.3s;
         }
+        input:focus { border-color: var(--brand-accent); }
 
-        button {
-            padding: 0.75rem 1.5rem;
-            background: var(--primary);
-            color: white;
+        .btn-add {
+            width: 100%;
+            padding: 1rem;
+            background: var(--brand-primary);
+            color: var(--white);
+            font-weight: bold;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
             transition: background 0.2s;
         }
+        .btn-add:hover { background: #334155; }
 
-        button:hover { background: var(--primary-dark); }
-        
-        .btn-delete {
-            background: var(--danger);
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
-            margin-left: 10px;
-        }
-
-        /* --- Transaction List --- */
-        .transaction-list {
-            list-style: none;
-        }
-
-        .transaction-item {
+        .history-list { list-style: none; margin-top: 2rem; max-height: 300px; overflow-y: auto; }
+        .history-item {
             display: flex;
             justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
             align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid var(--bg);
+        }
+        .delete-btn { color: #ef4444; background: none; border: none; font-size: 1.2rem; cursor: pointer; margin-left: 10px; }
+
+        /* --- SOCIAL PROOF & TESTIMONIALS [cite: 512] --- */
+        .testimonials {
+            background: var(--white);
+            padding: 4rem 5%;
+            text-align: center;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .test-card {
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            font-style: italic;
+        }
+        .test-author {
+            display: block;
+            margin-top: 1rem;
+            font-weight: bold;
+            font-style: normal;
+            color: var(--brand-primary);
         }
 
-        .transaction-item:last-child { border-bottom: none; }
-
-        .t-info {
+        /* --- LEAD MAGNET / NEWSLETTER [cite: 784] --- */
+        .lead-magnet {
+            background: var(--brand-accent);
+            color: var(--white);
+            padding: 4rem 5%;
+            text-align: center;
+        }
+        .lead-form {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+            max-width: 500px;
+            margin: 2rem auto 0;
         }
 
-        .t-date {
-            font-size: 0.8rem;
-            color: var(--text-light);
+        /* --- FOOTER [cite: 549] --- */
+        footer {
+            background: var(--brand-primary);
+            color: #94a3b8;
+            padding: 4rem 5%;
+            font-size: 0.9rem;
         }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-col h4 { color: var(--white); margin-bottom: 1.5rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 0.8rem; }
+        .footer-col a { color: #94a3b8; text-decoration: none; }
+        .footer-col a:hover { color: var(--white); }
 
-        /* --- Educational Content --- */
-        .tip-card {
-            background: #f0f9ff;
-            border-left: 4px solid var(--primary);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 0 8px 8px 0;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .app-container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+            .lead-form { flex-direction: column; }
+            nav { display: none; } /* Simplified for demo */
         }
-
-        .tip-title { font-weight: bold; margin-bottom: 0.5rem; display: block; }
-
-        /* --- Savings Goals --- */
-        .goal-container {
-            margin-bottom: 1rem;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: #e2e8f0;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-top: 5px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--success);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">WealthWise</div>
+        <div class="logo">Wealth<span>Wise</span></div>
         <nav>
             <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Analysis</a></li>
-                <li><a href="#">Learn</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#testimonials">Stories</a></li>
+                <li><a href="#about">About</a></li>
             </ul>
         </nav>
+        <button class="btn-cta" onclick="document.querySelector('.lead-magnet').scrollIntoView({behavior: 'smooth'})">Get Free Report</button>
     </header>
 
     <section class="hero">
-        <h1>Master Your Money</h1>
-        <p>Track expenses, set savings goals, and learn how to make every dollar last longer.</p>
+        <h1>Stop Wondering Where Your Money Went.</h1>
+        <p>Join thousands who have switched from financial stress to financial freedom with our simple, automated tracking system.</p>
+        <button class="btn-cta" style="background: white; color: var(--brand-primary); padding: 1rem 2rem; font-size: 1.1rem;">Start Saving Now</button>
     </section>
 
-    <div class="container">
-        <main>
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <span>Income</span>
-                    <span class="stat-value income-text" id="total-income">$0.00</span>
+    <div class="app-container">
+        <div class="app-main">
+            <h2 class="section-title" style="font-size: 1.5rem; text-align: left;">Financial Snapshot</h2>
+            
+            <div class="stat-group">
+                <div class="stat-card">
+                    <span class="stat-label">Income</span>
+                    <span class="stat-num text-green" id="money-plus">+$0.00</span>
                 </div>
-                <div class="stat-box">
-                    <span>Expenses</span>
-                    <span class="stat-value expense-text" id="total-expenses">$0.00</span>
+                <div class="stat-card">
+                    <span class="stat-label">Expenses</span>
+                    <span class="stat-num text-red" id="money-minus">-$0.00</span>
                 </div>
-                <div class="stat-box">
-                    <span>Balance</span>
-                    <span class="stat-value balance-text" id="balance">$0.00</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Add Transaction</h2>
-                <div class="input-group">
-                    <input type="text" id="desc" placeholder="Description (e.g. Rent, Groceries)">
-                    <input type="number" id="amount" placeholder="Amount">
-                </div>
-                <div class="input-group">
-                    <select id="type">
-                        <option value="expense">Expense (-)</option>
-                        <option value="income">Income (+)</option>
-                    </select>
-                    <button onclick="addTransaction()">Add Entry</button>
+                <div class="stat-card">
+                    <span class="stat-label">Balance</span>
+                    <span class="stat-num" id="balance">$0.00</span>
                 </div>
             </div>
 
-            <div class="card">
-                <h2>Recent Transactions</h2>
-                <ul class="transaction-list" id="list">
-                    </ul>
-            </div>
-        </main>
-
-        <aside>
-            <div class="card">
-                <h2>Savings Goals</h2>
-                <div class="goal-container">
-                    <div style="display:flex; justify-content:space-between;">
-                        <strong>Emergency Fund</strong>
-                        <span id="goal-text">25%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 25%"></div>
-                    </div>
-                    <p style="font-size: 0.8rem; color: #64748b; margin-top: 5px;">Goal: $5,000</p>
+            <form id="form">
+                <div class="input-row">
+                    <input type="text" id="text" placeholder="Description (e.g. Paycheck, Rent)" required>
+                    <input type="number" id="amount" placeholder="Amount" required>
                 </div>
-                <button style="width:100%; margin-top:1rem; background: var(--bg); color: var(--text-main);">+ New Goal</button>
-            </div>
+                <button class="btn-add">Add Transaction</button>
+            </form>
 
-            <div class="card">
-                <h2>Smart Money Tips</h2>
-                
-                <div class="tip-card">
-                    <span class="tip-title">💡 The 50/30/20 Rule</span>
-                    Allocate 50% to needs, 30% to wants, and 20% to savings. It's the golden rule of budgeting.
+            <ul id="list" class="history-list">
+                </ul>
+        </div>
+
+        <div class="app-sidebar">
+            <h3 style="margin-bottom: 1rem;">Wealth Tips</h3>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem;">
+                <strong>Did you know?</strong> Cutting just one daily subscription can save you over $400 a year. 
+            </p>
+            
+            <h3 style="margin-bottom: 1rem;">Your Goals</h3>
+            <div style="margin-bottom: 1rem;">
+                <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:5px;">
+                    <span>Emergency Fund</span>
+                    <span>45%</span>
                 </div>
-
-                <div class="tip-card">
-                    <span class="tip-title">🛑 Stop the "Latte Factor"</span>
-                    Small daily expenses add up. Cutting out a $5 daily coffee saves you $1,825 a year.
-                </div>
-
-                <div class="tip-card">
-                    <span class="tip-title">📈 Compound Interest</span>
-                    Start saving early. Even small amounts grow exponentially over time thanks to compounding.
+                <div style="background:#e2e8f0; height:8px; border-radius:4px;">
+                    <div style="background:var(--brand-accent); width:45%; height:100%; border-radius:4px;"></div>
                 </div>
             </div>
-        </aside>
+            
+            <button class="btn-cta" style="width:100%; font-size: 0.9rem;">Book Strategy Call</button>
+        </div>
     </div>
 
+    <section class="testimonials" id="testimonials">
+        <h2 class="section-title">Don't Just Take Our Word For It</h2>
+        <p class="sub-text">See how WealthWise is changing lives every single day.</p>
+        
+        <div class="test-grid">
+            <div class="test-card">
+                "I used to be terrified of my bank account. Now I know exactly where every dollar goes. This tool is a lifesaver."
+                <span class="test-author">- Sarah J., Small Business Owner</span>
+            </div>
+            <div class="test-card">
+                "Simple, effective, and actually beautiful to look at. I saved for my wedding in 6 months using this tracker."
+                <span class="test-author">- Mike T., Graphic Designer</span>
+            </div>
+            <div class="test-card">
+                "Finally, a finance tool that doesn't feel like a spreadsheet from 1999. Highly recommend the strategy calls too!"
+                <span class="test-author">- Jessica R., Freelancer</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="lead-magnet">
+        <h2 style="font-size: 2.2rem; margin-bottom: 1rem;">Get The "7-Day Wealth Cleanse" Checklist</h2>
+        <p style="opacity: 0.9; margin-bottom: 2rem;">Stop leaking money. Download our free guide to find $500 in hidden savings this week.</p>
+        <div class="lead-form">
+            <input type="email" placeholder="Enter your email address" style="border:none; border-radius: 50px; padding: 1rem 2rem; width: 100%;">
+            <button class="btn-cta" style="background: var(--brand-primary); white-space: nowrap;">Send It To Me</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="color: white; margin-bottom: 1rem;">Wealth<span>Wise</span></div>
+                <p>Helping you build a wealthier, stress-free life through smart automation and tracking.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Privacy Policy</a></li> <li><a href="#">Terms & Conditions</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4> <ul>
+                    <li>support@wealthwise.com</li>
+                    <li>1-800-WEALTH-01</li>
+                    <li>123 Finance St, Sydney, NSW</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4> <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem; opacity: 0.5; font-size: 0.8rem;">
+            &copy; 2026 WealthWise Inc. All rights reserved.
+        </div>
+    </footer>
+
     <script>
-        // --- State Management ---
-        // We use localStorage so data persists even if you close the browser
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        const balance = document.getElementById('balance');
+        const money_plus = document.getElementById('money-plus');
+        const money_minus = document.getElementById('money-minus');
+        const list = document.getElementById('list');
+        const form = document.getElementById('form');
+        const text = document.getElementById('text');
+        const amount = document.getElementById('amount');
 
-        // --- DOM Elements ---
-        const balanceEl = document.getElementById('balance');
-        const incomeEl = document.getElementById('total-income');
-        const expenseEl = document.getElementById('total-expenses');
-        const listEl = document.getElementById('list');
-        const descInput = document.getElementById('desc');
-        const amountInput = document.getElementById('amount');
-        const typeInput = document.getElementById('type');
+        // LocalStorage for persistence
+        const localStorageTransactions = JSON.parse(localStorage.getItem('transactions'));
+        let transactions = localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
 
-        // --- Core Functions ---
-
-        function updateValues() {
-            const amounts = transactions.map(t => t.amount);
-            
-            // Calculate totals
-            const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2);
-            
-            const income = amounts
-                .filter(item => item > 0)
-                .reduce((acc, item) => acc + item, 0)
-                .toFixed(2);
-            
-            const expense = (amounts
-                .filter(item => item < 0)
-                .reduce((acc, item) => acc + item, 0) * -1)
-                .toFixed(2);
-
-            // Update UI
-            balanceEl.innerText = `$${total}`;
-            incomeEl.innerText = `+$${income}`;
-            expenseEl.innerText = `-$${expense}`;
-
-            // Update Savings Goal Logic (Simple Example: 10% of balance)
-            const goalPercentage = Math.min(100, Math.max(0, (total / 5000) * 100));
-            document.querySelector('.progress-fill').style.width = `${goalPercentage}%`;
-            document.getElementById('goal-text').innerText = `${Math.floor(goalPercentage)}%`;
-        }
-
-        function addTransaction() {
-            if (descInput.value.trim() === '' || amountInput.value.trim() === '') {
+        function addTransaction(e) {
+            e.preventDefault();
+            if (text.value.trim() === '' || amount.value.trim() === '') {
                 alert('Please add a description and amount');
                 return;
             }
-
-            // Determine if income or expense
-            let amountVal = +amountInput.value;
-            if (typeInput.value === 'expense') {
-                amountVal = -Math.abs(amountVal);
-            } else {
-                amountVal = Math.abs(amountVal);
-            }
-
             const transaction = {
                 id: generateID(),
-                text: descInput.value,
-                amount: amountVal,
-                date: new Date().toLocaleDateString()
+                text: text.value,
+                amount: +amount.value
             };
-
             transactions.push(transaction);
             addTransactionDOM(transaction);
             updateValues();
             updateLocalStorage();
-
-            // Clear inputs
-            descInput.value = '';
-            amountInput.value = '';
+            text.value = '';
+            amount.value = '';
         }
 
         function generateID() {
@@ -415,23 +404,32 @@
         function addTransactionDOM(transaction) {
             const sign = transaction.amount < 0 ? '-' : '+';
             const item = document.createElement('li');
-            item.classList.add('transaction-item');
-
-            // Color coding
-            const colorClass = transaction.amount < 0 ? 'expense-text' : 'income-text';
+            item.classList.add('history-item');
+            
+            // Color logic for amounts
+            const color = transaction.amount < 0 ? '#ef4444' : '#10b981';
 
             item.innerHTML = `
-                <div class="t-info">
+                <div>
                     <strong>${transaction.text}</strong>
-                    <span class="t-date">${transaction.date}</span>
                 </div>
                 <div style="display:flex; align-items:center;">
-                    <span class="${colorClass}">${sign}$${Math.abs(transaction.amount)}</span>
-                    <button class="btn-delete" onclick="removeTransaction(${transaction.id})">x</button>
+                    <span style="color:${color}; font-weight:bold; margin-right:10px;">${sign}${Math.abs(transaction.amount)}</span>
+                    <button class="delete-btn" onclick="removeTransaction(${transaction.id})">&times;</button>
                 </div>
             `;
+            list.appendChild(item);
+        }
 
-            listEl.appendChild(item);
+        function updateValues() {
+            const amounts = transactions.map(transaction => transaction.amount);
+            const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+            const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc += item), 0).toFixed(2);
+            const expense = (amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1).toFixed(2);
+
+            balance.innerText = `$${total}`;
+            money_plus.innerText = `+$${income}`;
+            money_minus.innerText = `-$${expense}`;
         }
 
         function removeTransaction(id) {
@@ -445,14 +443,13 @@
         }
 
         function init() {
-            listEl.innerHTML = '';
+            list.innerHTML = '';
             transactions.forEach(addTransactionDOM);
             updateValues();
         }
 
-        // Initialize App
+        form.addEventListener('submit', addTransaction);
         init();
-
     </script>
 </body>
 </html>
