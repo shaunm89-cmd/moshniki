@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WealthWise | Smart Budgeting & Saving</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background: var(--surface);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Main Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            nav { display: none; } /* Simplified for mobile */
+        }
+
+        /* --- Cards --- */
+        .card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .card h2 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 0.5rem;
+        }
+
+        /* --- Dashboard Stats --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: block;
+            margin-top: 0.5rem;
+        }
+
+        .income-text { color: var(--success); }
+        .expense-text { color: var(--danger); }
+        .balance-text { color: var(--primary); }
+
+        /* --- Form Elements --- */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        input, select {
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        button:hover { background: var(--primary-dark); }
+        
+        .btn-delete {
+            background: var(--danger);
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+        /* --- Transaction List --- */
+        .transaction-list {
+            list-style: none;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .transaction-item:last-child { border-bottom: none; }
+
+        .t-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .t-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* --- Educational Content --- */
+        .tip-card {
+            background: #f0f9ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tip-title { font-weight: bold; margin-bottom: 0.5rem; display: block; }
+
+        /* --- Savings Goals --- */
+        .goal-container {
+            margin-bottom: 1rem;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">WealthWise</div>
+        <nav>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Analysis</a></li>
+                <li><a href="#">Learn</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Master Your Money</h1>
+        <p>Track expenses, set savings goals, and learn how to make every dollar last longer.</p>
+    </section>
+
+    <div class="container">
+        <main>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span>Income</span>
+                    <span class="stat-value income-text" id="total-income">$0.00</span>
+                </div>
+                <div class="stat-box">
+                    <span>Expenses</span>
+                    <span class="stat-value expense-text" id="total-expenses">$0.00</span>
+                </div>
+                <div class="stat-box">
+                    <span>Balance</span>
+                    <span class="stat-value balance-text" id="balance">$0.00</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Add Transaction</h2>
+                <div class="input-group">
+                    <input type="text" id="desc" placeholder="Description (e.g. Rent, Groceries)">
+                    <input type="number" id="amount" placeholder="Amount">
+                </div>
+                <div class="input-group">
+                    <select id="type">
+                        <option value="expense">Expense (-)</option>
+                        <option value="income">Income (+)</option>
+                    </select>
+                    <button onclick="addTransaction()">Add Entry</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Recent Transactions</h2>
+                <ul class="transaction-list" id="list">
+                    </ul>
+            </div>
+        </main>
+
+        <aside>
+            <div class="card">
+                <h2>Savings Goals</h2>
+                <div class="goal-container">
+                    <div style="display:flex; justify-content:space-between;">
+                        <strong>Emergency Fund</strong>
+                        <span id="goal-text">25%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%"></div>
+                    </div>
+                    <p style="font-size: 0.8rem; color: #64748b; margin-top: 5px;">Goal: $5,000</p>
+                </div>
+                <button style="width:100%; margin-top:1rem; background: var(--bg); color: var(--text-main);">+ New Goal</button>
+            </div>
+
+            <div class="card">
+                <h2>Smart Money Tips</h2>
+                
+                <div class="tip-card">
+                    <span class="tip-title">💡 The 50/30/20 Rule</span>
+                    Allocate 50% to needs, 30% to wants, and 20% to savings. It's the golden rule of budgeting.
+                </div>
+
+                <div class="tip-card">
+                    <span class="tip-title">🛑 Stop the "Latte Factor"</span>
+                    Small daily expenses add up. Cutting out a $5 daily coffee saves you $1,825 a year.
+                </div>
+
+                <div class="tip-card">
+                    <span class="tip-title">📈 Compound Interest</span>
+                    Start saving early. Even small amounts grow exponentially over time thanks to compounding.
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // --- State Management ---
+        // We use localStorage so data persists even if you close the browser
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+
+        // --- DOM Elements ---
+        const balanceEl = document.getElementById('balance');
+        const incomeEl = document.getElementById('total-income');
+        const expenseEl = document.getElementById('total-expenses');
+        const listEl = document.getElementById('list');
+        const descInput = document.getElementById('desc');
+        const amountInput = document.getElementById('amount');
+        const typeInput = document.getElementById('type');
+
+        // --- Core Functions ---
+
+        function updateValues() {
+            const amounts = transactions.map(t => t.amount);
+            
+            // Calculate totals
+            const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2);
+            
+            const income = amounts
+                .filter(item => item > 0)
+                .reduce((acc, item) => acc + item, 0)
+                .toFixed(2);
+            
+            const expense = (amounts
+                .filter(item => item < 0)
+                .reduce((acc, item) => acc + item, 0) * -1)
+                .toFixed(2);
+
+            // Update UI
+            balanceEl.innerText = `$${total}`;
+            incomeEl.innerText = `+$${income}`;
+            expenseEl.innerText = `-$${expense}`;
+
+            // Update Savings Goal Logic (Simple Example: 10% of balance)
+            const goalPercentage = Math.min(100, Math.max(0, (total / 5000) * 100));
+            document.querySelector('.progress-fill').style.width = `${goalPercentage}%`;
+            document.getElementById('goal-text').innerText = `${Math.floor(goalPercentage)}%`;
+        }
+
+        function addTransaction() {
+            if (descInput.value.trim() === '' || amountInput.value.trim() === '') {
+                alert('Please add a description and amount');
+                return;
+            }
+
+            // Determine if income or expense
+            let amountVal = +amountInput.value;
+            if (typeInput.value === 'expense') {
+                amountVal = -Math.abs(amountVal);
+            } else {
+                amountVal = Math.abs(amountVal);
+            }
+
+            const transaction = {
+                id: generateID(),
+                text: descInput.value,
+                amount: amountVal,
+                date: new Date().toLocaleDateString()
+            };
+
+            transactions.push(transaction);
+            addTransactionDOM(transaction);
+            updateValues();
+            updateLocalStorage();
+
+            // Clear inputs
+            descInput.value = '';
+            amountInput.value = '';
+        }
+
+        function generateID() {
+            return Math.floor(Math.random() * 100000000);
+        }
+
+        function addTransactionDOM(transaction) {
+            const sign = transaction.amount < 0 ? '-' : '+';
+            const item = document.createElement('li');
+            item.classList.add('transaction-item');
+
+            // Color coding
+            const colorClass = transaction.amount < 0 ? 'expense-text' : 'income-text';
+
+            item.innerHTML = `
+                <div class="t-info">
+                    <strong>${transaction.text}</strong>
+                    <span class="t-date">${transaction.date}</span>
+                </div>
+                <div style="display:flex; align-items:center;">
+                    <span class="${colorClass}">${sign}$${Math.abs(transaction.amount)}</span>
+                    <button class="btn-delete" onclick="removeTransaction(${transaction.id})">x</button>
+                </div>
+            `;
+
+            listEl.appendChild(item);
+        }
+
+        function removeTransaction(id) {
+            transactions = transactions.filter(transaction => transaction.id !== id);
+            updateLocalStorage();
+            init();
+        }
+
+        function updateLocalStorage() {
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+        }
+
+        function init() {
+            listEl.innerHTML = '';
+            transactions.forEach(addTransactionDOM);
+            updateValues();
+        }
+
+        // Initialize App
+        init();
+
+    </script>
+</body>
+</html>
