@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Command Center | Penrith</title>
+    <title>Command Center | Live</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -27,10 +27,11 @@
         .dashboard-grid {
             display: grid;
             grid-template-columns: 350px 1fr 350px;
-            grid-template-rows: auto auto;
+            grid-template-rows: auto 1fr; /* First row auto, second row fills remaining */
             gap: 20px;
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
+            height: 90vh; /* Attempt to fill screen */
         }
 
         /* Card Styles */
@@ -66,60 +67,94 @@
             animation: pulse 2s infinite;
         }
 
-        /* Specific Layout Assignments */
-        .weather-section { grid-column: 1 / 2; grid-row: 1 / 2; }
-        .radar-section { grid-column: 2 / 3; grid-row: 1 / 3; height: 80vh; min-height: 600px;}
-        .iptv-section { grid-column: 3 / 4; grid-row: 1 / 2; }
-        .news-section { grid-column: 1 / 2; grid-row: 2 / 3; }
-        .nine-news-section { grid-column: 3 / 4; grid-row: 2 / 3; }
+        /* --- UPDATED LAYOUT --- */
+        
+        /* Left Column: Weather sits on top, News.com.au fills the rest */
+        .weather-section { 
+            grid-column: 1 / 2; 
+            grid-row: 1 / 2; 
+        }
+        
+        .news-section { 
+            grid-column: 1 / 2; 
+            grid-row: 2 / 3; 
+            min-height: 400px;
+        }
+
+        /* Middle Column: Radar takes full height */
+        .radar-section { 
+            grid-column: 2 / 3; 
+            grid-row: 1 / 3; 
+            min-height: 600px;
+        }
+
+        /* Right Column: 9News takes full height (Removed IPTV) */
+        .nine-news-section { 
+            grid-column: 3 / 4; 
+            grid-row: 1 / 3; 
+        }
 
         /* Weather Widget */
-        .weather-display {
-            padding: 20px;
-            text-align: center;
+        .weather-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1e293b; 
+            padding: 10px;
         }
-        .temp-large { font-size: 3.5rem; font-weight: 700; }
-        .weather-meta { color: var(--text-secondary); margin-top: 10px; font-size: 0.9rem; }
-        .location-tag { color: var(--accent-blue); font-weight: 600; margin-bottom: 5px; display: block;}
+        .weather-img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
 
         /* Radar Crop Trick */
         .radar-container {
             width: 100%;
             height: 100%;
             position: relative;
-            overflow: hidden; /* Hides the scrollbars/extra BOM header */
+            overflow: hidden;
         }
         
         .radar-iframe {
-            width: 130%; /* Zooms out slightly to fit width */
+            width: 130%; 
             height: 140%;
             border: none;
             position: absolute;
-            top: -180px; /* Shifts the BOM header out of view */
-            left: -60px; /* Shifts the sidebar out of view */
-            transform: scale(0.9); /* Adjust scale to fit nicely */
+            top: -180px; 
+            left: -60px; 
+            transform: scale(0.9); 
             transform-origin: 0 0;
-            filter: invert(0.9) hue-rotate(180deg); /* OPTIONAL: Dark Mode Radar Effect! Remove if you want standard white map */
+            filter: invert(0.9) hue-rotate(180deg); 
         }
 
         /* News Lists */
         .news-list {
             list-style: none;
             overflow-y: auto;
-            max-height: 400px;
+            height: 100%;
+            /* Scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) var(--card-bg);
         }
+        
+        .news-list::-webkit-scrollbar { width: 6px; }
+        .news-list::-webkit-scrollbar-thumb { background-color: var(--border); border-radius: 3px; }
+
         .news-item {
             padding: 15px;
             border-bottom: 1px solid var(--border);
             transition: background 0.2s;
         }
         .news-item:hover { background: rgba(255,255,255,0.05); cursor: pointer; }
-        .news-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; display: block; }
-        .news-time { color: var(--text-secondary); font-size: 0.75rem; }
-        .source-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-right: 6px; }
+        .news-item a { text-decoration: none; color: inherit; display: block; }
+        .news-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; display: block; line-height: 1.4; }
+        .news-meta { color: var(--text-secondary); font-size: 0.75rem; margin-top: 5px; display: flex; align-items: center;}
+        .source-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-right: 8px; font-weight: bold;}
+        
         .tag-news { background: #004d40; color: #4db6ac; }
         .tag-9 { background: #0d47a1; color: #64b5f6; }
-        .tag-iptv { background: #4a148c; color: #e040fb; }
+
+        .loading-text { padding: 20px; color: var(--text-secondary); text-align: center; font-style: italic; }
 
         @keyframes pulse {
             0% { opacity: 1; }
@@ -129,9 +164,9 @@
 
         /* Mobile Responsive */
         @media (max-width: 1000px) {
-            .dashboard-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .dashboard-grid { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }
             .radar-section { height: 500px; grid-column: auto; grid-row: auto; }
-            .news-section, .nine-news-section, .weather-section, .iptv-section { grid-column: auto; grid-row: auto; }
+            .news-section, .nine-news-section, .weather-section { grid-column: auto; grid-row: auto; min-height: auto;}
             .radar-iframe { top: -140px; left: -10px; width: 110%; height: 120%; }
         }
     </style>
@@ -141,20 +176,22 @@
     <div class="dashboard-grid">
         
         <div class="card weather-section">
-            <div class="card-header">Current Conditions</div>
-            <div class="weather-display">
-                <span class="location-tag">PENRITH, NSW 2750</span>
-                <div class="temp-large">27°C</div>
-                <div style="font-size: 1.2rem; margin: 10px 0;">Partly Sunny</div>
-                <div class="weather-meta">
-                    <div>Feels Like: 29°C</div>
-                    <div>Humidity: 54%</div>
-                    <div>Wind: NE 15km/h</div>
-                    <div style="margin-top: 15px; padding-top:10px; border-top: 1px solid var(--border)">
-                        Forecast: Light rain developing this evening.
-                    </div>
-                </div>
+            <div class="card-header">
+                Penrith, NSW
+                <span class="live-badge" style="background: #3b82f6;">LIVE</span>
             </div>
+            <div class="weather-container">
+                <a href="https://wttr.in/Penrith+NSW" target="_blank">
+                    <img class="weather-img" src="https://wttr.in/Penrith+NSW_0pq.png?background=1e293b&col=f1f5f9" alt="Live Weather Penrith">
+                </a>
+            </div>
+        </div>
+
+        <div class="card news-section">
+            <div class="card-header">News.com.au Breaking</div>
+            <ul class="news-list" id="news-feed">
+                <li class="loading-text">Connecting to News.com.au...</li>
+            </ul>
         </div>
 
         <div class="card radar-section">
@@ -167,72 +204,70 @@
             </div>
         </div>
 
-        <div class="card iptv-section">
-            <div class="card-header">IPTV Industry News</div>
-            <ul class="news-list" id="iptv-feed">
-                </ul>
-        </div>
-
-        <div class="card news-section">
-            <div class="card-header">News.com.au Breaking</div>
-            <ul class="news-list" id="news-feed">
-                </ul>
-        </div>
-
         <div class="card nine-news-section">
             <div class="card-header">9News Breaking</div>
             <ul class="news-list" id="nine-feed">
-                </ul>
+                <li class="loading-text">Connecting to 9News...</li>
+            </ul>
         </div>
 
     </div>
 
     <script>
-        // MOCK DATA: Populating with today's headlines (Jan 13 2026 context)
-        
-        const newsData = [
-            { title: "Bushfires: State of disaster declared in parts of Victoria", time: "10m ago" },
-            { title: "Residents 'smashed' as tropical Cyclone Koji hits QLD", time: "32m ago" },
-            { title: "Bondi Terror Memorial: PM announces Royal Commission", time: "1h ago" },
-            { title: "Kevin Rudd resigns as Ambassador to the US", time: "2h ago" },
-            { title: "Australian Open 2026: Day 1 guide", time: "3h ago" }
-        ];
+        // --- CONFIGURATION: RSS FEED URLS ---
+        const FEED_URLS = {
+            news: "https://www.news.com.au/content-feeds/latest-news-national/",
+            nine: "https://www.9news.com.au/rss"
+        };
 
-        const nineData = [
-            { title: "Body found in Victoria bushfires near Seymour", time: "15m ago" },
-            { title: "Bondi community marks 30 days since attack", time: "45m ago" },
-            { title: "PM claims 'record time' for terror inquiry", time: "1h ago" },
-            { title: "Severe weather warning issued for Sydney basin", time: "2h ago" },
-            { title: "Police offer $1m reward in cold case mystery", time: "4h ago" }
-        ];
+        const PROXY_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
 
-        const iptvData = [
-            { title: "Report: IPTV subscriber numbers to overtake cable in 2026", time: "Just in" },
-            { title: "Piracy Crackdown: New laws target unauthorised streams", time: "Today" },
-            { title: "NotCableTV releases 2026 Safety & Legal Standards Report", time: "Yesterday" },
-            { title: "5G rollout to revolutionise 4K IPTV streaming speeds", time: "2 days ago" }
-        ];
+        // --- FETCH FUNCTION ---
+        async function fetchNews(sourceKey, elementId, tagClass, tagName) {
+            try {
+                const response = await fetch(PROXY_URL + encodeURIComponent(FEED_URLS[sourceKey]));
+                const data = await response.json();
 
-        // Functions to render lists
-        function renderFeed(elementId, data, tagClass, tagName) {
-            const list = document.getElementById(elementId);
-            data.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'news-item';
-                li.innerHTML = `
-                    <span class="news-title">${item.title}</span>
-                    <div class="news-time">
-                        <span class="source-tag ${tagClass}">${tagName}</span> ${item.time}
-                    </div>
-                `;
-                list.appendChild(li);
-            });
+                if (data.status === 'ok') {
+                    const listElement = document.getElementById(elementId);
+                    listElement.innerHTML = ''; 
+
+                    // Increased limit to 15 items since the boxes are taller now
+                    data.items.slice(0, 15).forEach(item => {
+                        const dateObj = new Date(item.pubDate);
+                        const timeString = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        
+                        const li = document.createElement('li');
+                        li.className = 'news-item';
+                        li.innerHTML = `
+                            <a href="${item.link}" target="_blank">
+                                <span class="news-title">${item.title}</span>
+                                <div class="news-meta">
+                                    <span class="source-tag ${tagClass}">${tagName}</span> 
+                                    ${timeString}
+                                </div>
+                            </a>
+                        `;
+                        listElement.appendChild(li);
+                    });
+                } else {
+                    document.getElementById(elementId).innerHTML = '<li class="loading-text">Feed temporarily unavailable.</li>';
+                }
+            } catch (error) {
+                console.error("Error fetching " + tagName, error);
+                document.getElementById(elementId).innerHTML = '<li class="loading-text">Connection failed.</li>';
+            }
         }
 
-        // Initialize
-        renderFeed('news-feed', newsData, 'tag-news', 'NEWS.COM.AU');
-        renderFeed('nine-feed', nineData, 'tag-9', '9NEWS');
-        renderFeed('iptv-feed', iptvData, 'tag-iptv', 'IPTV');
+        // --- INITIALIZE FEEDS ---
+        fetchNews('news', 'news-feed', 'tag-news', 'NEWS.COM.AU');
+        fetchNews('nine', 'nine-feed', 'tag-9', '9NEWS');
+
+        // Refresh feeds every 5 minutes
+        setInterval(() => {
+            fetchNews('news', 'news-feed', 'tag-news', 'NEWS.COM.AU');
+            fetchNews('nine', 'nine-feed', 'tag-9', '9NEWS');
+        }, 300000);
 
     </script>
 </body>
