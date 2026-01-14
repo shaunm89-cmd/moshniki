@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex"> <title>Her 2025 Era</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Sacramento&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --swift-purple: #E6E6FA;
+            --swift-pink: #FFB6C1;
+            --roblox-blue: #00A2FF;
+            --roblox-green: #02b640;
+            --text-color: #333;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, var(--swift-purple), var(--swift-pink), #e0f7fa);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- LOCK SCREEN --- */
+        #lock-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .lock-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 5px solid var(--roblox-blue); /* Roblox style border */
+        }
+
+        h2 {
+            font-family: 'Sacramento', cursive;
+            font-size: 3rem;
+            margin: 0 0 20px 0;
+            color: #6a5acd;
+        }
+
+        input[type="password"] {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            padding: 10px;
+            width: 150px;
+            text-align: center;
+            border: 3px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            letter-spacing: 5px;
+        }
+
+        /* Roblox Style Button */
+        .btn-unlock {
+            background-color: var(--roblox-green);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #007a2b; /* 3D effect */
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .btn-unlock:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 0 #007a2b;
+        }
+
+        .error-msg {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* --- MAIN CONTENT --- */
+        #main-content {
+            display: none; /* Hidden initially */
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-family: 'Sacramento', cursive;
+            margin: 0;
+            text-shadow: 2px 2px 0px white;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            background: white;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Timeline Layout */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        /* The vertical line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; left: 50%;
+            width: 4px;
+            background: white;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            width: 45%;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: scale(1.02) rotate(1deg);
+        }
+
+        /* Left and Right positioning */
+        .event-card:nth-child(odd) { margin-left: auto; } /* Right side */
+        .event-card:nth-child(even) { margin-right: auto; } /* Left side */
+
+        /* The Beads (Dots) */
+        .event-card::after {
+            content: '★'; /* Star for Taylor vibe */
+            position: absolute;
+            top: 20px;
+            width: 40px; height: 40px;
+            background: var(--roblox-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border: 4px solid white;
+            z-index: 10;
+        }
+
+        .event-card:nth-child(odd)::after {
+            left: -56px; /* Adjust based on width */
+            background: #D8BFD8; /* Lavender */
+        }
+        .event-card:nth-child(even)::after {
+            right: -56px;
+            background: #87CEEB; /* Sky Blue */
+        }
+
+        .photo-frame {
+            width: 100%;
+            height: 250px;
+            background-color: #eee;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 5px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .event-date {
+            font-weight: bold;
+            color: #888;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .event-title {
+            font-size: 1.5rem;
+            margin: 5px 0;
+            color: #444;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
+            .timeline::before { left: 20px; }
+            .event-card { width: 85%; margin-left: 50px !important; }
+            .event-card:nth-child(odd)::after, .event-card:nth-child(even)::after {
+                left: -43px;
+                right: auto;
+            }
+            h1 { font-size: 3rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <div class="lock-box">
+            <h2>Secret Access</h2>
+            <p>Enter the magic PIN to see 2025!</p>
+            <input type="password" id="pinInput" placeholder="****" maxlength="4">
+            <br>
+            <button class="btn-unlock" onclick="checkPin()">UNLOCK!</button>
+            <p class="error-msg" id="errorMsg">Oops! Wrong PIN!</p>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <header>
+            <h1>The 2025 Era</h1>
+            <div class="subtitle">Version: 8 Years Old (Taylor's Version)</div>
+        </header>
+
+        <div class="timeline">
+            
+            <div class="event-card">
+                <div class="photo-frame">
+                    <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&w=600&q=80" alt="Dancing">
+                </div>
+                <div class="event-date">March 2025</div>
+                <h3 class="event-title">In My Dancing Era 💃</h3>
+                <p>Crushed it at the recital! Best moves ever.</p>
+            </div>
+
+            <div class="event-card">
+                <div class="photo-frame">
+                    <img src="https://images.unsplash.com/photo-1551024601-569d6f755560?auto=format&fit=crop&w=600&q=80" alt="Birthday">
+                </div>
+                <div class="event-date">June 2025</div>
+                <h3 class="event-title">Level 8 Unlocked! 🎂</h3>
+                <p>Happy Birthday! The cake was huge.</p>
+            </div>
+
+            <div class="event-card">
+                <div class="photo-frame">
+                    <img src="https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&q=80" alt="Zoo">
+                </div>
+                <div class="event-date">September 2025</div>
+                <h3 class="event-title">Wildest Dreams (Zoo Trip) 🦁</h3>
+                <p>Saw the lions and tigers. Roar!</p>
+            </div>
+
+            <div class="event-card">
+                <div class="photo-frame">
+                    <img src="https://images.unsplash.com/photo-1596464716127-f9a826d21885?auto=format&fit=crop&w=600&q=80" alt="Roblox">
+                </div>
+                <div class="event-date">December 2025</div>
+                <h3 class="event-title">Roblox Champion 🎮</h3>
+                <p>Maximum obby skills achieved this year.</p>
+            </div>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 50px;">
+            <p style="font-family: 'Sacramento', cursive; font-size: 2rem;">Ready for 2026? ...</p>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const CORRECT_PIN = "2025"; // <--- CHANGE THE PIN HERE
+        // ---------------------
+
+        function checkPin() {
+            const input = document.getElementById('pinInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const lockScreen = document.getElementById('lock-screen');
+            const mainContent = document.getElementById('main-content');
+
+            if (input === CORRECT_PIN) {
+                // Success!
+                errorMsg.style.display = 'none';
+                
+                // Fade out lock screen
+                lockScreen.style.opacity = '0';
+                
+                // Wait for fade to finish, then hide lock and show content
+                setTimeout(() => {
+                    lockScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    // Scroll to top
+                    window.scrollTo(0,0);
+                }, 500);
+
+            } else {
+                // Fail
+                errorMsg.style.display = 'block';
+                // Shake animation
+                const box = document.querySelector('.lock-box');
+                box.style.transform = 'translateX(10px)';
+                setTimeout(() => box.style.transform = 'translateX(-10px)', 50);
+                setTimeout(() => box.style.transform = 'translateX(10px)', 100);
+                setTimeout(() => box.style.transform = 'translateX(0)', 150);
+            }
+        }
+
+        // Allow pressing "Enter" key
+        document.getElementById('pinInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPin();
+            }
+        });
+    </script>
+
+</body>
+</html>
