@@ -4,27 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Austreams | Premium IPTV & VOD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00a8e1; /* Austreams Blue */
+            --primary: #00a8e1;
             --dark-bg: #121212;
             --card-bg: #1e1e1e;
             --text-light: #ffffff;
             --text-gray: #b3b3b3;
-            --accent: #ff4757; /* For badges or alerts */
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
 
         body {
             background-color: var(--dark-bg);
             color: var(--text-light);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* Navigation */
@@ -38,6 +39,7 @@
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid #333;
+            backdrop-filter: blur(10px);
         }
 
         .logo {
@@ -51,7 +53,7 @@
         .nav-links a {
             color: var(--text-light);
             text-decoration: none;
-            margin-left: 20px;
+            margin-left: 25px;
             font-weight: 500;
             transition: color 0.3s;
         }
@@ -60,23 +62,46 @@
             color: var(--primary);
         }
 
-        /* Hero Section */
+        /* Hero Section with Visual Effects */
         .hero {
-            height: 80vh;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(18,18,18,1)), url('https://source.unsplash.com/1600x900/?cinema,tv'); /* Placeholder Background */
-            background-size: cover;
-            background-position: center;
+            height: 85vh;
+            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             padding: 0 20px;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://source.unsplash.com/1600x900/?cinema,abstract') no-repeat center center/cover;
+            opacity: 0.3;
+            z-index: 1;
+            animation: scaleBg 30s linear infinite alternate;
+        }
+        
+        @keyframes scaleBg {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .hero span {
@@ -84,66 +109,94 @@
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--text-gray);
-            max-width: 600px;
+            max-width: 700px;
             margin-bottom: 40px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
         .btn {
-            padding: 12px 30px;
-            border-radius: 5px;
+            padding: 15px 40px;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
             font-size: 1.1rem;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary {
             background-color: var(--primary);
             color: white;
+            box-shadow: 0 4px 15px rgba(0, 168, 225, 0.3);
         }
 
         .btn-primary:hover {
             background-color: #008bbd;
-            transform: scale(1.05);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 168, 225, 0.4);
         }
 
-        /* Features Grid */
+        /* General Section Styles */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 80px 20px;
+            padding: 100px 20px;
         }
 
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
+            font-size: 3rem;
+            margin-bottom: 80px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            margin: 20px auto 0;
+            border-radius: 2px;
         }
 
+        /* Features Grid */
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            gap: 40px;
         }
 
         .card {
             background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 10px;
+            padding: 40px;
+            border-radius: 15px;
             text-align: center;
-            transition: transform 0.3s;
+            transition: all 0.4s ease;
+            border: 1px solid #333;
+            position: relative;
+            overflow: hidden;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px -10px rgba(0, 168, 225, 0.2);
         }
 
         .card i {
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: var(--primary);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover i {
+            transform: scale(1.1);
         }
 
         .card h3 {
@@ -155,10 +208,11 @@
             color: var(--text-gray);
         }
 
-        /* Hardware Section (Kogan) */
+        /* Hardware Section with Real Images */
         .hardware-section {
-            background-color: #1a1a1a;
-            padding: 80px 20px;
+            background: linear-gradient(to bottom, #1a1a1a, #0d0d0d);
+            padding: 100px 20px;
+            position: relative;
         }
 
         .hardware-flex {
@@ -166,91 +220,116 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 50px;
+            gap: 60px;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
         .hardware-img {
             flex: 1;
-            min-width: 300px;
+            min-width: 350px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            perspective: 1000px;
         }
 
         .hardware-img img {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            /* Placeholder styling until you add real image */
-            border: 2px solid #333; 
+            max-width: 45%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transition: transform 0.5s ease;
+        }
+        
+        .hardware-img img:hover {
+            transform: rotateY(5deg) scale(1.02);
         }
 
         .hardware-text {
             flex: 1;
-            min-width: 300px;
+            min-width: 350px;
         }
 
         .hardware-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+        }
+        
+        .hardware-text p {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            margin-bottom: 30px;
         }
 
         .specs-list {
             list-style: none;
-            margin-top: 20px;
         }
 
         .specs-list li {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
+            font-size: 1.1rem;
         }
 
         .specs-list li::before {
             content: "✓";
             color: var(--primary);
-            margin-right: 10px;
+            margin-right: 15px;
             font-weight: bold;
+            font-size: 1.2rem;
         }
 
-        /* App Section (Ausmate) */
+        /* App Section */
         .app-section {
-            padding: 80px 20px;
+            padding: 100px 20px;
             text-align: center;
+            background-color: #121212;
         }
 
         .app-showcase {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            margin-top: 40px;
+            gap: 50px;
+            margin-top: 60px;
             flex-wrap: wrap;
         }
 
         .app-box {
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            width: 300px;
+            padding: 30px;
+            border-radius: 20px;
+            width: 320px;
             border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        
+        .app-box:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
         }
 
         .app-icon {
-            width: 80px;
-            height: 80px;
-            background-color: #333; /* Placeholder for App Icon */
-            border-radius: 20px;
-            margin: 0 auto 20px;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            border-radius: 25px;
+            margin: 0 auto 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: #666;
+            font-size: 2.5rem;
+            color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
         /* Installation Steps */
         .steps-section {
             background-color: #0d0d0d;
-            padding: 80px 20px;
+            padding: 100px 20px;
         }
 
         .step-container {
@@ -260,38 +339,68 @@
 
         .step {
             display: flex;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 8px;
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            transition: transform 0.3s;
+        }
+        
+        .step:hover {
+            transform: translateX(10px);
+            border-color: var(--primary);
         }
 
         .step-number {
             background-color: var(--primary);
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            margin-right: 20px;
+            font-size: 1.2rem;
+            margin-right: 25px;
             flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(0, 168, 225, 0.3);
+        }
+        
+        .step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .step p {
+            color: var(--text-gray);
         }
 
         footer {
-            background-color: black;
-            padding: 40px 20px;
+            background-color: #000;
+            padding: 50px 20px;
             text-align: center;
             color: var(--text-gray);
-            border-top: 1px solid #333;
+            border-top: 1px solid #222;
         }
 
-        /* Utility for mobile */
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 { font-size: 2.8rem; }
             .hardware-flex { flex-direction: column; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
@@ -308,12 +417,15 @@
     </nav>
 
     <section class="hero">
-        <h1>Entertainment <span id="typing-text">Unlimited</span></h1>
-        <p>Your all-in-one destination for Live TV, Sports, Movies, and Series. Powered by the latest Google TV technology.</p>
-        <a href="#install" class="btn btn-primary">Get Started</a>
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>Entertainment <span id="typing-text">Unlimited</span></h1>
+            <p>Your all-in-one destination for Live TV, Sports, Movies, and Series. Powered by the latest Google TV technology.</p>
+            <a href="#install" class="btn btn-primary">Get Started</a>
+        </div>
     </section>
 
-    <section id="features" class="container">
+    <section id="features" class="container fade-in">
         <h2 class="section-title">What You Get</h2>
         <div class="grid-3">
             <div class="card">
@@ -334,10 +446,11 @@
         </div>
     </section>
 
-    <section id="hardware" class="hardware-section">
+    <section id="hardware" class="hardware-section fade-in">
         <div class="hardware-flex">
             <div class="hardware-img">
-                <img src="https://assets.kogan.com/files/product/2022/KAGTV4KDNGA/KAGTV4KDNGA_Hero.jpg?auto=webp&canvas=753%2C502&fit=bounds&height=502&quality=75&width=753" alt="Kogan 4K Dongle">
+                <img src="image_1.png" alt="Kogan 4K Dongle">
+                <img src="image_0.png" alt="Kogan Voice Remote">
             </div>
             <div class="hardware-text">
                 <h2>Recommended Hardware</h2>
@@ -354,9 +467,9 @@
         </div>
     </section>
 
-    <section id="apps" class="app-section">
+    <section id="apps" class="app-section fade-in">
         <h2 class="section-title">Our Custom Apps</h2>
-        <p style="color:var(--text-gray);">Optimized for speed and ease of use.</p>
+        <p style="color:var(--text-gray); font-size: 1.1rem;">Optimized for speed and ease of use.</p>
         
         <div class="app-showcase">
             <div class="app-box">
@@ -373,7 +486,7 @@
         </div>
     </section>
 
-    <section id="install" class="steps-section">
+    <section id="install" class="steps-section fade-in">
         <div class="step-container">
             <h2 class="section-title">How to Install</h2>
             
@@ -409,19 +522,19 @@
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 40px;">
-                <p style="color: #666; font-size: 0.9rem;">Need the specific codes? Contact Support.</p>
+            <div style="text-align: center; margin-top: 50px;">
+                <p style="color: #666; font-size: 1rem;">Need the specific codes? Contact Support.</p>
             </div>
         </div>
     </section>
 
     <footer>
         <p>&copy; 2026 Austreams. All Rights Reserved.</p>
-        <p style="font-size: 0.8rem; margin-top: 10px;">Disclaimer: We do not host any content. All content is provided by third-party streams.</p>
+        <p style="font-size: 0.9rem; margin-top: 15px; opacity: 0.7;">Disclaimer: We do not host any content. All content is provided by third-party streams.</p>
     </footer>
 
     <script>
-        // Simple typing effect for the Hero section
+        // Typing Effect
         const textElement = document.getElementById('typing-text');
         const phrases = ["Unlimited", "4K Ready", "Live", "On Demand"];
         let phraseIndex = 0;
@@ -430,7 +543,6 @@
 
         function type() {
             const currentPhrase = phrases[phraseIndex];
-            
             if (isDeleting) {
                 textElement.textContent = currentPhrase.substring(0, charIndex - 1);
                 charIndex--;
@@ -438,10 +550,9 @@
                 textElement.textContent = currentPhrase.substring(0, charIndex + 1);
                 charIndex++;
             }
-
             if (!isDeleting && charIndex === currentPhrase.length) {
                 isDeleting = true;
-                setTimeout(type, 2000); // Pause at end
+                setTimeout(type, 2000);
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
                 phraseIndex = (phraseIndex + 1) % phrases.length;
@@ -450,8 +561,19 @@
                 setTimeout(type, isDeleting ? 100 : 200);
             }
         }
-
         document.addEventListener('DOMContentLoaded', type);
+
+        // Scroll Animation
+        const fadeElems = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElems.forEach(elem => observer.observe(elem));
     </script>
 </body>
 </html>
