@@ -4,142 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Austreams | Premium IPTV & VOD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00a8e1;
-            --dark-bg: #121212;
-            --card-bg: #1e1e1e;
+            --primary: #00a8e1; /* Austreams Blue */
+            --primary-glow: rgba(0, 168, 225, 0.6);
+            --glass-bg: rgba(25, 25, 25, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --text-light: #ffffff;
-            --text-gray: #b3b3b3;
+            --text-gray: #cccccc;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Outfit', sans-serif; /* Modern Tech Font */
         }
 
         body {
-            background-color: var(--dark-bg);
+            /* COOL BACKGROUND: Dark Cinematic Gradient + Texture */
+            background: 
+                linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.95)),
+                url('https://images.unsplash.com/photo-1534239697836-90e8568fa031?q=80&w=2670&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Navigation */
+        /* Smooth Scroll Behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation - Glass Effect */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 5%;
-            background-color: rgba(18, 18, 18, 0.95);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px); /* BLUR EFFECT */
+            -webkit-backdrop-filter: blur(15px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid #333;
-            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .logo {
             font-size: 1.8rem;
-            font-weight: bold;
+            font-weight: 700;
             color: var(--primary);
             text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow: 0 0 15px var(--primary-glow);
         }
 
         .nav-links a {
             color: var(--text-light);
             text-decoration: none;
-            margin-left: 25px;
+            margin-left: 30px;
             font-weight: 500;
-            transition: color 0.3s;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .nav-links a:hover {
             color: var(--primary);
+            text-shadow: 0 0 10px var(--primary-glow);
         }
 
-        /* Hero Section with Visual Effects */
+        /* Hero Section */
         .hero {
-            height: 85vh;
-            position: relative;
+            height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             padding: 0 20px;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://source.unsplash.com/1600x900/?cinema,abstract') no-repeat center center/cover;
-            opacity: 0.3;
-            z-index: 1;
-            animation: scaleBg 30s linear infinite alternate;
-        }
-        
-        @keyframes scaleBg {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
-        }
-
-        .hero-content {
             position: relative;
-            z-index: 2;
         }
 
         .hero h1 {
-            font-size: 4rem;
+            font-size: 4.5rem;
             margin-bottom: 20px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            line-height: 1.1;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         .hero span {
             color: var(--primary);
+            position: relative;
         }
+        
+        /* Cursor effect for typing */
+        .hero span::after {
+            content: '|';
+            animation: blink 1s infinite;
+            color: white;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
 
         .hero p {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: var(--text-gray);
-            max-width: 700px;
-            margin-bottom: 40px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            max-width: 650px;
+            margin-bottom: 50px;
         }
 
+        /* Neon Button */
         .btn {
-            padding: 15px 40px;
+            padding: 15px 45px;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 1.1rem;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn-primary {
-            background-color: var(--primary);
+            background: linear-gradient(45deg, var(--primary), #0077a3);
             color: white;
-            box-shadow: 0 4px 15px rgba(0, 168, 225, 0.3);
+            box-shadow: 0 0 20px var(--primary-glow);
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
         .btn-primary:hover {
-            background-color: #008bbd;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 168, 225, 0.4);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 40px var(--primary-glow);
         }
 
-        /* General Section Styles */
+        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -148,71 +151,52 @@
 
         .section-title {
             text-align: center;
-            font-size: 3rem;
-            margin-bottom: 80px;
-            position: relative;
-        }
-        
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: var(--primary);
-            margin: 20px auto 0;
-            border-radius: 2px;
+            font-size: 2.5rem;
+            margin-bottom: 70px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
         }
 
-        /* Features Grid */
+        /* Glass Cards */
         .grid-3 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 40px;
         }
 
         .card {
-            background-color: var(--card-bg);
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px); /* Glass Effect */
+            -webkit-backdrop-filter: blur(12px);
             padding: 40px;
-            border-radius: 15px;
+            border-radius: 20px;
             text-align: center;
-            transition: all 0.4s ease;
-            border: 1px solid #333;
-            position: relative;
-            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            transition: transform 0.4s, box-shadow 0.4s;
         }
 
         .card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
             border-color: var(--primary);
-            box-shadow: 0 10px 30px -10px rgba(0, 168, 225, 0.2);
         }
 
         .card i {
             font-size: 3.5rem;
-            color: var(--primary);
             margin-bottom: 25px;
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-        
-        .card:hover i {
-            transform: scale(1.1);
+            display: block;
+            filter: drop-shadow(0 0 10px var(--primary-glow));
         }
 
         .card h3 {
-            margin-bottom: 15px;
             font-size: 1.5rem;
+            margin-bottom: 15px;
         }
 
-        .card p {
-            color: var(--text-gray);
-        }
-
-        /* Hardware Section with Real Images */
+        /* Hardware Section */
         .hardware-section {
-            background: linear-gradient(to bottom, #1a1a1a, #0d0d0d);
+            background: rgba(0,0,0,0.6); /* Darker stripe for contrast */
             padding: 100px 20px;
-            position: relative;
         }
 
         .hardware-flex {
@@ -221,31 +205,34 @@
             align-items: center;
             justify-content: center;
             gap: 60px;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
         }
 
-        .hardware-img {
+        /* FLOATING ANIMATION FOR IMAGES */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .hardware-img-container {
             flex: 1;
             min-width: 350px;
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 20px;
-            perspective: 1000px;
+            position: relative;
         }
 
-        .hardware-img img {
+        .hardware-img-container img {
             max-width: 45%;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            transition: transform 0.5s ease;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
+            animation: float 6s ease-in-out infinite;
         }
         
-        .hardware-img img:hover {
-            transform: rotateY(5deg) scale(1.02);
+        /* Make the remote float at a different rhythm */
+        .hardware-img-container img:nth-child(2) {
+            animation-delay: 1s;
         }
 
         .hardware-text {
@@ -254,25 +241,23 @@
         }
 
         .hardware-text h2 {
-            font-size: 2.8rem;
-            margin-bottom: 25px;
-        }
-        
-        .hardware-text p {
-            font-size: 1.1rem;
-            color: var(--text-gray);
-            margin-bottom: 30px;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .specs-list {
             list-style: none;
+            margin-top: 30px;
         }
 
         .specs-list li {
             margin-bottom: 15px;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
-            font-size: 1.1rem;
         }
 
         .specs-list li::before {
@@ -280,84 +265,66 @@
             color: var(--primary);
             margin-right: 15px;
             font-weight: bold;
-            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--primary);
         }
 
         /* App Section */
-        .app-section {
-            padding: 100px 20px;
-            text-align: center;
-            background-color: #121212;
-        }
-
         .app-showcase {
             display: flex;
             justify-content: center;
             gap: 50px;
-            margin-top: 60px;
             flex-wrap: wrap;
         }
 
         .app-box {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            width: 320px;
-            border: 1px solid #333;
-            transition: all 0.3s ease;
+            background: linear-gradient(145deg, rgba(30,30,30,0.8), rgba(10,10,10,0.9));
+            padding: 40px;
+            border-radius: 25px;
+            width: 340px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            transition: all 0.3s;
         }
-        
+
         .app-box:hover {
-            transform: translateY(-5px);
+            transform: scale(1.05);
             border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(0, 168, 225, 0.15);
         }
 
         .app-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #333, #1a1a1a);
-            border-radius: 25px;
+            width: 90px;
+            height: 90px;
+            background: #222;
+            border-radius: 22px;
             margin: 0 auto 25px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2.5rem;
             color: var(--primary);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            border: 1px solid #333;
         }
 
-        /* Installation Steps */
-        .steps-section {
-            background-color: #0d0d0d;
-            padding: 100px 20px;
-        }
-
-        .step-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
+        /* Steps Section */
         .step {
             display: flex;
-            margin-bottom: 40px;
-            background: var(--card-bg);
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
             padding: 30px;
             border-radius: 15px;
-            border: 1px solid #333;
-            transition: transform 0.3s;
-        }
-        
-        .step:hover {
-            transform: translateX(10px);
-            border-color: var(--primary);
+            margin-bottom: 30px;
+            border: 1px solid var(--glass-border);
+            align-items: flex-start;
         }
 
         .step-number {
-            background-color: var(--primary);
+            background: var(--primary);
             color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -365,31 +332,22 @@
             font-size: 1.2rem;
             margin-right: 25px;
             flex-shrink: 0;
-            box-shadow: 0 5px 15px rgba(0, 168, 225, 0.3);
-        }
-        
-        .step h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
-        
-        .step p {
-            color: var(--text-gray);
+            box-shadow: 0 5px 15px var(--primary-glow);
         }
 
         footer {
-            background-color: #000;
+            background: black;
             padding: 50px 20px;
             text-align: center;
-            color: var(--text-gray);
+            color: #666;
             border-top: 1px solid #222;
         }
 
-        /* Scroll Animations */
+        /* Simple Fade In Animation Class */
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
         
         .fade-in.visible {
@@ -397,10 +355,11 @@
             transform: translateY(0);
         }
 
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.8rem; }
-            .hardware-flex { flex-direction: column; }
+            .hero h1 { font-size: 3rem; }
             .nav-links { display: none; }
+            .hardware-flex { flex-direction: column; }
         }
     </style>
 </head>
@@ -417,132 +376,118 @@
     </nav>
 
     <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h1>Entertainment <span id="typing-text">Unlimited</span></h1>
-            <p>Your all-in-one destination for Live TV, Sports, Movies, and Series. Powered by the latest Google TV technology.</p>
-            <a href="#install" class="btn btn-primary">Get Started</a>
-        </div>
+        <h1>Entertainment<br><span id="typing-text">Unlimited</span></h1>
+        <p>The ultimate streaming experience. Live TV, Sports, and Movies powered by the next generation of Google TV.</p>
+        <a href="#install" class="btn btn-primary">Start Watching</a>
     </section>
 
     <section id="features" class="container fade-in">
-        <h2 class="section-title">What You Get</h2>
+        <h2 class="section-title">Why Switch?</h2>
         <div class="grid-3">
             <div class="card">
                 <i>📺</i>
-                <h3>Live TV Channels</h3>
-                <p>Thousands of channels including local Aussie TV, US Cable, UK Sky, and international networks.</p>
+                <h3>4K Live TV</h3>
+                <p>Thousands of channels. Local Aussie TV, US Cable, and International networks in stunning UHD.</p>
             </div>
             <div class="card">
-                <i>🏈</i>
-                <h3>Premium Sports</h3>
-                <p>Catch every game. NFL, NRL, NBA, Premier League, and PPV events in crystal clear HD & 4K.</p>
+                <i>⚡</i>
+                <h3>Zero Buffering</h3>
+                <p>Optimized servers ensuring lightning-fast load times for Sports and PPV events.</p>
             </div>
             <div class="card">
-                <i>🎬</i>
-                <h3>VOD Library</h3>
-                <p>Massive library of the latest Movies and TV Shows on demand. Just click and play.</p>
+                <i>🍿</i>
+                <h3>VOD Cinema</h3>
+                <p>A massive on-demand library updated daily with the latest blockbuster movies and series.</p>
             </div>
         </div>
     </section>
 
     <section id="hardware" class="hardware-section fade-in">
-        <div class="hardware-flex">
-            <div class="hardware-img">
-                <img src="image_1.png" alt="Kogan 4K Dongle">
-                <img src="image_0.png" alt="Kogan Voice Remote">
+        <div class="container hardware-flex">
+            <div class="hardware-img-container">
+                <img src="dongle.png" alt="Kogan Dongle">
+                <img src="Remote.png" alt="Kogan Remote">
             </div>
             <div class="hardware-text">
-                <h2>Recommended Hardware</h2>
-                <p>We recommend the <strong>Kogan 4K Google TV™ Dongle</strong> for the best Austreams experience. It's affordable, powerful, and hides completely behind your TV.</p>
+                <h2>The Powerhouse.</h2>
+                <p>We recommend the <strong>Kogan 4K Google TV™ Dongle</strong>. It's the perfect balance of price and performance, designed to stay hidden while delivering 4K HDR content.</p>
                 <ul class="specs-list">
-                    <li><strong>4K Ultra HD:</strong> Stunning visuals with HDR support.</li>
-                    <li><strong>Voice Remote:</strong> Google Assistant built-in for easy searching.</li>
-                    <li><strong>Bluetooth:</strong> Hide the dongle behind the TV, no line-of-sight needed.</li>
-                    <li><strong>Quad-Core Power:</strong> Fast channel switching and smooth menus.</li>
+                    <li>Google TV™ OS Certified</li>
+                    <li>Voice Search Remote (Bluetooth)</li>
+                    <li>4K Ultra HD + HDR Support</li>
+                    <li>Invisible "Hide-Behind-TV" Design</li>
                 </ul>
                 <br>
-                <a href="#" class="btn btn-primary">Buy from Kogan</a>
+                <a href="https://www.kogan.com/au/" target="_blank" class="btn btn-primary">Buy Hardware</a>
             </div>
         </div>
     </section>
 
-    <section id="apps" class="app-section fade-in">
-        <h2 class="section-title">Our Custom Apps</h2>
-        <p style="color:var(--text-gray); font-size: 1.1rem;">Optimized for speed and ease of use.</p>
-        
+    <section id="apps" class="container fade-in">
+        <h2 class="section-title">Our Custom Suite</h2>
         <div class="app-showcase">
             <div class="app-box">
                 <div class="app-icon">A</div>
                 <h3>Ausmate</h3>
-                <p>Our premium Live TV player. Based on the industry-leading Tivimate engine. Features Catch-up, EPG, and Recording.</p>
+                <p>The gold standard for Live TV. Custom EPG, Catch-up, and Recording capabilities built right in.</p>
             </div>
-
             <div class="app-box">
                 <div class="app-icon">V</div>
                 <h3>AusVod</h3>
-                <p>The ultimate Movies & Series catalog. Browse trending content, watch trailers, and stream instantly.</p>
+                <p>Your personal cinema. Browse thousands of movies and TV shows with a Netflix-style interface.</p>
             </div>
         </div>
     </section>
 
-    <section id="install" class="steps-section fade-in">
-        <div class="step-container">
-            <h2 class="section-title">How to Install</h2>
-            
+    <section id="install" class="container fade-in">
+        <h2 class="section-title">Simple Setup</h2>
+        <div style="max-width: 800px; margin: 0 auto;">
             <div class="step">
                 <div class="step-number">1</div>
                 <div>
-                    <h3>Prepare your Device</h3>
-                    <p>On your Kogan Dongle, go to <strong>Settings > System > About</strong>. Click "Android TV OS Build" 7 times to unlock Developer Mode.</p>
+                    <h3>Unlock Developer Mode</h3>
+                    <p>On your Kogan device, go to <strong>Settings > System > About</strong>. Click "Android TV OS Build" 7 times.</p>
                 </div>
             </div>
-
             <div class="step">
                 <div class="step-number">2</div>
                 <div>
                     <h3>Get Downloader</h3>
-                    <p>Go to the Google Play Store on your TV, search for <strong>"Downloader"</strong> and install it.</p>
+                    <p>Go to the Google Play Store, search for <strong>"Downloader"</strong> and install it.</p>
                 </div>
             </div>
-
             <div class="step">
                 <div class="step-number">3</div>
                 <div>
                     <h3>Install Unlinked</h3>
-                    <p>Open Downloader and enter the code for Unlinked. Grant permissions when asked.</p>
+                    <p>Open Downloader. Enter code <strong>unlinked.link</strong>. Allow permissions when asked.</p>
                 </div>
             </div>
-
             <div class="step">
                 <div class="step-number">4</div>
                 <div>
-                    <h3>Download Our Apps</h3>
-                    <p>Open Unlinked and enter our Library Code. Download <strong>Ausmate</strong> and <strong>AusVod</strong> directly to your device.</p>
+                    <h3>Download Ausmate</h3>
+                    <p>Open Unlinked, enter our Library Code, and download <strong>Ausmate & AusVod</strong>.</p>
                 </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 50px;">
-                <p style="color: #666; font-size: 1rem;">Need the specific codes? Contact Support.</p>
             </div>
         </div>
     </section>
 
     <footer>
         <p>&copy; 2026 Austreams. All Rights Reserved.</p>
-        <p style="font-size: 0.9rem; margin-top: 15px; opacity: 0.7;">Disclaimer: We do not host any content. All content is provided by third-party streams.</p>
     </footer>
 
     <script>
-        // Typing Effect
+        // TYPEWRITER EFFECT
         const textElement = document.getElementById('typing-text');
-        const phrases = ["Unlimited", "4K Ready", "Live", "On Demand"];
+        const phrases = ["Unlimited.", "In 4K HDR.", "Live.", "On Demand."];
         let phraseIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
 
         function type() {
             const currentPhrase = phrases[phraseIndex];
+            
             if (isDeleting) {
                 textElement.textContent = currentPhrase.substring(0, charIndex - 1);
                 charIndex--;
@@ -550,20 +495,21 @@
                 textElement.textContent = currentPhrase.substring(0, charIndex + 1);
                 charIndex++;
             }
+
             if (!isDeleting && charIndex === currentPhrase.length) {
                 isDeleting = true;
-                setTimeout(type, 2000);
+                setTimeout(type, 2000); 
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
                 phraseIndex = (phraseIndex + 1) % phrases.length;
                 setTimeout(type, 500);
             } else {
-                setTimeout(type, isDeleting ? 100 : 200);
+                setTimeout(type, isDeleting ? 100 : 150);
             }
         }
         document.addEventListener('DOMContentLoaded', type);
 
-        // Scroll Animation
+        // SCROLL REVEAL
         const fadeElems = document.querySelectorAll('.fade-in');
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
