@@ -9,8 +9,8 @@
             --bg-color: #050505;
             --text-color: #00ff41; /* Hacker Green */
             --alert-color: #ff3333;
-            --border-color: #1a1a1a;
-            --scanline-color: rgba(0, 255, 65, 0.04);
+            --border-color: #333;
+            --scanline-color: rgba(0, 255, 65, 0.03);
         }
 
         body {
@@ -22,7 +22,7 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-y: auto; /* ENABLED SCROLLING */
+            overflow-y: auto; /* SCROLLING ENABLED */
         }
 
         /* CRT SCANLINE EFFECT */
@@ -34,7 +34,7 @@
             height: 100vh;
             background: linear-gradient(to bottom, var(--scanline-color) 50%, rgba(0,0,0,0) 50%);
             background-size: 100% 4px;
-            pointer-events: none; /* Click through */
+            pointer-events: none;
             z-index: 999;
         }
 
@@ -76,6 +76,7 @@
             cursor: pointer;
             margin-top: 10px;
             font-family: 'Consolas', monospace;
+            font-size: 1rem;
         }
 
         button:hover { background: #fff; }
@@ -88,40 +89,37 @@
             padding: 15px;
             background: #000;
             border-bottom: 2px solid var(--border-color);
-            text-shadow: 0 0 5px var(--text-color); /* GLOW EFFECT */
         }
 
         h1 { margin: 0; font-size: 1.2rem; letter-spacing: 2px; }
 
-        /* GRID */
+        /* BIGGER GRID (2 COLUMNS) */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive Grid */
-            gap: 4px;
-            padding: 4px;
+            grid-template-columns: 1fr 1fr; /* 2 LARGE COLUMNS */
+            gap: 10px;
+            padding: 10px;
             background: #000;
+        }
+
+        /* On mobile, stack them 1 by 1 */
+        @media (max-width: 768px) {
+            .grid-container { grid-template-columns: 1fr; }
         }
 
         .cam-box {
             position: relative;
             background: #0f0f0f;
             border: 1px solid #333;
-            aspect-ratio: 16/9; /* Keep aspect ratio */
+            aspect-ratio: 16/9;
         }
 
         img {
             width: 100%;
             height: 100%;
             object-fit: fill;
-            filter: grayscale(100%) sepia(100%) hue-rotate(90deg) saturate(200%) contrast(1.2); /* NIGHT VISION GREEN LOOK */
-            opacity: 0.8;
-            transition: all 0.3s ease;
-        }
-        
-        /* HOVER EFFECT: Full Color */
-        .cam-box:hover img {
-            filter: none;
-            opacity: 1;
+            /* NO FILTERS - PURE COLOR */
+            display: block;
         }
 
         .cam-overlay {
@@ -129,15 +127,15 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 5px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            padding: 8px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
             display: flex;
             justify-content: space-between;
             pointer-events: none;
         }
 
-        .cam-name { font-size: 12px; font-weight: bold; text-shadow: 1px 1px 2px black; }
-        .rec-stat { color: var(--alert-color); font-weight: bold; font-size: 12px; animation: blink 1s infinite; }
+        .cam-name { font-size: 14px; font-weight: bold; text-shadow: 1px 1px 2px black; color: #fff; }
+        .rec-stat { color: var(--alert-color); font-weight: bold; font-size: 14px; animation: blink 1s infinite; text-shadow: 1px 1px 2px black; }
 
         @keyframes blink { 50% { opacity: 0; } }
         
@@ -166,16 +164,19 @@
         
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: EMU PLAINS</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_emu_plains.jpeg" src=""></div>
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: ST MARYS</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_st_marys.jpeg" src=""></div>
+
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: MINCHINBURY</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_minchinbury.jpeg" src=""></div>
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: PROSPECT</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_prospect.jpeg" src=""></div>
 
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M7 :: GLENWOOD</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_glenwood.jpeg" src=""></div>
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">WINDSOR RD :: WINDSOR</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/windsor_road_bridge_north_windsor.jpeg" src=""></div>
+
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">RICHMOND BRIDGE</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/richmond_bridge_north_richmond.jpeg" src=""></div>
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M7 :: HORSLEY PARK</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_at_the_horsley_drive_horsley_park.jpeg" src=""></div>
 
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">GWH :: KATOOMBA</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_katoomba.jpeg" src=""></div>
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">GWH :: BLACKHEATH</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_blackheath.jpeg" src=""></div>
+
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">GWH :: VICTORIA PASS</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_victoria_pass.jpeg" src=""></div>
         <div class="cam-box"><div class="cam-overlay"><span class="cam-name">BELLS LINE :: BELL</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/bells_line_of_road_bell.jpeg" src=""></div>
 
@@ -188,7 +189,7 @@
             // CHANGE PIN HERE IF YOU WANT
             if (pin === "2750") { 
                 document.getElementById('login-screen').style.display = 'none';
-                startFeeds(); // Only load cameras after login to save data
+                startFeeds(); // Only load cameras after login
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
                 document.getElementById('pinInput').value = '';
