@@ -10,7 +10,6 @@
             --text-main: #00ff41; /* Cyber Green */
             --text-dim: #008F11;
             --alert: #ff3333;
-            --highlight: #e0f7fa;
             --scanline: rgba(0, 255, 65, 0.03);
             --font-stack: 'Courier New', Courier, monospace;
         }
@@ -41,12 +40,31 @@
             align-items: center; justify-content: center;
         }
         
-        .login-box { border: 2px solid var(--text-main); padding: 40px; text-align: center; box-shadow: 0 0 20px var(--text-dim); }
-        input { 
-            background: transparent; border: none; border-bottom: 2px solid var(--text-main); 
-            color: white; font-size: 2rem; font-family: inherit; text-align: center; 
-            width: 150px; margin-top: 20px; outline: none; letter-spacing: 5px;
+        .login-box { 
+            border: 2px solid var(--text-main); 
+            padding: 40px; 
+            text-align: center; 
+            box-shadow: 0 0 20px var(--text-dim); 
+            background: #000;
         }
+
+        input { 
+            background: #111; border: 1px solid var(--text-dim); 
+            color: white; font-size: 1.5rem; font-family: inherit; text-align: center; 
+            width: 200px; margin-top: 20px; outline: none; letter-spacing: 5px;
+            padding: 10px; display: block; margin-left: auto; margin-right: auto;
+        }
+
+        /* NEW ACCESS BUTTON */
+        .btn-login {
+            background: var(--text-dim); color: #000; font-weight: bold;
+            border: 1px solid var(--text-main);
+            padding: 15px 30px; margin-top: 20px;
+            cursor: pointer; font-family: inherit; font-size: 1rem;
+            display: block; width: 100%;
+        }
+        .btn-login:hover { background: var(--text-main); }
+
         .boot-log { font-size: 0.8rem; color: var(--text-dim); margin-top: 20px; white-space: pre-wrap; height: 100px; text-align: left; display: none; }
 
         /* --- MAIN UI --- */
@@ -66,7 +84,7 @@
 
         .cam-unit {
             position: relative; border: 1px solid #222; background: #000;
-            aspect-ratio: 16/9; cursor: crosshair; transition: all 0.2s;
+            aspect-ratio: 16/9; cursor: pointer; transition: all 0.2s;
         }
         .cam-unit:hover { border-color: var(--text-main); box-shadow: 0 0 10px var(--text-dim); }
         .cam-unit img { width: 100%; height: 100%; object-fit: fill; opacity: 0.8; }
@@ -86,7 +104,7 @@
         }
 
         .modal-content {
-            width: 90%; max-width: 1000px; border: 2px solid var(--text-main);
+            width: 95%; max-width: 1000px; border: 2px solid var(--text-main);
             background: #000; position: relative; padding: 2px;
             box-shadow: 0 0 30px var(--text-dim);
         }
@@ -104,6 +122,12 @@
             padding: 20px; font-size: 0.9rem; color: #ccc;
         }
 
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .modal-data { grid-template-columns: 1fr; gap: 10px; }
+            .login-box { width: 90%; padding: 20px; }
+        }
+
         .data-row { margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; }
         .data-label { color: var(--text-main); font-weight: bold; display: block; font-size: 0.7rem; }
         
@@ -114,8 +138,8 @@
         }
         .btn-action:hover { background: var(--text-main); color: #000; }
 
-        .close-btn { cursor: pointer; font-weight: bold; }
-        .close-btn:hover { color: white; }
+        .close-btn { cursor: pointer; font-weight: bold; padding: 0 10px; }
+        .close-btn:hover { background: black; color: white; }
 
         /* ANIMATIONS */
         .blink { animation: blink 1s infinite; color: var(--alert); }
@@ -132,6 +156,7 @@
             <h1>OVERWATCH // LOGIN</h1>
             <p>ENTER PASSCODE</p>
             <input type="password" id="pin-input" maxlength="4" placeholder="_ _ _ _">
+            <button class="btn-login" onclick="checkPin()">ACCESS SYSTEM</button>
             <div class="boot-log" id="boot-log"></div>
         </div>
     </div>
@@ -144,14 +169,12 @@
             </div>
             <div class="modal-view">
                 <img id="modal-img" src="">
-                <div style="position:absolute; top:10px; left:10px; color:red; font-size:0.8rem;">● LIVE FEED</div>
-                <div style="position:absolute; bottom:10px; right:10px; color:#00ff41; font-size:0.8rem;">ZOOM: 1.0x</div>
+                <div style="position:absolute; top:10px; left:10px; color:red; font-size:0.8rem; background:rgba(0,0,0,0.5); padding:2px;">● LIVE FEED</div>
             </div>
             <div class="modal-data">
                 <div class="left-panel">
                     <div class="data-row"><span class="data-label">LOCATION</span><span id="modal-loc">UNKNOWN</span></div>
                     <div class="data-row"><span class="data-label">COORDINATES</span><span id="modal-coords">WAITING...</span></div>
-                    <div class="data-row"><span class="data-label">STATUS</span><span style="color:#00ff41">ONLINE / RECORDING</span></div>
                 </div>
                 <div class="right-panel">
                     <div class="data-row"><span class="data-label">SYSTEM DIAGNOSTICS</span><span id="modal-diag">Scanning...</span></div>
@@ -177,4 +200,166 @@
             { name: "M4 PROSPECT", loc: "M4 Motorway @ Reservoir", coords: "-33.805, 150.903", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_prospect.jpeg" },
             { name: "M7 GLENWOOD", loc: "Westlink M7 @ Old Windsor Rd", coords: "-33.721, 150.932", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_glenwood.jpeg" },
             { name: "WINDSOR BRIDGE", loc: "Windsor Rd @ Hawkesbury River", coords: "-33.604, 150.816", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/windsor_road_bridge_north_windsor.jpeg" },
-            { name: "RICHMOND BRIDGE", loc: "Bells Line @ Hawkesbury River", coords: "-33.593, 150.748", url: "
+            { name: "RICHMOND BRIDGE", loc: "Bells Line @ Hawkesbury River", coords: "-33.593, 150.748", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/richmond_bridge_north_richmond.jpeg" },
+            { name: "M7 HORSLEY PARK", loc: "Westlink M7 @ The Horsley Dr", coords: "-33.844, 150.871", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_at_the_horsley_drive_horsley_park.jpeg" },
+            { name: "KATOOMBA GWH", loc: "Great Western Hwy @ Yeaman Br", coords: "-33.714, 150.311", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_katoomba.jpeg" },
+            { name: "VICTORIA PASS", loc: "Great Western Hwy @ Mt Victoria", coords: "-33.587, 150.233", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_victoria_pass.jpeg" }
+        ];
+
+        let currentCamIndex = 0;
+        let audioCtx;
+
+        // --- SAFE AUDIO ENGINE ---
+        function initAudio() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+            } catch (e) {
+                console.log("Audio not supported or blocked");
+            }
+        }
+
+        function playSfx(type) {
+            if (!audioCtx) return; 
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                const now = audioCtx.currentTime;
+
+                if (type === 'access') { 
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.linearRampToValueAtTime(800, now + 0.2);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.linearRampToValueAtTime(0, now + 0.5);
+                    osc.start(now); osc.stop(now + 0.5);
+                } else if (type === 'open') {
+                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, now);
+                    osc.frequency.linearRampToValueAtTime(300, now + 0.1);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.linearRampToValueAtTime(0, now + 0.3);
+                    osc.start(now); osc.stop(now + 0.3);
+                }
+            } catch (e) { console.log('Audio error'); }
+        }
+
+        // --- INITIALIZATION ---
+        function initGrid() {
+            const container = document.getElementById('grid-wrapper');
+            container.innerHTML = '';
+            
+            CAMERAS.forEach((cam, index) => {
+                const div = document.createElement('div');
+                div.className = 'cam-unit';
+                div.onclick = () => openModal(index);
+                div.innerHTML = `
+                    <img class="feed-img" id="thumb-${index}" src="${cam.url}">
+                    <div class="overlay-min">
+                        <span>${cam.name}</span>
+                        <span class="blink">●</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            startRefreshCycle();
+        }
+
+        // --- INTERACTIVITY ---
+        function openModal(index) {
+            initAudio(); // Ensure audio is ready on click
+            playSfx('open');
+            currentCamIndex = index;
+            const cam = CAMERAS[index];
+            
+            document.getElementById('modal-title').innerText = cam.name + " // LIVE FEED";
+            document.getElementById('modal-img').src = cam.url + "?" + new Date().getTime();
+            document.getElementById('modal-loc').innerText = cam.loc;
+            document.getElementById('modal-coords').innerText = cam.coords;
+            
+            document.getElementById('modal-layer').style.display = 'flex';
+            
+            const diag = document.getElementById('modal-diag');
+            diag.innerText = "LINK ESTABLISHED.";
+            let steps = ["Analysing traffic flow...", "Vehicle density: LOW", "Surface conditions: DRY", "Optical zoom: LOCKED"];
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < steps.length) {
+                    diag.innerText = steps[i];
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 800);
+        }
+
+        function closeModal() {
+            document.getElementById('modal-layer').style.display = 'none';
+        }
+
+        function openMap() {
+            const cam = CAMERAS[currentCamIndex];
+            // Format coords for Google Maps url (remove spaces)
+            const mapCoords = cam.coords.replace(/\s/g, '');
+            window.open(`https://www.google.com/maps/search/?api=1&query=${mapCoords}`, '_blank');
+        }
+
+        // --- SYSTEM CORE ---
+        function startRefreshCycle() {
+            setInterval(() => {
+                const imgs = document.querySelectorAll('.feed-img');
+                const stamp = new Date().getTime();
+                imgs.forEach(img => {
+                    const base = img.src.split('?')[0];
+                    img.src = base + "?" + stamp;
+                });
+                
+                if (document.getElementById('modal-layer').style.display === 'flex') {
+                     const modalImg = document.getElementById('modal-img');
+                     const base = modalImg.src.split('?')[0];
+                     modalImg.src = base + "?" + stamp;
+                }
+            }, 30000);
+        }
+
+        // --- LOGIN LOGIC ---
+        const pinInput = document.getElementById('pin-input');
+        
+        // Listen for Enter key
+        pinInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') checkPin();
+        });
+
+        function checkPin() {
+            // Force audio init on button click/keypress
+            initAudio(); 
+
+            if (pinInput.value === '2750') {
+                // Hide inputs immediately
+                pinInput.style.display = 'none';
+                document.querySelector('.btn-login').style.display = 'none';
+                
+                const log = document.getElementById('boot-log');
+                log.style.display = 'block';
+                
+                playSfx('access');
+                
+                let lines = ["AUTHENTICATING...", "DECRYPTING FEED...", "ACCESS GRANTED."];
+                let delay = 0;
+                lines.forEach(line => {
+                    setTimeout(() => { log.innerText += line + "\n"; }, delay);
+                    delay += 500;
+                });
+                
+                setTimeout(() => {
+                    document.getElementById('login-layer').style.display = 'none';
+                    initGrid();
+                }, 2000);
+            } else {
+                pinInput.value = '';
+                pinInput.placeholder = "DENIED";
+            }
+        }
+    </script>
+</body>
+</html>
