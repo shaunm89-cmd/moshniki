@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SECURE SURVEILLANCE // SECTOR 04</title>
+    <title>WESTERN SYDNEY // COMMAND NODE</title>
     <style>
         :root {
-            --bg-color: #050505;
+            --bg-color: #000;
             --text-color: #00ff41; /* Hacker Green */
+            --dim-color: #004d13;
             --alert-color: #ff3333;
             --border-color: #333;
-            --scanline-color: rgba(0, 255, 65, 0.03);
+            --scanline-color: rgba(0, 255, 65, 0.05);
         }
 
         body {
@@ -18,33 +19,33 @@
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Consolas', 'Monaco', monospace;
+            font-family: 'Courier New', Courier, monospace;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-y: auto; /* SCROLLING ENABLED */
+            overflow: hidden; /* Hide scrollbars initially */
         }
 
-        /* CRT SCANLINE EFFECT */
+        /* --- VISUAL EFFECTS --- */
         .scanlines {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(to bottom, var(--scanline-color) 50%, rgba(0,0,0,0) 50%);
             background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 999;
+            pointer-events: none; z-index: 999;
         }
 
-        /* LOGIN SCREEN */
+        .vignette {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none; z-index: 998;
+        }
+
+        /* --- LOGIN SCREEN --- */
         #login-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
             z-index: 1000;
             display: flex;
@@ -54,156 +55,218 @@
             text-align: center;
         }
 
-        input[type="password"] {
-            background: #111;
+        .logo-area {
             border: 2px solid var(--text-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px var(--text-color);
+        }
+
+        input[type="password"] {
+            background: #000;
+            border: none;
+            border-bottom: 2px solid var(--dim-color);
             color: var(--text-color);
             padding: 10px;
-            font-family: 'Consolas', monospace;
-            font-size: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
             text-align: center;
             outline: none;
-            margin-top: 20px;
             width: 200px;
+            letter-spacing: 10px;
+            transition: border-color 0.3s;
         }
+        
+        input[type="password"]:focus { border-color: var(--text-color); }
 
-        button {
-            background: var(--text-color);
+        .btn-access {
+            background: var(--dim-color);
             color: #000;
-            border: none;
-            padding: 10px 20px;
+            border: 1px solid var(--text-color);
+            padding: 15px 40px;
+            margin-top: 20px;
             font-weight: bold;
+            font-size: 1.2rem;
             cursor: pointer;
-            margin-top: 10px;
-            font-family: 'Consolas', monospace;
+            font-family: 'Courier New', monospace;
+            transition: all 0.2s;
+        }
+
+        .btn-access:hover { background: var(--text-color); box-shadow: 0 0 20px var(--text-color); }
+
+        /* --- BOOT SEQUENCE TEXT --- */
+        #boot-text {
+            display: none;
             font-size: 1rem;
+            text-align: left;
+            width: 300px;
+            height: 200px;
+            margin-top: 20px;
+            color: var(--text-color);
+            white-space: pre-line;
+            overflow: hidden;
         }
 
-        button:hover { background: #fff; }
+        /* --- MAIN INTERFACE (HIDDEN INITIALLY) --- */
+        #main-interface { display: none; height: 100%; flex-direction: column; }
 
-        /* HEADER */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: #000;
-            border-bottom: 2px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 20px; background: #050505; border-bottom: 1px solid var(--text-color);
         }
 
-        h1 { margin: 0; font-size: 1.2rem; letter-spacing: 2px; }
+        .header-title { font-size: 1.5rem; font-weight: bold; text-shadow: 0 0 5px var(--text-color); }
+        .fullscreen-btn { background: none; border: 1px solid var(--text-color); color: var(--text-color); padding: 5px 10px; cursor: pointer; font-family: inherit; }
+        .fullscreen-btn:hover { background: var(--text-color); color: #000; }
 
-        /* BIGGER GRID (2 COLUMNS) */
+        /* --- GRID --- */
         .grid-container {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 LARGE COLUMNS */
-            gap: 10px;
-            padding: 10px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px; padding: 10px;
             background: #000;
+            overflow-y: auto; /* Allow scroll */
+            flex-grow: 1;
         }
 
-        /* On mobile, stack them 1 by 1 */
-        @media (max-width: 768px) {
-            .grid-container { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 768px) { .grid-container { grid-template-columns: 1fr; } }
 
-        .cam-box {
-            position: relative;
-            background: #0f0f0f;
-            border: 1px solid #333;
-            aspect-ratio: 16/9;
-        }
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
-            /* NO FILTERS - PURE COLOR */
-            display: block;
-        }
+        .cam-box { position: relative; background: #111; border: 1px solid #333; aspect-ratio: 16/9; }
+        img { width: 100%; height: 100%; object-fit: fill; display: block; }
 
         .cam-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 8px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-            display: flex;
-            justify-content: space-between;
-            pointer-events: none;
+            position: absolute; top: 0; left: 0; width: 100%; padding: 8px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            display: flex; justify-content: space-between; pointer-events: none;
         }
 
-        .cam-name { font-size: 14px; font-weight: bold; text-shadow: 1px 1px 2px black; color: #fff; }
-        .rec-stat { color: var(--alert-color); font-weight: bold; font-size: 14px; animation: blink 1s infinite; text-shadow: 1px 1px 2px black; }
-
+        .cam-name { font-weight: bold; text-shadow: 1px 1px 2px black; color: #fff; background: rgba(0,0,0,0.5); padding: 2px 5px; }
+        .rec-stat { color: var(--alert-color); font-weight: bold; animation: blink 1s infinite; text-shadow: 0 0 5px red; }
         @keyframes blink { 50% { opacity: 0; } }
-        
-        .error-msg { color: var(--alert-color); margin-top: 10px; display: none; }
+
+        .error-msg { color: var(--alert-color); margin-top: 10px; display: none; text-shadow: 0 0 5px red; }
 
     </style>
 </head>
 <body>
 
     <div class="scanlines"></div>
+    <div class="vignette"></div>
 
     <div id="login-screen">
-        <h1 style="color: var(--text-color); font-size: 2rem;">RESTRICTED ACCESS</h1>
-        <p>ENTER SECURITY CLEARANCE CODE</p>
-        <input type="password" id="pinInput" placeholder="_ _ _ _" maxlength="4">
-        <button onclick="checkPin()">ACCESS SYSTEM</button>
-        <div class="error-msg" id="errorMsg">ACCESS DENIED</div>
+        <div class="logo-area">
+            <h1>RESTRICTED ACCESS</h1>
+            <div style="font-size: 0.8rem; letter-spacing: 2px;">GOV_NET // WESTERN_SEC</div>
+        </div>
+        
+        <input type="password" id="pinInput" placeholder="PIN" maxlength="4" oninput="playBeep(800)">
+        <button class="btn-access" onclick="attemptLogin()">INITIATE LINK</button>
+        
+        <div class="error-msg" id="errorMsg">!!! ACCESS DENIED !!!</div>
+        <div id="boot-text"></div>
     </div>
 
-    <header>
-        <h1>WESTERN SYDNEY // SECTOR 04</h1>
-        <div>SYSTEM: <span style="color:var(--text-color)">SECURE</span></div>
-    </header>
+    <div id="main-interface">
+        <header>
+            <div class="header-title">COMMAND NODE // PENRITH</div>
+            <button class="fullscreen-btn" onclick="toggleFullScreen()">[ ] MAXIMIZE</button>
+        </header>
 
-    <div class="grid-container">
-        
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: EMU PLAINS</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_emu_plains.jpeg" src=""></div>
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: ST MARYS</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_st_marys.jpeg" src=""></div>
-
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: MINCHINBURY</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_minchinbury.jpeg" src=""></div>
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: PROSPECT</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_prospect.jpeg" src=""></div>
-
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M7 :: GLENWOOD</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_glenwood.jpeg" src=""></div>
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">WINDSOR RD :: WINDSOR</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/windsor_road_bridge_north_windsor.jpeg" src=""></div>
-
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">RICHMOND BRIDGE</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/richmond_bridge_north_richmond.jpeg" src=""></div>
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M7 :: HORSLEY PARK</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_at_the_horsley_drive_horsley_park.jpeg" src=""></div>
-
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">GWH :: KATOOMBA</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_katoomba.jpeg" src=""></div>
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">GWH :: BLACKHEATH</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_blackheath.jpeg" src=""></div>
-
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">GWH :: VICTORIA PASS</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_victoria_pass.jpeg" src=""></div>
-        <div class="cam-box"><div class="cam-overlay"><span class="cam-name">BELLS LINE :: BELL</span><span class="rec-stat">● REC</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/bells_line_of_road_bell.jpeg" src=""></div>
-
+        <div class="grid-container">
+            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: EMU PLAINS</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_emu_plains.jpeg" src=""></div>
+            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: ST MARYS</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_st_marys.jpeg" src=""></div>
+            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: MINCHINBURY</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_minchinbury.jpeg" src=""></div>
+            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: PROSPECT</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_prospect.jpeg" src=""></div>
+            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M7 :: GLENWOOD</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_glenwood.jpeg" src=""></div>
+            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">WINDSOR RD :: WINDSOR</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/windsor_road_bridge_north_windsor.jpeg" src=""></div>
+            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">RICHMOND BRIDGE</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/richmond_bridge_north_richmond.jpeg" src=""></div>
+            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M7 :: HORSLEY PARK</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_at_the_horsley_drive_horsley_park.jpeg" src=""></div>
+            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">GWH :: KATOOMBA</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_katoomba.jpeg" src=""></div>
+            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">GWH :: VICTORIA PASS</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_victoria_pass.jpeg" src=""></div>
+        </div>
     </div>
 
     <script>
-        // PIN PROTECTION SYSTEM
-        function checkPin() {
+        // --- SOUND ENGINE (Synthesized sounds so no files needed) ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playBeep(freq = 600, type = 'square', duration = 0.1) {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = type;
+            oscillator.frequency.value = freq;
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+            oscillator.stop(audioCtx.currentTime + duration);
+        }
+
+        function playSuccess() {
+            playBeep(400, 'sine', 0.1);
+            setTimeout(() => playBeep(800, 'sine', 0.2), 100);
+            setTimeout(() => playBeep(1200, 'square', 0.4), 300);
+        }
+
+        function playError() {
+            playBeep(150, 'sawtooth', 0.3);
+            setTimeout(() => playBeep(100, 'sawtooth', 0.3), 200);
+        }
+
+        // --- LOGIN & BOOT SEQUENCE ---
+        function attemptLogin() {
             const pin = document.getElementById('pinInput').value;
-            // CHANGE PIN HERE IF YOU WANT
-            if (pin === "2750") { 
-                document.getElementById('login-screen').style.display = 'none';
-                startFeeds(); // Only load cameras after login
+            if (pin === "2750") { // PIN CODE
+                document.getElementById('errorMsg').style.display = 'none';
+                playSuccess();
+                runBootSequence();
             } else {
+                playError();
                 document.getElementById('errorMsg').style.display = 'block';
                 document.getElementById('pinInput').value = '';
             }
         }
 
-        // Allow pressing "Enter" to submit PIN
-        document.getElementById("pinInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                checkPin();
-            }
+        document.getElementById("pinInput").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") attemptLogin();
         });
 
-        // CAMERA REFRESH SYSTEM
+        function runBootSequence() {
+            // Hide input, show console text
+            document.querySelector('.logo-area').style.display = 'none';
+            document.getElementById('pinInput').style.display = 'none';
+            document.querySelector('.btn-access').style.display = 'none';
+            
+            const bootText = document.getElementById('boot-text');
+            bootText.style.display = 'block';
+
+            const lines = [
+                "ESTABLISHING SECURE CONNECTION...",
+                "AUTHENTICATING USER: ADMIN_01...",
+                "DECRYPTING TRAFFIC FEEDS...",
+                "ACCESSING NSW_ROADS_DB...",
+                "LOADING: SECTOR_04_WESTERN...",
+                "SYSTEM READY."
+            ];
+
+            let delay = 0;
+            lines.forEach((line, index) => {
+                setTimeout(() => {
+                    bootText.innerHTML += line + "<br>";
+                    playBeep(1000 + (index * 200), 'square', 0.05); // High pitch blips
+                }, delay);
+                delay += 600; // Speed of scrolling text
+            });
+
+            // Finish boot and show grid
+            setTimeout(() => {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-interface').style.display = 'flex';
+                startFeeds();
+            }, delay + 500);
+        }
+
+        // --- CAMERA SYSTEM ---
         function startFeeds() {
             refreshCams();
             setInterval(refreshCams, 30000);
@@ -216,7 +279,17 @@
                 cam.src = cam.getAttribute('data-src') + "?" + timestamp;
             });
         }
-    </script>
 
+        // --- FULLSCREEN ---
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
 </body>
 </html>
