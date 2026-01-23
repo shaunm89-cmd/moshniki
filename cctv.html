@@ -3,293 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WESTERN SYDNEY // COMMAND NODE</title>
+    <title>OVERWATCH // WESTERN SECTOR</title>
     <style>
         :root {
-            --bg-color: #000;
-            --text-color: #00ff41; /* Hacker Green */
-            --dim-color: #004d13;
-            --alert-color: #ff3333;
-            --border-color: #333;
-            --scanline-color: rgba(0, 255, 65, 0.05);
+            --bg-color: #050505;
+            --text-main: #00ff41; /* Cyber Green */
+            --text-dim: #008F11;
+            --alert: #ff3333;
+            --highlight: #e0f7fa;
+            --scanline: rgba(0, 255, 65, 0.03);
+            --font-stack: 'Courier New', Courier, monospace;
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Courier New', Courier, monospace;
+            color: var(--text-main);
+            font-family: var(--font-stack);
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; /* Hide scrollbars initially */
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            user-select: none;
         }
 
-        /* --- VISUAL EFFECTS --- */
+        /* --- FX LAYERS --- */
         .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(to bottom, var(--scanline-color) 50%, rgba(0,0,0,0) 50%);
-            background-size: 100% 4px;
-            pointer-events: none; z-index: 999;
-        }
-
-        .vignette {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.8) 100%);
-            pointer-events: none; z-index: 998;
-        }
-
-        /* --- LOGIN SCREEN --- */
-        #login-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .logo-area {
-            border: 2px solid var(--text-color);
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 15px var(--text-color);
-        }
-
-        input[type="password"] {
-            background: #000;
-            border: none;
-            border-bottom: 2px solid var(--dim-color);
-            color: var(--text-color);
-            padding: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 2rem;
-            text-align: center;
-            outline: none;
-            width: 200px;
-            letter-spacing: 10px;
-            transition: border-color 0.3s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, var(--scanline) 50%, rgba(0,0,0,0) 50%);
+            background-size: 100% 4px; pointer-events: none; z-index: 990;
         }
         
-        input[type="password"]:focus { border-color: var(--text-color); }
-
-        .btn-access {
-            background: var(--dim-color);
-            color: #000;
-            border: 1px solid var(--text-color);
-            padding: 15px 40px;
-            margin-top: 20px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            transition: all 0.2s;
+        /* --- LOGIN SCREEN --- */
+        #login-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 2000;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
         }
-
-        .btn-access:hover { background: var(--text-color); box-shadow: 0 0 20px var(--text-color); }
-
-        /* --- BOOT SEQUENCE TEXT --- */
-        #boot-text {
-            display: none;
-            font-size: 1rem;
-            text-align: left;
-            width: 300px;
-            height: 200px;
-            margin-top: 20px;
-            color: var(--text-color);
-            white-space: pre-line;
-            overflow: hidden;
+        
+        .login-box { border: 2px solid var(--text-main); padding: 40px; text-align: center; box-shadow: 0 0 20px var(--text-dim); }
+        input { 
+            background: transparent; border: none; border-bottom: 2px solid var(--text-main); 
+            color: white; font-size: 2rem; font-family: inherit; text-align: center; 
+            width: 150px; margin-top: 20px; outline: none; letter-spacing: 5px;
         }
+        .boot-log { font-size: 0.8rem; color: var(--text-dim); margin-top: 20px; white-space: pre-wrap; height: 100px; text-align: left; display: none; }
 
-        /* --- MAIN INTERFACE (HIDDEN INITIALLY) --- */
-        #main-interface { display: none; height: 100%; flex-direction: column; }
-
+        /* --- MAIN UI --- */
         header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 20px; background: #050505; border-bottom: 1px solid var(--text-color);
+            padding: 10px 20px; background: #0a0a0a; border-bottom: 1px solid var(--text-dim);
+            z-index: 100;
         }
+        .sys-badge { font-weight: bold; border: 1px solid var(--text-main); padding: 2px 6px; font-size: 0.8rem; }
 
-        .header-title { font-size: 1.5rem; font-weight: bold; text-shadow: 0 0 5px var(--text-color); }
-        .fullscreen-btn { background: none; border: 1px solid var(--text-color); color: var(--text-color); padding: 5px 10px; cursor: pointer; font-family: inherit; }
-        .fullscreen-btn:hover { background: var(--text-color); color: #000; }
-
-        /* --- GRID --- */
-        .grid-container {
+        #grid-wrapper {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px; padding: 10px;
-            background: #000;
-            overflow-y: auto; /* Allow scroll */
-            flex-grow: 1;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4px; padding: 4px;
+            overflow-y: auto; flex-grow: 1;
         }
 
-        @media (max-width: 768px) { .grid-container { grid-template-columns: 1fr; } }
+        .cam-unit {
+            position: relative; border: 1px solid #222; background: #000;
+            aspect-ratio: 16/9; cursor: crosshair; transition: all 0.2s;
+        }
+        .cam-unit:hover { border-color: var(--text-main); box-shadow: 0 0 10px var(--text-dim); }
+        .cam-unit img { width: 100%; height: 100%; object-fit: fill; opacity: 0.8; }
+        .cam-unit:hover img { opacity: 1; }
 
-        .cam-box { position: relative; background: #111; border: 1px solid #333; aspect-ratio: 16/9; }
-        img { width: 100%; height: 100%; object-fit: fill; display: block; }
-
-        .cam-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; padding: 8px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-            display: flex; justify-content: space-between; pointer-events: none;
+        .overlay-min {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: rgba(0,0,0,0.8); padding: 5px;
+            font-size: 0.8rem; display: flex; justify-content: space-between;
         }
 
-        .cam-name { font-weight: bold; text-shadow: 1px 1px 2px black; color: #fff; background: rgba(0,0,0,0.5); padding: 2px 5px; }
-        .rec-stat { color: var(--alert-color); font-weight: bold; animation: blink 1s infinite; text-shadow: 0 0 5px red; }
+        /* --- MODAL (FULLSCREEN CAM) --- */
+        #modal-layer {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 1000;
+            flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .modal-content {
+            width: 90%; max-width: 1000px; border: 2px solid var(--text-main);
+            background: #000; position: relative; padding: 2px;
+            box-shadow: 0 0 30px var(--text-dim);
+        }
+
+        .modal-header {
+            background: var(--text-dim); color: #000; padding: 5px 10px; font-weight: bold;
+            display: flex; justify-content: space-between;
+        }
+
+        .modal-view { width: 100%; aspect-ratio: 16/9; position: relative; overflow: hidden; }
+        .modal-view img { width: 100%; height: 100%; object-fit: contain; }
+
+        .modal-data {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+            padding: 20px; font-size: 0.9rem; color: #ccc;
+        }
+
+        .data-row { margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        .data-label { color: var(--text-main); font-weight: bold; display: block; font-size: 0.7rem; }
+        
+        .btn-action {
+            background: transparent; border: 1px solid var(--text-main); color: var(--text-main);
+            padding: 10px 20px; cursor: pointer; font-family: inherit; font-weight: bold;
+            transition: 0.2s; margin-top: 10px; width: 100%;
+        }
+        .btn-action:hover { background: var(--text-main); color: #000; }
+
+        .close-btn { cursor: pointer; font-weight: bold; }
+        .close-btn:hover { color: white; }
+
+        /* ANIMATIONS */
+        .blink { animation: blink 1s infinite; color: var(--alert); }
         @keyframes blink { 50% { opacity: 0; } }
-
-        .error-msg { color: var(--alert-color); margin-top: 10px; display: none; text-shadow: 0 0 5px red; }
 
     </style>
 </head>
 <body>
 
     <div class="scanlines"></div>
-    <div class="vignette"></div>
 
-    <div id="login-screen">
-        <div class="logo-area">
-            <h1>RESTRICTED ACCESS</h1>
-            <div style="font-size: 0.8rem; letter-spacing: 2px;">GOV_NET // WESTERN_SEC</div>
-        </div>
-        
-        <input type="password" id="pinInput" placeholder="PIN" maxlength="4" oninput="playBeep(800)">
-        <button class="btn-access" onclick="attemptLogin()">INITIATE LINK</button>
-        
-        <div class="error-msg" id="errorMsg">!!! ACCESS DENIED !!!</div>
-        <div id="boot-text"></div>
-    </div>
-
-    <div id="main-interface">
-        <header>
-            <div class="header-title">COMMAND NODE // PENRITH</div>
-            <button class="fullscreen-btn" onclick="toggleFullScreen()">[ ] MAXIMIZE</button>
-        </header>
-
-        <div class="grid-container">
-            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: EMU PLAINS</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_emu_plains.jpeg" src=""></div>
-            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: ST MARYS</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_st_marys.jpeg" src=""></div>
-            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: MINCHINBURY</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_minchinbury.jpeg" src=""></div>
-            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M4 :: PROSPECT</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_prospect.jpeg" src=""></div>
-            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M7 :: GLENWOOD</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_glenwood.jpeg" src=""></div>
-            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">WINDSOR RD :: WINDSOR</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/windsor_road_bridge_north_windsor.jpeg" src=""></div>
-            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">RICHMOND BRIDGE</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/richmond_bridge_north_richmond.jpeg" src=""></div>
-            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">M7 :: HORSLEY PARK</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_at_the_horsley_drive_horsley_park.jpeg" src=""></div>
-            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">GWH :: KATOOMBA</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_katoomba.jpeg" src=""></div>
-            <div class="cam-box"><div class="cam-overlay"><span class="cam-name">GWH :: VICTORIA PASS</span><span class="rec-stat">● LIVE</span></div><img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_victoria_pass.jpeg" src=""></div>
+    <div id="login-layer">
+        <div class="login-box">
+            <h1>OVERWATCH // LOGIN</h1>
+            <p>ENTER PASSCODE</p>
+            <input type="password" id="pin-input" maxlength="4" placeholder="_ _ _ _">
+            <div class="boot-log" id="boot-log"></div>
         </div>
     </div>
+
+    <div id="modal-layer">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="modal-title">CAM_01 // CONNECTED</span>
+                <span class="close-btn" onclick="closeModal()">[X] CLOSE LINK</span>
+            </div>
+            <div class="modal-view">
+                <img id="modal-img" src="">
+                <div style="position:absolute; top:10px; left:10px; color:red; font-size:0.8rem;">● LIVE FEED</div>
+                <div style="position:absolute; bottom:10px; right:10px; color:#00ff41; font-size:0.8rem;">ZOOM: 1.0x</div>
+            </div>
+            <div class="modal-data">
+                <div class="left-panel">
+                    <div class="data-row"><span class="data-label">LOCATION</span><span id="modal-loc">UNKNOWN</span></div>
+                    <div class="data-row"><span class="data-label">COORDINATES</span><span id="modal-coords">WAITING...</span></div>
+                    <div class="data-row"><span class="data-label">STATUS</span><span style="color:#00ff41">ONLINE / RECORDING</span></div>
+                </div>
+                <div class="right-panel">
+                    <div class="data-row"><span class="data-label">SYSTEM DIAGNOSTICS</span><span id="modal-diag">Scanning...</span></div>
+                    <button class="btn-action" onclick="openMap()">OPEN SAT-MAP LOCATION</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div>OVERWATCH // <span style="color:white">WESTERN SYDNEY</span></div>
+        <div class="sys-badge">SECURE CONNECTION</div>
+    </header>
+
+    <div id="grid-wrapper"></div>
 
     <script>
-        // --- SOUND ENGINE (Synthesized sounds so no files needed) ---
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playBeep(freq = 600, type = 'square', duration = 0.1) {
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            oscillator.type = type;
-            oscillator.frequency.value = freq;
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            oscillator.start();
-            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
-            oscillator.stop(audioCtx.currentTime + duration);
-        }
-
-        function playSuccess() {
-            playBeep(400, 'sine', 0.1);
-            setTimeout(() => playBeep(800, 'sine', 0.2), 100);
-            setTimeout(() => playBeep(1200, 'square', 0.4), 300);
-        }
-
-        function playError() {
-            playBeep(150, 'sawtooth', 0.3);
-            setTimeout(() => playBeep(100, 'sawtooth', 0.3), 200);
-        }
-
-        // --- LOGIN & BOOT SEQUENCE ---
-        function attemptLogin() {
-            const pin = document.getElementById('pinInput').value;
-            if (pin === "2750") { // PIN CODE
-                document.getElementById('errorMsg').style.display = 'none';
-                playSuccess();
-                runBootSequence();
-            } else {
-                playError();
-                document.getElementById('errorMsg').style.display = 'block';
-                document.getElementById('pinInput').value = '';
-            }
-        }
-
-        document.getElementById("pinInput").addEventListener("keypress", (e) => {
-            if (e.key === "Enter") attemptLogin();
-        });
-
-        function runBootSequence() {
-            // Hide input, show console text
-            document.querySelector('.logo-area').style.display = 'none';
-            document.getElementById('pinInput').style.display = 'none';
-            document.querySelector('.btn-access').style.display = 'none';
-            
-            const bootText = document.getElementById('boot-text');
-            bootText.style.display = 'block';
-
-            const lines = [
-                "ESTABLISHING SECURE CONNECTION...",
-                "AUTHENTICATING USER: ADMIN_01...",
-                "DECRYPTING TRAFFIC FEEDS...",
-                "ACCESSING NSW_ROADS_DB...",
-                "LOADING: SECTOR_04_WESTERN...",
-                "SYSTEM READY."
-            ];
-
-            let delay = 0;
-            lines.forEach((line, index) => {
-                setTimeout(() => {
-                    bootText.innerHTML += line + "<br>";
-                    playBeep(1000 + (index * 200), 'square', 0.05); // High pitch blips
-                }, delay);
-                delay += 600; // Speed of scrolling text
-            });
-
-            // Finish boot and show grid
-            setTimeout(() => {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-interface').style.display = 'flex';
-                startFeeds();
-            }, delay + 500);
-        }
-
-        // --- CAMERA SYSTEM ---
-        function startFeeds() {
-            refreshCams();
-            setInterval(refreshCams, 30000);
-        }
-
-        function refreshCams() {
-            const cams = document.querySelectorAll('.traffic-cam');
-            const timestamp = new Date().getTime();
-            cams.forEach(cam => {
-                cam.src = cam.getAttribute('data-src') + "?" + timestamp;
-            });
-        }
-
-        // --- FULLSCREEN ---
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-    </script>
-</body>
-</html>
+        // --- CONFIGURATION ---
+        const CAMERAS = [
+            { name: "M4 EMU PLAINS", loc: "M4 Motorway @ Russell St", coords: "-33.756, 150.672", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_emu_plains.jpeg" },
+            { name: "M4 ST MARYS", loc: "M4 Motorway @ Mamre Rd", coords: "-33.774, 150.771", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_st_marys.jpeg" },
+            { name: "M4 MINCHINBURY", loc: "M4 Motorway @ Wallgrove Rd", coords: "-33.785, 150.843", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_minchinbury.jpeg" },
+            { name: "M4 PROSPECT", loc: "M4 Motorway @ Reservoir", coords: "-33.805, 150.903", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_prospect.jpeg" },
+            { name: "M7 GLENWOOD", loc: "Westlink M7 @ Old Windsor Rd", coords: "-33.721, 150.932", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m7_glenwood.jpeg" },
+            { name: "WINDSOR BRIDGE", loc: "Windsor Rd @ Hawkesbury River", coords: "-33.604, 150.816", url: "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/windsor_road_bridge_north_windsor.jpeg" },
+            { name: "RICHMOND BRIDGE", loc: "Bells Line @ Hawkesbury River", coords: "-33.593, 150.748", url: "
