@@ -2,16 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Panthers Command Center</title>
+    <title>Monitoring Station // Live Feed</title>
     <style>
-        /* PANTHERS THEME: Black, Red, Yellow, Green */
         :root {
-            --bg-color: #000000;
+            --bg-color: #0d0d0d;
             --border-color: #333;
-            --accent-red: #ed1b24; /* Panthers Red */
-            --accent-yellow: #ffc425; /* Panthers Yellow */
-            --accent-green: #00a651; /* Panthers Green */
-            --text-color: #ffffff;
+            --text-color: #e0e0e0;
+            --highlight: #00ff41; /* Cyber Green */
+            --alert: #ff3333;
         }
 
         body {
@@ -19,78 +17,87 @@
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Courier New', Courier, monospace; /* Security terminal font */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow: hidden; /* Prevents scrolling */
         }
 
-        /* HEADER */
+        /* COMPACT HEADER */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            border-bottom: 3px solid var(--accent-green);
-            background: #111;
+            padding: 5px 15px;
+            background: #000;
+            border-bottom: 1px solid var(--border-color);
+            height: 30px;
         }
 
-        h1 { margin: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
-        .status { color: var(--accent-green); font-weight: bold; animation: blink 2s infinite; }
+        h1 { margin: 0; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--highlight); }
+        .clock { font-size: 0.9rem; font-family: monospace; }
 
-        /* GRID LAYOUT */
+        /* HIGH DENSITY GRID */
         .grid-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 5px;
-            flex-grow: 1;
-            padding: 5px;
+            grid-template-columns: repeat(4, 1fr); /* 4 Columns */
+            grid-template-rows: repeat(3, 1fr);    /* 3 Rows */
+            gap: 2px;
+            height: calc(100vh - 35px); /* Fill remaining height */
             background: #000;
         }
 
         .cam-box {
             position: relative;
             background: #111;
-            border: 1px solid var(--border-color);
+            border: 1px solid #222;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* IFRAME / IMAGE STYLING */
-        iframe, img {
+        img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            border: none;
+            object-fit: fill; /* Stretches to fill box exactly */
             display: block;
+            filter: contrast(1.1) brightness(0.9); /* CCTV Look */
         }
 
-        /* OVERLAYS (REC, CAM NAME) */
-        .overlay {
+        /* TEXT OVERLAYS */
+        .cam-label {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 2px 8px;
-            font-size: 0.8rem;
-            border-left: 3px solid var(--accent-yellow);
+            top: 5px;
+            left: 5px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2px 6px;
+            font-size: 11px;
+            font-family: monospace;
+            color: #fff;
+            border-left: 2px solid var(--highlight);
+            text-transform: uppercase;
         }
 
-        .rec-dot {
+        .live-dot {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            color: var(--accent-red);
-            font-weight: bold;
-            font-size: 0.8rem;
-            animation: blink 1s infinite;
+            top: 5px;
+            right: 5px;
+            height: 6px;
+            width: 6px;
+            background-color: var(--alert);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--alert);
         }
 
-        /* ANIMATIONS */
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        /* LOADING STATE */
+        .cam-box::after {
+            content: "NO SIGNAL";
+            position: absolute;
+            z-index: -1;
+            color: #444;
+            font-size: 0.8rem;
         }
 
     </style>
@@ -98,58 +105,92 @@
 <body>
 
     <header>
-        <h1>PANTHERS MONITORING STN // JAMISONTOWN</h1>
-        <div class="status">SYSTEM ONLINE</div>
+        <h1>MONITORING STATION // WESTERN SECTOR</h1>
+        <div class="clock" id="clock">00:00:00</div>
     </header>
 
     <div class="grid-container">
         
         <div class="cam-box">
-            <div class="overlay">CAM 01: M4 ST MARYS</div>
-            <div class="rec-dot">● LIVE</div>
-            <img id="trafficCam1" src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_st_marys.jpeg" alt="Traffic Cam">
+            <div class="cam-label">CAM 01: M4 EMU PLAINS</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_emu_plains.jpeg" src="">
+        </div>
+        <div class="cam-box">
+            <div class="cam-label">CAM 02: M4 ST MARYS</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_st_marys.jpeg" src="">
+        </div>
+        <div class="cam-box">
+            <div class="cam-label">CAM 03: M4 MINCHINBURY</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_minchinbury.jpeg" src="">
+        </div>
+        <div class="cam-box">
+            <div class="cam-label">CAM 04: M4 PROSPECT</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_prospect.jpeg" src="">
         </div>
 
         <div class="cam-box">
-            <div class="overlay">CAM 02: ORBITAL FEED</div>
-            <div class="rec-dot">● LIVE</div>
-            <iframe src="https://www.youtube.com/embed/xRPjKQtRXR8?autoplay=1&mute=1&controls=0&showinfo=0" allow="autoplay"></iframe>
+            <div class="cam-label">CAM 05: GWH KATOOMBA</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_katoomba.jpeg" src="">
+        </div>
+        <div class="cam-box">
+            <div class="cam-label">CAM 06: GWH BLACKHEATH</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_blackheath.jpeg" src="">
+        </div>
+        <div class="cam-box">
+            <div class="cam-label">CAM 07: BELLS LINE (BELL)</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/bells_line_of_road_bell.jpeg" src="">
+        </div>
+        <div class="cam-box">
+            <div class="cam-label">CAM 08: GWH VICTORIA PASS</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/great_western_highway_victoria_pass.jpeg" src="">
         </div>
 
         <div class="cam-box">
-            <div class="overlay">CAM 03: SYD HARBOUR</div>
-            <div class="rec-dot">● LIVE</div>
-            <img id="trafficCam2" src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/sydney_harbour_bridge.jpeg" alt="Sydney Cam">
+            <div class="cam-label">CAM 09: P-MATTA RD SILVERWATER</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/parramatta_road_silverwater.jpeg" src="">
         </div>
-
         <div class="cam-box">
-            <div class="overlay">CAM 04: NATURE RESERVE</div>
-            <div class="rec-dot">● LIVE</div>
-            <iframe src="https://www.youtube.com/embed/N609loYkFJo?autoplay=1&mute=1&controls=0&showinfo=0" allow="autoplay"></iframe>
+            <div class="cam-label">CAM 10: ANZAC BRIDGE</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/anzac_bridge_eastbound.jpeg" src="">
+        </div>
+        <div class="cam-box">
+            <div class="cam-label">CAM 11: SYDNEY HARBOUR</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/sydney_harbour_bridge.jpeg" src="">
+        </div>
+        <div class="cam-box">
+            <div class="cam-label">CAM 12: HUME HWY LIVERPOOL</div><div class="live-dot"></div>
+            <img class="traffic-cam" data-src="https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/hume_highway_cumberland_highway_liverpool.jpeg" src="">
         </div>
 
     </div>
 
     <script>
-        // SCRIPT TO REFRESH TRAFFIC CAMS
-        // Traffic cams are usually images that update every 60 seconds.
-        // We add a random number to the URL to force the browser to reload the image.
-        
-        function refreshImages() {
-            const cam1 = document.getElementById('trafficCam1');
-            const cam2 = document.getElementById('trafficCam2');
-            
+        // UPDATE CLOCK
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+
+        // REFRESH CAMERAS
+        function refreshCams() {
+            const cams = document.querySelectorAll('.traffic-cam');
             const timestamp = new Date().getTime();
 
-            // Reload M4 Cam
-            cam1.src = "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/m4_western_motorway_st_marys.jpeg?" + timestamp;
-            
-            // Reload Harbour Cam
-            cam2.src = "https://webcams.transport.nsw.gov.au/livetraffic-webcams/cameras/sydney_harbour_bridge.jpeg?" + timestamp;
+            cams.forEach(cam => {
+                // We append the timestamp to force the browser to re-download the image
+                // otherwise it will just show the cached version.
+                cam.src = cam.getAttribute('data-src') + "?" + timestamp;
+            });
+            console.log("Cams refreshed at " + new Date().toLocaleTimeString());
         }
 
-        // Refresh every 30 seconds
-        setInterval(refreshImages, 30000);
+        // Initial Load
+        refreshCams();
+
+        // Refresh every 30 seconds (Standard interval for traffic cams)
+        setInterval(refreshCams, 30000);
+
     </script>
 
 </body>
