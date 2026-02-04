@@ -3,195 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nicole's Treats | Custom Cookies & Slices</title>
+    <title>Nicole's Treats | Premium Sweets</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
 
     <style>
-        /* --- VARIABLES --- */
         :root {
-            --primary: #eb3b5a; /* Pop Red/Pink */
-            --primary-light: #fc5c65;
-            --mint: #20bf6b;
-            --yellow: #f7b731;
-            --text-dark: #2d3436;
-            --text-light: #636e72;
+            --primary: #ff0055;
             --white: #ffffff;
-            --black: #000000;
+            --glass: rgba(255, 255, 255, 0.85);
+            --glass-hover: rgba(255, 255, 255, 0.95);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Fredoka', sans-serif;
-            background-color: #fff9fa; /* Light Pinkish White */
-            color: var(--text-dark);
-            line-height: 1.6;
+            /* ANIMATED LIVE BACKGROUND */
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1, #fbc2eb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* --- UTILITIES --- */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- LAYOUT UTILS --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
         
         h1, h2, h3 {
             font-family: 'Pacifico', cursive;
             color: var(--primary);
-            margin-bottom: 15px;
-            font-weight: 400;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
         }
 
-        /* --- BUTTONS --- */
-        .btn {
-            display: inline-block;
-            background: linear-gradient(to bottom, var(--primary-light), var(--primary));
-            color: white;
-            padding: 15px 40px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #b3253e;
-            transition: all 0.1s;
-            text-transform: uppercase;
-        }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #b3253e; }
-        .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #b3253e; }
-
-        /* --- HEADER --- */
+        /* --- GLASS HEADER --- */
         header {
-            background-color: var(--black);
-            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 5px solid var(--mint);
+            padding: 10px 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-img { height: 60px; width: auto; display: block; }
-
-        .nav-links a {
-            margin-left: 20px;
-            text-decoration: none;
-            color: var(--white);
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .nav-links a:hover { color: var(--yellow); }
-
-        /* --- HERO --- */
-        .hero {
-            background: linear-gradient(135deg, rgba(235, 59, 90, 0.9), rgba(247, 183, 49, 0.8)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1600&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            text-align: center;
-            padding: 120px 20px 160px 20px;
-            color: white;
-            position: relative;
-        }
-
-        .hero h1 { color: white; font-size: 3.5rem; text-shadow: 3px 3px 0 rgba(0,0,0,0.1); margin-bottom: 20px;}
-        .hero p { font-size: 1.3rem; margin-bottom: 40px; color: white; font-weight: 600; max-width: 600px; margin-inline: auto; }
-
-        /* --- ABOUT --- */
-        .about { padding: 60px 0; text-align: center; }
-        .quality-badge {
-            background: var(--mint); color: white; padding: 10px 25px;
-            border-radius: 30px; display: inline-block; font-weight: bold; margin-bottom: 20px;
-        }
-
-        /* --- PRODUCTS --- */
-        .products { padding: 60px 0; background: #fff; }
-        .section-title { text-align: center; font-size: 3rem; margin-bottom: 50px; }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo-img { height: 60px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
         
+        .nav-links {
+            background: rgba(255,255,255,0.5);
+            padding: 10px 30px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .nav-links a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            color: white;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            transform: rotate(-2deg);
+        }
+
+        .hero-card {
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            padding: 40px;
+            border-radius: 30px;
+            display: inline-block;
+            box-shadow: var(--shadow);
+            border: 2px solid rgba(255,255,255,0.5);
+            max-width: 700px;
+        }
+
+        .btn-wow {
+            background: linear-gradient(45deg, #ff0055, #ff5e62);
+            color: white;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 0, 85, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn-wow:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 30px rgba(255, 0, 85, 0.4); }
+
+        /* --- PRODUCTS (3D CARDS) --- */
+        .products { padding: 80px 0; }
+        .section-title { text-align: center; font-size: 3.5rem; margin-bottom: 60px; color: white; text-shadow: 3px 3px 0 rgba(0,0,0,0.1); }
+
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 40px;
+            padding: 20px;
         }
 
         .product-card {
-            background: white;
-            border: 3px solid var(--text-dark);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.6);
             overflow: hidden;
-            box-shadow: 10px 10px 0 var(--mint);
-            transition: transform 0.3s;
-        }
-        .product-card:hover { transform: translate(-5px, -5px); box-shadow: 15px 15px 0 var(--text-dark); }
-        
-        .product-img { height: 250px; width: 100%; background: #eee; border-bottom: 3px solid var(--text-dark); }
-        .product-img img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .product-info { padding: 20px; text-align: center; }
-        .price { background: var(--text-dark); color: white; padding: 5px 15px; border-radius: 10px; display: inline-block; margin-bottom: 10px;}
-
-        /* --- BUILDER (TRAY) --- */
-        .contact { padding: 80px 0; background: #fff9fa; }
-        
-        .box-builder-container {
-            background: white; padding: 30px; border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid #eee;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
         }
 
-        .builder-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        /* The 3D Hover Effect */
+        .product-card:hover {
+            transform: translateY(-15px) rotateX(5deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            background: white;
+        }
+
+        .product-img { height: 260px; overflow: hidden; position: relative; }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .product-card:hover .product-img img { transform: scale(1.1); }
+
+        .product-info { padding: 30px; text-align: center; }
+        .product-info h3 { font-size: 1.8rem; margin-bottom: 10px; }
+        .price-tag {
+            background: #ff0055; color: white; padding: 5px 15px;
+            border-radius: 20px; font-weight: bold; display: inline-block;
+            margin-bottom: 15px; box-shadow: 0 5px 15px rgba(255,0,85,0.2);
+        }
+
+        /* --- PREMIUM TRAY BUILDER --- */
+        .order-section { padding: 80px 0; }
         
-        .treat-btn {
-            background: white; border: 2px solid #ddd; padding: 10px 20px; border-radius: 15px;
-            cursor: pointer; font-family: 'Fredoka', sans-serif; font-weight: bold; min-width: 120px;
-            display: flex; flex-direction: column; align-items: center;
-        }
-        .treat-btn:hover { border-color: var(--mint); color: var(--mint); transform: translateY(-2px); }
-        .treat-btn.bulk-btn { border-color: var(--yellow); background: #fffdef; }
-
-        .the-tray {
-            background: #dfe6e9; border: 4px solid #b2bec3; border-radius: 15px;
-            padding: 20px; min-height: 150px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 40px;
+            padding: 50px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
-        .tray-item { width: 60px; height: 60px; object-fit: cover; border: 2px solid white; box-shadow: 0 3px 5px rgba(0,0,0,0.2); cursor: pointer; animation: pop 0.3s; }
-        .tray-item.slab { width: 100px; border-radius: 5px; }
-        .tray-item.round { border-radius: 50%; }
+        .controls { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 40px; }
+        
+        .add-btn {
+            background: white; border: none; padding: 15px 25px; border-radius: 20px;
+            font-family: inherit; font-weight: bold; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;
+            display: flex; flex-direction: column; align-items: center; min-width: 140px;
+            border: 2px solid transparent;
+        }
+        .add-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--primary); }
+        .add-btn span { color: #888; font-size: 0.85rem; font-weight: normal; margin-top: 5px; }
 
-        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        .add-btn.special { background: #fff8e1; border-color: #ffd700; }
+        .add-btn.special:hover { background: #ffecb3; }
 
-        .empty-msg { width: 100%; text-align: center; color: #636e72; margin-top: 40px; font-weight: bold; }
-        .box-total { text-align: center; font-size: 2rem; color: var(--primary); font-family: 'Pacifico'; margin-top: 20px; }
-        .reset-box { display: block; margin: 10px auto; background: none; border: none; text-decoration: underline; cursor: pointer; color: #888; }
-        .discount-badge { display: none; background: var(--yellow); padding: 5px 15px; border-radius: 20px; margin: 10px auto; width: fit-content; font-weight: bold; }
+        /* THE TRAY */
+        .tray-container {
+            background: #e0e0e0;
+            border-radius: 20px;
+            padding: 20px;
+            min-height: 200px;
+            box-shadow: inset 0 10px 20px rgba(0,0,0,0.1);
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;
+            border: 5px solid white;
+        }
+
+        .tray-item { 
+            animation: bounceIn 0.4s; cursor: pointer; 
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+            transition: transform 0.2s;
+        }
+        .tray-item:hover { transform: scale(1.15) rotate(5deg); }
+        .tray-item.slab { width: 100px; height: 60px; object-fit: cover; border-radius: 10px; border: 2px solid white; }
+        .tray-item.cookie { width: 65px; height: 65px; object-fit: contain; }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .total-display {
+            text-align: center; font-size: 2.5rem; font-family: 'Pacifico';
+            color: var(--primary); margin: 30px 0; text-shadow: 2px 2px 0 rgba(0,0,0,0.05);
+        }
+
+        .discount-popup {
+            background: #ffd700; color: #333; padding: 10px 30px;
+            border-radius: 50px; font-weight: bold; display: none;
+            margin: 0 auto 20px auto; width: fit-content;
+            animation: pulse 2s infinite; box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
         /* FORM */
-        .contact-form { max-width: 600px; margin: 40px auto 0; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; }
-        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-family: inherit; }
-        .policy-note { background: #fff0f3; padding: 15px; border-radius: 10px; font-size: 0.9rem; color: #555; margin-bottom: 20px; border-left: 4px solid var(--primary); }
+        .form-area { max-width: 600px; margin: 0 auto; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--primary); }
+        .input-group input, .input-group textarea {
+            width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 15px;
+            font-size: 1rem; font-family: inherit; transition: 0.3s;
+        }
+        .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(255,0,85,0.1); }
 
-        /* FOOTER */
-        footer { background: var(--black); color: white; text-align: center; padding: 30px; margin-top: 50px; }
+        .policy-box {
+            background: rgba(255, 0, 85, 0.05);
+            border-left: 5px solid var(--primary);
+            padding: 20px; border-radius: 10px; margin-bottom: 30px;
+            color: #555; line-height: 1.6;
+        }
 
-        /* MOBILE */
+        footer {
+            text-align: center; padding: 50px; color: white;
+            background: rgba(0,0,0,0.2); backdrop-filter: blur(5px);
+            margin-top: 50px; font-weight: bold;
+        }
+
+        /* MOBILE FIXES */
         @media (max-width: 768px) {
             nav { flex-direction: column; gap: 10px; }
-            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; }
-            .nav-links a { margin: 0; }
-            .hero h1 { font-size: 2.5rem; }
+            .nav-links { width: 100%; display: flex; justify-content: center; }
+            .nav-links a { margin: 0 10px; font-size: 0.8rem; }
+            .hero h1 { font-size: 3rem; }
+            .glass-panel { padding: 25px; }
         }
 
         /* FALLING SWEETS */
-        .falling-sweet { position: fixed; top: -50px; z-index: 9999; pointer-events: none; animation: fall linear forwards; opacity: 0.8; font-size: 24px; }
+        .sweet { position: fixed; top: -50px; font-size: 25px; z-index: 9999; pointer-events: none; animation: fall linear forwards; opacity: 0.8; }
         @keyframes fall { 100% { transform: translateY(110vh) rotate(360deg); } }
 
         /* LIGHTBOX */
         .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; }
-        .lightbox img { max-width: 90%; max-height: 80vh; border: 5px solid white; border-radius: 10px; }
+        .lightbox img { max-width: 90%; max-height: 80vh; border: 8px solid white; border-radius: 20px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
@@ -199,11 +273,11 @@
     <header>
         <div class="container">
             <nav>
-                <a href="#"><img src="image_0.png" alt="Logo" class="logo-img"></a>
+                <img src="image_0.png" alt="Logo" class="logo-img">
                 <div class="nav-links">
                     <a href="#about">About</a>
-                    <a href="#products">Menu</a>
-                    <a href="#order">Order Now</a>
+                    <a href="#menu">Menu</a>
+                    <a href="#order">Order</a>
                 </div>
             </nav>
         </div>
@@ -212,22 +286,16 @@
     <section class="hero">
         <div class="container">
             <h1>Handcrafted Sweetness</h1>
-            <p>From custom-designed cookies to indulgent slices. Personally baked by Nicole using only the highest quality ingredients.</p>
-            <a href="#products" class="btn">View The Menu</a>
+            <div class="hero-card">
+                <p style="font-size: 1.3rem;">From custom-designed cookies to indulgent slices. Personally baked by Nicole using only the highest quality ingredients.</p>
+                <a href="#menu" class="btn-wow">View The Menu</a>
+            </div>
         </div>
     </section>
 
-    <section id="about" class="about">
+    <section id="menu" class="products">
         <div class="container">
-            <div class="quality-badge">✨ Baked Fresh by Order</div>
-            <h2>Personally Baked by Nicole</h2>
-            <p>At Nicole's Treats, we don't cut corners! Every single cookie and slice is handmade in my kitchen using premium chocolate, farm-fresh eggs, and high-quality butter.</p>
-        </div>
-    </section>
-
-    <section id="products" class="products">
-        <div class="container">
-            <h2 class="section-title">Our Menu</h2>
+            <h2 class="section-title">Fresh from the Oven</h2>
             <div class="product-grid">
                 <div class="product-card">
                     <div class="product-img" onclick="openLightbox(this)">
@@ -235,8 +303,8 @@
                     </div>
                     <div class="product-info">
                         <h3>Custom Cookies</h3>
-                        <span class="price">$4.00 ea</span>
-                        <p>Sugar cookies with fondant. <strong>Bulk Deal: 20 for $70!</strong></p>
+                        <div class="price-tag">$4.00 ea</div>
+                        <p>Fondant sugar cookies. <br><strong>Bulk Deal: 20 for $70!</strong></p>
                     </div>
                 </div>
                 <div class="product-card">
@@ -245,8 +313,8 @@
                     </div>
                     <div class="product-info">
                         <h3>Mars Bar Slice</h3>
-                        <span class="price">$50 / Full Slab</span>
-                        <p>Gooey chocolate caramel delight.</p>
+                        <div class="price-tag">$50 / Slab</div>
+                        <p>Gooey chocolate caramel delight with real Mars Bars.</p>
                     </div>
                 </div>
                 <div class="product-card">
@@ -255,123 +323,36 @@
                     </div>
                     <div class="product-info">
                         <h3>Rocky Road</h3>
-                        <span class="price">$50 / Full Slab</span>
-                        <p>Marshmallows, nuts, and jellies.</p>
+                        <div class="price-tag">$50 / Slab</div>
+                        <p>Marshmallows, nuts, and jellies in premium chocolate.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="order" class="contact">
+    <section id="order" class="order-section">
         <div class="container">
-            <h2 class="section-title">Start Your Order</h2>
-            
-            <div class="box-builder-container">
-                <div class="builder-controls">
-                    <button class="treat-btn" onclick="addItem('cookie')">🍪 Add Cookie<br>$4.00</button>
-                    <button class="treat-btn bulk-btn" onclick="addBulk()">🎁 Bulk (20)<br>$70.00</button>
-                    <button class="treat-btn" onclick="addItem('mars')">🍫 Mars Slab<br>$50.00</button>
-                    <button class="treat-btn" onclick="addItem('rocky')">🍬 Rocky Slab<br>$50.00</button>
+            <div class="glass-panel">
+                <h2 style="text-align: center; margin-bottom: 40px; font-size: 3rem;">Build Your Order</h2>
+                
+                <div class="controls">
+                    <button class="add-btn" onclick="add('cookie')">🍪 Add Cookie<span>$4.00</span></button>
+                    <button class="add-btn special" onclick="addBulk()">🎁 Bulk (20)<span>$70.00</span></button>
+                    <button class="add-btn" onclick="add('mars')">🍫 Mars Slab<span>$50.00</span></button>
+                    <button class="add-btn" onclick="add('rocky')">🍬 Rocky Slab<span>$50.00</span></button>
                 </div>
 
-                <div class="the-tray" id="orderTray">
-                    <div class="empty-msg">Tray is empty. Add treats above!</div>
+                <div class="tray-container" id="tray">
+                    <p style="width:100%; text-align:center; color:#888; margin-top:50px; font-weight:bold;">Tap the buttons to fill your tray!</p>
                 </div>
 
-                <div class="box-total">Total: $<span id="totalPrice">0</span></div>
-                <div class="discount-badge" id="discountBadge">🎉 Bulk Discount Applied!</div>
-                <button class="reset-box" onclick="resetTray()">Clear Tray</button>
-            </div>
+                <div class="discount-popup" id="badge">🎉 Bulk Savings Applied!</div>
+                <div class="total-display">Total: $<span id="total">0</span></div>
+                <button onclick="reset()" style="display:block; margin:0 auto; background:none; border:none; text-decoration:underline; cursor:pointer; color:#666;">Clear Tray</button>
 
-            <div class="contact-form">
-                <form>
-                    <input type="hidden" id="boxContentsInput" name="box_contents">
-                    <div class="form-group">
-                        <label>Your Name</label>
-                        <input type="text" placeholder="Jane Doe" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" placeholder="jane@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Details</label>
-                        <textarea rows="3" placeholder="Colors, names, date..."></textarea>
-                    </div>
-                    <div class="policy-note">
-                        <strong>📝 Policy:</strong> A 50% deposit is required to secure your booking. Deposits are non-refundable if cancelled within 24 hours of pickup.
-                    </div>
-                    <button type="submit" class="btn" style="width: 100%;">Send Order Request</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 Nicole's Treats. Personally Baked with Love.</p>
-    </footer>
-
-    <div id="lightbox" class="lightbox" onclick="this.style.display='none'">
-        <img id="lightbox-img" src="">
-    </div>
-
-    <script>
-        // --- LOGIC ---
-        let items = [];
-        const PRICES = { 'cookie': 4, 'mars': 50, 'rocky': 50 };
-        const IMAGES = {
-            'cookie': 'cookie.png',
-            'mars': 'https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg',
-            'rocky': 'https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg'
-        };
-
-        function addItem(type) { items.push(type); render(); }
-        function addBulk() { for(let i=0; i<20; i++) items.push('cookie'); render(); }
-        function removeItem(idx) { items.splice(idx, 1); render(); }
-        function resetTray() { items = []; render(); }
-
-        function render() {
-            const tray = document.getElementById('orderTray');
-            tray.innerHTML = items.length ? '' : '<div class="empty-msg">Tray is empty. Add treats above!</div>';
-            
-            let cCount = 0, sTotal = 0;
-            items.forEach((item, idx) => {
-                if(item === 'cookie') cCount++;
-                else sTotal += PRICES[item];
-
-                const img = document.createElement('img');
-                img.src = IMAGES[item];
-                img.className = 'tray-item ' + (item === 'cookie' ? 'round' : 'slab');
-                img.onclick = () => removeItem(idx);
-                tray.appendChild(img);
-            });
-
-            const cBundles = Math.floor(cCount / 20);
-            const total = sTotal + (cBundles * 70) + ((cCount % 20) * 4);
-            
-            document.getElementById('totalPrice').innerText = total;
-            document.getElementById('discountBadge').style.display = cBundles > 0 ? 'block' : 'none';
-            document.getElementById('boxContentsInput').value = `Total: $${total}`;
-        }
-
-        // --- FALLING SWEETS ---
-        function createSweet() {
-            const el = document.createElement('div');
-            el.className = 'falling-sweet';
-            el.innerText = ['🍪','🍬','🍫','🧁'][Math.floor(Math.random()*4)];
-            el.style.left = Math.random()*100 + 'vw';
-            el.style.animationDuration = (Math.random()*3+4) + 's';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 7000);
-        }
-        setInterval(createSweet, 600);
-
-        // --- LIGHTBOX ---
-        function openLightbox(el) {
-            document.getElementById('lightbox').style.display = 'flex';
-            document.getElementById('lightbox-img').src = el.querySelector('img').src;
-        }
-    </script>
-</body>
-</html>
+                <div class="form-area" style="margin-top: 50px;">
+                    <form>
+                        <input type="hidden" id="summary" name="summary">
+                        <div class="input-group">
+                            <label>Your Name</label>
