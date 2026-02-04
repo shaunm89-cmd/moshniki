@@ -10,56 +10,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
 
     <style>
-        /* --- RESET & VARIABLES --- */
+        /* --- VARIABLES --- */
         :root {
-            --primary: #eb3b5a; /* Punchier Red-Pink */
+            --primary: #eb3b5a; /* Pop Red/Pink */
             --primary-light: #fc5c65;
-            --accent-mint: #20bf6b; /* Fresh Mint */
-            --accent-yellow: #f7b731; /* Sunshine Yellow */
-            --bg-color: #fff9fa; /* Very subtle pink-white */
-            --card-bg: #ffffff;
+            --mint: #20bf6b;
+            --yellow: #f7b731;
             --text-dark: #2d3436;
             --text-light: #636e72;
+            --white: #ffffff;
             --black: #000000;
-            
-            --font-heading: 'Pacifico', cursive; 
-            --font-body: 'Fredoka', sans-serif; 
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: var(--font-body);
-            background-color: var(--bg-color);
-            background-image: radial-gradient(#e6e6e6 1.5px, transparent 1.5px);
-            background-size: 30px 30px; /* Subtle dot pattern */
+            font-family: 'Fredoka', sans-serif;
+            background-color: #fff9fa; /* Light Pinkish White */
             color: var(--text-dark);
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
         /* --- UTILITIES --- */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        
         h1, h2, h3 {
-            font-family: var(--font-heading);
+            font-family: 'Pacifico', cursive;
             color: var(--primary);
             margin-bottom: 15px;
             font-weight: 400;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
         }
 
-        /* --- JELLY BUTTONS --- */
+        /* --- BUTTONS --- */
         .btn {
             display: inline-block;
             background: linear-gradient(to bottom, var(--primary-light), var(--primary));
@@ -70,36 +52,21 @@
             font-weight: 700;
             border: none;
             cursor: pointer;
-            box-shadow: 0 6px 0 #b3253e, 0 10px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 0 #b3253e;
             transition: all 0.1s;
-            font-size: 1.1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            top: 0;
         }
-
-        .btn:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 0 #b3253e, 0 15px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 0 0 #b3253e, inset 0 2px 5px rgba(0,0,0,0.2);
-        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #b3253e; }
+        .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #b3253e; }
 
         /* --- HEADER --- */
         header {
-            background-color: var(--black); 
-            padding: 5px 0;
+            background-color: var(--black);
+            padding: 10px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            /* Rainbow border for excitement */
-            border-bottom: 5px solid transparent;
-            border-image: linear-gradient(to right, var(--primary), var(--accent-yellow), var(--accent-mint)) 1;
+            border-bottom: 5px solid var(--mint);
         }
 
         nav {
@@ -108,305 +75,303 @@
             align-items: center;
         }
 
-        .logo-img { height: 70px; width: auto; display: block; }
+        .logo-img { height: 60px; width: auto; display: block; }
 
         .nav-links a {
-            margin-left: 25px;
+            margin-left: 20px;
             text-decoration: none;
             color: var(--white);
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1.5px;
-            transition: color 0.3s;
         }
-
-        .nav-links a:hover { color: var(--accent-yellow); }
+        .nav-links a:hover { color: var(--yellow); }
 
         /* --- HERO --- */
         .hero {
-            /* Fresh colorful gradient overlay */
-            background: linear-gradient(135deg, rgba(235, 59, 90, 0.85), rgba(247, 183, 49, 0.7)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1600&auto=format&fit=crop');
+            background: linear-gradient(135deg, rgba(235, 59, 90, 0.9), rgba(247, 183, 49, 0.8)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1600&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
             text-align: center;
-            padding: 140px 20px 180px 20px;
+            padding: 120px 20px 160px 20px;
+            color: white;
             position: relative;
-            color: white;
         }
 
-        .hero h1 {
-            color: white;
-            font-size: 4.5rem;
-            text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
-            transform: rotate(-2deg); /* Fun tilt */
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 1.4rem;
-            color: #fff;
-            font-weight: 600;
-            margin-bottom: 40px;
-            max-width: 700px;
-            margin: 0 auto 40px auto;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
-        }
-
-        /* Jagged Divider */
-        .wave-bottom {
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            overflow: hidden;
-            line-height: 0;
-        }
-        .wave-bottom svg { display: block; width: calc(100% + 1.3px); height: 50px; }
-        .wave-bottom .shape-fill { fill: var(--bg-color); }
+        .hero h1 { color: white; font-size: 3.5rem; text-shadow: 3px 3px 0 rgba(0,0,0,0.1); margin-bottom: 20px;}
+        .hero p { font-size: 1.3rem; margin-bottom: 40px; color: white; font-weight: 600; max-width: 600px; margin-inline: auto; }
 
         /* --- ABOUT --- */
-        .about {
-            padding: 80px 0;
-            text-align: center;
-        }
-
+        .about { padding: 60px 0; text-align: center; }
         .quality-badge {
-            background: var(--accent-mint);
-            display: inline-block;
-            padding: 8px 25px;
-            border-radius: 50px;
-            margin-bottom: 25px;
-            color: white;
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
-            animation: float 3s ease-in-out infinite;
+            background: var(--mint); color: white; padding: 10px 25px;
+            border-radius: 30px; display: inline-block; font-weight: bold; margin-bottom: 20px;
         }
+
+        /* --- PRODUCTS --- */
+        .products { padding: 60px 0; background: #fff; }
+        .section-title { text-align: center; font-size: 3rem; margin-bottom: 50px; }
         
-        .about p { font-size: 1.25rem; max-width: 700px; margin: 0 auto; color: var(--text-light); }
-
-        /* --- QUOTE STRIP --- */
-        .quote-strip {
-            background-color: var(--accent-yellow);
-            padding: 60px 20px;
-            text-align: center;
-            transform: skewY(-2deg); /* Dynamic angle */
-            margin: 50px 0;
-            box-shadow: 0 10px 0 rgba(0,0,0,0.05);
-        }
-
-        .quote-content { transform: skewY(2deg); /* Correct text angle */ }
-        
-        .quote-content h2 {
-            color: white;
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
-            margin: 0;
-        }
-
-        /* --- PRODUCTS GRID --- */
-        .products { padding: 60px 0; }
-
-        .section-title { 
-            text-align: center; 
-            font-size: 3.5rem; 
-            margin-bottom: 60px;
-            color: var(--text-dark); 
-        }
-        .section-title span { color: var(--primary); }
-
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
         }
 
-        /* "POP ART" CARD STYLE */
         .product-card {
             background: white;
             border: 3px solid var(--text-dark);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 10px 10px 0 var(--accent-mint); /* Hard colorful shadow */
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
-            display: flex;
-            flex-direction: column;
+            box-shadow: 10px 10px 0 var(--mint);
+            transition: transform 0.3s;
         }
-
-        .product-card:nth-child(2) { box-shadow: 10px 10px 0 var(--accent-yellow); }
-        .product-card:nth-child(3) { box-shadow: 10px 10px 0 var(--primary); }
-
-        .product-card:hover {
-            transform: translate(-5px, -5px);
-            box-shadow: 15px 15px 0 var(--text-dark);
-        }
-
-        .product-img {
-            height: 240px; 
-            width: 100%;
-            background-color: #eee; 
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-            border-bottom: 3px solid var(--text-dark);
-        }
-
-        .product-img img {
-            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
-        }
-        .product-card:hover .product-img img { transform: scale(1.1); }
-
-        .product-info { padding: 25px; flex-grow: 1; text-align: center; }
-        .product-info h3 { font-size: 1.8rem; margin-bottom: 10px; color: var(--text-dark); }
+        .product-card:hover { transform: translate(-5px, -5px); box-shadow: 15px 15px 0 var(--text-dark); }
         
-        .price {
-            display: inline-block;
-            margin: 5px 0 15px 0;
-            font-size: 1.2rem;
-            color: var(--white);
-            font-weight: 700;
-            background: var(--text-dark);
-            padding: 5px 15px;
-            border-radius: 10px;
-        }
+        .product-img { height: 250px; width: 100%; background: #eee; border-bottom: 3px solid var(--text-dark); }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .product-info { padding: 20px; text-align: center; }
+        .price { background: var(--text-dark); color: white; padding: 5px 15px; border-radius: 10px; display: inline-block; margin-bottom: 10px;}
 
-        /* --- TRAY (METALLIC LOOK) --- */
-        .contact {
-            padding: 80px 0;
-            background: white;
-            position: relative;
-        }
-
+        /* --- BUILDER (TRAY) --- */
+        .contact { padding: 80px 0; background: #fff9fa; }
+        
         .box-builder-container {
-            background: #fff;
-            padding: 40px;
-            border-radius: 30px;
-            /* Soft shadow */
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1); 
-            border: 2px solid #eee;
+            background: white; padding: 30px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid #eee;
         }
 
-        .builder-controls {
-            margin-bottom: 30px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-        }
+        .builder-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px; }
         
-        /* Control Buttons */
         .treat-btn {
-            background: white;
-            border: 2px solid #eee;
-            border-radius: 15px;
-            padding: 15px 20px;
-            cursor: pointer;
-            font-family: var(--font-body);
-            font-weight: 700;
-            font-size: 1rem;
-            transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            min-width: 130px;
-            box-shadow: 0 4px 0 #eee;
+            background: white; border: 2px solid #ddd; padding: 10px 20px; border-radius: 15px;
+            cursor: pointer; font-family: 'Fredoka', sans-serif; font-weight: bold; min-width: 120px;
+            display: flex; flex-direction: column; align-items: center;
         }
+        .treat-btn:hover { border-color: var(--mint); color: var(--mint); transform: translateY(-2px); }
+        .treat-btn.bulk-btn { border-color: var(--yellow); background: #fffdef; }
 
-        .treat-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 0 #ddd; border-color: var(--accent-mint); color: var(--accent-mint); }
-        .treat-btn span.cost { font-size: 0.85rem; color: #aaa; font-weight: 500; }
-
-        .treat-btn.bulk-btn {
-            border-color: var(--accent-yellow);
-            background-color: #fffaeb;
-            box-shadow: 0 4px 0 #ffeaa7;
-        }
-        .treat-btn.bulk-btn:hover {
-            box-shadow: 0 6px 0 #ffd32a;
-        }
-
-        /* The Tray (Metal Effect) */
         .the-tray {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            /* Metallic Gradient */
-            background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
-            padding: 25px;
-            border-radius: 15px;
-            min-height: 180px;
-            margin: 0 auto;
-            position: relative;
-            align-items: flex-start;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.1);
-            border: 4px solid #d1d8e0;
+            background: #dfe6e9; border: 4px solid #b2bec3; border-radius: 15px;
+            padding: 20px; min-height: 150px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
         }
 
-        .tray-item {
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-            animation: popIn 0.3s ease;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); /* Real shadow for items */
-        }
-        .tray-item:hover { transform: scale(1.1) rotate(5deg); }
+        .tray-item { width: 60px; height: 60px; object-fit: cover; border: 2px solid white; box-shadow: 0 3px 5px rgba(0,0,0,0.2); cursor: pointer; animation: pop 0.3s; }
+        .tray-item.slab { width: 100px; border-radius: 5px; }
+        .tray-item.round { border-radius: 50%; }
 
-        .item-cookie { width: 65px; height: 65px; object-fit: contain; }
-        .item-slab { width: 100px; height: 65px; object-fit: cover; border-radius: 5px; border: 2px solid white; }
+        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
-        .empty-msg {
-            width: 100%;
-            text-align: center;
-            color: #636e72;
-            margin-top: 50px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-        }
+        .empty-msg { width: 100%; text-align: center; color: #636e72; margin-top: 40px; font-weight: bold; }
+        .box-total { text-align: center; font-size: 2rem; color: var(--primary); font-family: 'Pacifico'; margin-top: 20px; }
+        .reset-box { display: block; margin: 10px auto; background: none; border: none; text-decoration: underline; cursor: pointer; color: #888; }
+        .discount-badge { display: none; background: var(--yellow); padding: 5px 15px; border-radius: 20px; margin: 10px auto; width: fit-content; font-weight: bold; }
 
-        .box-total {
-            margin-top: 25px;
-            font-size: 2.2rem;
-            color: var(--primary);
-            font-weight: bold;
-            font-family: var(--font-heading);
-            text-align: center;
-        }
-        
-        .discount-badge {
-            display: none; 
-            background: var(--accent-yellow);
-            color: var(--text-dark);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: bold;
-            margin: 10px auto;
-            text-align: center;
-            width: fit-content;
-            animation: pulse 1.5s infinite;
+        /* FORM */
+        .contact-form { max-width: 600px; margin: 40px auto 0; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-family: inherit; }
+        .policy-note { background: #fff0f3; padding: 15px; border-radius: 10px; font-size: 0.9rem; color: #555; margin-bottom: 20px; border-left: 4px solid var(--primary); }
+
+        /* FOOTER */
+        footer { background: var(--black); color: white; text-align: center; padding: 30px; margin-top: 50px; }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            nav { flex-direction: column; gap: 10px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .nav-links a { margin: 0; }
+            .hero h1 { font-size: 2.5rem; }
         }
 
-        .reset-box {
-            background: none; border: none; color: #999;
-            text-decoration: underline; cursor: pointer;
-            margin-top: 15px; font-size: 0.9rem; display: block; margin-inline: auto;
+        /* FALLING SWEETS */
+        .falling-sweet { position: fixed; top: -50px; z-index: 9999; pointer-events: none; animation: fall linear forwards; opacity: 0.8; font-size: 24px; }
+        @keyframes fall { 100% { transform: translateY(110vh) rotate(360deg); } }
+
+        /* LIGHTBOX */
+        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; }
+        .lightbox img { max-width: 90%; max-height: 80vh; border: 5px solid white; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#"><img src="image_0.png" alt="Logo" class="logo-img"></a>
+                <div class="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#products">Menu</a>
+                    <a href="#order">Order Now</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Handcrafted Sweetness</h1>
+            <p>From custom-designed cookies to indulgent slices. Personally baked by Nicole using only the highest quality ingredients.</p>
+            <a href="#products" class="btn">View The Menu</a>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="quality-badge">✨ Baked Fresh by Order</div>
+            <h2>Personally Baked by Nicole</h2>
+            <p>At Nicole's Treats, we don't cut corners! Every single cookie and slice is handmade in my kitchen using premium chocolate, farm-fresh eggs, and high-quality butter.</p>
+        </div>
+    </section>
+
+    <section id="products" class="products">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-img" onclick="openLightbox(this)">
+                        <img src="cookie.png" alt="Cookies">
+                    </div>
+                    <div class="product-info">
+                        <h3>Custom Cookies</h3>
+                        <span class="price">$4.00 ea</span>
+                        <p>Sugar cookies with fondant. <strong>Bulk Deal: 20 for $70!</strong></p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img" onclick="openLightbox(this)">
+                        <img src="https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg" alt="Mars Bar Slice">
+                    </div>
+                    <div class="product-info">
+                        <h3>Mars Bar Slice</h3>
+                        <span class="price">$50 / Full Slab</span>
+                        <p>Gooey chocolate caramel delight.</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img" onclick="openLightbox(this)">
+                        <img src="https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg" alt="Rocky Road">
+                    </div>
+                    <div class="product-info">
+                        <h3>Rocky Road</h3>
+                        <span class="price">$50 / Full Slab</span>
+                        <p>Marshmallows, nuts, and jellies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="order" class="contact">
+        <div class="container">
+            <h2 class="section-title">Start Your Order</h2>
+            
+            <div class="box-builder-container">
+                <div class="builder-controls">
+                    <button class="treat-btn" onclick="addItem('cookie')">🍪 Add Cookie<br>$4.00</button>
+                    <button class="treat-btn bulk-btn" onclick="addBulk()">🎁 Bulk (20)<br>$70.00</button>
+                    <button class="treat-btn" onclick="addItem('mars')">🍫 Mars Slab<br>$50.00</button>
+                    <button class="treat-btn" onclick="addItem('rocky')">🍬 Rocky Slab<br>$50.00</button>
+                </div>
+
+                <div class="the-tray" id="orderTray">
+                    <div class="empty-msg">Tray is empty. Add treats above!</div>
+                </div>
+
+                <div class="box-total">Total: $<span id="totalPrice">0</span></div>
+                <div class="discount-badge" id="discountBadge">🎉 Bulk Discount Applied!</div>
+                <button class="reset-box" onclick="resetTray()">Clear Tray</button>
+            </div>
+
+            <div class="contact-form">
+                <form>
+                    <input type="hidden" id="boxContentsInput" name="box_contents">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" placeholder="Jane Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="jane@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Details</label>
+                        <textarea rows="3" placeholder="Colors, names, date..."></textarea>
+                    </div>
+                    <div class="policy-note">
+                        <strong>📝 Policy:</strong> A 50% deposit is required to secure your booking. Deposits are non-refundable if cancelled within 24 hours of pickup.
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Send Order Request</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Nicole's Treats. Personally Baked with Love.</p>
+    </footer>
+
+    <div id="lightbox" class="lightbox" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="">
+    </div>
+
+    <script>
+        // --- LOGIC ---
+        let items = [];
+        const PRICES = { 'cookie': 4, 'mars': 50, 'rocky': 50 };
+        const IMAGES = {
+            'cookie': 'cookie.png',
+            'mars': 'https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg',
+            'rocky': 'https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg'
+        };
+
+        function addItem(type) { items.push(type); render(); }
+        function addBulk() { for(let i=0; i<20; i++) items.push('cookie'); render(); }
+        function removeItem(idx) { items.splice(idx, 1); render(); }
+        function resetTray() { items = []; render(); }
+
+        function render() {
+            const tray = document.getElementById('orderTray');
+            tray.innerHTML = items.length ? '' : '<div class="empty-msg">Tray is empty. Add treats above!</div>';
+            
+            let cCount = 0, sTotal = 0;
+            items.forEach((item, idx) => {
+                if(item === 'cookie') cCount++;
+                else sTotal += PRICES[item];
+
+                const img = document.createElement('img');
+                img.src = IMAGES[item];
+                img.className = 'tray-item ' + (item === 'cookie' ? 'round' : 'slab');
+                img.onclick = () => removeItem(idx);
+                tray.appendChild(img);
+            });
+
+            const cBundles = Math.floor(cCount / 20);
+            const total = sTotal + (cBundles * 70) + ((cCount % 20) * 4);
+            
+            document.getElementById('totalPrice').innerText = total;
+            document.getElementById('discountBadge').style.display = cBundles > 0 ? 'block' : 'none';
+            document.getElementById('boxContentsInput').value = `Total: $${total}`;
         }
 
-        /* --- CONTACT FORM --- */
-        .contact-form {
-            max-width: 600px;
-            margin: 40px auto 0;
-            text-align: left;
+        // --- FALLING SWEETS ---
+        function createSweet() {
+            const el = document.createElement('div');
+            el.className = 'falling-sweet';
+            el.innerText = ['🍪','🍬','🍫','🧁'][Math.floor(Math.random()*4)];
+            el.style.left = Math.random()*100 + 'vw';
+            el.style.animationDuration = (Math.random()*3+4) + 's';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 7000);
         }
-        
-        .form-group { margin-bottom: 25px; }
-        .form-group label { 
-            display: block; margin-bottom: 10px; 
-            font-
+        setInterval(createSweet, 600);
+
+        // --- LIGHTBOX ---
+        function openLightbox(el) {
+            document.getElementById('lightbox').style.display = 'flex';
+            document.getElementById('lightbox-img').src = el.querySelector('img').src;
+        }
+    </script>
+</body>
+</html>
