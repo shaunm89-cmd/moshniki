@@ -3,24 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nicole's Treats | Custom Cookies & Slices</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
-
+    <title>Yeah Mate IPTV | Best Aussie Streaming</title>
     <style>
         /* --- RESET & VARIABLES --- */
         :root {
-            --primary: #d63384; /* Deep Pink */
-            --primary-hover: #b02a6b;
-            --secondary: #fce4ec; /* Light Pink Background */
-            --accent: #fff0f6; /* Very light pink */
-            --text-dark: #4a4a4a; 
-            --white: #ffffff;
-            --black: #000000;
-            --font-heading: 'Pacifico', cursive; 
-            --font-body: 'Fredoka', sans-serif; 
+            --aussie-navy: #0e1c2e;
+            --aussie-gold: #ffc845;
+            --aussie-rust: #d95c34;
+            --text-light: #f4f4f4;
+            --text-dark: #333;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         * {
@@ -29,762 +21,290 @@
             box-sizing: border-box;
         }
 
-        html { scroll-behavior: smooth; }
-
         body {
-            font-family: var(--font-body);
-            background-color: var(--accent);
-            color: var(--text-dark);
-            line-height: 1.7;
+            font-family: var(--font-main);
+            background-color: var(--aussie-navy);
+            color: var(--text-light);
             overflow-x: hidden;
         }
 
-        /* --- UTILITIES --- */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        a { text-decoration: none; color: inherit; }
 
-        h1, h2, h3 {
-            font-family: var(--font-heading);
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-weight: 400;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 15px 35px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 3px solid var(--primary);
-            cursor: pointer;
-            box-shadow: 0 5px 0 rgba(176, 42, 107, 1);
-            transform: translateY(0);
-            font-size: 1.1rem;
-        }
-
-        .btn:hover {
-            background-color: var(--white);
-            color: var(--primary);
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 rgba(176, 42, 107, 1);
-        }
-
-        .btn:active {
-            transform: translateY(5px);
-            box-shadow: none;
-        }
-
-        /* --- HEADER --- */
+        /* --- HEADER & HERO --- */
         header {
-            background-color: var(--black); 
-            padding: 10px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 4px solid var(--primary);
-        }
-
-        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 5%;
+            background: rgba(14, 28, 46, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--aussie-gold);
         }
 
-        .logo-img { height: 80px; width: auto; display: block; }
-
-        .nav-links a {
-            margin-left: 20px;
-            text-decoration: none;
-            color: var(--white);
-            font-weight: 500;
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--aussie-gold);
             text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-            font-family: 'Fredoka', sans-serif;
+            letter-spacing: 2px;
         }
 
-        .nav-links a:hover { color: var(--primary); }
+        .logo span { color: var(--text-light); }
 
-        /* --- PARALLAX HERO --- */
+        .btn-main {
+            padding: 10px 25px;
+            background-color: var(--aussie-rust);
+            color: white;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+            border: 2px solid var(--aussie-rust);
+        }
+
+        .btn-main:hover {
+            background-color: transparent;
+            color: var(--aussie-rust);
+        }
+
         .hero {
-            background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1600&auto=format&fit=crop');
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            padding: 160px 20px 180px 20px;
-            position: relative;
+            /* Placeholder for a Sydney Backdrop */
+            background: linear-gradient(rgba(14, 28, 46, 0.7), rgba(14, 28, 46, 0.9)), 
+                        url('https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            padding: 0 20px;
         }
 
         .hero h1 {
             font-size: 4rem;
             margin-bottom: 20px;
-            text-shadow: 3px 3px 0px #fff;
-            color: var(--primary);
+            line-height: 1.1;
         }
 
+        .hero h1 span { color: var(--aussie-gold); }
+        
         .hero p {
-            font-size: 1.5rem;
-            color: #555;
-            font-weight: 500;
-            margin-bottom: 40px;
-            max-width: 650px;
-            margin: 0 auto 40px auto;
-        }
-
-        .wave-bottom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            overflow: hidden;
-            line-height: 0;
-            transform: rotate(180deg);
-        }
-
-        .wave-bottom svg {
-            position: relative;
-            display: block;
-            width: calc(138% + 1.3px);
-            height: 60px;
-        }
-
-        .wave-bottom .shape-fill { fill: #ffffff; }
-
-        /* --- ABOUT --- */
-        .about {
-            background-color: var(--white);
-            background-image: radial-gradient(#ffeef5 20%, transparent 20%), radial-gradient(#ffeef5 20%, transparent 20%);
-            background-position: 0 0, 25px 25px;
-            background-size: 50px 50px;
-            padding: 80px 0;
-            text-align: center;
-        }
-
-        .quality-badge {
-            background: #fff;
-            display: inline-block;
-            padding: 10px 25px;
-            border-radius: 50px;
-            margin-bottom: 25px;
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 1.1rem;
-            border: 2px dashed var(--primary);
-            transform: rotate(-3deg);
-            box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        
-        .quality-badge:hover { transform: rotate(0deg) scale(1.1); }
-        .about p { font-size: 1.2rem; max-width: 700px; margin: 0 auto; color: #666; }
-
-        /* --- PARALLAX QUOTE --- */
-        .parallax-quote {
-            background-image: linear-gradient(rgba(214, 51, 132, 0.85), rgba(214, 51, 132, 0.85)), url('https://images.unsplash.com/photo-1579372786545-d24232daf58c?q=80&w=1600&auto=format&fit=crop');
-            background-attachment: fixed;
-            background-position: center;
-            background-size: cover;
-            padding: 100px 20px;
-            text-align: center;
-            color: white;
-            border-top: 5px solid white;
-            border-bottom: 5px solid white;
-        }
-
-        .parallax-quote h2 {
-            color: white;
-            font-size: 3rem;
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
-        }
-
-        /* --- PRODUCTS GRID --- */
-        .products {
-            padding: 80px 0;
-            background-color: var(--accent);
-        }
-
-        .section-title { text-align: center; font-size: 3rem; margin-bottom: 50px; }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .product-card {
-            background: var(--white);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(214, 51, 132, 0.1);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            border: 2px solid white;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(214, 51, 132, 0.2);
-            border-color: var(--secondary);
-        }
-
-        .product-img {
-            height: 250px; 
-            width: 100%;
-            background-color: #f0f0f0; 
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .product-img img {
-            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
-        }
-
-        .product-card:hover .product-img img { transform: scale(1.1); }
-
-        .zoom-hint {
-            position: absolute; bottom: 10px; right: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--primary);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem; font-weight: bold;
-            pointer-events: none;
-        }
-
-        .product-info { padding: 25px; flex-grow: 1; text-align: center; }
-        .product-info h3 { font-size: 1.6rem; margin-bottom: 5px; }
-        
-        .price {
-            display: inline-block;
-            margin: 5px 0 15px 0;
-            font-size: 1.3rem;
-            color: var(--primary);
-            font-weight: 800;
-            background: var(--secondary);
-            padding: 5px 15px;
-            border-radius: 15px;
-        }
-
-        /* --- TRAY STYLES --- */
-        .contact {
-            padding: 80px 0;
-            background: var(--white);
-            text-align: center;
-        }
-
-        .box-builder-container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: 0 15px 50px rgba(214, 51, 132, 0.1);
-            border: 4px dashed #fce4ec;
-            margin-bottom: 40px;
-        }
-
-        .builder-controls {
-            margin-bottom: 30px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .treat-btn {
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 15px;
-            padding: 15px 25px;
-            cursor: pointer;
-            font-family: var(--font-body);
-            font-weight: bold;
-            font-size: 1rem;
-            transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            min-width: 140px;
-        }
-
-        .treat-btn:hover { border-color: var(--primary); transform: translateY(-3px); color: var(--primary); }
-        .treat-btn span.cost { font-size: 0.8rem; color: #888; font-weight: normal; }
-
-        .treat-btn.bulk-btn {
-            border-color: #ffd700;
-            background-color: #fffdf0;
-        }
-        .treat-btn.bulk-btn:hover {
-            border-color: #ffaa00;
-            background-color: #fff8c0;
-        }
-
-        .the-tray {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            background-color: var(--secondary);
-            padding: 20px;
-            border-radius: 20px;
-            min-height: 150px;
-            margin: 0 auto;
-            position: relative;
-            align-items: flex-start;
-        }
-
-        .tray-item {
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-            animation: popIn 0.3s ease;
-        }
-        
-        .tray-item:hover { transform: scale(1.1) rotate(5deg); }
-
-        .item-cookie {
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-            object-fit: cover;
-        }
-
-        .item-slab {
-            width: 100px; height: 60px; 
-            border-radius: 10px;
-            border: 2px solid white;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-            object-fit: cover;
-        }
-
-        .empty-msg {
-            width: 100%;
-            text-align: center;
-            color: #999;
-            margin-top: 40px;
-            font-weight: bold;
-        }
-
-        .box-total {
-            margin-top: 20px;
-            font-size: 2rem;
-            color: var(--primary);
-            font-weight: bold;
-            font-family: var(--font-heading);
-        }
-        
-        .discount-badge {
-            display: none; 
-            background: #FFD700;
-            color: #333;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-top: 5px;
-            animation: pulse 1.5s infinite;
-        }
-
-        .reset-box {
-            background: none;
-            border: none;
-            color: #999;
-            text-decoration: underline;
-            cursor: pointer;
-            margin-top: 15px;
-            font-size: 0.9rem;
-        }
-
-        /* --- CONTACT FORM --- */
-        .contact-form {
+            font-size: 1.2rem;
             max-width: 600px;
-            margin: 0 auto;
-            text-align: left;
-        }
-        
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; margin-bottom: 10px; font-weight: bold; color: var(--primary); font-family: var(--font-heading); font-size: 1.3rem;}
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 15px;
-            font-size: 1rem; font-family: var(--font-body); background-color: #fdfdfd;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none; border-color: var(--primary); background-color: #fff;
+            margin-bottom: 40px;
+            color: #ddd;
         }
 
-        /* NEW POLICY NOTE STYLE */
-        .policy-note {
-            background-color: #fffdf0;
-            border: 1px solid #ffeeba;
-            padding: 15px;
+        /* --- SCROLLING TICKER --- */
+        .channel-scroller {
+            background: var(--aussie-gold);
+            padding: 20px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .scroller-track {
+            display: inline-block;
+            animation: scroll 20s linear infinite;
+        }
+
+        .channel-item {
+            display: inline-block;
+            font-weight: 900;
+            color: var(--aussie-navy);
+            font-size: 1.5rem;
+            margin: 0 40px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* --- PRICING SECTION --- */
+        .pricing {
+            padding: 80px 5%;
+            text-align: center;
+        }
+
+        .pricing h2 {
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: var(--aussie-gold);
+        }
+
+        .pricing-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: #16263d;
+            border: 1px solid #2a3d58;
             border-radius: 15px;
-            margin-bottom: 25px;
+            padding: 40px;
+            width: 350px;
+            transition: 0.3s;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--aussie-gold);
+        }
+
+        .card.featured {
+            border: 2px solid var(--aussie-gold);
+            background: linear-gradient(145deg, #1a2e4a, #112036);
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--aussie-gold);
+            color: var(--aussie-navy);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
             font-size: 0.9rem;
-            color: #856404;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: white;
+        }
+
+        .price span { font-size: 1.2rem; color: #888; }
+
+        .features {
+            list-style: none;
+            text-align: left;
+            margin: 30px 0;
+        }
+
+        .features li {
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            color: #ccc;
+        }
+
+        .features li::before {
+            content: '✓';
+            color: var(--aussie-gold);
+            font-weight: bold;
+            margin-right: 10px;
         }
 
         /* --- FOOTER --- */
         footer {
-            background-color: var(--black); color: white; text-align: center;
-            padding: 30px; margin-top: auto; border-top: 4px solid var(--primary);
+            background: #08111d;
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 1px solid #222;
+            color: #777;
         }
 
-        /* --- ANIMATIONS --- */
-        @keyframes popIn {
-            0% { transform: scale(0); }
-            80% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .falling-sweet {
-            position: fixed; top: -50px; font-size: 24px; z-index: 9999;
-            pointer-events: none; animation: fall linear forwards; opacity: 0.7;
-        }
-        @keyframes fall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* LIGHTBOX */
-        .lightbox {
-            display: none; position: fixed; z-index: 10001; padding-top: 50px;
-            left: 0; top: 0; width: 100%; height: 100%; overflow: auto;
-            background-color: rgba(0, 0, 0, 0.9); backdrop-filter: blur(5px);
-        }
-        .lightbox-content {
-            margin: auto; display: block; width: 80%; max-width: 800px;
-            max-height: 80vh; object-fit: contain; border-radius: 10px;
-            border: 3px solid white; animation: zoomIn 0.3s;
-        }
-        .close-lightbox {
-            position: absolute; top: 20px; right: 35px; color: #f1f1f1;
-            font-size: 40px; font-weight: bold; cursor: pointer;
-        }
-
-        /* --- MOBILE FIXES --- */
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
-            nav {
-                flex-direction: column; 
-                padding-bottom: 10px;
-                gap: 15px;
-            }
-
-            .logo-img {
-                height: 60px; 
-                margin-bottom: 0;
-            }
-
-            .nav-links {
-                display: flex;
-                gap: 15px; 
-                justify-content: center;
-                width: 100%;
-                flex-wrap: wrap;
-            }
-
-            .nav-links a {
-                margin-left: 0;
-                font-size: 0.9rem;
-            }
-            
-            .hero h1 {
-                font-size: 2.8rem; 
-            }
+            .hero h1 { font-size: 2.5rem; }
+            .pricing-container { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="container">
-            <nav>
-                <a href="#">
-                    <img src="image_0.png" alt="Nicole's Treats Logo" class="logo-img">
-                </a>
-                <div class="nav-links">
-                    <a href="#about">About</a>
-                    <a href="#products">Menu</a>
-                    <a href="#order">Order Now</a>
-                </div>
-            </nav>
-        </div>
+        <div class="logo">YEAH<span>MATE</span></div>
+        <a href="#pricing" class="btn-main">Get Connected</a>
     </header>
 
     <section class="hero">
-        <div class="container">
-            <h1>Handcrafted Sweetness</h1>
-            <p>From custom-designed cookies to indulgent slices. Personally baked by Nicole using only the highest quality ingredients.</p>
-            <a href="#products" class="btn">View The Menu</a>
-        </div>
-        <div class="wave-bottom">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
-            </svg>
-        </div>
+        <h1>Aussie Streaming <br><span>Done Right.</span></h1>
+        <p>No buffering. No nonsense. Just the best Live TV, Sports, and Movies straight to your living room.</p>
+        <a href="#pricing" class="btn-main" style="font-size: 1.2rem; padding: 15px 40px;">View Plans</a>
     </section>
 
-    <section id="about" class="about">
-        <div class="container">
-            <div class="quality-badge">✨ Baked Fresh by Order</div>
-            <h2>Personally Baked by Nicole</h2>
-            <p>At Nicole's Treats, we don't cut corners! Every single cookie and slice is handmade in my kitchen using premium chocolate, farm-fresh eggs, and high-quality butter.</p>
+    <div class="channel-scroller">
+        <div class="scroller-track">
+            <span class="channel-item">NRL TELSTRA PREMIERSHIP</span>
+            <span class="channel-item">NFL SUNDAY TICKET</span>
+            <span class="channel-item">MGM+</span>
+            <span class="channel-item">SHOWTIME</span>
+            <span class="channel-item">OPTUS SPORT</span>
+            <span class="channel-item">FOX FOOTY</span>
+            <span class="channel-item">UFC FIGHT PASS</span>
+            <span class="channel-item">HBO</span>
+            <span class="channel-item">SKY SPORTS UK</span>
+            <span class="channel-item">ESPN+</span>
+            <span class="channel-item">NRL TELSTRA PREMIERSHIP</span>
+            <span class="channel-item">NFL SUNDAY TICKET</span>
+            <span class="channel-item">MGM+</span>
+            <span class="channel-item">SHOWTIME</span>
+            <span class="channel-item">OPTUS SPORT</span>
+            <span class="channel-item">FOX FOOTY</span>
+            <span class="channel-item">UFC FIGHT PASS</span>
+            <span class="channel-item">HBO</span>
+            <span class="channel-item">SKY SPORTS UK</span>
+            <span class="channel-item">ESPN+</span>
         </div>
-    </section>
+    </div>
 
-    <section class="parallax-quote">
-        <div class="container">
-            <h2>"Life is short. Eat the cookie first."</h2>
-        </div>
-    </section>
+    <section id="pricing" class="pricing">
+        <h2>Choose Your Gear</h2>
+        <div class="pricing-container">
 
-    <section id="products" class="products">
-        <div class="container">
-            <h2 class="section-title">Our Menu</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-img" onclick="openLightbox(this)">
-                        <img src="cookie.png" alt="Custom Design Cookies">
-                        <div class="zoom-hint">🔍 Zoom</div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Custom Cookies</h3>
-                        <span class="price">$4.00 ea</span>
-                        <p>Fully customizable sugar cookies with fondant. <strong>Bulk Deal: 20 for $70!</strong></p>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-img" onclick="openLightbox(this)">
-                        <img src="https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg" alt="Classic Mars Bar Slice">
-                        <div class="zoom-hint">🔍 Zoom</div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Mars Bar Slice</h3>
-                        <span class="price">$50 / Full Slab</span>
-                        <p>A gooey, chocolatey caramel delight made with real Mars Bars. Perfect for parties.</p>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <div class="product-img" onclick="openLightbox(this)">
-                        <img src="https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg" alt="Nicole's Rocky Road">
-                        <div class="zoom-hint">🔍 Zoom</div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Rocky Road</h3>
-                        <span class="price">$50 / Full Slab</span>
-                        <p>Loaded with marshmallows, nuts, and jellies in premium chocolate.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="order" class="contact">
-        <div class="container">
-            <h2>Start Your Order</h2>
-            <p style="margin-bottom: 30px;">Add items to your tray. Bulk cookie discount applies automatically!</p>
-            
-            <div class="box-builder-container">
-                <div class="builder-controls">
-                    <button class="treat-btn" onclick="addItem('cookie')">
-                        🍪 Add Cookie
-                        <span class="cost">$4.00 ea</span>
-                    </button>
-                    <button class="treat-btn bulk-btn" onclick="addBulkCookies()">
-                        🎁 Bulk Pack (20)
-                        <span class="cost">$70.00 (Save $10)</span>
-                    </button>
-                    <button class="treat-btn" onclick="addItem('mars')">
-                        🍫 Add Mars Slab
-                        <span class="cost">$50.00 / Slab</span>
-                    </button>
-                    <button class="treat-btn" onclick="addItem('rocky')">
-                        🍬 Add Rocky Slab
-                        <span class="cost">$50.00 / Slab</span>
-                    </button>
-                </div>
-
-                <div class="the-tray" id="orderTray">
-                    <div class="empty-msg">Your tray is empty. Tap a treat above!</div>
-                </div>
-
-                <div class="box-total">Total: $<span id="totalPrice">0</span></div>
-                <div class="discount-badge" id="discountBadge">🎉 Bulk Discount Applied!</div>
-                <button class="reset-box" onclick="resetTray()">Clear Tray</button>
+            <div class="card featured">
+                <div class="badge">BEST VALUE</div>
+                <h3>12 Month Pass</h3>
+                <div class="price">$150 <span>/ year</span></div>
+                <p>The ultimate entertainment package.</p>
+                <ul class="features">
+                    <li>4,000+ Live Channels</li>
+                    <li>All PPV Events Included (UFC, Boxing)</li>
+                    <li>VOD: Movies & TV Shows</li>
+                    <li>Anti-Freeze Technology</li>
+                    <li>Instant Activation</li>
+                </ul>
+                <a href="#" class="btn-main" style="display:block;">Order Now</a>
             </div>
 
-            <div class="contact-form">
-                <form>
-                    <input type="hidden" id="boxContentsInput" name="box_contents">
-                    
-                    <div class="form-group">
-                        <label>Your Name</label>
-                        <input type="text" placeholder="Jane Doe" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" placeholder="jane@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Custom Details (Colors, Names, Date required)</label>
-                        <textarea rows="4" placeholder="e.g., I need this for a birthday on Saturday..."></textarea>
-                    </div>
-
-                    <div class="policy-note">
-                        <p><strong>📝 A Little Note:</strong> To ensure every treat is baked fresh just for you, we kindly ask for a <strong>50% deposit</strong> to secure your order. Since we start prepping your goodies early, deposits are non-refundable for cancellations made within 24 hours of pickup. Thank you!</p>
-                    </div>
-
-                    <button type="submit" class="btn" style="width: 100%;">Send Order Request</button>
-                </form>
+            <div class="card">
+                <h3>Formuler Z11 Pro</h3>
+                <div class="price">$200 <span>/ unit</span></div>
+                <p>The world's best streaming box.</p>
+                <ul class="features">
+                    <li>Android 11 OS</li>
+                    <li>4K HDR Support</li>
+                    <li>MyTVOnline3 App Included</li>
+                    <li>Gigabit Ethernet</li>
+                    <li>Premium Remote Control</li>
+                </ul>
+                <a href="#" class="btn-main" style="display:block; background:transparent; border: 2px solid #555; color:#fff;">Buy Device</a>
             </div>
+
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 Nicole's Treats. Personally Baked with Love.</p>
+        <p>&copy; 2026 Yeah Mate IPTV. Made in Sydney.</p>
     </footer>
 
-    <div id="lightbox" class="lightbox">
-        <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
-        <img class="lightbox-content" id="lightbox-img">
-    </div>
-
-    <script>
-        // --- ORDER LOGIC ---
-        let orderItems = []; 
-        const PRICES = { 'cookie': 4, 'mars': 50, 'rocky': 50 };
-        const IMAGES = {
-            'cookie': 'cookie.png',
-            'mars': 'https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg',
-            'rocky': 'https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg'
-        };
-
-        function addItem(type) {
-            orderItems.push(type);
-            renderTray();
-        }
-
-        // --- NEW FUNCTION: ADD 20 COOKIES AT ONCE ---
-        function addBulkCookies() {
-            for (let i = 0; i < 20; i++) {
-                orderItems.push('cookie');
-            }
-            renderTray();
-        }
-
-        function removeItem(index) {
-            orderItems.splice(index, 1);
-            renderTray();
-        }
-
-        function resetTray() {
-            orderItems = [];
-            renderTray();
-        }
-
-        function renderTray() {
-            const tray = document.getElementById('orderTray');
-            tray.innerHTML = ""; // Clear existing
-
-            let cookieCount = 0;
-            let slabCount = 0;
-            let slabTotal = 0;
-            
-            // Count items first
-            orderItems.forEach(item => {
-                if (item === 'cookie') cookieCount++;
-                else {
-                    slabCount++;
-                    slabTotal += PRICES[item];
-                }
-            });
-
-            // --- CALCULATE PRICE ---
-            // Cookies: 20 for $70. Remainder $4 each.
-            const cookieBundles = Math.floor(cookieCount / 20);
-            const cookieRemainder = cookieCount % 20;
-            const cookieTotal = (cookieBundles * 70) + (cookieRemainder * 4);
-            
-            const finalTotal = slabTotal + cookieTotal;
-
-            // --- RENDER ITEMS ---
-            if (orderItems.length === 0) {
-                tray.innerHTML = '<div class="empty-msg">Your tray is empty. Tap a treat above!</div>';
-            } else {
-                orderItems.forEach((item, index) => {
-                    const img = document.createElement('img');
-                    img.src = IMAGES[item];
-                    img.classList.add('tray-item');
-                    // Add specific class for shape (round vs slab)
-                    if(item === 'cookie') img.classList.add('item-cookie');
-                    else img.classList.add('item-slab');
-                    
-                    img.onclick = () => removeItem(index);
-                    tray.appendChild(img);
-                });
-            }
-
-            // Update Text
-            document.getElementById('totalPrice').innerText = finalTotal;
-            
-            // Show Discount Badge?
-            const badge = document.getElementById('discountBadge');
-            if (cookieBundles > 0) {
-                badge.style.display = "inline-block";
-                badge.innerText = "🎉 Bulk Discount Applied! (" + cookieBundles + "x Bundle)";
-            } else {
-                badge.style.display = "none";
-            }
-
-            // Update Hidden Input for Email
-            let summaryText = `Order: ${slabCount} Slabs, ${cookieCount} Cookies. Total: $${finalTotal}`;
-            document.getElementById('boxContentsInput').value = summaryText;
-        }
-
-        // --- FALLING SWEETS ---
-        function createSweet() {
-            const sweets = ['🍪', '🍬', '🍫', '🧁', '🍩'];
-            const sweet = document.createElement('div');
-            sweet.classList.add('falling-sweet');
-            sweet.innerText = sweets[Math.floor(Math.random() * sweets.length)];
-            sweet.style.left = Math.random() * 100 + 'vw';
-            sweet.style.animationDuration = Math.random() * 3 + 4 + 's'; 
-            sweet.style.fontSize = Math.random() * 20 + 20 + 'px'; 
-            document.body.appendChild(sweet);
-            setTimeout(() => { sweet.remove(); }, 7000);
-        }
-        setInterval(createSweet, 400);
-
-        // --- LIGHTBOX ---
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        function openLightbox(element) {
-            lightbox.style.display = "flex"; lightbox.style.alignItems = "center";
-            lightboxImg.src = element.querySelector('img').src;
-        }
-        function closeLightbox() { lightbox.style.display = "none"; }
-        lightbox.onclick = function(e) { if (e.target === lightbox) closeLightbox(); }
-    </script>
 </body>
 </html>
