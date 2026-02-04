@@ -3,264 +3,485 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMR & Intelligence Portal</title>
+    <title>Risk & Compliance Intelligence System</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
-            --primary: #2c3e50;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #34495e;
-            --border: #bdc3c7;
+            /* Enterprise Color Palette */
+            --primary: #0f172a;      /* Deep Slate - Sidebar */
+            --secondary: #1e293b;    /* Lighter Slate */
+            --accent: #3b82f6;       /* Royal Blue - Actions */
+            --accent-hover: #2563eb; 
+            --bg-body: #f1f5f9;      /* Light Grey Background */
+            --bg-card: #ffffff;      /* White Cards */
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: var(--bg-body);
+            color: var(--text-main);
             display: flex;
             height: 100vh;
+            overflow: hidden;
         }
 
-        /* Sidebar Navigation */
-        nav {
-            width: 250px;
+        /* SIDEBAR */
+        aside {
+            width: 260px;
             background-color: var(--primary);
             color: white;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            flex-shrink: 0;
         }
 
-        nav h2 { margin-top: 0; font-size: 1.2rem; border-bottom: 1px solid var(--dark); padding-bottom: 15px; }
+        .brand {
+            padding: 24px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-        .nav-btn {
-            background: none;
+        .brand i { color: var(--accent); }
+
+        .nav-menu {
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-item {
+            background: transparent;
             border: none;
-            color: var(--light);
-            padding: 15px;
+            color: #94a3b8;
+            padding: 12px 16px;
             text-align: left;
             cursor: pointer;
-            font-size: 1rem;
-            transition: 0.2s;
-            border-radius: 4px;
-            margin-bottom: 5px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
         }
 
-        .nav-btn:hover, .nav-btn.active {
-            background-color: var(--dark);
+        .nav-item:hover {
             color: white;
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .nav-item.active {
+            background-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .user-profile {
+            margin-top: auto;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
             font-weight: bold;
         }
 
-        /* Main Content Area */
+        /* MAIN CONTENT */
         main {
             flex: 1;
-            padding: 30px;
+            padding: 40px;
             overflow-y: auto;
+            position: relative;
         }
 
-        .section { display: none; }
-        .section.active { display: block; animation: fadeIn 0.3s; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        h1 { font-size: 1.8rem; font-weight: 700; margin: 0; color: var(--primary); }
+        h2 { font-size: 1.2rem; font-weight: 600; color: var(--primary); margin-bottom: 15px; }
 
-        h1 { border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 5px; margin-top: 0; }
+        /* CARDS & CONTAINERS */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            padding: 25px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+        }
 
-        /* Forms */
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
+        /* FORMS */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         input, select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
             box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        textarea { resize: vertical; height: 100px; }
 
-        .row { display: flex; gap: 20px; }
-        .col { flex: 1; }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
 
-        button.primary-btn {
+        textarea { resize: vertical; min-height: 120px; }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
             background-color: var(--accent);
             color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.2s;
         }
 
-        button.primary-btn:hover { background-color: #c0392b; }
+        .btn-primary:hover { background-color: var(--accent-hover); transform: translateY(-1px); }
 
-        /* Associates Section */
-        .associate-box {
-            background: white;
+        .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
+
+        /* ASSOCIATES TAGS */
+        .tag-box {
+            background: #f8fafc;
+            border: 1px dashed var(--border);
             padding: 15px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            margin-top: 10px;
+            border-radius: 8px;
         }
-        .tag-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        
+        .tags-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
         .tag {
-            background-color: var(--primary);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 0.85rem;
             display: flex;
             align-items: center;
             gap: 8px;
+            box-shadow: var(--shadow-sm);
         }
-        .tag span { cursor: pointer; font-weight: bold; }
 
-        /* Tables & Lists */
-        table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--light); }
-        th { background-color: var(--dark); color: white; }
-        tr:hover { background-color: #f1f1f1; }
+        .tag i { color: var(--danger); cursor: pointer; opacity: 0.6; }
+        .tag i:hover { opacity: 1; }
 
-        /* Connection Visualizer */
-        .network-card {
-            background: white;
-            border-left: 5px solid var(--accent);
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        /* TABLES */
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; color: var(--text-muted); font-weight: 600; font-size: 0.85rem; border-bottom: 2px solid var(--border); }
+        td { padding: 15px; border-bottom: 1px solid var(--border); color: var(--text-main); font-size: 0.9rem; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #f8fafc; }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #e0f2fe;
+            color: #0369a1;
         }
-        .network-header { font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; }
-        .connection-line {
-            padding-left: 20px;
-            border-left: 2px dashed var(--border);
-            margin-left: 10px;
+
+        /* CONNECTIONS VIEW */
+        .search-hero {
+            position: relative;
+            margin-bottom: 40px;
         }
-        .linked-person {
-            background: #e8f6f3;
-            padding: 8px;
-            margin: 5px 0;
-            border-radius: 4px;
-            color: #16a085;
-            font-weight: bold;
+        .search-hero i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
         }
+        .search-hero input { padding-left: 45px; height: 50px; font-size: 1.1rem; }
+
+        .intel-card {
+            border-left: 4px solid var(--accent);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .intel-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .link-tree {
+            margin-top: 15px;
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        .link-node {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .link-line { width: 20px; height: 2px; background: #cbd5e1; }
+
+        /* UTILS */
+        .section { display: none; animation: fadeUp 0.3s ease-out; }
+        .section.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 20px; }
+        .stat-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .stat-info h3 { margin: 0; font-size: 2rem; }
+        .stat-info p { margin: 0; color: var(--text-muted); font-size: 0.9rem; }
 
     </style>
 </head>
 <body>
 
-<nav>
-    <h2>Compliance Portal</h2>
-    <button class="nav-btn active" onclick="showSection('dashboard')">Dashboard</button>
-    <button class="nav-btn" onclick="showSection('new-report')">New SMR / Incident</button>
-    <button class="nav-btn" onclick="showSection('connections')">Entity Connections</button>
-</nav>
+<aside>
+    <div class="brand">
+        <i class="fa-solid fa-shield-halved"></i>
+        SECURE INTEL
+    </div>
+    <div class="nav-menu">
+        <button class="nav-item active" onclick="showSection('dashboard', this)">
+            <i class="fa-solid fa-chart-line"></i> Dashboard
+        </button>
+        <button class="nav-item" onclick="showSection('new-report', this)">
+            <i class="fa-solid fa-file-circle-plus"></i> Submit SMR
+        </button>
+        <button class="nav-item" onclick="showSection('connections', this)">
+            <i class="fa-solid fa-network-wired"></i> Link Analysis
+        </button>
+    </div>
+    <div class="user-profile">
+        <div class="avatar">GS</div>
+        <div style="font-size: 0.9rem;">
+            <div>Gaming Supervisor</div>
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 2px;">ID: 8821-A</div>
+        </div>
+    </div>
+</aside>
 
 <main>
     <div id="dashboard" class="section active">
-        <h1>Recent Reports</h1>
-        <div id="reports-list">
-            <p style="color: #7f8c8d;">No reports filed yet.</p>
+        <header>
+            <h1>Overview</h1>
+            <button class="btn btn-primary btn-sm" onclick="showSection('new-report')">
+                <i class="fa-solid fa-plus"></i> Quick Incident
+            </button>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;"><i class="fa-solid fa-file-contract"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalReports">0</h3>
+                    <p>Total Reports</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="stat-info">
+                    <h3 id="activeAlerts">0</h3>
+                    <p>Associates Tracked</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #dcfce7; color: #16a34a;"><i class="fa-solid fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <h3>100%</h3>
+                    <p>System Status</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Recent Activity Log</h2>
+            <div id="reports-list">
+                </div>
         </div>
     </div>
 
     <div id="new-report" class="section">
-        <h1>Submit SMR / Incident</h1>
+        <header>
+            <h1>Submit Suspicious Matter</h1>
+        </header>
+
         <form id="smrForm" onsubmit="submitReport(event)">
-            
-            <h3>Subject (POI) Details</h3>
-            <div class="row">
-                <div class="col">
+            <div class="card">
+                <h2>1. Subject Information</h2>
+                <div class="form-grid">
                     <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="poiName" required placeholder="e.g. John Doe">
+                        <label>POI Full Name</label>
+                        <input type="text" id="poiName" required placeholder="Surname, First Name">
                     </div>
-                </div>
-                <div class="col">
                     <div class="form-group">
                         <label>Date of Birth</label>
                         <input type="date" id="poiDob">
                     </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
                     <div class="form-group">
-                        <label>ID Type / Number</label>
-                        <input type="text" id="poiId" placeholder="Drivers License / Member ID">
+                        <label>Identification (Type & No)</label>
+                        <input type="text" id="poiId" placeholder="e.g. DL 12345678">
+                    </div>
+                    <div class="form-group">
+                        <label>Membership Number</label>
+                        <input type="text" id="poiMember" placeholder="Optional">
                     </div>
                 </div>
             </div>
 
-            <h3>Incident Details</h3>
-            <div class="row">
-                <div class="col">
+            <div class="card">
+                <h2>2. Incident Details</h2>
+                <div class="form-grid">
                     <div class="form-group">
-                        <label>Date & Time</label>
+                        <label>Date & Time of Incident</label>
                         <input type="datetime-local" id="incidentTime" required>
                     </div>
-                </div>
-                <div class="col">
                     <div class="form-group">
-                        <label>Nature of Activity</label>
+                        <label>Incident Classification</label>
                         <select id="incidentType">
-                            <option>Structuring / Cash Threshold</option>
-                            <option>Use of False ID</option>
+                            <option>Structuring (Cash Threshold)</option>
+                            <option>Use of False Identification</option>
                             <option>Money Laundering Suspicion</option>
-                            <option>Unexplained Wealth</option>
-                            <option>General Suspicious Behavior</option>
-                            <option>Barring / Exclusion Breach</option>
+                            <option>Unexplained Wealth / Cash Volume</option>
+                            <option>Collusion with Associates</option>
+                            <option>Exclusion Breach</option>
                         </select>
                     </div>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label>Narrative / Observation</label>
-                <textarea id="narrative" placeholder="Describe the behavior details..."></textarea>
-            </div>
-
-            <div class="associate-box">
-                <label>Associates Present (Connect POIs)</label>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="associateInput" placeholder="Enter associate name">
-                    <button type="button" class="primary-btn" onclick="addAssociate()" style="padding: 5px 15px;">Add</button>
+                <div class="form-group">
+                    <label>Narrative / Observation Details</label>
+                    <textarea id="narrative" placeholder="Provide a chronological account of the behavior..."></textarea>
                 </div>
-                <div class="tag-container" id="associateTags"></div>
             </div>
 
-            <br>
-            <button type="submit" class="primary-btn">Submit Report</button>
+            <div class="card">
+                <h2>3. Link Analysis (Associates)</h2>
+                <div class="tag-box">
+                    <div class="form-group" style="display: flex; gap: 10px;">
+                        <input type="text" id="associateInput" placeholder="Type name and press Add..." style="flex:1;">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addAssociate()">
+                            <i class="fa-solid fa-link"></i> Add Link
+                        </button>
+                    </div>
+                    <div class="tags-area" id="associateTags">
+                        </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 16px;">
+                <i class="fa-solid fa-paper-plane"></i> Submit Official Report
+            </button>
         </form>
     </div>
 
     <div id="connections" class="section">
-        <h1>Intelligence Database</h1>
-        <div class="form-group">
-            <input type="text" id="searchEntity" placeholder="Search for a Name (POI or Associate)..." onkeyup="searchConnections()">
+        <header>
+            <h1>Intelligence Database</h1>
+        </header>
+
+        <div class="search-hero">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchEntity" placeholder="Search POI, Associate, or ID Number..." onkeyup="searchConnections()">
         </div>
+
         <div id="connectionResults"></div>
     </div>
 </main>
 
 <script>
     // --- STATE MANAGEMENT ---
-    let reports = JSON.parse(localStorage.getItem('smr_reports')) || [];
+    let reports = JSON.parse(localStorage.getItem('smr_reports_pro')) || [];
     let currentAssociates = [];
 
     // --- NAVIGATION ---
-    function showSection(id) {
+    function showSection(id, btnElement) {
         document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-        
         document.getElementById(id).classList.add('active');
-        // Highlight button
-        const buttons = document.querySelectorAll('.nav-btn');
-        if(id === 'dashboard') buttons[0].classList.add('active');
-        if(id === 'new-report') buttons[1].classList.add('active');
-        if(id === 'connections') buttons[2].classList.add('active');
+
+        // Update Sidebar UI if clicked via sidebar
+        if(btnElement) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            btnElement.classList.add('active');
+        } else {
+            // Handle cross-links (like "Quick Incident" button)
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(id === 'dashboard') document.querySelectorAll('.nav-item')[0].classList.add('active');
+            if(id === 'new-report') document.querySelectorAll('.nav-item')[1].classList.add('active');
+        }
 
         if(id === 'dashboard') renderDashboard();
     }
@@ -274,6 +495,7 @@
             renderAssociates();
         }
         input.value = '';
+        input.focus();
     }
 
     function removeAssociate(name) {
@@ -285,7 +507,8 @@
         const container = document.getElementById('associateTags');
         container.innerHTML = currentAssociates.map(name => `
             <div class="tag">
-                ${name} <span onclick="removeAssociate('${name}')">&times;</span>
+                <i class="fa-solid fa-user"></i> ${name} 
+                <i class="fa-solid fa-xmark" onclick="removeAssociate('${name}')"></i>
             </div>
         `).join('');
     }
@@ -304,94 +527,115 @@
             associates: [...currentAssociates]
         };
 
-        reports.unshift(newReport); // Add to top
-        localStorage.setItem('smr_reports', JSON.stringify(reports));
+        reports.unshift(newReport);
+        localStorage.setItem('smr_reports_pro', JSON.stringify(reports));
 
-        // Reset Form
         document.getElementById('smrForm').reset();
         currentAssociates = [];
         renderAssociates();
-        alert('Report Submitted Successfully');
-        showSection('dashboard');
+        
+        // Simulating a "Toast" notification
+        const btn = document.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Report Saved';
+        btn.style.backgroundColor = 'var(--success)';
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.backgroundColor = '';
+            showSection('dashboard');
+        }, 1000);
     }
 
     // --- DASHBOARD RENDER ---
     function renderDashboard() {
         const list = document.getElementById('reports-list');
+        const countDisplay = document.getElementById('totalReports');
+        const assocDisplay = document.getElementById('activeAlerts');
+
+        // Update Stats
+        countDisplay.innerText = reports.length;
+        let uniqueAssociates = new Set();
+        reports.forEach(r => r.associates.forEach(a => uniqueAssociates.add(a)));
+        assocDisplay.innerText = uniqueAssociates.size;
+
         if (reports.length === 0) {
-            list.innerHTML = '<p>No reports found.</p>';
+            list.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted);">No reports recorded in system.</div>';
             return;
         }
 
-        let html = '<table><thead><tr><th>Date</th><th>POI</th><th>Type</th><th>Associates</th></tr></thead><tbody>';
+        let html = '<table><thead><tr><th>Date</th><th>Subject (POI)</th><th>Classification</th><th>Status</th></tr></thead><tbody>';
         reports.forEach(r => {
             const date = new Date(r.time).toLocaleDateString();
-            const assocString = r.associates.length > 0 ? r.associates.join(', ') : '-';
             html += `<tr>
-                <td>${date}</td>
+                <td><span style="font-family:monospace; color:var(--text-muted);">${date}</span></td>
                 <td><strong>${r.poiName}</strong></td>
                 <td>${r.type}</td>
-                <td>${assocString}</td>
+                <td><span class="status-badge">Submitted</span></td>
             </tr>`;
         });
         html += '</tbody></table>';
         list.innerHTML = html;
     }
 
-    // --- CONNECTION INTELLIGENCE LOGIC ---
+    // --- INTELLIGENCE LOGIC ---
     function searchConnections() {
         const query = document.getElementById('searchEntity').value.toLowerCase().trim();
         const resultsDiv = document.getElementById('connectionResults');
         
         if (query.length < 2) {
-            resultsDiv.innerHTML = '<p>Enter at least 2 characters to search.</p>';
+            resultsDiv.innerHTML = '<div style="text-align:center; color: var(--text-muted); padding:20px;">Enter search term...</div>';
             return;
         }
 
-        // Filter reports where the query matches the POI OR is found in the Associates list
         const matches = reports.filter(r => 
             r.poiName.toLowerCase().includes(query) || 
             r.associates.some(a => a.toLowerCase().includes(query))
         );
 
         if (matches.length === 0) {
-            resultsDiv.innerHTML = '<p>No connections found for this entity.</p>';
+            resultsDiv.innerHTML = '<div style="text-align:center; padding:20px;">No intelligence found for this entity.</div>';
             return;
         }
 
         let html = '';
         matches.forEach(r => {
-            // Determine if the searched person is the Main POI or an Associate in this specific report
             const isMainPOI = r.poiName.toLowerCase().includes(query);
+            let connectedPeople = isMainPOI ? r.associates : [r.poiName, ...r.associates.filter(a => !a.toLowerCase().includes(query))];
             
-            // Calculate "Connections" (People linked in this report excluding the search term)
-            let connectedPeople = [];
-            if (isMainPOI) {
-                // If they are the POI, they are connected to all associates
-                connectedPeople = r.associates;
-            } else {
-                // If they are an associate, they are connected to the Main POI and other associates
-                connectedPeople = [r.poiName, ...r.associates.filter(a => !a.toLowerCase().includes(query))];
-            }
-
             html += `
-            <div class="network-card">
-                <div class="network-header">
-                    Reported on: ${new Date(r.time).toLocaleDateString()} 
-                    <span style="font-weight:normal; font-size:0.9rem; color: #7f8c8d">(${r.type})</span>
+            <div class="card intel-card">
+                <div class="intel-meta">
+                    <span><i class="fa-regular fa-calendar"></i> ${new Date(r.time).toLocaleString()}</span>
+                    <span>ID: #${r.id}</span>
                 </div>
-                <div style="margin-bottom:10px;">
-                    <strong>Role in this event:</strong> ${isMainPOI ? 'Primary Subject (POI)' : 'Associate'}
+                <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 8px;">
+                     ${r.type}
                 </div>
-                
-                ${connectedPeople.length > 0 ? `
-                <div class="connection-line">
-                    <strong>Directly Linked To:</strong>
-                    ${connectedPeople.map(p => `<div class="linked-person">🔗 ${p}</div>`).join('')}
+                <div style="margin-bottom: 15px; color: var(--text-muted); line-height: 1.5;">
+                    "${r.narrative}"
                 </div>
-                ` : '<div class="connection-line" style="color:#bdc3c7">No other associates listed in this report.</div>'}
-                
-                <p style="margin-top:10px; font-style: italic; color: #555;">"${r.narrative}"</p>
+
+                <div class="link-tree">
+                    <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:10px;">
+                        Relational Map
+                    </div>
+                    
+                    <div class="link-node">
+                        <i class="fa-solid fa-circle-user" style="color: var(--accent);"></i>
+                        <strong>${r.poiName}</strong> <span class="status-badge">Primary Subject</span>
+                    </div>
+
+                    ${r.associates.length > 0 ? r.associates.map(assoc => `
+                        <div class="link-node" style="padding-left: 10px;">
+                            <div class="link-line"></div>
+                            <i class="fa-solid fa-user-group" style="color: ${assoc.toLowerCase().includes(query) ? '#ef4444' : '#64748b'};"></i>
+                            <span style="${assoc.toLowerCase().includes(query) ? 'font-weight:bold; color: #ef4444;' : ''}">
+                                ${assoc}
+                            </span>
+                        </div>
+                    `).join('') : '<div style="padding-left:10px; font-size:0.9rem; color: #94a3b8;">No known associates in this report.</div>'}
+                </div>
             </div>
             `;
         });
