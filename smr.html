@@ -3,73 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moshniki's ECDD Report Tool</title>
+    <title>Moshniki's ECDD Intelligence Tool</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f8f9fa; }
-        .report-card { border-left: 5px solid #0d6efd; margin-bottom: 20px; }
-        .source-tag { font-size: 0.8rem; text-transform: uppercase; font-weight: bold; }
-        @media print { .no-print { display: none; } }
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .search-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 40px; margin-top: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .btn-search { background: #3b82f6; border: none; font-weight: bold; transition: 0.3s; }
+        .btn-search:hover { background: #2563eb; transform: translateY(-2px); }
+        .instruction-box { background: #334155; border-left: 4px solid #3b82f6; padding: 15px; margin-top: 20px; font-size: 0.9rem; }
+        .badge-source { font-size: 0.7rem; background: #64748b; margin-right: 5px; }
     </style>
 </head>
 <body>
-    <div class="container py-5">
-        <div class="text-center no-print mb-5">
-            <h1>🛡️ ECDD Intelligence Portal</h1>
-            <p class="text-muted">Generate comprehensive due diligence reports on individuals and entities.</p>
-            <form action="/generate-report" method="POST" class="row g-3 justify-content-center">
-                <div class="col-md-6">
-                    <input type="text" name="target_name" class="form-control form-control-lg" placeholder="Enter Full Name or Business Name" required>
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary btn-lg">Run Deep Search</button>
-                </div>
-            </form>
-        </div>
 
-        {% if report %}
-        <div id="report-section">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Intelligence Report: {{ report.name }}</h2>
-                <button onclick="window.print()" class="btn btn-outline-secondary no-print">🖨️ Print PDF</button>
-            </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="search-card text-center">
+                    <h2 class="mb-4">🛡️ ECDD Intelligence Portal</h2>
+                    <p class="text-muted">Enter a name to launch a multi-level Australian background check.</p>
+                    
+                    <div class="input-group input-group-lg mb-4">
+                        <input type="text" id="targetName" class="form-control" placeholder="Full Name or Business Name..." aria-label="Target Name">
+                        <button class="btn btn-primary btn-search" type="button" onclick="runDeepSearch()">Run Intelligence Report</button>
+                    </div>
 
-            <div class="card report-card shadow-sm">
-                <div class="card-body">
-                    <span class="source-tag text-primary">Australian Business Register (ABN)</span>
-                    <h5 class="mt-2">Business Affiliations</h5>
-                    <ul class="list-group list-group-flush">
-                        {% for biz in report.business_data %}
-                        <li class="list-group-item">{{ biz.Name }} - <strong>{{ biz.Abn }}</strong> ({{ biz.State }})</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+                    <div class="text-start instruction-box">
+                        <strong>How it works:</strong> Clicking search will open multiple browser tabs directly to the <strong>Australian Business Register</strong>, <strong>LinkedIn</strong>, <strong>Facebook</strong>, and <strong>Google Public Records</strong> filtered for the specific individual.
+                    </div>
 
-            <div class="card report-card shadow-sm" style="border-left-color: #198754;">
-                <div class="card-body">
-                    <span class="source-tag text-success">Digital Footprint (Social & Web)</span>
-                    <h5 class="mt-2">Social Profiles & Mentions</h5>
-                    <div class="row">
-                        {% for link in report.social_data %}
-                        <div class="col-md-6 mb-2">
-                            <a href="{{ link.url }}" target="_blank" class="text-decoration-none">🔗 {{ link.title }}</a>
-                            <br><small class="text-muted">{{ link.snippet }}</small>
-                        </div>
-                        {% endfor %}
+                    <div class="mt-4 d-flex justify-content-center flex-wrap gap-2">
+                        <span class="badge badge-source">ABN Lookup</span>
+                        <span class="badge badge-source">ASIC Register</span>
+                        <span class="badge badge-source">NSW Property</span>
+                        <span class="badge badge-source">Social Media</span>
                     </div>
                 </div>
             </div>
-
-            <div class="card report-card shadow-sm" style="border-left-color: #dc3545;">
-                <div class="card-body">
-                    <span class="source-tag text-danger">Public Records & Property</span>
-                    <p class="text-muted italic">Automated cross-referencing public domain registers...</p>
-                    <p>Total Matches Found: {{ report.property_count }}</p>
-                </div>
-            </div>
         </div>
-        {% endif %}
     </div>
+
+    <script>
+        function runDeepSearch() {
+            const name = document.getElementById('targetName').value;
+            if (!name) {
+                alert("Please enter a name first.");
+                return;
+            }
+
+            // Define the "Deep Search" URLs
+            // 1. ABN Lookup (Direct Search)
+            const abnUrl = `https://abr.business.gov.au/Search/Results?SearchText=${encodeURIComponent(name)}`;
+            
+            // 2. LinkedIn (Filtered for Australia)
+            const linkedinUrl = `https://www.google.com/search?q=site:au.linkedin.com/in/+"${encodeURIComponent(name)}"`;
+            
+            // 3. Facebook (Direct Search)
+            const fbUrl = `https://www.facebook.com/search/top/?q=${encodeURIComponent(name)}`;
+            
+            // 4. Property/Public Records Search (Targeting NSW/Australia)
+            const propertyUrl = `https://www.google.com/search?q="${encodeURIComponent(name)}"+(site:realestate.com.au+OR+site:domain.com.au+OR+site:nsw.gov.au)`;
+
+            // Open all tabs
+            window.open(abnUrl, '_blank');
+            window.open(linkedinUrl, '_blank');
+            window.open(fbUrl, '_blank');
+            window.open(propertyUrl, '_blank');
+        }
+    </script>
+
 </body>
 </html>
