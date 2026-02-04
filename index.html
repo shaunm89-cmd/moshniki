@@ -3,471 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yeah Mate IPTV | Premium Aussie Streaming</title>
+    <title>Nicole's Treats | Custom Cookies & Slices</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+
     <style>
         /* --- RESET & VARIABLES --- */
         :root {
-            --aussie-navy: #0e1c2e;
-            --aussie-gold: #ffc845;
-            --aussie-rust: #d95c34;
-            --text-light: #f4f4f4;
-            --text-dark: #333;
-            --card-bg: #16263d;
-            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --primary: #eb3b5a; /* Punchier Red-Pink */
+            --primary-light: #fc5c65;
+            --accent-mint: #20bf6b; /* Fresh Mint */
+            --accent-yellow: #f7b731; /* Sunshine Yellow */
+            --bg-color: #fff9fa; /* Very subtle pink-white */
+            --card-bg: #ffffff;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --black: #000000;
+            
+            --font-heading: 'Pacifico', cursive; 
+            --font-body: 'Fredoka', sans-serif; 
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: var(--font-main);
-            background-color: var(--aussie-navy);
-            color: var(--text-light);
-            overflow-x: hidden;
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e6e6e6 1.5px, transparent 1.5px);
+            background-size: 30px 30px; /* Subtle dot pattern */
+            color: var(--text-dark);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 400;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+        }
+
+        /* --- JELLY BUTTONS --- */
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to bottom, var(--primary-light), var(--primary));
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #b3253e, 0 10px 10px rgba(0,0,0,0.15);
+            transition: all 0.1s;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            top: 0;
+        }
+
+        .btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #b3253e, 0 15px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #b3253e, inset 0 2px 5px rgba(0,0,0,0.2);
+        }
 
         /* --- HEADER --- */
         header {
+            background-color: var(--black); 
+            padding: 5px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            /* Rainbow border for excitement */
+            border-bottom: 5px solid transparent;
+            border-image: linear-gradient(to right, var(--primary), var(--accent-yellow), var(--accent-mint)) 1;
+        }
+
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
-            background: rgba(14, 28, 46, 0.98);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 2px solid var(--aussie-gold);
         }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--aussie-gold);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .logo span { color: var(--text-light); }
+        .logo-img { height: 70px; width: auto; display: block; }
 
-        .btn-main {
-            padding: 10px 25px;
-            background-color: var(--aussie-rust);
-            color: white;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: 0.3s;
-            border: 2px solid var(--aussie-rust);
+        .nav-links a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 600;
             text-transform: uppercase;
             font-size: 0.9rem;
-            cursor: pointer;
+            letter-spacing: 1.5px;
+            transition: color 0.3s;
         }
 
-        .btn-main:hover {
-            background-color: transparent;
-            color: var(--aussie-rust);
-        }
+        .nav-links a:hover { color: var(--accent-yellow); }
 
         /* --- HERO --- */
         .hero {
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            /* Sydney Harbour Backdrop */
-            background: linear-gradient(rgba(14, 28, 46, 0.8), rgba(14, 28, 46, 0.95)), 
-                        url('https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=1920&auto=format&fit=crop');
+            /* Fresh colorful gradient overlay */
+            background: linear-gradient(135deg, rgba(235, 59, 90, 0.85), rgba(247, 183, 49, 0.7)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1600&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            padding: 120px 20px 50px;
+            background-attachment: fixed;
+            text-align: center;
+            padding: 140px 20px 180px 20px;
+            position: relative;
+            color: white;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            color: white;
+            font-size: 4.5rem;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            transform: rotate(-2deg); /* Fun tilt */
             margin-bottom: 20px;
-            line-height: 1.1;
         }
-        .hero h1 span { color: var(--aussie-gold); }
-        
+
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 40px;
             max-width: 700px;
-            margin-bottom: 30px;
-            color: #ddd;
+            margin: 0 auto 40px auto;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
         }
 
-        /* --- FEATURES GRID --- */
-        .features-section {
-            padding: 60px 5%;
-            background: #111d2e;
+        /* Jagged Divider */
+        .wave-bottom {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        .wave-bottom svg { display: block; width: calc(100% + 1.3px); height: 50px; }
+        .wave-bottom .shape-fill { fill: var(--bg-color); }
+
+        /* --- ABOUT --- */
+        .about {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .quality-badge {
+            background: var(--accent-mint);
+            display: inline-block;
+            padding: 8px 25px;
+            border-radius: 50px;
+            margin-bottom: 25px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+            animation: float 3s ease-in-out infinite;
         }
         
-        .section-title {
+        .about p { font-size: 1.25rem; max-width: 700px; margin: 0 auto; color: var(--text-light); }
+
+        /* --- QUOTE STRIP --- */
+        .quote-strip {
+            background-color: var(--accent-yellow);
+            padding: 60px 20px;
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            color: var(--aussie-gold);
+            transform: skewY(-2deg); /* Dynamic angle */
+            margin: 50px 0;
+            box-shadow: 0 10px 0 rgba(0,0,0,0.05);
         }
 
-        .features-grid {
+        .quote-content { transform: skewY(2deg); /* Correct text angle */ }
+        
+        .quote-content h2 {
+            color: white;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+            margin: 0;
+        }
+
+        /* --- PRODUCTS GRID --- */
+        .products { padding: 60px 0; }
+
+        .section-title { 
+            text-align: center; 
+            font-size: 3.5rem; 
+            margin-bottom: 60px;
+            color: var(--text-dark); 
+        }
+        .section-title span { color: var(--primary); }
+
+        .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
+            gap: 40px;
         }
 
-        .feature-box {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            border-left: 4px solid var(--aussie-rust);
-        }
-
-        .feature-box h3 { font-size: 1.4rem; margin-bottom: 15px; color: white; }
-        .feature-box li { margin-bottom: 10px; color: #ccc; font-size: 0.95rem; }
-        .feature-box li::before { content: '• '; color: var(--aussie-gold); font-weight: bold; }
-
-        /* --- SCROLLING TICKER --- */
-        .channel-scroller {
-            background: var(--aussie-gold);
-            padding: 15px 0;
+        /* "POP ART" CARD STYLE */
+        .product-card {
+            background: white;
+            border: 3px solid var(--text-dark);
+            border-radius: 20px;
             overflow: hidden;
-            white-space: nowrap;
-            margin-bottom: 0;
-        }
-        .scroller-track { display: inline-block; animation: scroll 25s linear infinite; }
-        .channel-item {
-            display: inline-block;
-            font-weight: 900;
-            color: var(--aussie-navy);
-            font-size: 1.2rem;
-            margin: 0 30px;
-            text-transform: uppercase;
-        }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-        /* --- PRICING SECTION --- */
-        .pricing { padding: 80px 5%; }
-        
-        .pricing-category {
-            margin-bottom: 60px;
-        }
-        
-        .category-title {
-            text-align: center;
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            color: #fff;
-            border-bottom: 1px solid #333;
-            display: inline-block;
-            padding-bottom: 10px;
-            left: 50%;
-            position: relative;
-            transform: translateX(-50%);
-        }
-
-        .pricing-container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid #2a3d58;
-            border-radius: 15px;
-            padding: 30px;
-            width: 320px;
-            transition: 0.3s;
-            position: relative;
+            box-shadow: 10px 10px 0 var(--accent-mint); /* Hard colorful shadow */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
             display: flex;
             flex-direction: column;
         }
 
-        .card:hover { transform: translateY(-5px); border-color: var(--aussie-gold); }
+        .product-card:nth-child(2) { box-shadow: 10px 10px 0 var(--accent-yellow); }
+        .product-card:nth-child(3) { box-shadow: 10px 10px 0 var(--primary); }
 
-        .card.featured {
-            border: 2px solid var(--aussie-gold);
-            background: linear-gradient(145deg, #1a2e4a, #112036);
+        .product-card:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 15px 15px 0 var(--text-dark);
         }
 
-        .badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--aussie-gold);
-            color: var(--aussie-navy);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            white-space: nowrap;
+        .product-img {
+            height: 240px; 
+            width: 100%;
+            background-color: #eee; 
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border-bottom: 3px solid var(--text-dark);
         }
 
-        .card h3 { font-size: 1.4rem; text-align: center; margin-bottom: 10px; }
+        .product-img img {
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
+        }
+        .product-card:hover .product-img img { transform: scale(1.1); }
+
+        .product-info { padding: 25px; flex-grow: 1; text-align: center; }
+        .product-info h3 { font-size: 1.8rem; margin-bottom: 10px; color: var(--text-dark); }
         
         .price {
-            font-size: 2.5rem;
-            font-weight: bold;
-            text-align: center;
-            color: white;
-            margin-bottom: 5px;
-        }
-        .price span { font-size: 1rem; color: #888; font-weight: normal; }
-        
-        .sub-price {
-            text-align: center;
-            color: var(--aussie-rust);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .features-list { margin-bottom: auto; }
-        .features-list li {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: flex-start;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-        .features-list li::before {
-            content: '✓';
-            color: var(--aussie-gold);
-            font-weight: bold;
-            margin-right: 10px;
-            min-width: 15px;
-        }
-
-        /* --- RENEWAL TABLE --- */
-        .renewal-table {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            border-collapse: collapse;
-            background: var(--card-bg);
+            display: inline-block;
+            margin: 5px 0 15px 0;
+            font-size: 1.2rem;
+            color: var(--white);
+            font-weight: 700;
+            background: var(--text-dark);
+            padding: 5px 15px;
             border-radius: 10px;
-            overflow: hidden;
-            margin-top: 20px;
-        }
-        .renewal-table th, .renewal-table td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #2a3d58;
-        }
-        .renewal-table th { background: #1f3653; color: var(--aussie-gold); }
-        .renewal-table tr:last-child td { border-bottom: none; }
-
-        /* --- FOOTER --- */
-        footer {
-            background: #08111d;
-            padding: 40px 5%;
-            text-align: center;
-            border-top: 1px solid #222;
-            color: #777;
-            font-size: 0.9rem;
         }
 
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.2rem; }
-            .pricing-container { flex-direction: column; align-items: center; }
-            .card { width: 100%; max-width: 350px; }
+        /* --- TRAY (METALLIC LOOK) --- */
+        .contact {
+            padding: 80px 0;
+            background: white;
+            position: relative;
         }
-    </style>
-</head>
-<body>
 
-    <header>
-        <div class="logo">YEAH<span>MATE</span></div>
-        <a href="#pricing" class="btn-main">Get Started</a>
-    </header>
+        .box-builder-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 30px;
+            /* Soft shadow */
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1); 
+            border: 2px solid #eee;
+        }
 
-    <section class="hero">
-        <h1>Unlock The Ultimate <br><span>Aussie Experience</span></h1>
-        <p>1000+ Channels. Every PPV Event. 4K Sports. <br>From the NRL to the NFL, we've got you covered.</p>
-        <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center;">
-            <a href="#hardware" class="btn-main">Get The Box ($350)</a>
-            <a href="#byo" class="btn-main" style="background:transparent; color:#fff; border-color:#fff;">BYO Device</a>
-        </div>
-    </section>
-
-    <div class="channel-scroller">
-        <div class="scroller-track">
-            <span class="channel-item">FOX SPORTS 4K</span>
-            <span class="channel-item">NRL TELSTRA PREMIERSHIP</span>
-            <span class="channel-item">F1 DRIVER CAMS</span>
-            <span class="channel-item">UFC FIGHT PASS</span>
-            <span class="channel-item">STAN SPORT</span>
-            <span class="channel-item">SKY SPORTS UK UHD</span>
-            <span class="channel-item">NFL SUNDAY TICKET</span>
-            <span class="channel-item">TNT SPORTS</span>
-            <span class="channel-item">PARAMOUNT+</span>
-            <span class="channel-item">NBA LEAGUE PASS</span>
-            <span class="channel-item">FOX SPORTS 4K</span>
-            <span class="channel-item">NRL TELSTRA PREMIERSHIP</span>
-            <span class="channel-item">F1 DRIVER CAMS</span>
-            <span class="channel-item">UFC FIGHT PASS</span>
-            <span class="channel-item">STAN SPORT</span>
-            <span class="channel-item">SKY SPORTS UK UHD</span>
-            <span class="channel-item">NFL SUNDAY TICKET</span>
-            <span class="channel-item">TNT SPORTS</span>
-            <span class="channel-item">PARAMOUNT+</span>
-            <span class="channel-item">NBA LEAGUE PASS</span>
-        </div>
-    </div>
-
-    <section class="features-section">
-        <h2 class="section-title">What You Get</h2>
-        <div class="features-grid">
-            <div class="feature-box">
-                <h3>🇦🇺 Live Aussie Sports</h3>
-                <ul>
-                    <li>Fox Sports Channels in 4K</li>
-                    <li>Select NRL & AFL Games in 4K</li>
-                    <li>Bar TV & AIHL Coverage</li>
-                    <li>Stan Sport & Paramount Events</li>
-                    <li>F1 Coverage + All Driver Cams</li>
-                </ul>
-            </div>
-            <div class="feature-box">
-                <h3>🌎 International Giants</h3>
-                <ul>
-                    <li><strong>UK:</strong> TNT Sports, Sky Sports (UHD 5.1 Surround), EPL</li>
-                    <li><strong>USA:</strong> All NBA, NFL, and NHL Games</li>
-                    <li><strong>Events:</strong> DAZN (US/UK/CA) Event Channels</li>
-                    <li>1000+ Live Channels (US, UK, CA, AU)</li>
-                </ul>
-            </div>
-            <div class="feature-box">
-                <h3>🎬 Movies & PPV</h3>
-                <ul>
-                    <li><strong>PPV:</strong> Every UFC, Boxing & Wrestling Event Included</li>
-                    <li><strong>VOD:</strong> Yeah Mate VOD - Movies & Shows from all major platforms</li>
-                    <li>Premium Apps with unlocked features included</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="pricing">
+        .builder-controls {
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
         
-        <div id="hardware" class="pricing-category">
-            <h2 class="category-title">The Ultimate Bundle</h2>
-            <div class="pricing-container">
-                <div class="card featured" style="width: 400px;">
-                    <div class="badge">FULLY LOADED • BEST VALUE</div>
-                    <h3>Formuler Z11 Pro 4K</h3>
-                    <div class="price">$350</div>
-                    <div class="sub-price">+$20 Shipping</div>
-                    <ul class="features-list">
-                        <li><strong>Includes 12 Months Subscription</strong></li>
-                        <li>Comes Pre-Configured & Logged In</li>
-                        <li>Access to all Yeah Mate Premium Apps</li>
-                        <li>Dedicated Support via Telegram</li>
-                        <li>MyTVOnline3 Included</li>
-                        <li>Plug & Play - No Setup Required</li>
-                    </ul>
-                    <a href="#" class="btn-main" style="text-align:center; width:100%;">Order Now</a>
-                </div>
-            </div>
-        </div>
+        /* Control Buttons */
+        .treat-btn {
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            min-width: 130px;
+            box-shadow: 0 4px 0 #eee;
+        }
 
-        <div id="byo" class="pricing-category">
-            <h2 class="category-title">Bring Your Own Device</h2>
-            <p style="text-align:center; color:#888; margin-bottom:20px;">Works on Firestick, Android TV, Apple TV, Mobile</p>
-            
-            <div class="pricing-container">
-                <div class="card">
-                    <h3>Monthly Tester</h3>
-                    <div class="price">$45 <span>/ 1 mo</span></div>
-                    <ul class="features-list">
-                        <li>1 Connection</li>
-                        <li>Full Channel Access</li>
-                        <li>All PPV Events</li>
-                    </ul>
-                    <a href="#" class="btn-main" style="text-align:center; width:100%; background:transparent; border-color:#555; color:#fff;">Select</a>
-                </div>
+        .treat-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 0 #ddd; border-color: var(--accent-mint); color: var(--accent-mint); }
+        .treat-btn span.cost { font-size: 0.85rem; color: #aaa; font-weight: 500; }
 
-                <div class="card">
-                    <h3>6 Months</h3>
-                    <div class="price">$130 <span>/ 6 mo</span></div>
-                    <ul class="features-list">
-                        <li>1 Connection</li>
-                        <li>Save $140 vs Monthly</li>
-                        <li>Full Channel Access</li>
-                    </ul>
-                    <a href="#" class="btn-main" style="text-align:center; width:100%; background:transparent; border-color:#555; color:#fff;">Select</a>
-                </div>
+        .treat-btn.bulk-btn {
+            border-color: var(--accent-yellow);
+            background-color: #fffaeb;
+            box-shadow: 0 4px 0 #ffeaa7;
+        }
+        .treat-btn.bulk-btn:hover {
+            box-shadow: 0 6px 0 #ffd32a;
+        }
 
-                <div class="card featured">
-                    <div class="badge">POPULAR</div>
-                    <h3>12 Months</h3>
-                    <div class="price">$200 <span>/ year</span></div>
-                    <ul class="features-list">
-                        <li>1 Connection</li>
-                        <li><strong>Huge Savings</strong></li>
-                        <li>Every PPV Included</li>
-                        <li>VOD Library Access</li>
-                    </ul>
-                    <a href="#" class="btn-main" style="text-align:center; width:100%;">Select</a>
-                </div>
-            </div>
-            
-            <div style="text-align:center; margin-top:30px;">
-                <p style="color:#aaa;">Need 2 Connections (Same Household)?</p>
-                <p style="color:#fff; font-weight:bold;">$60 (1 Mo) | $110 (3 Mo) | $180 (6 Mo) | $300 (12 Mo)</p>
-            </div>
-        </div>
+        /* The Tray (Metal Effect) */
+        .the-tray {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            /* Metallic Gradient */
+            background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
+            padding: 25px;
+            border-radius: 15px;
+            min-height: 180px;
+            margin: 0 auto;
+            position: relative;
+            align-items: flex-start;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.1);
+            border: 4px solid #d1d8e0;
+        }
 
-        <div class="pricing-category">
-            <h2 class="category-title" style="font-size:1.4rem; border:none; color:#888;">Existing Device Owners Renewals</h2>
-            <table class="renewal-table">
-                <thead>
-                    <tr>
-                        <th>Plan Duration</th>
-                        <th>1 Connection</th>
-                        <th>2 Connections</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1 Month</td>
-                        <td>$35</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>3 Months</td>
-                        <td>$60</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>6 Months</td>
-                        <td>$110</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td style="color:var(--aussie-gold); font-weight:bold;">12 Months</td>
-                        <td style="color:var(--aussie-gold); font-weight:bold;">$150</td>
-                        <td style="color:var(--aussie-gold); font-weight:bold;">$200</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p style="text-align:center; font-size:0.8rem; color:#666; margin-top:10px;">*Renewals valid for Yeah Mate Device Owners only. Single household IP locked.</p>
-        </div>
+        .tray-item {
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            animation: popIn 0.3s ease;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); /* Real shadow for items */
+        }
+        .tray-item:hover { transform: scale(1.1) rotate(5deg); }
 
-    </section>
+        .item-cookie { width: 65px; height: 65px; object-fit: contain; }
+        .item-slab { width: 100px; height: 65px; object-fit: cover; border-radius: 5px; border: 2px solid white; }
 
-    <footer>
-        <p>&copy; 2026 Yeah Mate IPTV. Made in Sydney.</p>
-        <p style="font-size:0.8rem; margin-top:10px;">Dedicated support provided via Telegram.</p>
-    </footer>
+        .empty-msg {
+            width: 100%;
+            text-align: center;
+            color: #636e72;
+            margin-top: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+        }
 
-</body>
-</html>
+        .box-total {
+            margin-top: 25px;
+            font-size: 2.2rem;
+            color: var(--primary);
+            font-weight: bold;
+            font-family: var(--font-heading);
+            text-align: center;
+        }
+        
+        .discount-badge {
+            display: none; 
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 10px auto;
+            text-align: center;
+            width: fit-content;
+            animation: pulse 1.5s infinite;
+        }
+
+        .reset-box {
+            background: none; border: none; color: #999;
+            text-decoration: underline; cursor: pointer;
+            margin-top: 15px; font-size: 0.9rem; display: block; margin-inline: auto;
+        }
+
+        /* --- CONTACT FORM --- */
+        .contact-form {
+            max-width: 600px;
+            margin: 40px auto 0;
+            text-align: left;
+        }
+        
+        .form-group { margin-bottom: 25px; }
+        .form-group label { 
+            display: block; margin-bottom: 10px; 
+            font-
