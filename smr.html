@@ -2,100 +2,99 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Moshniki's ECDD Report Builder</title>
+    <title>Moshniki's ECDD Pro Console</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background: #0f172a; color: #f8fafc; height: 100vh; display: flex; overflow: hidden; }
-        #source-list { width: 300px; background: #1e293b; border-right: 1px solid #334155; padding: 20px; overflow-y: auto; }
-        #viewer-area { flex-grow: 1; display: flex; flex-direction: column; background: #000; }
-        #report-sidebar { width: 350px; background: #1e293b; border-left: 1px solid #334155; padding: 20px; overflow-y: auto; }
-        iframe { width: 100%; height: 100%; border: none; background: white; }
-        .module-btn { width: 100%; margin-bottom: 8px; text-align: left; font-size: 0.85rem; }
-        .report-item { background: #334155; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 0.8rem; border-left: 3px solid #3b82f6; }
-        .btn-add { float: right; padding: 0px 5px; font-size: 0.7rem; }
+        body { background: #0f172a; color: #f8fafc; height: 100vh; display: flex; }
+        #control-panel { width: 400px; background: #1e293b; border-right: 2px solid #334155; padding: 25px; overflow-y: auto; }
+        #report-workspace { flex-grow: 1; padding: 40px; background: #0f172a; overflow-y: auto; }
+        .source-card { background: #334155; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #3b82f6; }
+        .btn-launch { width: 100%; margin-top: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .status-pill { font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; background: #475569; }
+        .report-paper { background: white; color: #1e293b; padding: 50px; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-height: 800px; }
+        textarea { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 10px; margin-top: 10px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-    <div id="source-list">
-        <h6 class="text-uppercase fw-bold text-muted small mb-3">Target Name</h6>
-        <input type="text" id="target" class="form-control form-control-sm bg-dark text-white border-secondary mb-3" placeholder="Enter Name...">
+    <div id="control-panel">
+        <h4 class="fw-bold mb-4">🛡️ ECDD INVESTIGATOR</h4>
         
-        <h6 class="text-uppercase fw-bold text-muted small mb-2">1. Registry Check</h6>
-        <button class="btn btn-outline-info module-btn" onclick="load('abr')">ABN Lookup (GOV)</button>
-        <button class="btn btn-outline-info module-btn" onclick="load('asic')">ASIC Search</button>
-        
-        <h6 class="text-uppercase fw-bold text-muted small mt-3 mb-2">2. Compliance (PEP)</h6>
-        <button class="btn btn-outline-danger module-btn" onclick="load('os')">OpenSanctions (World)</button>
-        <button class="btn btn-outline-danger module-btn" onclick="load('dfat')">DFAT Sanctions (AU)</button>
-        
-        <h6 class="text-uppercase fw-bold text-muted small mt-3 mb-2">3. Judicial & Gov</h6>
-        <button class="btn btn-outline-success module-btn" onclick="load('judges')">Federal Court Judges</button>
-        <button class="btn btn-outline-success module-btn" onclick="load('dir')">AU Gov Directory</button>
+        <label class="small text-muted fw-bold">TARGET INDIVIDUAL/ENTITY</label>
+        <input type="text" id="targetName" class="form-control bg-dark text-white border-secondary mb-4" placeholder="Full Name..." oninput="updateReportTitle()">
+
+        <div class="source-card">
+            <span class="status-pill">Step 1: Registry</span>
+            <div class="mt-2 fw-bold">ABN & ASIC Search</div>
+            <button class="btn btn-primary btn-launch" onclick="launch('abr')">Open ABR Results ↗</button>
+            <button class="btn btn-outline-info btn-sm w-100 mt-2" onclick="launch('asic')">Open ASIC Results ↗</button>
+        </div>
+
+        <div class="source-card" style="border-left-color: #ef4444;">
+            <span class="status-pill">Step 2: Compliance</span>
+            <div class="mt-2 fw-bold">Sanctions & PEP Check</div>
+            <button class="btn btn-danger btn-launch" onclick="launch('os')">Open OpenSanctions ↗</button>
+            <button class="btn btn-outline-warning btn-sm w-100 mt-2" onclick="launch('dfat')">Search DFAT List ↗</button>
+        </div>
+
+        <div class="source-card" style="border-left-color: #10b981;">
+            <span class="status-pill">Step 3: Judicial</span>
+            <div class="mt-2 fw-bold">Court & Gov Records</div>
+            <button class="btn btn-success btn-launch" onclick="launch('fed')">Federal Court Search ↗</button>
+        </div>
+
+        <button class="btn btn-warning w-100 mt-4 fw-bold" onclick="window.print()">GENERATE FINAL PDF REPORT</button>
     </div>
 
-    <div id="viewer-area">
-        <div class="bg-dark p-2 d-flex justify-content-between">
-            <span id="current-site" class="small text-info mt-1">Select a module</span>
-            <button class="btn btn-sm btn-primary" onclick="addToReport()">+ Add Current Page to Report</button>
-        </div>
-        <iframe id="browser" src="about:blank"></iframe>
-    </div>
+    <div id="report-workspace">
+        <div class="report-paper" id="printableReport">
+            <div class="d-flex justify-content-between">
+                <h2 id="rep-name">INTELLIGENCE REPORT</h2>
+                <div class="text-end small">
+                    <strong>Date:</strong> <span id="rep-date"></span><br>
+                    <strong>Officer:</strong> Moshniki (Supervisor)
+                </div>
+            </div>
+            <hr>
 
-    <div id="report-sidebar">
-        <h5 class="fw-bold mb-3">Draft Report</h5>
-        <div id="report-content">
-            <p class="text-muted small">No data collected yet. Use the "Add" button to pull info here.</p>
+            <h5>1. Executive Summary</h5>
+            <textarea rows="3" placeholder="Summarize your findings here..."></textarea>
+
+            <h5 class="mt-4">2. Business Registry Findings (ABR/ASIC)</h5>
+            <textarea rows="4" placeholder="Note ABN status, company roles, and registered addresses..."></textarea>
+
+            <h5 class="mt-4">3. AML/CTF Compliance (Sanctions & PEP)</h5>
+            <textarea rows="4" placeholder="Record results from OpenSanctions and DFAT. Note any DOB matches..."></textarea>
+
+            <h5 class="mt-4">4. Judicial & Public Interest Records</h5>
+            <textarea rows="3" placeholder="Note any Federal Court or Government Directory matches..."></textarea>
+
+            <div class="mt-5 p-3 border rounded bg-light small">
+                <strong>Verification Statement:</strong> I, Moshniki, certify that the above checks were performed against official Australian and Global registers on the date specified.
+            </div>
         </div>
-        <hr class="border-secondary">
-        <button class="btn btn-warning w-100 fw-bold" onclick="printReport()">Download PDF Report</button>
     </div>
 
     <script>
-        const sources = {
+        document.getElementById('rep-date').innerText = new Date().toLocaleDateString();
+
+        const links = {
             abr: n => `https://abr.business.gov.au/Search/Results?SearchText=${n}`,
             asic: n => `https://www.google.com/search?q=site:asic.gov.au+"${n}"`,
             os: n => `https://www.opensanctions.org/search/?q=${n}`,
             dfat: n => `https://www.google.com/search?q=site:dfat.gov.au+"${n}"+consolidated+list`,
-            judges: n => `https://www.google.com/search?q=site:fedcourt.gov.au+"${n}"`,
-            dir: n => `https://www.directory.gov.au/search?keywords=${n}`
+            fed: n => `https://www.google.com/search?q=site:fedcourt.gov.au+"${n}"`
         };
 
-        let currentKey = "";
-
-        function load(key) {
-            const name = document.getElementById('target').value;
-            if(!name) return alert("Enter name first");
-            currentKey = key;
-            document.getElementById('browser').src = sources[key](encodeURIComponent(name));
-            document.getElementById('current-site').innerText = "Module: " + key.toUpperCase();
+        function launch(key) {
+            const name = document.getElementById('targetName').value;
+            if(!name) return alert("Please enter a name first.");
+            window.open(links[key](encodeURIComponent(name)), '_blank');
         }
 
-        function addToReport() {
-            const container = document.getElementById('report-content');
-            if (container.innerText.includes("No data")) container.innerHTML = "";
-            
-            const time = new Date().toLocaleTimeString();
-            const div = document.createElement('div');
-            div.className = "report-item";
-            div.innerHTML = `<strong>${currentKey.toUpperCase()} Check</strong> at ${time}<br>
-                             Verified data on the current target. <br>
-                             <textarea class="form-control form-control-sm mt-1 bg-dark text-white border-0" placeholder="Add specific notes here..."></textarea>`;
-            container.appendChild(div);
-        }
-
-        function printReport() {
-            const name = document.getElementById('target').value || "Unnamed_Target";
-            const content = document.getElementById('report-sidebar').innerHTML;
-            const win = window.open('', '', 'height=700,width=900');
-            win.document.write(`<html><head><title>ECDD Report - ${name}</title>`);
-            win.document.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">');
-            win.document.write('</head><body class="p-5">');
-            win.document.write(`<h1>Intelligence Report: ${name}</h1><hr>`);
-            win.document.write(document.getElementById('report-content').innerHTML);
-            win.document.write('</body></html>');
-            win.document.close();
-            win.print();
+        function updateReportTitle() {
+            const name = document.getElementById('targetName').value;
+            document.getElementById('rep-name').innerText = name ? "ECDD REPORT: " + name.toUpperCase() : "INTELLIGENCE REPORT";
         }
     </script>
 </body>
