@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yeah Mate IPTV | Best Aussie Streaming</title>
+    <title>Yeah Mate IPTV | Premium Aussie Streaming</title>
     <style>
         /* --- RESET & VARIABLES --- */
         :root {
@@ -12,31 +12,30 @@
             --aussie-rust: #d95c34;
             --text-light: #f4f4f4;
             --text-dark: #333;
+            --card-bg: #16263d;
             --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-main);
             background-color: var(--aussie-navy);
             color: var(--text-light);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
         a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
 
-        /* --- HEADER & HERO --- */
+        /* --- HEADER --- */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 5%;
-            background: rgba(14, 28, 46, 0.95);
+            background: rgba(14, 28, 46, 0.98);
             position: fixed;
             width: 100%;
             top: 0;
@@ -51,7 +50,6 @@
             text-transform: uppercase;
             letter-spacing: 2px;
         }
-
         .logo span { color: var(--text-light); }
 
         .btn-main {
@@ -62,6 +60,9 @@
             font-weight: bold;
             transition: 0.3s;
             border: 2px solid var(--aussie-rust);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            cursor: pointer;
         }
 
         .btn-main:hover {
@@ -69,101 +70,127 @@
             color: var(--aussie-rust);
         }
 
+        /* --- HERO --- */
         .hero {
-            height: 100vh;
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            /* Placeholder for a Sydney Backdrop */
-            background: linear-gradient(rgba(14, 28, 46, 0.7), rgba(14, 28, 46, 0.9)), 
+            /* Sydney Harbour Backdrop */
+            background: linear-gradient(rgba(14, 28, 46, 0.8), rgba(14, 28, 46, 0.95)), 
                         url('https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=1920&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            padding: 0 20px;
+            padding: 120px 20px 50px;
         }
 
         .hero h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
             line-height: 1.1;
         }
-
         .hero h1 span { color: var(--aussie-gold); }
         
         .hero p {
             font-size: 1.2rem;
-            max-width: 600px;
-            margin-bottom: 40px;
+            max-width: 700px;
+            margin-bottom: 30px;
             color: #ddd;
         }
+
+        /* --- FEATURES GRID --- */
+        .features-section {
+            padding: 60px 5%;
+            background: #111d2e;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--aussie-gold);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-box {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid var(--aussie-rust);
+        }
+
+        .feature-box h3 { font-size: 1.4rem; margin-bottom: 15px; color: white; }
+        .feature-box li { margin-bottom: 10px; color: #ccc; font-size: 0.95rem; }
+        .feature-box li::before { content: '• '; color: var(--aussie-gold); font-weight: bold; }
 
         /* --- SCROLLING TICKER --- */
         .channel-scroller {
             background: var(--aussie-gold);
-            padding: 20px 0;
+            padding: 15px 0;
             overflow: hidden;
             white-space: nowrap;
-            position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-bottom: 0;
         }
-
-        .scroller-track {
-            display: inline-block;
-            animation: scroll 20s linear infinite;
-        }
-
+        .scroller-track { display: inline-block; animation: scroll 25s linear infinite; }
         .channel-item {
             display: inline-block;
             font-weight: 900;
             color: var(--aussie-navy);
-            font-size: 1.5rem;
-            margin: 0 40px;
+            font-size: 1.2rem;
+            margin: 0 30px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.8;
         }
-
-        @keyframes scroll {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
-        }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         /* --- PRICING SECTION --- */
-        .pricing {
-            padding: 80px 5%;
-            text-align: center;
-        }
-
-        .pricing h2 {
-            font-size: 2.5rem;
+        .pricing { padding: 80px 5%; }
+        
+        .pricing-category {
             margin-bottom: 60px;
-            color: var(--aussie-gold);
+        }
+        
+        .category-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #fff;
+            border-bottom: 1px solid #333;
+            display: inline-block;
+            padding-bottom: 10px;
+            left: 50%;
+            position: relative;
+            transform: translateX(-50%);
         }
 
         .pricing-container {
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 30px;
             flex-wrap: wrap;
         }
 
         .card {
-            background: #16263d;
+            background: var(--card-bg);
             border: 1px solid #2a3d58;
             border-radius: 15px;
-            padding: 40px;
-            width: 350px;
+            padding: 30px;
+            width: 320px;
             transition: 0.3s;
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--aussie-gold);
-        }
+        .card:hover { transform: translateY(-5px); border-color: var(--aussie-gold); }
 
         .card.featured {
             border: 2px solid var(--aussie-gold);
@@ -172,7 +199,7 @@
 
         .badge {
             position: absolute;
-            top: -15px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--aussie-gold);
@@ -180,37 +207,63 @@
             padding: 5px 15px;
             border-radius: 20px;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            white-space: nowrap;
         }
 
+        .card h3 { font-size: 1.4rem; text-align: center; margin-bottom: 10px; }
+        
         .price {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: bold;
-            margin: 20px 0;
+            text-align: center;
             color: white;
+            margin-bottom: 5px;
+        }
+        .price span { font-size: 1rem; color: #888; font-weight: normal; }
+        
+        .sub-price {
+            text-align: center;
+            color: var(--aussie-rust);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: bold;
         }
 
-        .price span { font-size: 1.2rem; color: #888; }
-
-        .features {
-            list-style: none;
-            text-align: left;
-            margin: 30px 0;
-        }
-
-        .features li {
-            margin-bottom: 15px;
+        .features-list { margin-bottom: auto; }
+        .features-list li {
+            margin-bottom: 12px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
+            font-size: 0.9rem;
             color: #ccc;
         }
-
-        .features li::before {
+        .features-list li::before {
             content: '✓';
             color: var(--aussie-gold);
             font-weight: bold;
             margin-right: 10px;
+            min-width: 15px;
         }
+
+        /* --- RENEWAL TABLE --- */
+        .renewal-table {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .renewal-table th, .renewal-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #2a3d58;
+        }
+        .renewal-table th { background: #1f3653; color: var(--aussie-gold); }
+        .renewal-table tr:last-child td { border-bottom: none; }
 
         /* --- FOOTER --- */
         footer {
@@ -219,12 +272,13 @@
             text-align: center;
             border-top: 1px solid #222;
             color: #777;
+            font-size: 0.9rem;
         }
 
-        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 { font-size: 2.2rem; }
             .pricing-container { flex-direction: column; align-items: center; }
+            .card { width: 100%; max-width: 350px; }
         }
     </style>
 </head>
@@ -232,78 +286,187 @@
 
     <header>
         <div class="logo">YEAH<span>MATE</span></div>
-        <a href="#pricing" class="btn-main">Get Connected</a>
+        <a href="#pricing" class="btn-main">Get Started</a>
     </header>
 
     <section class="hero">
-        <h1>Aussie Streaming <br><span>Done Right.</span></h1>
-        <p>No buffering. No nonsense. Just the best Live TV, Sports, and Movies straight to your living room.</p>
-        <a href="#pricing" class="btn-main" style="font-size: 1.2rem; padding: 15px 40px;">View Plans</a>
+        <h1>Unlock The Ultimate <br><span>Aussie Experience</span></h1>
+        <p>1000+ Channels. Every PPV Event. 4K Sports. <br>From the NRL to the NFL, we've got you covered.</p>
+        <div style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center;">
+            <a href="#hardware" class="btn-main">Get The Box ($350)</a>
+            <a href="#byo" class="btn-main" style="background:transparent; color:#fff; border-color:#fff;">BYO Device</a>
+        </div>
     </section>
 
     <div class="channel-scroller">
         <div class="scroller-track">
+            <span class="channel-item">FOX SPORTS 4K</span>
             <span class="channel-item">NRL TELSTRA PREMIERSHIP</span>
-            <span class="channel-item">NFL SUNDAY TICKET</span>
-            <span class="channel-item">MGM+</span>
-            <span class="channel-item">SHOWTIME</span>
-            <span class="channel-item">OPTUS SPORT</span>
-            <span class="channel-item">FOX FOOTY</span>
+            <span class="channel-item">F1 DRIVER CAMS</span>
             <span class="channel-item">UFC FIGHT PASS</span>
-            <span class="channel-item">HBO</span>
-            <span class="channel-item">SKY SPORTS UK</span>
-            <span class="channel-item">ESPN+</span>
+            <span class="channel-item">STAN SPORT</span>
+            <span class="channel-item">SKY SPORTS UK UHD</span>
+            <span class="channel-item">NFL SUNDAY TICKET</span>
+            <span class="channel-item">TNT SPORTS</span>
+            <span class="channel-item">PARAMOUNT+</span>
+            <span class="channel-item">NBA LEAGUE PASS</span>
+            <span class="channel-item">FOX SPORTS 4K</span>
             <span class="channel-item">NRL TELSTRA PREMIERSHIP</span>
-            <span class="channel-item">NFL SUNDAY TICKET</span>
-            <span class="channel-item">MGM+</span>
-            <span class="channel-item">SHOWTIME</span>
-            <span class="channel-item">OPTUS SPORT</span>
-            <span class="channel-item">FOX FOOTY</span>
+            <span class="channel-item">F1 DRIVER CAMS</span>
             <span class="channel-item">UFC FIGHT PASS</span>
-            <span class="channel-item">HBO</span>
-            <span class="channel-item">SKY SPORTS UK</span>
-            <span class="channel-item">ESPN+</span>
+            <span class="channel-item">STAN SPORT</span>
+            <span class="channel-item">SKY SPORTS UK UHD</span>
+            <span class="channel-item">NFL SUNDAY TICKET</span>
+            <span class="channel-item">TNT SPORTS</span>
+            <span class="channel-item">PARAMOUNT+</span>
+            <span class="channel-item">NBA LEAGUE PASS</span>
         </div>
     </div>
 
-    <section id="pricing" class="pricing">
-        <h2>Choose Your Gear</h2>
-        <div class="pricing-container">
-
-            <div class="card featured">
-                <div class="badge">BEST VALUE</div>
-                <h3>12 Month Pass</h3>
-                <div class="price">$150 <span>/ year</span></div>
-                <p>The ultimate entertainment package.</p>
-                <ul class="features">
-                    <li>4,000+ Live Channels</li>
-                    <li>All PPV Events Included (UFC, Boxing)</li>
-                    <li>VOD: Movies & TV Shows</li>
-                    <li>Anti-Freeze Technology</li>
-                    <li>Instant Activation</li>
+    <section class="features-section">
+        <h2 class="section-title">What You Get</h2>
+        <div class="features-grid">
+            <div class="feature-box">
+                <h3>🇦🇺 Live Aussie Sports</h3>
+                <ul>
+                    <li>Fox Sports Channels in 4K</li>
+                    <li>Select NRL & AFL Games in 4K</li>
+                    <li>Bar TV & AIHL Coverage</li>
+                    <li>Stan Sport & Paramount Events</li>
+                    <li>F1 Coverage + All Driver Cams</li>
                 </ul>
-                <a href="#" class="btn-main" style="display:block;">Order Now</a>
             </div>
-
-            <div class="card">
-                <h3>Formuler Z11 Pro</h3>
-                <div class="price">$200 <span>/ unit</span></div>
-                <p>The world's best streaming box.</p>
-                <ul class="features">
-                    <li>Android 11 OS</li>
-                    <li>4K HDR Support</li>
-                    <li>MyTVOnline3 App Included</li>
-                    <li>Gigabit Ethernet</li>
-                    <li>Premium Remote Control</li>
+            <div class="feature-box">
+                <h3>🌎 International Giants</h3>
+                <ul>
+                    <li><strong>UK:</strong> TNT Sports, Sky Sports (UHD 5.1 Surround), EPL</li>
+                    <li><strong>USA:</strong> All NBA, NFL, and NHL Games</li>
+                    <li><strong>Events:</strong> DAZN (US/UK/CA) Event Channels</li>
+                    <li>1000+ Live Channels (US, UK, CA, AU)</li>
                 </ul>
-                <a href="#" class="btn-main" style="display:block; background:transparent; border: 2px solid #555; color:#fff;">Buy Device</a>
             </div>
-
+            <div class="feature-box">
+                <h3>🎬 Movies & PPV</h3>
+                <ul>
+                    <li><strong>PPV:</strong> Every UFC, Boxing & Wrestling Event Included</li>
+                    <li><strong>VOD:</strong> Yeah Mate VOD - Movies & Shows from all major platforms</li>
+                    <li>Premium Apps with unlocked features included</li>
+                </ul>
+            </div>
         </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        
+        <div id="hardware" class="pricing-category">
+            <h2 class="category-title">The Ultimate Bundle</h2>
+            <div class="pricing-container">
+                <div class="card featured" style="width: 400px;">
+                    <div class="badge">FULLY LOADED • BEST VALUE</div>
+                    <h3>Formuler Z11 Pro 4K</h3>
+                    <div class="price">$350</div>
+                    <div class="sub-price">+$20 Shipping</div>
+                    <ul class="features-list">
+                        <li><strong>Includes 12 Months Subscription</strong></li>
+                        <li>Comes Pre-Configured & Logged In</li>
+                        <li>Access to all Yeah Mate Premium Apps</li>
+                        <li>Dedicated Support via Telegram</li>
+                        <li>MyTVOnline3 Included</li>
+                        <li>Plug & Play - No Setup Required</li>
+                    </ul>
+                    <a href="#" class="btn-main" style="text-align:center; width:100%;">Order Now</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="byo" class="pricing-category">
+            <h2 class="category-title">Bring Your Own Device</h2>
+            <p style="text-align:center; color:#888; margin-bottom:20px;">Works on Firestick, Android TV, Apple TV, Mobile</p>
+            
+            <div class="pricing-container">
+                <div class="card">
+                    <h3>Monthly Tester</h3>
+                    <div class="price">$45 <span>/ 1 mo</span></div>
+                    <ul class="features-list">
+                        <li>1 Connection</li>
+                        <li>Full Channel Access</li>
+                        <li>All PPV Events</li>
+                    </ul>
+                    <a href="#" class="btn-main" style="text-align:center; width:100%; background:transparent; border-color:#555; color:#fff;">Select</a>
+                </div>
+
+                <div class="card">
+                    <h3>6 Months</h3>
+                    <div class="price">$130 <span>/ 6 mo</span></div>
+                    <ul class="features-list">
+                        <li>1 Connection</li>
+                        <li>Save $140 vs Monthly</li>
+                        <li>Full Channel Access</li>
+                    </ul>
+                    <a href="#" class="btn-main" style="text-align:center; width:100%; background:transparent; border-color:#555; color:#fff;">Select</a>
+                </div>
+
+                <div class="card featured">
+                    <div class="badge">POPULAR</div>
+                    <h3>12 Months</h3>
+                    <div class="price">$200 <span>/ year</span></div>
+                    <ul class="features-list">
+                        <li>1 Connection</li>
+                        <li><strong>Huge Savings</strong></li>
+                        <li>Every PPV Included</li>
+                        <li>VOD Library Access</li>
+                    </ul>
+                    <a href="#" class="btn-main" style="text-align:center; width:100%;">Select</a>
+                </div>
+            </div>
+            
+            <div style="text-align:center; margin-top:30px;">
+                <p style="color:#aaa;">Need 2 Connections (Same Household)?</p>
+                <p style="color:#fff; font-weight:bold;">$60 (1 Mo) | $110 (3 Mo) | $180 (6 Mo) | $300 (12 Mo)</p>
+            </div>
+        </div>
+
+        <div class="pricing-category">
+            <h2 class="category-title" style="font-size:1.4rem; border:none; color:#888;">Existing Device Owners Renewals</h2>
+            <table class="renewal-table">
+                <thead>
+                    <tr>
+                        <th>Plan Duration</th>
+                        <th>1 Connection</th>
+                        <th>2 Connections</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1 Month</td>
+                        <td>$35</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>3 Months</td>
+                        <td>$60</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>6 Months</td>
+                        <td>$110</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--aussie-gold); font-weight:bold;">12 Months</td>
+                        <td style="color:var(--aussie-gold); font-weight:bold;">$150</td>
+                        <td style="color:var(--aussie-gold); font-weight:bold;">$200</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="text-align:center; font-size:0.8rem; color:#666; margin-top:10px;">*Renewals valid for Yeah Mate Device Owners only. Single household IP locked.</p>
+        </div>
+
     </section>
 
     <footer>
         <p>&copy; 2026 Yeah Mate IPTV. Made in Sydney.</p>
+        <p style="font-size:0.8rem; margin-top:10px;">Dedicated support provided via Telegram.</p>
     </footer>
 
 </body>
