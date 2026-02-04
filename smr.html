@@ -2,99 +2,151 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Moshniki's ECDD Pro Console</title>
+    <title>Moshniki Pro | ECDD & Compliance Console</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background: #0f172a; color: #f8fafc; height: 100vh; display: flex; }
-        #control-panel { width: 400px; background: #1e293b; border-right: 2px solid #334155; padding: 25px; overflow-y: auto; }
-        #report-workspace { flex-grow: 1; padding: 40px; background: #0f172a; overflow-y: auto; }
-        .source-card { background: #334155; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #3b82f6; }
-        .btn-launch { width: 100%; margin-top: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        .status-pill { font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; background: #475569; }
-        .report-paper { background: white; color: #1e293b; padding: 50px; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-height: 800px; }
-        textarea { width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 10px; margin-top: 10px; font-size: 0.9rem; }
+        :root { --bg: #0f172a; --panel: #1e293b; --accent: #3b82f6; --danger: #ef4444; }
+        body { background: var(--bg); color: #f1f5f9; height: 100vh; display: flex; font-family: 'Segoe UI', system-ui; }
+        
+        /* Left: Control Panel */
+        #controls { width: 380px; background: var(--panel); border-right: 1px solid #334155; padding: 25px; display: flex; flex-direction: column; }
+        .source-card { background: #334155; border-radius: 8px; padding: 12px; margin-bottom: 12px; border-left: 4px solid var(--accent); cursor: pointer; transition: 0.2s; }
+        .source-card:hover { background: #475569; transform: translateX(5px); }
+        .source-card.visited { border-left-color: #10b981; opacity: 0.8; }
+        .compliance { border-left-color: var(--danger); }
+        
+        /* Right: Report Workspace */
+        #workspace { flex-grow: 1; padding: 40px; overflow-y: auto; background: #000; }
+        .report-page { background: white; color: #1e293b; width: 210mm; min-height: 297mm; margin: 0 auto; padding: 60px; box-shadow: 0 0 50px rgba(0,0,0,0.5); border-radius: 2px; }
+        
+        /* Report Elements */
+        .rep-header { border-bottom: 3px solid #1e293b; margin-bottom: 20px; padding-bottom: 10px; }
+        .rep-section { margin-bottom: 25px; }
+        .rep-label { font-weight: 800; text-transform: uppercase; font-size: 0.75rem; color: #64748b; margin-bottom: 5px; }
+        textarea { width: 100%; border: 1px solid #e2e8f0; border-radius: 4px; padding: 10px; font-size: 0.9rem; resize: none; background: #f8fafc; }
+        textarea:focus { outline: none; border-color: var(--accent); background: white; }
+        
+        @media print { #controls { display: none; } #workspace { padding: 0; background: white; } .report-page { box-shadow: none; margin: 0; width: 100%; } textarea { border: none; padding: 0; } }
     </style>
 </head>
 <body>
 
-    <div id="control-panel">
-        <h4 class="fw-bold mb-4">🛡️ ECDD INVESTIGATOR</h4>
+    <div id="controls">
+        <h4 class="fw-bold mb-1 text-primary">INVESTIGATOR 2.0</h4>
+        <p class="small text-muted mb-4">Moshniki Gaming Supervision</p>
         
-        <label class="small text-muted fw-bold">TARGET INDIVIDUAL/ENTITY</label>
-        <input type="text" id="targetName" class="form-control bg-dark text-white border-secondary mb-4" placeholder="Full Name..." oninput="updateReportTitle()">
+        <label class="small fw-bold text-muted mb-1 uppercase">Target Target (Name/Business)</label>
+        <input type="text" id="target" class="form-control bg-dark text-white border-secondary mb-4" placeholder="Enter Full Name..." oninput="syncTarget()">
 
-        <div class="source-card">
-            <span class="status-pill">Step 1: Registry</span>
-            <div class="mt-2 fw-bold">ABN & ASIC Search</div>
-            <button class="btn btn-primary btn-launch" onclick="launch('abr')">Open ABR Results ↗</button>
-            <button class="btn btn-outline-info btn-sm w-100 mt-2" onclick="launch('asic')">Open ASIC Results ↗</button>
+        <div class="overflow-auto pe-2">
+            <div class="source-card" onclick="launch('abr', this)">
+                <div class="fw-bold small">ABR LOOKUP</div>
+                <div class="text-muted" style="font-size:0.7rem">Search ABN & Business Status</div>
+            </div>
+            <div class="source-card" onclick="launch('asic', this)">
+                <div class="fw-bold small">ASIC ORGANISATION</div>
+                <div class="text-muted" style="font-size:0.7rem">Verify Registered Entities</div>
+            </div>
+            <div class="source-card compliance" onclick="launch('os', this)">
+                <div class="fw-bold small">OPEN SANCTIONS</div>
+                <div class="text-muted" style="font-size:0.7rem">Global PEP & Sanctions Hit</div>
+            </div>
+            <div class="source-card compliance" onclick="launch('dfat', this)">
+                <div class="fw-bold small">DFAT LIST</div>
+                <div class="text-muted" style="font-size:0.7rem">AU Sanctions Consolidated</div>
+            </div>
+            <div class="source-card" onclick="launch('judges', this)">
+                <div class="fw-bold small">FEDERAL JUDICIARY</div>
+                <div class="text-muted" style="font-size:0.7rem">Cross-reference Judges/Gov Directory</div>
+            </div>
+            <div class="source-card" onclick="launch('property', this)">
+                <div class="fw-bold small">NSW LAND RECORDS</div>
+                <div class="text-muted" style="font-size:0.7rem">Public Property Footprint</div>
+            </div>
         </div>
 
-        <div class="source-card" style="border-left-color: #ef4444;">
-            <span class="status-pill">Step 2: Compliance</span>
-            <div class="mt-2 fw-bold">Sanctions & PEP Check</div>
-            <button class="btn btn-danger btn-launch" onclick="launch('os')">Open OpenSanctions ↗</button>
-            <button class="btn btn-outline-warning btn-sm w-100 mt-2" onclick="launch('dfat')">Search DFAT List ↗</button>
+        <div class="mt-auto pt-4">
+            <button class="btn btn-primary w-100 fw-bold shadow" onclick="window.print()">EXPORT FINAL REPORT</button>
+            <p class="text-center mt-2 small text-muted">Pop-ups must be enabled</p>
         </div>
-
-        <div class="source-card" style="border-left-color: #10b981;">
-            <span class="status-pill">Step 3: Judicial</span>
-            <div class="mt-2 fw-bold">Court & Gov Records</div>
-            <button class="btn btn-success btn-launch" onclick="launch('fed')">Federal Court Search ↗</button>
-        </div>
-
-        <button class="btn btn-warning w-100 mt-4 fw-bold" onclick="window.print()">GENERATE FINAL PDF REPORT</button>
     </div>
 
-    <div id="report-workspace">
-        <div class="report-paper" id="printableReport">
-            <div class="d-flex justify-content-between">
-                <h2 id="rep-name">INTELLIGENCE REPORT</h2>
-                <div class="text-end small">
-                    <strong>Date:</strong> <span id="rep-date"></span><br>
-                    <strong>Officer:</strong> Moshniki (Supervisor)
+    <div id="workspace">
+        <div class="report-page">
+            <div class="rep-header d-flex justify-content-between align-items-end">
+                <div>
+                    <h1 class="fw-black mb-0" id="rep-title">ECDD REPORT</h1>
+                    <span class="text-muted small">CONFIDENTIAL COMPLIANCE DOCUMENT</span>
+                </div>
+                <div class="text-end">
+                    <div id="current-date" class="fw-bold">01/01/2026</div>
+                    <div class="small">Supervised by: Moshniki</div>
                 </div>
             </div>
-            <hr>
 
-            <h5>1. Executive Summary</h5>
-            <textarea rows="3" placeholder="Summarize your findings here..."></textarea>
+            <div class="rep-section">
+                <div class="rep-label">Subject Identification</div>
+                <div class="fs-4 fw-bold" id="rep-subject">No Target Selected</div>
+            </div>
 
-            <h5 class="mt-4">2. Business Registry Findings (ABR/ASIC)</h5>
-            <textarea rows="4" placeholder="Note ABN status, company roles, and registered addresses..."></textarea>
+            <div class="rep-section">
+                <div class="rep-label">Registry & KYB Findings (ABN/ASIC)</div>
+                <textarea rows="4" placeholder="Enter registration details, ABN status, and verified addresses..."></textarea>
+            </div>
 
-            <h5 class="mt-4">3. AML/CTF Compliance (Sanctions & PEP)</h5>
-            <textarea rows="4" placeholder="Record results from OpenSanctions and DFAT. Note any DOB matches..."></textarea>
+            <div class="rep-section">
+                <div class="rep-label">AML/CTF Risk (PEP & Sanctions)</div>
+                <textarea rows="4" placeholder="Record any matches from DFAT or OpenSanctions. Note if identity verified by DOB..."></textarea>
+            </div>
 
-            <h5 class="mt-4">4. Judicial & Public Interest Records</h5>
-            <textarea rows="3" placeholder="Note any Federal Court or Government Directory matches..."></textarea>
+            <div class="rep-section">
+                <div class="rep-label">Assets & Judicial Check</div>
+                <textarea rows="3" placeholder="Note property matches or government directory positions..."></textarea>
+            </div>
 
-            <div class="mt-5 p-3 border rounded bg-light small">
-                <strong>Verification Statement:</strong> I, Moshniki, certify that the above checks were performed against official Australian and Global registers on the date specified.
+            <div class="mt-5 pt-5 border-top">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="rep-label">Final Risk Assessment</div>
+                        <select class="form-select form-select-sm border-0 bg-light fw-bold">
+                            <option>LOW RISK</option>
+                            <option>MEDIUM RISK</option>
+                            <option>HIGH RISK (Requires EDD)</option>
+                        </select>
+                    </div>
+                    <div class="col-6 text-end">
+                        <div class="rep-label">Digital Signature</div>
+                        <div class="fst-italic">Moshniki (Panthers Supervisor)</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('rep-date').innerText = new Date().toLocaleDateString();
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-AU');
 
-        const links = {
+        const sources = {
             abr: n => `https://abr.business.gov.au/Search/Results?SearchText=${n}`,
             asic: n => `https://www.google.com/search?q=site:asic.gov.au+"${n}"`,
             os: n => `https://www.opensanctions.org/search/?q=${n}`,
             dfat: n => `https://www.google.com/search?q=site:dfat.gov.au+"${n}"+consolidated+list`,
-            fed: n => `https://www.google.com/search?q=site:fedcourt.gov.au+"${n}"`
+            judges: n => `https://www.google.com/search?q=site:fedcourt.gov.au+"${n}"+OR+site:directory.gov.au+"${n}"`,
+            property: n => `https://www.google.com/search?q="${n}"+site:nsw.gov.au+property+OR+site:realestate.com.au`
         };
 
-        function launch(key) {
-            const name = document.getElementById('targetName').value;
-            if(!name) return alert("Please enter a name first.");
-            window.open(links[key](encodeURIComponent(name)), '_blank');
+        function syncTarget() {
+            const val = document.getElementById('target').value;
+            document.getElementById('rep-subject').innerText = val || "No Target Selected";
+            document.getElementById('rep-title').innerText = val ? "ECDD: " + val.toUpperCase() : "ECDD REPORT";
         }
 
-        function updateReportTitle() {
-            const name = document.getElementById('targetName').value;
-            document.getElementById('rep-name').innerText = name ? "ECDD REPORT: " + name.toUpperCase() : "INTELLIGENCE REPORT";
+        function launch(key, el) {
+            const name = document.getElementById('target').value;
+            if(!name) return alert("Please enter a target name.");
+            
+            el.classList.add('visited');
+            window.open(sources[key](encodeURIComponent(name)), '_blank');
         }
     </script>
 </body>
