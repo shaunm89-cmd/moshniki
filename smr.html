@@ -2,128 +2,99 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moshniki's Intelligence Dashboard</title>
+    <title>Moshniki's ECDD Console v2.0</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background: #0f172a; color: #f1f5f9; font-family: 'Inter', sans-serif; }
-        .dashboard-container { max-width: 1100px; margin: 40px auto; padding: 20px; }
-        .search-area { background: #1e293b; padding: 30px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 30px; }
-        .report-section { background: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 20px; border-left: 5px solid #3b82f6; }
-        .sanctions-hit { border-left-color: #ef4444; }
-        .loading-spinner { display: none; margin: 20px auto; }
-        .badge-risk { background: #ef4444; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; }
+        :root { --sidebar-bg: #1e293b; --content-bg: #0f172a; --accent: #3b82f6; --danger: #ef4444; }
+        body { background: var(--content-bg); color: white; height: 100vh; overflow: hidden; display: flex; }
+        
+        /* Sidebar Styles */
+        #sidebar { width: 320px; background: var(--sidebar-bg); border-right: 1px solid #334155; padding: 20px; overflow-y: auto; }
+        .module-btn { width: 100%; text-align: left; background: #334155; border: none; color: white; padding: 12px; margin-bottom: 8px; border-radius: 6px; font-size: 0.9rem; transition: 0.2s; }
+        .module-btn:hover { background: var(--accent); }
+        .module-btn.active { border-left: 4px solid var(--accent); background: #475569; }
+        .btn-compliance { border-left: 4px solid var(--danger); }
+        
+        /* Main Viewport */
+        #main-view { flex-grow: 1; display: flex; flex-direction: column; }
+        #header { padding: 15px 30px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; gap: 15px; }
+        #viewer-frame { flex-grow: 1; border: none; background: white; border-radius: 8px 0 0 0; }
+        .status-bar { padding: 5px 30px; background: #334155; font-size: 0.75rem; color: #94a3b8; }
     </style>
 </head>
 <body>
 
-<div class="dashboard-container">
-    <div class="search-area text-center">
-        <h2 class="mb-4">🛡️ ECDD Consolidated Intelligence</h2>
-        <div class="input-group input-group-lg">
-            <input type="text" id="targetName" class="form-control" placeholder="Search Person or Business Name...">
-            <button class="btn btn-primary" onclick="runReport()">Generate Report</button>
+    <div id="sidebar">
+        <h5 class="fw-bold mb-4">🛡️ ECDD CONSOLE</h5>
+        
+        <div class="mb-4">
+            <label class="small text-muted text-uppercase fw-bold">Target Search</label>
+            <input type="text" id="target" class="form-control form-control-sm bg-dark text-white border-secondary mb-2" placeholder="Full Name / Entity">
+            <button class="btn btn-primary btn-sm w-100" onclick="updateAllSources()">Refresh All Modules</button>
         </div>
-        <p class="mt-3 text-muted small">Fetching from ABR, ASIC, OpenSanctions, and DFAT lists...</p>
+
+        <div class="module-group">
+            <label class="small text-muted text-uppercase fw-bold mb-2 d-block">1. Registry & Business</label>
+            <button class="module-btn" onclick="loadSource('abr')">ABN Lookup (Official)</button>
+            <button class="module-btn" onclick="loadSource('asic')">ASIC Org Search</button>
+            <button class="module-btn" onclick="loadSource('dir')">AU Gov Directory</button>
+        </div>
+
+        <div class="module-group mt-3">
+            <label class="small text-muted text-uppercase fw-bold mb-2 d-block">2. Compliance & PEP</label>
+            <button class="module-btn btn-compliance" onclick="loadSource('os')">OpenSanctions (World PEP)</button>
+            <button class="module-btn btn-compliance" onclick="loadSource('dfat')">DFAT Sanctions (AU)</button>
+            <button class="module-btn btn-compliance" onclick="loadSource('judges')">AU Judicial Register</button>
+        </div>
+
+        <div class="module-group mt-3">
+            <label class="small text-muted text-uppercase fw-bold mb-2 d-block">3. Public Records</label>
+            <button class="module-btn" onclick="loadSource('property')">NSW Property & Land</button>
+            <button class="module-btn" onclick="loadSource('wiki')">Wikidata Politician ID</button>
+            <button class="module-btn" onclick="loadSource('social')">Social Footprint</button>
+        </div>
     </div>
 
-    <div id="loading" class="text-center loading-spinner">
-        <div class="spinner-border text-primary" role="status"></div>
-        <p>Analyzing Global Registers...</p>
+    <div id="main-view">
+        <div id="header">
+            <span id="current-module" class="fw-bold text-info mt-1">Select a module to begin...</span>
+        </div>
+        
+        <iframe id="viewer-frame" src="about:blank"></iframe>
+        
+        <div class="status-bar">
+            System Status: Connected | Source: <span id="source-name">None</span> | Location: Penrith, NSW
+        </div>
     </div>
 
-    <div id="reportArea">
-        </div>
-</div>
+    <script>
+        const sources = {
+            abr: (n) => `https://abr.business.gov.au/Search/Results?SearchText=${n}`,
+            asic: (n) => `https://www.google.com/search?q=site:asic.gov.au+"${n}"`,
+            dir: (n) => `https://www.directory.gov.au/search?keywords=${n}`,
+            os: (n) => `https://www.opensanctions.org/search/?q=${n}`,
+            dfat: (n) => `https://www.google.com/search?q=site:dfat.gov.au+"${n}"+consolidated+list`,
+            judges: (n) => `https://www.google.com/search?q=site:fedcourt.gov.au+"${n}"`,
+            property: (n) => `https://www.google.com/search?q="${n}"+site:nsw.gov.au+property`,
+            wiki: (n) => `https://www.wikidata.org/w/index.php?search=${n}`,
+            social: (n) => `https://www.google.com/search?q=site:linkedin.com/in/+"${n}"+OR+site:facebook.com+"${n}"`
+        };
 
-<script>
-    // --- SETTINGS ---
-    // Get ABR GUID: https://abr.business.gov.au/Tools/WebServices
-    const ABR_GUID = "YOUR_ABR_GUID"; 
-    // Get OpenSanctions Key: https://www.opensanctions.org/api/
-    const OS_API_KEY = "YOUR_OPEN_SANCTIONS_KEY"; 
-
-    async function runReport() {
-        const name = document.getElementById('targetName').value;
-        if (!name) return alert("Enter a name");
-
-        // UI Reset
-        document.getElementById('reportArea').innerHTML = "";
-        document.getElementById('loading').style.display = "block";
-
-        // Run Parallel Searches
-        try {
-            const [abrResults, osResults] = await Promise.all([
-                fetchABR(name),
-                fetchOpenSanctions(name)
-            ]);
-
-            renderReport(name, abrResults, osResults);
-        } catch (err) {
-            console.error(err);
-            alert("Error fetching data. Check your API keys.");
-        } finally {
-            document.getElementById('loading').style.display = "none";
+        function loadSource(key) {
+            const name = document.getElementById('target').value;
+            if(!name) return alert("Enter a Target Name first.");
+            
+            const url = sources[key](encodeURIComponent(name));
+            document.getElementById('viewer-frame').src = url;
+            document.getElementById('current-module').innerText = "Viewing: " + key.toUpperCase();
+            document.getElementById('source-name').innerText = key.toUpperCase();
         }
-    }
 
-    async function fetchABR(name) {
-        // NOTE: ABR API requires a server-side proxy or specific CORS setup. 
-        // For GitHub, we use their JSONP style or a public CORS proxy.
-        const url = `https://abr.business.gov.au/json/MatchingNames.aspx?name=${encodeURIComponent(name)}&guid=${ABR_GUID}`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.Names || [];
-        } catch (e) { return []; }
-    }
-
-    async function fetchOpenSanctions(name) {
-        const url = `https://api.opensanctions.org/search/multi?q=${encodeURIComponent(name)}`;
-        try {
-            const response = await fetch(url, {
-                headers: { "Authorization": `ApiKey ${OS_API_KEY}` }
-            });
-            const data = await response.json();
-            return data.results || [];
-        } catch (e) { return []; }
-    }
-
-    function renderReport(name, abr, os) {
-        let html = `<h3>Intelligence Report for: ${name}</h3><hr>`;
-
-        // Render Sanctions & PEP (OpenSanctions)
-        html += `<div class="report-section sanctions-hit">
-                    <h5>🚨 Global Sanctions & PEP Check</h5>`;
-        if (os.length > 0) {
-            os.forEach(hit => {
-                const risk = hit.topics ? hit.topics.join(", ") : "Unknown Risk";
-                html += `<div class="mb-3 border-bottom pb-2">
-                            <strong>${hit.caption}</strong> <span class="badge-risk">${risk}</span><br>
-                            <small class="text-muted">Countries: ${hit.countries ? hit.countries.join(", ") : "N/A"}</small>
-                         </div>`;
-            });
-        } else {
-            html += `<p class="text-success">✓ No immediate matches found in Global Sanctions lists.</p>`;
+        function updateAllSources() {
+            const name = document.getElementById('target').value;
+            if(!name) return alert("Enter name");
+            loadSource('abr'); // Set default starting view
         }
-        html += `</div>`;
-
-        // Render Business (ABR)
-        html += `<div class="report-section">
-                    <h5>🏢 Australian Business Affiliations (ABN)</h5>`;
-        if (abr.length > 0) {
-            abr.forEach(biz => {
-                html += `<p><strong>${biz.Name}</strong> - ABN: ${biz.Abn} (${biz.State})<br>
-                         Status: ${biz.Score > 80 ? "High Match" : "Partial Match"}</p>`;
-            });
-        } else {
-            html += `<p class="text-muted">No business records found on ABR.</p>`;
-        }
-        html += `</div>`;
-
-        document.getElementById('reportArea').innerHTML = html;
-    }
-</script>
-
+    </script>
 </body>
 </html>
