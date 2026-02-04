@@ -3,269 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nicole's Treats | Premium Sweets</title>
+    <title>Nicole's Treats | Baked with Love</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #ff0055;
+            /* COZY COLOR PALETTE */
+            --rose: #ff8fa3;       /* Warm Pink */
+            --rose-light: #ffc2cd;
+            --cream: #fff9f0;      /* Warm White Background */
+            --cocoa: #5d4037;      /* Text Color (instead of black) */
+            --latte: #d7ccc8;      /* Borders/Subtle */
+            --sage: #aed581;       /* Fresh Green accents */
             --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.85);
-            --glass-hover: rgba(255, 255, 255, 0.95);
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            
+            --shadow: 0 10px 40px rgba(93, 64, 55, 0.08); /* Soft warm shadow */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Fredoka', sans-serif;
-            /* ANIMATED LIVE BACKGROUND */
-            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1, #fbc2eb);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #333;
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--cream);
+            color: var(--cocoa);
+            line-height: 1.7;
             overflow-x: hidden;
-            min-height: 100vh;
+            /* Subtle texture overlay */
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff8fa3' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* --- LAYOUT UTILS --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
-        
+        /* --- TYPOGRAPHY --- */
         h1, h2, h3 {
             font-family: 'Pacifico', cursive;
-            color: var(--primary);
-            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
+            font-weight: 400;
+            color: var(--rose);
         }
 
-        /* --- GLASS HEADER --- */
+        /* --- BUTTONS (Soft & Pillowy) --- */
+        .btn {
+            display: inline-block;
+            background-color: var(--rose);
+            color: white;
+            padding: 14px 40px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 143, 163, 0.4);
+            transition: transform 0.2s, background-color 0.2s;
+            font-size: 1.1rem;
+        }
+        .btn:hover {
+            background-color: #ff7b93;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 143, 163, 0.6);
+        }
+
+        /* --- HEADER --- */
         header {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 249, 240, 0.9);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 15px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            padding: 10px 0;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            border-bottom: 2px solid rgba(255, 143, 163, 0.1);
         }
 
-        nav { display: flex; justify-content: space-between; align-items: center; }
-        .logo-img { height: 60px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         
-        .nav-links {
-            background: rgba(255,255,255,0.5);
-            padding: 10px 30px;
-            border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.5);
-        }
-        .nav-links a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #333;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-        .nav-links a:hover { color: var(--primary); }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo-img { height: 75px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1)); }
 
-        /* --- HERO SECTION --- */
+        .nav-links a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: var(--cocoa);
+            font-weight: 700;
+            font-size: 1rem;
+            position: relative;
+        }
+        /* Cute underline effect */
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 3px;
+            bottom: -5px; left: 0; background-color: var(--rose);
+            transition: width 0.3s; border-radius: 2px;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* --- HERO (Warm & Inviting) --- */
         .hero {
-            padding: 100px 20px;
+            position: relative;
             text-align: center;
+            padding: 120px 20px 180px 20px;
+            background: linear-gradient(rgba(255, 249, 240, 0.7), rgba(255, 249, 240, 0.9)), url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1600&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            border-radius: 0 0 50% 50% / 0 0 60px 60px; /* Curve at bottom */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            margin-bottom: 50px;
         }
 
         .hero h1 {
-            font-size: 5rem;
-            color: white;
-            text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
-            margin-bottom: 10px;
-            transform: rotate(-2deg);
+            font-size: 4.5rem;
+            margin-bottom: 15px;
+            color: var(--rose);
+            text-shadow: 2px 2px 0px #fff;
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 650px;
+            margin: 0 auto 30px auto;
+            color: var(--cocoa);
+            font-weight: 600;
         }
 
-        .hero-card {
-            background: var(--glass);
-            backdrop-filter: blur(8px);
-            padding: 40px;
-            border-radius: 30px;
-            display: inline-block;
-            box-shadow: var(--shadow);
-            border: 2px solid rgba(255,255,255,0.5);
-            max-width: 700px;
-        }
-
-        .btn-wow {
-            background: linear-gradient(45deg, #ff0055, #ff5e62);
-            color: white;
-            padding: 15px 50px;
-            border: none;
+        /* --- ABOUT (Heartfelt) --- */
+        .about { text-align: center; padding: 40px 0 80px 0; }
+        
+        .love-badge {
+            background: #fff;
+            color: var(--rose);
+            border: 2px dashed var(--rose-light);
+            padding: 10px 25px;
             border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(255, 0, 85, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-decoration: none;
+            font-weight: 700;
             display: inline-block;
-            margin-top: 20px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
         }
-        .btn-wow:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 30px rgba(255, 0, 85, 0.4); }
 
-        /* --- PRODUCTS (3D CARDS) --- */
-        .products { padding: 80px 0; }
-        .section-title { text-align: center; font-size: 3.5rem; margin-bottom: 60px; color: white; text-shadow: 3px 3px 0 rgba(0,0,0,0.1); }
+        /* --- PRODUCTS (Clean & Cozy Cards) --- */
+        .products { padding: 40px 0; }
+        .section-title { text-align: center; font-size: 3rem; margin-bottom: 50px; color: var(--cocoa); }
+        .section-title span { color: var(--rose); }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
-            padding: 20px;
         }
 
         .product-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.6);
+            background: white;
+            border-radius: 25px;
             overflow: hidden;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        
+        .product-card:hover { transform: translateY(-8px); }
+
+        .product-img {
+            height: 260px;
+            overflow: hidden;
+            position: relative;
             cursor: pointer;
         }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .product-card:hover .product-img img { transform: scale(1.08); }
 
-        /* The 3D Hover Effect */
-        .product-card:hover {
-            transform: translateY(-15px) rotateX(5deg);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        .product-info { padding: 25px; text-align: center; }
+        
+        .price-bubble {
+            background: var(--cream);
+            color: var(--cocoa);
+            padding: 8px 18px;
+            border-radius: 15px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            display: inline-block;
+            margin-bottom: 15px;
+            border: 1px solid var(--latte);
+        }
+
+        /* --- TRAY (Baking Sheet Look) --- */
+        .order-section { padding: 60px 0 100px 0; }
+
+        .kitchen-counter {
             background: white;
-        }
-
-        .product-img { height: 260px; overflow: hidden; position: relative; }
-        .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-        .product-card:hover .product-img img { transform: scale(1.1); }
-
-        .product-info { padding: 30px; text-align: center; }
-        .product-info h3 { font-size: 1.8rem; margin-bottom: 10px; }
-        .price-tag {
-            background: #ff0055; color: white; padding: 5px 15px;
-            border-radius: 20px; font-weight: bold; display: inline-block;
-            margin-bottom: 15px; box-shadow: 0 5px 15px rgba(255,0,85,0.2);
-        }
-
-        /* --- PREMIUM TRAY BUILDER --- */
-        .order-section { padding: 80px 0; }
-        
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(15px);
-            border-radius: 40px;
             padding: 50px;
+            border-radius: 40px;
             box-shadow: var(--shadow);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
         }
 
-        .controls { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 40px; }
-        
-        .add-btn {
-            background: white; border: none; padding: 15px 25px; border-radius: 20px;
-            font-family: inherit; font-weight: bold; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;
-            display: flex; flex-direction: column; align-items: center; min-width: 140px;
-            border: 2px solid transparent;
+        /* The Tray Area */
+        .baking-sheet {
+            background-color: #e8e8e8; /* Metal color */
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            margin: 30px 0;
+            border: 2px solid #ccc;
         }
-        .add-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--primary); }
-        .add-btn span { color: #888; font-size: 0.85rem; font-weight: normal; margin-top: 5px; }
 
-        .add-btn.special { background: #fff8e1; border-color: #ffd700; }
-        .add-btn.special:hover { background: #ffecb3; }
-
-        /* THE TRAY */
-        .tray-container {
-            background: #e0e0e0;
-            border-radius: 20px;
+        .parchment-paper {
+            background-color: #fcf6e8; /* Parchment color */
+            border-radius: 8px;
+            min-height: 180px;
             padding: 20px;
-            min-height: 200px;
-            box-shadow: inset 0 10px 20px rgba(0,0,0,0.1);
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;
-            border: 5px solid white;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            align-items: center;
         }
+
+        .empty-msg { width: 100%; text-align: center; color: #a1887f; font-weight: 600; font-style: italic; opacity: 0.7; }
+
+        /* Treat Buttons */
+        .treat-btn {
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 20px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 120px;
+        }
+        .treat-btn:hover { border-color: var(--rose); transform: translateY(-2px); }
+        .treat-btn span { font-size: 0.8rem; color: #999; margin-top: 5px; }
+        
+        .treat-btn.special { background: #fffde7; border-color: #fff59d; }
+
+        .controls { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
 
         .tray-item { 
-            animation: bounceIn 0.4s; cursor: pointer; 
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
-            transition: transform 0.2s;
+            animation: softPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            cursor: pointer; 
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
         }
-        .tray-item:hover { transform: scale(1.15) rotate(5deg); }
-        .tray-item.slab { width: 100px; height: 60px; object-fit: cover; border-radius: 10px; border: 2px solid white; }
+        .tray-item:hover { transform: rotate(5deg) scale(1.1); }
         .tray-item.cookie { width: 65px; height: 65px; object-fit: contain; }
+        .tray-item.slab { width: 90px; height: 60px; object-fit: cover; border-radius: 6px; border: 2px solid white; }
 
-        @keyframes bounceIn {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        .total-display {
-            text-align: center; font-size: 2.5rem; font-family: 'Pacifico';
-            color: var(--primary); margin: 30px 0; text-shadow: 2px 2px 0 rgba(0,0,0,0.05);
-        }
-
-        .discount-popup {
-            background: #ffd700; color: #333; padding: 10px 30px;
-            border-radius: 50px; font-weight: bold; display: none;
-            margin: 0 auto 20px auto; width: fit-content;
-            animation: pulse 2s infinite; box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
-        }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes softPop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
         /* FORM */
-        .form-area { max-width: 600px; margin: 0 auto; }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--primary); }
-        .input-group input, .input-group textarea {
-            width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 15px;
-            font-size: 1rem; font-family: inherit; transition: 0.3s;
+        .form-wrapper { max-width: 500px; margin: 40px auto 0; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.95rem; color: var(--cocoa); }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 15px; border-radius: 15px;
+            border: 2px solid #f0f0f0; font-family: inherit; font-size: 1rem;
+            background: #fafafa; transition: 0.3s;
         }
-        .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(255,0,85,0.1); }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--rose); background: white; }
 
-        .policy-box {
-            background: rgba(255, 0, 85, 0.05);
-            border-left: 5px solid var(--primary);
-            padding: 20px; border-radius: 10px; margin-bottom: 30px;
-            color: #555; line-height: 1.6;
+        .mum-note {
+            background: #fff0f3;
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: var(--cocoa);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 25px;
         }
+        .mum-note span { font-size: 1.5rem; }
 
-        footer {
-            text-align: center; padding: 50px; color: white;
-            background: rgba(0,0,0,0.2); backdrop-filter: blur(5px);
-            margin-top: 50px; font-weight: bold;
-        }
+        /* FOOTER */
+        footer { text-align: center; padding: 50px 0; color: #8d6e63; font-size: 0.9rem; }
 
-        /* MOBILE FIXES */
+        /* MOBILE */
         @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 10px; }
-            .nav-links { width: 100%; display: flex; justify-content: center; }
-            .nav-links a { margin: 0 10px; font-size: 0.8rem; }
             .hero h1 { font-size: 3rem; }
-            .glass-panel { padding: 25px; }
+            nav { flex-direction: column; gap: 15px; }
+            .kitchen-counter { padding: 25px; }
         }
 
-        /* FALLING SWEETS */
-        .sweet { position: fixed; top: -50px; font-size: 25px; z-index: 9999; pointer-events: none; animation: fall linear forwards; opacity: 0.8; }
-        @keyframes fall { 100% { transform: translateY(110vh) rotate(360deg); } }
+        /* FALLING HEARTS */
+        .falling-heart { position: fixed; top: -20px; font-size: 20px; z-index: 999; pointer-events: none; animation: floatDown linear forwards; opacity: 0.6; color: var(--rose); }
+        @keyframes floatDown { 100% { transform: translateY(110vh) rotate(360deg); } }
+        
+        /* Lightbox */
+        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(93, 64, 55, 0.9); z-index: 2000; justify-content: center; align-items: center; }
+        .lightbox img { max-width: 90%; max-height: 80vh; border-radius: 15px; border: 5px solid white; }
 
-        /* LIGHTBOX */
-        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; }
-        .lightbox img { max-width: 90%; max-height: 80vh; border: 8px solid white; border-radius: 20px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        .total-price { text-align: center; font-family: 'Pacifico'; font-size: 2.2rem; color: var(--rose); margin-top: 10px; }
+        .discount-tag { text-align: center; background: #fff9c4; color: #fbc02d; font-weight: bold; padding: 5px 15px; border-radius: 20px; display: none; margin: 10px auto; width: fit-content; }
     </style>
 </head>
 <body>
@@ -273,10 +305,10 @@
     <header>
         <div class="container">
             <nav>
-                <img src="image_0.png" alt="Logo" class="logo-img">
+                <img src="image_0.png" alt="Nicole's Treats" class="logo-img">
                 <div class="nav-links">
                     <a href="#about">About</a>
-                    <a href="#menu">Menu</a>
+                    <a href="#menu">Treats</a>
                     <a href="#order">Order</a>
                 </div>
             </nav>
@@ -285,17 +317,26 @@
 
     <section class="hero">
         <div class="container">
-            <h1>Handcrafted Sweetness</h1>
-            <div class="hero-card">
-                <p style="font-size: 1.3rem;">From custom-designed cookies to indulgent slices. Personally baked by Nicole using only the highest quality ingredients.</p>
-                <a href="#menu" class="btn-wow">View The Menu</a>
-            </div>
+            <h1>Made with Love</h1>
+            <p>From my kitchen to your heart. Custom cookies, indulgent slices, and sweet moments baked fresh by Nicole.</p>
+            <a href="#menu" class="btn">See What's Baking</a>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="love-badge">❤️ Personally Baked by Mum</div>
+            <h2 style="color: var(--cocoa); font-size: 2.5rem; margin-bottom: 20px;">A Little Bit About Nicole</h2>
+            <p style="max-width: 700px; margin: 0 auto; color: #795548;">
+                Welcome to my kitchen! I believe the best ingredient is love. Whether it's a birthday, a celebration, or just a Tuesday, I pour my heart into every batch using only premium chocolate, farm-fresh eggs, and quality butter.
+            </p>
         </div>
     </section>
 
     <section id="menu" class="products">
         <div class="container">
-            <h2 class="section-title">Fresh from the Oven</h2>
+            <h2 class="section-title">Fresh from the <span>Oven</span></h2>
+            
             <div class="product-grid">
                 <div class="product-card">
                     <div class="product-img" onclick="openLightbox(this)">
@@ -303,28 +344,30 @@
                     </div>
                     <div class="product-info">
                         <h3>Custom Cookies</h3>
-                        <div class="price-tag">$4.00 ea</div>
-                        <p>Fondant sugar cookies. <br><strong>Bulk Deal: 20 for $70!</strong></p>
+                        <div class="price-bubble">$4.00 ea</div>
+                        <p>Soft sugar cookies with fondant. <br><strong>Family Pack: 20 for $70!</strong></p>
                     </div>
                 </div>
+
                 <div class="product-card">
                     <div class="product-img" onclick="openLightbox(this)">
-                        <img src="https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg" alt="Mars Bar Slice">
+                        <img src="https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg" alt="Mars Slice">
                     </div>
                     <div class="product-info">
                         <h3>Mars Bar Slice</h3>
-                        <div class="price-tag">$50 / Slab</div>
-                        <p>Gooey chocolate caramel delight with real Mars Bars.</p>
+                        <div class="price-bubble">$50 / Full Slab</div>
+                        <p>Gooey caramel and chocolate goodness made with real Mars Bars.</p>
                     </div>
                 </div>
+
                 <div class="product-card">
                     <div class="product-img" onclick="openLightbox(this)">
                         <img src="https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg" alt="Rocky Road">
                     </div>
                     <div class="product-info">
                         <h3>Rocky Road</h3>
-                        <div class="price-tag">$50 / Slab</div>
-                        <p>Marshmallows, nuts, and jellies in premium chocolate.</p>
+                        <div class="price-bubble">$50 / Full Slab</div>
+                        <p>Packed with fluffy marshmallows, nuts, and jellies.</p>
                     </div>
                 </div>
             </div>
@@ -333,26 +376,119 @@
 
     <section id="order" class="order-section">
         <div class="container">
-            <div class="glass-panel">
-                <h2 style="text-align: center; margin-bottom: 40px; font-size: 3rem;">Build Your Order</h2>
+            <div class="kitchen-counter">
+                <h2 style="text-align: center; margin-bottom: 30px;">Fill Your Biscuit Tin</h2>
                 
                 <div class="controls">
-                    <button class="add-btn" onclick="add('cookie')">🍪 Add Cookie<span>$4.00</span></button>
-                    <button class="add-btn special" onclick="addBulk()">🎁 Bulk (20)<span>$70.00</span></button>
-                    <button class="add-btn" onclick="add('mars')">🍫 Mars Slab<span>$50.00</span></button>
-                    <button class="add-btn" onclick="add('rocky')">🍬 Rocky Slab<span>$50.00</span></button>
+                    <button class="treat-btn" onclick="add('cookie')">🍪 Add Cookie<span>$4.00</span></button>
+                    <button class="treat-btn special" onclick="addBulk()">🎁 Family Pack (20)<span>$70.00</span></button>
+                    <button class="treat-btn" onclick="add('mars')">🍫 Mars Slab<span>$50.00</span></button>
+                    <button class="treat-btn" onclick="add('rocky')">🍬 Rocky Slab<span>$50.00</span></button>
                 </div>
 
-                <div class="tray-container" id="tray">
-                    <p style="width:100%; text-align:center; color:#888; margin-top:50px; font-weight:bold;">Tap the buttons to fill your tray!</p>
+                <div class="baking-sheet">
+                    <div class="parchment-paper" id="tray">
+                        <div class="empty-msg">Tap a treat above to start baking!</div>
+                    </div>
                 </div>
 
-                <div class="discount-popup" id="badge">🎉 Bulk Savings Applied!</div>
-                <div class="total-display">Total: $<span id="total">0</span></div>
-                <button onclick="reset()" style="display:block; margin:0 auto; background:none; border:none; text-decoration:underline; cursor:pointer; color:#666;">Clear Tray</button>
+                <div class="total-price">Total: $<span id="total">0</span></div>
+                <div class="discount-tag" id="discount">✨ Bundle Savings Applied!</div>
+                <button onclick="reset()" style="display:block; margin:0 auto; background:none; border:none; text-decoration:underline; cursor:pointer; color:#999;">Clear Tray</button>
 
-                <div class="form-area" style="margin-top: 50px;">
+                <div class="form-wrapper">
                     <form>
-                        <input type="hidden" id="summary" name="summary">
-                        <div class="input-group">
+                        <input type="hidden" id="orderSummary" name="summary">
+                        
+                        <div class="form-group">
                             <label>Your Name</label>
+                            <input type="text" placeholder="Start typing..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" placeholder="hello@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Special Requests</label>
+                            <textarea rows="3" placeholder="Colors, names, dates..."></textarea>
+                        </div>
+
+                        <div class="mum-note">
+                            <span>👩‍🍳</span>
+                            <div>
+                                <strong>Just a quick note:</strong> Because I bake everything fresh to order, I ask for a <strong>50% deposit</strong> to secure your spot. It helps me buy the ingredients and get started! (Non-refundable if cancelled within 24hrs).
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn" style="width: 100%;">Send Request</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Nicole's Treats. Baked with so much love.</p>
+    </footer>
+
+    <div id="lightbox" class="lightbox" onclick="this.style.display='none'">
+        <img id="lb-img" src="">
+    </div>
+
+    <script>
+        // LOGIC
+        let items = [];
+        const PRICES = { 'cookie': 4, 'mars': 50, 'rocky': 50 };
+        const IMAGES = {
+            'cookie': 'cookie.png',
+            'mars': 'https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg',
+            'rocky': 'https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg'
+        };
+
+        function add(type) { items.push(type); render(); }
+        function addBulk() { for(let i=0; i<20; i++) items.push('cookie'); render(); }
+        function remove(i) { items.splice(i, 1); render(); }
+        function reset() { items = []; render(); }
+
+        function render() {
+            const tray = document.getElementById('tray');
+            tray.innerHTML = items.length ? '' : '<div class="empty-msg">Tap a treat above to start baking!</div>';
+            
+            let c = 0, sTotal = 0;
+            items.forEach((item, i) => {
+                if(item === 'cookie') c++; else sTotal += PRICES[item];
+                
+                const img = document.createElement('img');
+                img.src = IMAGES[item];
+                img.className = 'tray-item ' + (item === 'cookie' ? 'cookie' : 'slab');
+                img.onclick = () => remove(i);
+                tray.appendChild(img);
+            });
+
+            const bundles = Math.floor(c / 20);
+            const total = sTotal + (bundles * 70) + ((c % 20) * 4);
+            
+            document.getElementById('total').innerText = total;
+            document.getElementById('discount').style.display = bundles > 0 ? 'block' : 'none';
+            document.getElementById('orderSummary').value = `Total: $${total}`;
+        }
+
+        // FALLING HEARTS
+        setInterval(() => {
+            const e = document.createElement('div');
+            e.className = 'falling-heart';
+            e.innerHTML = ['❤️','🌸','🍪','✨'][Math.floor(Math.random()*4)];
+            e.style.left = Math.random()*95 + 'vw';
+            e.style.animationDuration = (Math.random()*4+5) + 's';
+            document.body.appendChild(e);
+            setTimeout(() => e.remove(), 8000);
+        }, 1000);
+
+        // LIGHTBOX
+        function openLightbox(el) {
+            document.getElementById('lightbox').style.display = 'flex';
+            document.getElementById('lb-img').src = el.querySelector('img').src;
+        }
+    </script>
+</body>
+</html>
