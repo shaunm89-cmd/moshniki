@@ -209,4 +209,256 @@
             padding: 20px;
             margin-bottom: 15px;
             width: 100%;
-            text-align
+            text-align: left;
+            font-family: 'Shrikhand';
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 var(--black);
+            display: flex; justify-content: space-between; align-items: center;
+            transition: 0.1s;
+        }
+        .menu-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--black); background: var(--yellow); }
+        .menu-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0; }
+        
+        .menu-btn span { font-family: 'Quicksand'; font-size: 1rem; font-weight: bold; background: var(--black); color: white; padding: 5px 10px; border-radius: 50px; }
+
+        /* RECEIPT VISUAL */
+        .receipt {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 30px;
+            font-family: 'Courier New', monospace;
+            border: var(--border);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        /* Jagged edges for receipt using CSS gradients */
+        .receipt::before {
+            content: ""; position: absolute; top: -10px; left: 0; width: 100%; height: 10px;
+            background: radial-gradient(circle, transparent, transparent 50%, white 50%, white 100%) -7px -8px / 16px 16px repeat-x;
+        }
+        .receipt::after {
+            content: ""; position: absolute; bottom: -10px; left: 0; width: 100%; height: 10px;
+            background: radial-gradient(circle, transparent, transparent 50%, white 50%, white 100%) -7px -2px / 16px 16px repeat-x;
+            transform: rotate(180deg);
+        }
+
+        .receipt-header { text-align: center; border-bottom: 2px dashed #ccc; padding-bottom: 20px; margin-bottom: 20px; }
+        .receipt-header h3 { font-family: 'Courier New'; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .receipt-items { min-height: 100px; margin-bottom: 20px; }
+        .line-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; }
+        .line-item-remove { color: red; cursor: pointer; font-weight: bold; margin-right: 5px;}
+
+        .receipt-total { border-top: 2px dashed #000; padding-top: 15px; font-weight: 900; font-size: 1.2rem; display: flex; justify-content: space-between; }
+
+        .form-input {
+            width: 100%; border: 2px solid #ccc; background: #eee; padding: 10px; margin-bottom: 10px; font-family: inherit; font-size: 0.9rem;
+        }
+        .form-input:focus { outline: none; border-color: var(--black); background: white; }
+
+        .print-btn {
+            background: var(--black); color: white; width: 100%; padding: 15px;
+            font-weight: bold; text-transform: uppercase; border: none; cursor: pointer; margin-top: 10px;
+            font-family: 'Courier New'; letter-spacing: 1px;
+        }
+        .print-btn:hover { background: #444; }
+
+        .policy-tiny { font-size: 0.7rem; color: #666; text-align: center; margin-top: 15px; line-height: 1.4; }
+
+        /* FOOTER */
+        footer { text-align: center; padding: 40px; font-weight: bold; background: var(--bg); }
+
+        /* LIGHTBOX */
+        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(41, 41, 41, 0.9); z-index: 2000; justify-content: center; align-items: center; }
+        .lightbox img { max-width: 90%; max-height: 80vh; border: 5px solid white; box-shadow: 0 0 0 1000px rgba(0,0,0,0.5); }
+
+        @media(max-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
+            .split-layout { flex-direction: column; }
+            nav { justify-content: center; flex-wrap: wrap; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#" class="logo-text">Nicole's Treats</a>
+            <div class="nav-links">
+                <a href="#menu">Menu</a>
+                <a href="#order">Start Order</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>BAKED BY <span>MUM</span>.<br>LOVED BY <span>YOU</span>.</h1>
+        <p>✨ The world's most amazing handcrafted sweets ✨</p>
+    </section>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item">Freshly Baked</div>
+            <div class="ticker-item">Made with Love</div>
+            <div class="ticker-item">Premium Ingredients</div>
+            <div class="ticker-item">Nicole's Kitchen</div>
+            <div class="ticker-item">Freshly Baked</div>
+            <div class="ticker-item">Made with Love</div>
+            <div class="ticker-item">Premium Ingredients</div>
+            <div class="ticker-item">Nicole's Kitchen</div>
+        </div>
+    </div>
+
+    <section id="menu" class="container">
+        <div class="section-header">
+            <h2>The Good Stuff</h2>
+            <p>Tap images to zoom • Scroll down to order</p>
+        </div>
+
+        <div class="product-grid">
+            <div class="card">
+                <div class="card-img-box" onclick="openLightbox(this)">
+                    <img src="cookie.png" alt="Cookies">
+                    <div class="card-tag">$4.00</div>
+                </div>
+                <h3>Custom Cookies</h3>
+                <p>Sugar cookies with fondant art. Perfect for birthdays. <br><strong>Deal: 20 for $70.</strong></p>
+            </div>
+
+            <div class="card">
+                <div class="card-img-box" onclick="openLightbox(this)">
+                    <img src="https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg" alt="Mars">
+                    <div class="card-tag">$50 Slab</div>
+                </div>
+                <h3>Mars Bar Slice</h3>
+                <p>The classic. Gooey caramel, real Mars Bars, and premium milk chocolate.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-img-box" onclick="openLightbox(this)">
+                    <img src="https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg" alt="Rocky">
+                    <div class="card-tag">$50 Slab</div>
+                </div>
+                <h3>Rocky Road</h3>
+                <p>A textural masterpiece. Marshmallows, nuts, jellies, and chocolate.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="order" class="order-section">
+        <div class="split-layout">
+            <div class="menu-board">
+                <h2 style="font-size:3rem; margin-bottom:30px; color:white; text-shadow:3px 3px 0 var(--black);">Tap to Add</h2>
+                <div class="menu-btn" onclick="add('cookie')">
+                    🍪 Custom Cookie <span>$4.00</span>
+                </div>
+                <div class="menu-btn" onclick="addBulk()" style="background:var(--yellow)">
+                    🎁 Bulk Bundle (20) <span>$70.00</span>
+                </div>
+                <div class="menu-btn" onclick="add('mars')">
+                    🍫 Mars Bar Slab <span>$50.00</span>
+                </div>
+                <div class="menu-btn" onclick="add('rocky')">
+                    🍬 Rocky Road Slab <span>$50.00</span>
+                </div>
+                <div class="menu-btn" onclick="reset()" style="background:#eee; justify-content:center;">
+                    Reset Receipt
+                </div>
+            </div>
+
+            <div class="receipt">
+                <div class="receipt-header">
+                    <h3>Nicole's Kitchen</h3>
+                    <p>Order Docket #001</p>
+                    <p style="font-size:0.8rem">ABN: [Your ABN Here]</p>
+                </div>
+
+                <div class="receipt-items" id="receipt-list">
+                    <div style="text-align:center; color:#999; margin-top:30px;">-- Empty --</div>
+                </div>
+
+                <div class="receipt-total">
+                    <span>TOTAL AUD</span>
+                    <span id="total-price">$0.00</span>
+                </div>
+                <div id="savings" style="text-align:right; font-size:0.8rem; color:red; display:none;">* Bulk Savings Applied</div>
+
+                <hr style="border-top: 2px dashed #ccc; margin: 20px 0;">
+
+                <form>
+                    <input type="hidden" id="full-summary" name="summary">
+                    <input type="text" class="form-input" placeholder="Customer Name" required>
+                    <input type="email" class="form-input" placeholder="Email Address" required>
+                    <textarea class="form-input" rows="3" placeholder="Notes (Date, Colors...)"></textarea>
+                    
+                    <button class="print-btn">CONFIRM ORDER</button>
+                    
+                    <div class="policy-tiny">
+                        * 50% Non-refundable deposit required.<br>
+                        * 24hr cancellation notice policy applies.<br>
+                        * Baked fresh with love.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 Nicole's Treats. Est. with Love.
+    </footer>
+
+    <div id="lightbox" class="lightbox" onclick="this.style.display='none'">
+        <img id="lb-img" src="">
+    </div>
+
+    <script>
+        // --- LOGIC ---
+        let items = [];
+        const PRICES = { 'cookie': 4, 'mars': 50, 'rocky': 50 };
+        const NAMES = { 'cookie': 'Custom Cookie', 'mars': 'Mars Slab', 'rocky': 'Rocky Slab' };
+
+        function add(type) { items.push(type); render(); }
+        function addBulk() { for(let i=0; i<20; i++) items.push('cookie'); render(); }
+        function remove(idx) { items.splice(idx, 1); render(); }
+        function reset() { items = []; render(); }
+
+        function render() {
+            const list = document.getElementById('receipt-list');
+            list.innerHTML = '';
+
+            let c = 0, sTotal = 0;
+            
+            // Build visual list
+            if (items.length === 0) list.innerHTML = '<div style="text-align:center; color:#999; margin-top:30px;">-- Empty --</div>';
+            
+            items.forEach((item, i) => {
+                if(item === 'cookie') c++; else sTotal += PRICES[item];
+                
+                const div = document.createElement('div');
+                div.className = 'line-item';
+                div.innerHTML = `<span><span class="line-item-remove" onclick="remove(${i})">[x]</span> ${NAMES[item]}</span> <span>$${PRICES[item]}.00</span>`;
+                list.appendChild(div);
+            });
+
+            // Math
+            const bundles = Math.floor(c / 20);
+            const total = sTotal + (bundles * 70) + ((c % 20) * 4);
+            
+            // Updates
+            document.getElementById('total-price').innerText = '$' + total.toFixed(2);
+            document.getElementById('savings').style.display = bundles > 0 ? 'block' : 'none';
+            document.getElementById('full-summary').value = `Total: $${total}`;
+        }
+
+        // --- LIGHTBOX ---
+        function openLightbox(el) {
+            document.getElementById('lightbox').style.display = 'flex';
+            document.getElementById('lb-img').src = el.querySelector('img').src;
+        }
+    </script>
+
+</body>
+</html>
