@@ -3,199 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risk & Compliance Intelligence System</title>
+    <title>SMR INTELLIGENCE TERMINAL // V.4.0</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --primary: #0f172a;
-            --secondary: #1e293b;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --bg-body: #f1f5f9;
-            --bg-card: #ffffff;
-            --text-main: #334155;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --success: #10b981;
+            --bg-deep: #050b14;
+            --bg-panel: rgba(16, 23, 42, 0.7); /* Glass effect */
+            --border-color: rgba(56, 189, 248, 0.2);
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-cyan: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.4);
             --danger: #ef4444;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --success: #10b981;
+            --font-ui: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
             margin: 0;
-            background-color: var(--bg-body);
+            font-family: var(--font-ui);
+            background-color: var(--bg-deep);
             color: var(--text-main);
-            display: flex;
             height: 100vh;
+            display: flex;
             overflow: hidden;
+            /* Cool Animated Background */
+            background-image: 
+                linear-gradient(rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: bgScroll 60s linear infinite;
         }
 
-        /* SIDEBAR */
+        @keyframes bgScroll {
+            from { background-position: 0 0; }
+            to { background-position: 40px 40px; }
+        }
+
+        /* --- SIDEBAR --- */
         aside {
-            width: 260px;
-            background-color: var(--primary);
-            color: white;
+            width: 280px;
+            background: rgba(5, 11, 20, 0.95);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+            z-index: 10;
         }
 
         .brand {
-            padding: 24px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            padding: 30px;
+            font-family: var(--font-code);
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px var(--accent-glow);
+            letter-spacing: 2px;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .brand i { color: var(--accent); }
-
-        .nav-menu { padding: 20px 10px; display: flex; flex-direction: column; gap: 5px; }
-
-        .nav-item {
+        .nav-btn {
             background: transparent;
             border: none;
-            color: #94a3b8;
-            padding: 12px 16px;
+            color: var(--text-muted);
+            padding: 18px 25px;
             text-align: left;
             cursor: pointer;
+            font-family: var(--font-code);
             font-size: 0.9rem;
-            border-radius: 6px;
-            transition: all 0.2s ease;
+            transition: 0.3s;
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-weight: 500;
+            gap: 15px;
+            border-left: 3px solid transparent;
         }
 
-        .nav-item:hover { color: white; background-color: rgba(255,255,255,0.05); }
-        .nav-item.active { background-color: var(--accent); color: white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
-
-        .user-profile {
-            margin-top: auto;
-            padding: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .avatar {
-            width: 36px; height: 36px; background: var(--secondary); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold;
+        .nav-btn:hover { background: rgba(6, 182, 212, 0.1); color: white; }
+        .nav-btn.active { 
+            background: linear-gradient(90deg, rgba(6,182,212,0.15), transparent); 
+            color: var(--accent-cyan); 
+            border-left: 3px solid var(--accent-cyan);
         }
 
-        /* MAIN CONTENT */
-        main { flex: 1; padding: 40px; overflow-y: auto; }
-
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        h1 { font-size: 1.8rem; font-weight: 700; margin: 0; color: var(--primary); }
-        h2 { font-size: 1.1rem; font-weight: 600; color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-            padding: 25px;
-            border: 1px solid var(--border);
-            margin-bottom: 25px;
-        }
-
-        /* FORMS */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-
-        .form-group label {
-            display: block; margin-bottom: 8px; font-size: 0.8rem; font-weight: 600;
-            color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;
-        }
-
-        input, select, textarea {
-            width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px;
-            font-size: 0.95rem; font-family: 'Inter', sans-serif; box-sizing: border-box;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
-        textarea { resize: vertical; min-height: 100px; }
-
-        /* UPLOAD ZONE */
-        .upload-zone {
-            border: 2px dashed var(--border);
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
+        /* --- MAIN CONTENT --- */
+        main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
             position: relative;
         }
-        .upload-zone:hover { border-color: var(--accent); background: #eff6ff; }
-        .upload-zone i { font-size: 2rem; color: var(--text-muted); margin-bottom: 10px; }
-        .upload-zone p { margin: 0; color: var(--text-muted); font-size: 0.9rem; }
-        .upload-zone input[type="file"] {
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; cursor: pointer;
-        }
-        .file-list { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; }
-        .file-chip {
-            background: white; border: 1px solid var(--border); padding: 5px 10px; border-radius: 4px;
-            font-size: 0.85rem; display: flex; align-items: center; gap: 8px;
+
+        /* Scanline Overlay */
+        main::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 2;
         }
 
-        /* BUTTONS */
-        .btn {
-            display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;
-            border-radius: 8px; font-weight: 500; font-size: 0.95rem; cursor: pointer;
-            transition: all 0.2s; border: none;
-        }
-        .btn-primary { background-color: var(--accent); color: white; }
-        .btn-primary:hover { background-color: var(--accent-hover); }
-        .btn-sm { padding: 8px 16px; font-size: 0.85rem; }
+        h1, h2 { font-family: var(--font-code); text-transform: uppercase; letter-spacing: 1px; }
+        h1 { color: white; margin-top: 0; border-bottom: 2px solid var(--border-color); display: inline-block; padding-bottom: 10px; }
 
-        /* TAGS */
-        .tag-box { background: #f8fafc; border: 1px dashed var(--border); padding: 15px; border-radius: 8px; }
-        .tags-area { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
-        .tag {
-            background: white; border: 1px solid var(--border); color: var(--text-main);
-            padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;
+        /* --- CARDS & PANELS --- */
+        .glass-panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 25px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
-        .tag i { color: var(--danger); cursor: pointer; }
-
-        /* TABLES & STATS */
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px; color: var(--text-muted); font-weight: 600; font-size: 0.85rem; border-bottom: 2px solid var(--border); }
-        td { padding: 15px; border-bottom: 1px solid var(--border); color: var(--text-main); font-size: 0.9rem; }
         
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 20px; }
-        .stat-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-        
-        /* SEARCH & CONNECTIONS */
-        .search-hero { position: relative; margin-bottom: 40px; }
-        .search-hero i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-        .search-hero input { padding-left: 45px; height: 50px; font-size: 1.1rem; }
-
-        .intel-card { border-left: 4px solid var(--accent); margin-bottom: 20px; }
-        .intel-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
-        
-        .machine-data-box {
-            background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px; border-radius: 6px;
-            margin: 10px 0; font-size: 0.9rem; color: #15803d;
-        }
-        .evidence-box {
-            background: #f1f5f9; border: 1px solid var(--border); padding: 10px; border-radius: 6px;
-            margin: 10px 0; font-size: 0.85rem; color: var(--text-muted);
+        .glass-panel::after {
+            /* Decorative corner accent */
+            content: ''; position: absolute; top: -1px; left: -1px; width: 20px; height: 20px;
+            border-top: 2px solid var(--accent-cyan); border-left: 2px solid var(--accent-cyan);
         }
 
+        /* --- STATS HUD --- */
+        .hud-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .hud-card {
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .hud-val { font-family: var(--font-code); font-size: 2.5rem; color: var(--accent-cyan); text-shadow: 0 0 15px var(--accent-glow); }
+        .hud-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+
+        /* --- FORMS --- */
+        .form-row { display: flex; gap: 20px; margin-bottom: 15px; }
+        input, select, textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 12px;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        label { color: var(--accent-cyan); font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 1px; }
+
+        /* --- BUTTONS --- */
+        .cyber-btn {
+            background: var(--accent-cyan);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            font-family: var(--font-code);
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .cyber-btn:hover { background: white; box-shadow: 0 0 20px var(--accent-cyan); }
+        
+        .upload-area {
+            border: 1px dashed var(--border-color);
+            padding: 20px;
+            text-align: center;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+        .upload-area:hover { border-color: var(--accent-cyan); background: rgba(6, 182, 212, 0.05); }
+
+        /* --- TABLE & LISTS --- */
+        .data-table { width: 100%; border-collapse: collapse; font-family: var(--font-code); font-size: 0.85rem; }
+        .data-table th { text-align: left; padding: 15px; color: var(--accent-cyan); border-bottom: 1px solid var(--border-color); }
+        .data-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .data-table tr:hover { background: rgba(255,255,255,0.02); }
+
+        /* --- INTEL CARDS (Search Results) --- */
+        .intel-result {
+            border-left: 3px solid var(--accent-cyan);
+            background: linear-gradient(90deg, rgba(6,182,212,0.05), transparent);
+            margin-bottom: 15px;
+            padding: 15px;
+        }
+        .tag-node {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            margin-right: 5px;
+            color: var(--accent-cyan);
+        }
+        .tag-alert { color: var(--danger); border: 1px solid var(--danger); background: rgba(239,68,68,0.1); }
+
+        /* Utility */
         .section { display: none; }
-        .section.active { display: block; animation: fadeUp 0.3s ease-out; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .section.active { display: block; animation: flicker 0.5s; }
+        @keyframes flicker {
+            0% { opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
 
     </style>
 </head>
@@ -203,325 +224,375 @@
 
 <aside>
     <div class="brand">
-        <i class="fa-solid fa-shield-halved"></i>
-        SECURE INTEL
+        <i class="fa-solid fa-eye"></i> OMNI-INTEL
     </div>
-    <div class="nav-menu">
-        <button class="nav-item active" onclick="showSection('dashboard', this)">
-            <i class="fa-solid fa-chart-line"></i> Dashboard
+    <div style="flex:1;">
+        <button class="nav-btn active" onclick="showSection('dashboard', this)">
+            <i class="fa-solid fa-chart-line"></i> LIVE_FEED
         </button>
-        <button class="nav-item" onclick="showSection('new-report', this)">
-            <i class="fa-solid fa-file-circle-plus"></i> Submit SMR
+        <button class="nav-btn" onclick="showSection('new-report', this)">
+            <i class="fa-solid fa-file-code"></i> INPUT_DATA
         </button>
-        <button class="nav-item" onclick="showSection('connections', this)">
-            <i class="fa-solid fa-network-wired"></i> Link Analysis
+        <button class="nav-btn" onclick="showSection('connections', this)">
+            <i class="fa-solid fa-network-wired"></i> LINK_ANALYSIS
         </button>
     </div>
-    <div class="user-profile">
-        <div class="avatar">GS</div>
-        <div style="font-size: 0.9rem;">
-            <div>Gaming Supervisor</div>
-            <div style="font-size: 0.75rem; color: #94a3b8;">ID: 8821-A</div>
-        </div>
+    <div style="padding: 20px; font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-code);">
+        USER: SUP_SHAUN<br>
+        CLEARANCE: LEVEL 4<br>
+        NODE: PENRITH_OPS
     </div>
 </aside>
 
 <main>
     <div id="dashboard" class="section active">
-        <header>
-            <h1>Overview</h1>
-        </header>
+        <h1>SYSTEM STATUS: ONLINE</h1>
         
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;"><i class="fa-solid fa-file-contract"></i></div>
-                <div><h3 id="totalReports" style="margin:0;">0</h3><p style="margin:0;color:#64748b;font-size:0.9rem;">Total Reports</p></div>
+        <div class="hud-grid">
+            <div class="hud-card">
+                <i class="fa-solid fa-database fa-2x" style="color:var(--text-muted)"></i>
+                <div>
+                    <div class="hud-val" id="totalCount">0</div>
+                    <div class="hud-label">Total Records</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                <div><h3 id="activeAlerts" style="margin:0;">0</h3><p style="margin:0;color:#64748b;font-size:0.9rem;">Unique Associates</p></div>
+            <div class="hud-card">
+                <i class="fa-solid fa-users-viewfinder fa-2x" style="color:var(--text-muted)"></i>
+                <div>
+                    <div class="hud-val" id="associateCount">0</div>
+                    <div class="hud-label">Entities Tracked</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background: #dcfce7; color: #16a34a;"><i class="fa-solid fa-desktop"></i></div>
-                <div><h3 id="machineAlerts" style="margin:0;">0</h3><p style="margin:0;color:#64748b;font-size:0.9rem;">Machine Events</p></div>
+            <div class="hud-card" style="border-color: var(--danger);">
+                <i class="fa-solid fa-triangle-exclamation fa-2x" style="color:var(--danger)"></i>
+                <div>
+                    <div class="hud-val" id="alertCount" style="color: var(--danger)">0</div>
+                    <div class="hud-label" style="color: var(--danger)">Priority Alerts</div>
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <h2>Recent Activity Log</h2>
-            <div id="reports-list"></div>
+        <div class="glass-panel">
+            <h2 style="font-size: 1rem; color: var(--accent-cyan); margin-bottom: 20px;">>> RECENT_INTERCEPTS</h2>
+            <div id="table-container"></div>
         </div>
     </div>
 
     <div id="new-report" class="section">
-        <header>
-            <h1>Submit Suspicious Matter</h1>
-        </header>
-
+        <h1>>> INITIATE_PROTOCOL: NEW_ENTRY</h1>
+        
         <form id="smrForm" onsubmit="submitReport(event)">
-            <div class="card">
-                <h2>1. Subject Information</h2>
-                <div class="form-grid">
-                    <div class="form-group"><label>POI Full Name</label><input type="text" id="poiName" required placeholder="Surname, First Name"></div>
-                    <div class="form-group"><label>Date of Birth</label><input type="date" id="poiDob"></div>
-                    <div class="form-group"><label>Identification</label><input type="text" id="poiId" placeholder="e.g. DL 12345678"></div>
-                    <div class="form-group"><label>Membership Number</label><input type="text" id="poiMember"></div>
+            <div class="glass-panel">
+                <div class="form-row">
+                    <div style="flex:1">
+                        <label>TARGET_NAME (POI)</label>
+                        <input type="text" id="poiName" required placeholder="LASTNAME, Firstname">
+                    </div>
+                    <div style="flex:1">
+                        <label>IDENTIFIER</label>
+                        <input type="text" id="poiId" placeholder="MEMBER_ID / DL / P.PORT">
+                    </div>
                 </div>
-            </div>
-
-            <div class="card">
-                <h2>2. Incident Details</h2>
-                <div class="form-grid">
-                    <div class="form-group"><label>Date & Time</label><input type="datetime-local" id="incidentTime" required></div>
-                    <div class="form-group">
-                        <label>Classification</label>
+                <div class="form-row">
+                    <div style="flex:1">
+                        <label>TIMESTAMP</label>
+                        <input type="datetime-local" id="incidentTime" required>
+                    </div>
+                    <div style="flex:1">
+                        <label>CLASSIFICATION</label>
                         <select id="incidentType">
-                            <option>Structuring (Cash Threshold)</option>
-                            <option>Use of False ID</option>
-                            <option>Money Laundering Suspicion</option>
-                            <option>Unexplained Wealth</option>
-                            <option>Collusion with Associates</option>
+                            <option>STRUCTURING_CASH</option>
+                            <option>MONEY_LAUNDERING_SUSPICION</option>
+                            <option>FALSE_IDENTITY</option>
+                            <option>LOAN_SHARKING</option>
+                            <option>EXCLUSION_BREACH</option>
+                            <option>SYNDICATE_ACTIVITY</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Narrative</label>
-                    <textarea id="narrative" placeholder="Describe the behavior chronologically..."></textarea>
-                </div>
             </div>
 
-            <div class="card">
-                <h2>3. Machine Meters & Evidence</h2>
-                <div class="form-grid-3">
-                    <div class="form-group"><label>Asset / Machine No.</label><input type="text" id="assetNum" placeholder="e.g. GM-4402"></div>
-                    <div class="form-group"><label>Turnover (Coin In)</label><input type="number" id="meterIn" placeholder="$0.00"></div>
-                    <div class="form-group"><label>Wins (Coin Out)</label><input type="number" id="meterOut" placeholder="$0.00"></div>
-                </div>
-
-                <div class="form-group">
-                    <label>Upload Evidence (CCTV / Meter Slips)</label>
-                    <div class="upload-zone">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <p>Drag files here or click to browse</p>
-                        <input type="file" id="evidenceFiles" multiple onchange="updateFileList()">
+            <div class="glass-panel">
+                <label>NARRATIVE / OBSERVATION LOG</label>
+                <textarea id="narrative" rows="4" placeholder="ENTER SURVEILLANCE DETAILS..."></textarea>
+                <br><br>
+                
+                <div class="form-row">
+                    <div style="flex:1">
+                        <label>MACHINE_ASSET_NO</label>
+                        <input type="text" id="assetNum" placeholder="GM-XXXX">
                     </div>
-                    <div class="file-list" id="fileListDisplay"></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>4. Link Analysis (Associates)</h2>
-                <div class="tag-box">
-                    <div class="form-group" style="display: flex; gap: 10px;">
-                        <input type="text" id="associateInput" placeholder="Enter associate name..." style="flex:1;">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="addAssociate()"><i class="fa-solid fa-link"></i> Add</button>
+                    <div style="flex:1">
+                        <label>TURNOVER ($)</label>
+                        <input type="number" id="meterIn">
                     </div>
-                    <div class="tags-area" id="associateTags"></div>
+                    <div style="flex:1">
+                        <label>PAYOUT ($)</label>
+                        <input type="number" id="meterOut">
+                    </div>
                 </div>
+
+                <label>EVIDENCE_UPLOAD</label>
+                <div class="upload-area">
+                    <i class="fa-solid fa-cloud-arrow-up fa-2x"></i><br>
+                    DRAG_FILES // CLICK_TO_BROWSE
+                    <input type="file" id="evidenceFiles" multiple onchange="handleFiles()" style="display:none;"> </div>
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 16px;">
-                <i class="fa-solid fa-paper-plane"></i> Submit Official Report
-            </button>
+            <div class="glass-panel">
+                <label>ASSOCIATE_LINKING</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="assocInput" placeholder="NAME OF ASSOCIATE">
+                    <button type="button" class="cyber-btn" onclick="addAssociate()" style="padding: 10px;">LINK</button>
+                </div>
+                <div id="assocTags" style="margin-top:10px;"></div>
+            </div>
+
+            <button type="submit" class="cyber-btn" style="width:100%">SUBMIT TO DATABASE</button>
         </form>
     </div>
 
     <div id="connections" class="section">
-        <header><h1>Intelligence Database</h1></header>
-        <div class="search-hero">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchEntity" placeholder="Search POI, Associate, or Asset Number..." onkeyup="searchConnections()">
+        <h1>>> GLOBAL_SEARCH // LINK_ANALYSIS</h1>
+        
+        <div class="glass-panel" style="display:flex; gap:15px; align-items: center;">
+            <i class="fa-solid fa-magnifying-glass" style="color:var(--accent-cyan)"></i>
+            <input type="text" id="searchInput" placeholder="SEARCH QUERY: NAME, ID, OR KEYWORD..." onkeyup="runSearch()" style="border:none; background:transparent; font-size:1.2rem;">
         </div>
-        <div id="connectionResults"></div>
+
+        <div id="searchResults"></div>
     </div>
+
 </main>
 
 <script>
-    // --- STATE ---
-    let reports = JSON.parse(localStorage.getItem('smr_reports_v2')) || [];
-    let currentAssociates = [];
-    let selectedFiles = []; // Stores file names only for prototype
+    // --- DEMO DATA GENERATOR ---
+    // If the system is empty, we inject a "Crime Syndicate" scenario
+    function initSystem() {
+        let existing = localStorage.getItem('omni_intel_db');
+        
+        if (!existing || JSON.parse(existing).length < 2) {
+            console.log("INITIALIZING DEMO DATA...");
+            const demoData = generateFakeData();
+            localStorage.setItem('omni_intel_db', JSON.stringify(demoData));
+        }
+        
+        renderDashboard();
+    }
 
-    // --- NAVIGATION ---
+    function generateFakeData() {
+        const poiPool = ["KOVACS, Viktor", "SANTOS, Maria", "CHEN, Wei", "O'MALLEY, Sean", "IVANOV, Dmitri"];
+        const assocPool = ["The Driver", "Tall Guy", "Blonde Female", "Mr. Red Hat", "Unknown Male A", "Unknown Male B"];
+        const types = ["STRUCTURING_CASH", "MONEY_LAUNDERING_SUSPICION", "SYNDICATE_ACTIVITY", "FALSE_IDENTITY"];
+        const narratives = [
+            "Subject observed feeding $50 notes into machine rapidly. No play, cashed out immediately.",
+            "Met with associate in smoking area, exchanged small package.",
+            "Attempted to use ID belonging to another person. Security intervened.",
+            "Large volume of turnover observed. Meter readings inconsistent with visual play.",
+            "Subject circling gaming floor, looking for credit left on machines."
+        ];
+
+        let data = [];
+        // Create 20 Entries
+        for (let i = 0; i < 20; i++) {
+            // Pick random POI (Weighted towards Kovacs to make him a 'Kingpin')
+            let poi = (i % 3 === 0) ? "KOVACS, Viktor" : poiPool[Math.floor(Math.random() * poiPool.length)];
+            
+            // Pick random Associates (1 to 3)
+            let assocs = [];
+            let numAssocs = Math.floor(Math.random() * 3);
+            for(let j=0; j<numAssocs; j++) {
+                assocs.push(assocPool[Math.floor(Math.random() * assocPool.length)]);
+            }
+
+            // Create Entry
+            data.push({
+                id: 1000 + i,
+                poiName: poi,
+                poiId: "ID-" + Math.floor(Math.random() * 90000 + 10000),
+                time: new Date(Date.now() - Math.floor(Math.random() * 10000000000)).toISOString(),
+                type: types[Math.floor(Math.random() * types.length)],
+                narrative: narratives[Math.floor(Math.random() * narratives.length)],
+                associates: assocs,
+                asset: "GM-" + Math.floor(Math.random() * 500),
+                turnover: Math.floor(Math.random() * 5000),
+                win: Math.floor(Math.random() * 4000),
+                files: (Math.random() > 0.5) ? ["cam04_footage.mp4", "meter_slip.jpg"] : []
+            });
+        }
+        // Add a specific connection scenario
+        data.push({
+            id: 9999,
+            poiName: "KOVACS, Viktor",
+            poiId: "P-88212",
+            time: new Date().toISOString(),
+            type: "SYNDICATE_ACTIVITY",
+            narrative: "Viktor met with Maria SANTOS and Wei CHEN. Distributed cash to both for structuring.",
+            associates: ["SANTOS, Maria", "CHEN, Wei"],
+            asset: "TABLE-04",
+            turnover: 10000,
+            win: 0,
+            files: ["surveillance_log_final.pdf"]
+        });
+
+        return data.sort((a,b) => new Date(b.time) - new Date(a.time));
+    }
+
+    // --- APP LOGIC ---
+    let reports = JSON.parse(localStorage.getItem('omni_intel_db')) || [];
+    let tempAssocs = [];
+
     function showSection(id, btn) {
         document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        
-        if(btn) {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            btn.classList.add('active');
-        }
+        if(btn) btn.classList.add('active');
         if(id === 'dashboard') renderDashboard();
     }
 
-    // --- FORM LOGIC ---
-    function addAssociate() {
-        const input = document.getElementById('associateInput');
-        const name = input.value.trim();
-        if (name && !currentAssociates.includes(name)) {
-            currentAssociates.push(name);
-            renderAssociates();
-        }
-        input.value = '';
-    }
-
-    function removeAssociate(name) {
-        currentAssociates = currentAssociates.filter(a => a !== name);
-        renderAssociates();
-    }
-
-    function renderAssociates() {
-        document.getElementById('associateTags').innerHTML = currentAssociates.map(name => 
-            `<div class="tag"><i class="fa-solid fa-user"></i> ${name} <i class="fa-solid fa-xmark" onclick="removeAssociate('${name}')"></i></div>`
-        ).join('');
-    }
-
-    function updateFileList() {
-        const input = document.getElementById('evidenceFiles');
-        const display = document.getElementById('fileListDisplay');
-        selectedFiles = Array.from(input.files).map(f => f.name);
+    function renderDashboard() {
+        reports = JSON.parse(localStorage.getItem('omni_intel_db')) || [];
         
-        display.innerHTML = selectedFiles.map(name => 
-            `<div class="file-chip"><i class="fa-solid fa-file"></i> ${name}</div>`
-        ).join('');
+        // HUD Stats
+        document.getElementById('totalCount').innerText = reports.length;
+        
+        let unique = new Set();
+        reports.forEach(r => {
+            unique.add(r.poiName);
+            r.associates.forEach(a => unique.add(a));
+        });
+        document.getElementById('associateCount').innerText = unique.size;
+
+        let alerts = reports.filter(r => r.type === 'SYNDICATE_ACTIVITY' || r.turnover > 8000).length;
+        document.getElementById('alertCount').innerText = alerts;
+
+        // Table
+        const container = document.getElementById('table-container');
+        let html = `<table class="data-table">
+            <thead>
+                <tr>
+                    <th>TIMESTAMP</th>
+                    <th>TARGET</th>
+                    <th>CLASSIFICATION</th>
+                    <th>LINKED_ENTITIES</th>
+                    <th>ASSET</th>
+                </tr>
+            </thead>
+            <tbody>`;
+        
+        reports.slice(0, 10).forEach(r => {
+            html += `
+            <tr>
+                <td style="color:var(--text-muted)">${r.time.slice(0,10)}</td>
+                <td style="font-weight:bold; color:#fff;">${r.poiName}</td>
+                <td><span class="tag-node ${r.type === 'SYNDICATE_ACTIVITY' ? 'tag-alert' : ''}">${r.type}</span></td>
+                <td>${r.associates.length}</td>
+                <td style="font-family:monospace">${r.asset || '--'}</td>
+            </tr>`;
+        });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    }
+
+    // --- FORM HANDLERS ---
+    function addAssociate() {
+        const val = document.getElementById('assocInput').value.trim();
+        if(val) {
+            tempAssocs.push(val);
+            document.getElementById('assocInput').value = "";
+            renderTags();
+        }
+    }
+    
+    function renderTags() {
+        const div = document.getElementById('assocTags');
+        div.innerHTML = tempAssocs.map(a => `<span class="tag-node" style="border:1px solid var(--accent-cyan)">${a}</span>`).join(' ');
     }
 
     function submitReport(e) {
         e.preventDefault();
-
-        const newReport = {
+        const newEntry = {
             id: Date.now(),
-            poiName: document.getElementById('poiName').value.trim(),
+            poiName: document.getElementById('poiName').value,
+            poiId: document.getElementById('poiId').value,
             time: document.getElementById('incidentTime').value,
             type: document.getElementById('incidentType').value,
             narrative: document.getElementById('narrative').value,
-            associates: [...currentAssociates],
-            // Machine Data
             asset: document.getElementById('assetNum').value,
             turnover: document.getElementById('meterIn').value,
             win: document.getElementById('meterOut').value,
-            files: [...selectedFiles]
+            associates: [...tempAssocs],
+            files: [] // File logic simulated for demo
         };
 
-        reports.unshift(newReport);
-        localStorage.setItem('smr_reports_v2', JSON.stringify(reports));
-
+        reports.unshift(newEntry);
+        localStorage.setItem('omni_intel_db', JSON.stringify(reports));
+        
         // Reset
         document.getElementById('smrForm').reset();
-        currentAssociates = [];
-        selectedFiles = [];
-        document.getElementById('associateTags').innerHTML = '';
-        document.getElementById('fileListDisplay').innerHTML = '';
-        
-        alert("Report and Evidence Logged Successfully.");
-        showSection('dashboard');
+        tempAssocs = [];
+        renderTags();
+        alert("ENTRY ENCRYPTED AND LOGGED.");
+        showSection('dashboard', document.querySelectorAll('.nav-btn')[0]);
     }
 
-    // --- DASHBOARD ---
-    function renderDashboard() {
-        const list = document.getElementById('reports-list');
-        document.getElementById('totalReports').innerText = reports.length;
+    // --- SEARCH & LINK ANALYSIS ---
+    function runSearch() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        const res = document.getElementById('searchResults');
         
-        // Count unique associates
-        let uniqueAssociates = new Set();
-        reports.forEach(r => r.associates.forEach(a => uniqueAssociates.add(a)));
-        document.getElementById('activeAlerts').innerText = uniqueAssociates.size;
+        if(q.length < 2) { res.innerHTML = ""; return; }
 
-        // Count machine events
-        const machineEvents = reports.filter(r => r.asset && r.asset.length > 0).length;
-        document.getElementById('machineAlerts').innerText = machineEvents;
-
-        if (reports.length === 0) {
-            list.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted);">No reports recorded.</div>';
-            return;
-        }
-
-        let html = '<table><thead><tr><th>Date</th><th>Subject</th><th>Type</th><th>Evidence</th></tr></thead><tbody>';
-        reports.forEach(r => {
-            const hasFiles = r.files && r.files.length > 0;
-            const hasMeters = r.asset && r.asset.length > 0;
-            
-            html += `<tr>
-                <td>${new Date(r.time).toLocaleDateString()}</td>
-                <td><strong>${r.poiName}</strong></td>
-                <td>${r.type}</td>
-                <td>
-                    ${hasMeters ? '<i class="fa-solid fa-desktop" title="Machine Data" style="margin-right:8px; color:#16a34a;"></i>' : ''}
-                    ${hasFiles ? '<i class="fa-solid fa-paperclip" title="Files Attached" style="color:#3b82f6;"></i>' : ''}
-                    ${!hasFiles && !hasMeters ? '<span style="color:#cbd5e1">-</span>' : ''}
-                </td>
-            </tr>`;
-        });
-        html += '</tbody></table>';
-        list.innerHTML = html;
-    }
-
-    // --- INTELLIGENCE ---
-    function searchConnections() {
-        const query = document.getElementById('searchEntity').value.toLowerCase().trim();
-        const resultsDiv = document.getElementById('connectionResults');
-        
-        if (query.length < 2) return;
-
-        const matches = reports.filter(r => 
-            r.poiName.toLowerCase().includes(query) || 
-            (r.asset && r.asset.toLowerCase().includes(query)) ||
-            r.associates.some(a => a.toLowerCase().includes(query))
+        const hits = reports.filter(r => 
+            r.poiName.toLowerCase().includes(q) || 
+            r.associates.some(a => a.toLowerCase().includes(q)) ||
+            (r.asset && r.asset.toLowerCase().includes(q))
         );
 
-        if (matches.length === 0) {
-            resultsDiv.innerHTML = '<div style="text-align:center; padding:20px;">No intelligence found.</div>';
+        if(hits.length === 0) {
+            res.innerHTML = "<div style='padding:20px; color:var(--text-muted)'>NO MATCHES FOUND IN DATABASE.</div>";
             return;
         }
 
-        let html = '';
-        matches.forEach(r => {
-            const isMainPOI = r.poiName.toLowerCase().includes(query);
+        let html = "";
+        hits.forEach(h => {
+            const isPrimary = h.poiName.toLowerCase().includes(q);
             
-            // Render Files if exist
-            let fileHtml = '';
-            if(r.files && r.files.length > 0) {
-                fileHtml = `<div class="evidence-box"><strong><i class="fa-solid fa-paperclip"></i> Attached Evidence:</strong><br>${r.files.join(', ')}</div>`;
-            }
-
-            // Render Meters if exist
-            let meterHtml = '';
-            if(r.asset) {
-                meterHtml = `<div class="machine-data-box">
-                    <strong><i class="fa-solid fa-microchip"></i> Machine: ${r.asset}</strong><br>
-                    Turnover: $${r.turnover} | Wins: $${r.win}
-                </div>`;
-            }
-
             html += `
-            <div class="card intel-card">
-                <div class="intel-meta">
-                    <span>${new Date(r.time).toLocaleString()}</span>
-                    <span>ID: #${r.id}</span>
-                </div>
-                <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 8px;">
-                     ${r.poiName} <span style="font-weight:400; color:#64748b">(${r.type})</span>
+            <div class="glass-panel intel-result">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <span style="color:var(--accent-cyan); font-weight:bold;">${h.type}</span>
+                    <span style="font-family:monospace; color:var(--text-muted)">${new Date(h.time).toLocaleString()}</span>
                 </div>
                 
-                <div style="margin-bottom: 15px; color: var(--text-muted); line-height: 1.5;">"${r.narrative}"</div>
-
-                ${meterHtml}
-                ${fileHtml}
-
-                <div style="background:#f8fafc; padding:10px; border-radius:6px; margin-top:10px;">
-                    <strong style="font-size:0.8rem; color:#64748b;">ASSOCIATES / LINKS:</strong>
-                    <div style="margin-top:5px;">
-                        ${r.associates.length > 0 ? r.associates.map(a => `<span class="tag" style="display:inline-flex; margin-right:5px;">${a}</span>`).join('') : 'None'}
-                    </div>
+                <div style="font-size:1.1rem; margin-bottom:10px;">
+                    <i class="fa-solid fa-user-secret"></i> 
+                    ${isPrimary ? `<span style="text-decoration:underline; text-decoration-color:var(--danger)">${h.poiName}</span> (TARGET)` : h.poiName}
                 </div>
+
+                <div style="background:rgba(0,0,0,0.3); padding:10px; border-left:2px solid var(--text-muted); font-style:italic; color:var(--text-muted)">
+                    "${h.narrative}"
+                </div>
+
+                <div style="margin-top:15px;">
+                    <div style="font-size:0.8rem; margin-bottom:5px; color:var(--accent-cyan)">NETWORK_CONNECTIONS:</div>
+                    ${h.associates.length > 0 ? 
+                        h.associates.map(a => `<span class="tag-node ${a.toLowerCase().includes(q) ? 'tag-alert' : ''}">${a}</span>`).join('') 
+                        : '<span style="color:var(--text-muted)">// NO KNOWN ASSOCIATES</span>'}
+                </div>
+
+                ${h.asset ? `<div style="margin-top:10px; font-size:0.8rem; font-family:monospace">
+                    MACHINE: ${h.asset} | IN: $${h.turnover} | OUT: $${h.win}
+                </div>` : ''}
             </div>
             `;
         });
-        resultsDiv.innerHTML = html;
+        res.innerHTML = html;
     }
 
-    renderDashboard();
-</script>
+    // INITIALIZE
+    initSystem();
 
+</script>
 </body>
 </html>
