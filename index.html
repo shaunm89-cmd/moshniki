@@ -3,85 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The $42.95 Rule</title>
+    <title>Life Trade Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0a0a0c; color: #e4e4e7; font-family: 'Inter', sans-serif; }
-        .stat-card { background: #111113; border: 1px solid #27272a; border-radius: 1rem; }
-        .highlight { color: #3b82f6; font-weight: bold; }
-        input { background: #18181b !important; border: 1px solid #3f3f46 !important; color: white !important; }
+        body { background: #09090b; color: #fafafa; font-family: 'Inter', sans-serif; }
+        .glass-card { background: #18181b; border: 1px solid #27272a; border-radius: 1.5rem; }
+        .input-style { background: #09090b; border: 1px solid #3f3f46; border-radius: 0.75rem; padding: 0.75rem; width: 100%; outline: none; transition: border-color 0.2s; }
+        .input-style:focus { border-color: #3b82f6; }
+        .accent-text { color: #3b82f6; font-weight: 800; }
     </style>
 </head>
-<body class="p-6">
-    <div class="max-w-xl mx-auto mt-10">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl font-black tracking-tighter uppercase mb-2">The <span class="text-blue-500">$42.95</span> Rule</h1>
-            <p class="text-zinc-500 italic">Your time is worth more than a "Buy Now" button.</p>
-        </header>
-
-        <div class="stat-card p-8 shadow-2xl">
-            <div class="space-y-5">
-                <div>
-                    <label class="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">The Item</label>
-                    <input type="text" id="item" class="w-full p-4 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="What are we looking at?">
+<body class="min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+        
+        <div class="glass-card p-6 space-y-6">
+            <div>
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span>⚙️</span> Personalize Your Numbers
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs text-zinc-500 uppercase font-bold mb-1">Weekly Take-Home Pay ($)</label>
+                        <input type="number" id="weeklyPay" value="1286" class="input-style" oninput="updateHourly()">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-zinc-500 uppercase font-bold mb-1">Weekly Work Hours</label>
+                        <input type="number" id="weeklyHours" value="30" class="input-style" oninput="updateHourly()">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-zinc-500 uppercase font-bold mb-1">Your Big Goal (e.g., March Trip Cost)</label>
+                        <input type="number" id="goalTotal" value="2500" class="input-style">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Price Tag ($)</label>
-                    <input type="number" id="price" class="w-full p-4 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="0.00">
-                </div>
-                <button onclick="processPurchase()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg transition-all active:scale-95">
-                    CONVERT TO REALITY
-                </button>
-            </div>
-
-            <div id="display" class="hidden mt-8 pt-8 border-t border-zinc-800 animate-in fade-in duration-500">
-                <div class="space-y-6">
-                    <div class="flex justify-between items-center">
-                        <span class="text-zinc-400">Work Sacrifice:</span>
-                        <span id="hours" class="text-xl font-mono text-blue-400">0 Hours</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-zinc-400">Trip Percentage:</span>
-                        <span id="trip" class="text-xl font-mono text-orange-400">0%</span>
-                    </div>
-                    <div class="p-4 bg-zinc-900/50 rounded-lg border-l-2 border-blue-500">
-                        <p id="verdict" class="text-sm leading-relaxed text-zinc-300 italic"></p>
-                    </div>
+                <div class="mt-4 p-4 bg-blue-500/10 rounded-xl text-center">
+                    <p class="text-xs text-zinc-400">YOUR TIME IS CURRENTLY WORTH</p>
+                    <p class="text-2xl font-black text-blue-400">$<span id="hourlyRateDisplay">42.87</span>/hr</p>
                 </div>
             </div>
         </div>
 
-        <div class="mt-8 grid grid-cols-1 gap-4 text-xs text-zinc-500 uppercase tracking-widest text-center">
-            <p>1 Week of Work = $1,286</p>
-            <p>1 Hour of Work = $42.95</p>
+        <div class="glass-card p-6 border-blue-500/30">
+            <h2 class="text-xl font-bold mb-4">🛒 Impulse Reality Check</h2>
+            <div class="space-y-4">
+                <input type="text" id="itemName" placeholder="What are you buying?" class="input-style">
+                <input type="number" id="itemPrice" placeholder="Price ($)" class="input-style">
+                <button onclick="calculateTrade()" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-4 rounded-xl transition-all shadow-lg shadow-blue-500/20">
+                    CONVERT TO LIFE-TIME
+                </button>
+            </div>
+
+            <div id="results" class="hidden mt-8 space-y-4 animate-in fade-in slide-in-from-bottom-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-zinc-900 rounded-xl">
+                        <p class="text-[10px] text-zinc-500 uppercase">Hours of Work</p>
+                        <p id="resHours" class="text-xl font-bold text-red-400">--</p>
+                    </div>
+                    <div class="p-4 bg-zinc-900 rounded-xl">
+                        <p class="text-[10px] text-zinc-500 uppercase">Goal Impact</p>
+                        <p id="resGoal" class="text-xl font-bold text-orange-400">--</p>
+                    </div>
+                </div>
+                <p id="verdictText" class="text-sm text-zinc-400 italic bg-black/30 p-4 rounded-lg border-l-2 border-blue-500"></p>
+                
+                <button onclick="logSave()" class="w-full bg-green-600/20 text-green-400 border border-green-600/30 font-bold py-2 rounded-lg hover:bg-green-600/30">
+                    I'm Walking Away (Log a Win)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mt-8 glass-card p-6 flex flex-wrap justify-around gap-4 text-center">
+        <div>
+            <p class="text-xs text-zinc-500 uppercase">Total Money Saved</p>
+            <p id="totalSaved" class="text-2xl font-bold text-green-500">$0</p>
+        </div>
+        <div>
+            <p class="text-xs text-zinc-500 uppercase">Life-Hours Reclaimed</p>
+            <p id="totalHours" class="text-2xl font-bold text-blue-500 text-blue-400">0.0</p>
+        </div>
+        <div>
+            <p class="text-xs text-zinc-500 uppercase">Wins</p>
+            <p id="totalWins" class="text-2xl font-bold text-purple-500">0</p>
         </div>
     </div>
 
     <script>
-        function processPurchase() {
-            const item = document.getElementById('item').value;
-            const price = parseFloat(document.getElementById('price').value);
-            const HOURLY = 42.95;
-            const TRIP_BUDGET = 2500;
+        let savingsData = { money: 0, hours: 0, wins: 0 };
+        let currentHourly = 42.87;
 
-            if (!item || isNaN(price)) return;
+        function updateHourly() {
+            const pay = document.getElementById('weeklyPay').value || 0;
+            const hours = document.getElementById('weeklyHours').value || 1;
+            currentHourly = (pay / hours).toFixed(2);
+            document.getElementById('hourlyRateDisplay').innerText = currentHourly;
+        }
 
-            const hoursNeeded = (price / HOURLY).toFixed(1);
-            const tripCost = ((price / TRIP_BUDGET) * 100).toFixed(1);
-
-            document.getElementById('hours').innerText = `${hoursNeeded} Hours`;
-            document.getElementById('trip').innerText = `${tripCost}%`;
+        function calculateTrade() {
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            const goal = parseFloat(document.getElementById('goalTotal').value);
+            const name = document.getElementById('itemName').value || "this item";
             
-            let message = `To buy this ${item}, you have to trade away ${hoursNeeded} hours of your life. `;
-            
-            if (price > 100) {
-                message += `That's ${tripCost}% of your total budget for your March trip. Would you rather have this item, or a significantly better time in March?`;
-            } else {
-                message += `It seems small, but if you do this 5 times, you've just deleted a whole day of your upcoming holiday.`;
-            }
+            if(!price) return;
 
-            document.getElementById('verdict').innerText = message;
-            document.getElementById('display').classList.remove('hidden');
+            const hours = (price / currentHourly).toFixed(1);
+            const goalImpact = ((price / goal) * 100).toFixed(1);
+
+            document.getElementById('resHours').innerText = `${hours} hrs`;
+            document.getElementById('resGoal').innerText = `${goalImpact}%`;
+            document.getElementById('verdictText').innerText = `Buying ${name} means trading ${hours} hours of your life. That's ${goalImpact}% of your target goal gone.`;
+            
+            document.getElementById('results').classList.remove('hidden');
+        }
+
+        function logSave() {
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            const hours = parseFloat(price / currentHourly);
+            
+            savingsData.money += price;
+            savingsData.hours += hours;
+            savingsData.wins += 1;
+
+            document.getElementById('totalSaved').innerText = `$${savingsData.money.toFixed(2)}`;
+            document.getElementById('totalHours').innerText = savingsData.hours.toFixed(1);
+            document.getElementById('totalWins').innerText = savingsData.wins;
+
+            // Reset UI
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('itemPrice').value = '';
+            document.getElementById('itemName').value = '';
+            alert("Win logged! You just bought back your freedom.");
         }
     </script>
 </body>
