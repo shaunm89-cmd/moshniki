@@ -1,648 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Why I Keep Money In My Account</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg: #060608;
-      --card: #101218;
-      --accent: #3fbf7f;
-      --accent-soft: rgba(63,191,127,0.16);
-      --text: #f5f5f7;
-      --muted: #a0a4b8;
-      --danger: #ff4f6a;
-      --warning: #ffb347;
-      --good: #4fd1c5;
-      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --radius-lg: 14px;
-      --radius-md: 10px;
-      --shadow-soft: 0 18px 45px rgba(0,0,0,0.65);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background: radial-gradient(circle at top, #1b2136 0, #050509 55%);
-      color: var(--text);
-      font-family: var(--font-main);
-      line-height: 1.6;
-      padding: 32px 16px 48px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .page {
-      width: 100%;
-      max-width: 900px;
-    }
-
-    .hero {
-      background: linear-gradient(140deg, #121624, #090a10 45%, #121b16 100%);
-      border-radius: 22px;
-      padding: 26px 24px 24px;
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(255,255,255,0.05);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(63,191,127,0.06) 0, transparent 55%),
-        radial-gradient(circle at 100% 0%, rgba(97,218,251,0.07) 0, transparent 55%);
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.2fr);
-      gap: 20px;
-      align-items: center;
-    }
-
-    @media (max-width: 720px) {
-      body {
-        padding: 20px 10px 32px;
-      }
-      .hero-inner {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .hero {
-        padding: 22px 18px 18px;
-      }
-    }
-
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      background: rgba(0,0,0,0.45);
-      border: 1px solid rgba(255,255,255,0.06);
-      margin-bottom: 10px;
-    }
-
-    .hero-tag-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(63,191,127,0.8);
-    }
-
-    .hero-title {
-      font-size: 26px;
-      line-height: 1.25;
-      margin-bottom: 10px;
-    }
-
-    .hero-title span.highlight {
-      color: var(--accent);
-    }
-
-    .hero-sub {
-      font-size: 14px;
-      color: var(--muted);
-      max-width: 460px;
-      margin-bottom: 16px;
-    }
-
-    .hero-list {
-      list-style: none;
-      font-size: 13px;
-      color: var(--muted);
-      display: grid;
-      gap: 4px;
-      margin-bottom: 16px;
-    }
-
-    .hero-list li::before {
-      content: "•";
-      color: var(--accent);
-      margin-right: 6px;
-    }
-
-    .hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .btn-primary {
-      border: none;
-      outline: none;
-      cursor: pointer;
-      border-radius: 999px;
-      padding: 7px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, #3fbf7f, #4fd1c5);
-      color: #020306;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.6);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 34px rgba(0,0,0,0.7);
-    }
-
-    .btn-primary span.icon {
-      font-size: 15px;
-    }
-
-    .hero-note {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .hero-note strong {
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .hero-card {
-      background: rgba(5,6,10,0.78);
-      border-radius: 18px;
-      padding: 14px 13px 12px;
-      border: 1px solid rgba(255,255,255,0.05);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.65);
-      backdrop-filter: blur(18px);
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .hero-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .hero-card-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-    }
-
-    .hero-badge-row {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .hero-pill {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(12,16,24,0.9);
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .hero-pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-    }
-
-    .hero-pill-dot.green { background: var(--good); }
-    .hero-pill-dot.yellow { background: var(--warning); }
-    .hero-pill-dot.red { background: var(--danger); }
-
-    .meter {
-      margin-top: 10px;
-      margin-bottom: 8px;
-    }
-
-    .meter-label-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .meter-bar {
-      height: 8px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #ff4f6a 0, #ffb347 45%, #3fbf7f 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .meter-indicator {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: #ffffff;
-      box-shadow: 0 0 8px rgba(255,255,255,0.7);
-      transition: left 0.3s ease-out;
-    }
-
-    .hero-card-list {
-      list-style: none;
-      display: grid;
-      gap: 3px;
-      margin-top: 4px;
-    }
-
-    .hero-card-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .hero-card-list span.label {
-      color: var(--muted);
-    }
-
-    .hero-card-list span.value {
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    main {
-      margin-top: 26px;
-      display: grid;
-      gap: 18px;
-    }
-
-    .section {
-      background: rgba(5,6,10,0.9);
-      border-radius: var(--radius-lg);
-      padding: 18px 16px 16px;
-      border: 1px solid rgba(255,255,255,0.04);
-      box-shadow: 0 14px 34px rgba(0,0,0,0.7);
-    }
-
-    .section h2 {
-      font-size: 16px;
-      margin-bottom: 6px;
-    }
-
-    .section p {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .section ul {
-      list-style: none;
-      font-size: 13px;
-      color: var(--muted);
-      display: grid;
-      gap: 5px;
-    }
-
-    .section ul li::before {
-      content: "–";
-      color: var(--accent);
-      margin-right: 6px;
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
-    }
-
-    .pill {
-      font-size: 11px;
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(15,18,26,0.95);
-      color: var(--muted);
-    }
-
-    .two-column {
-      display: grid;
-      gap: 12px;
-    }
-
-    @media (min-width: 780px) {
-      .two-column {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    .bad-good {
-      display: grid;
-      gap: 10px;
-    }
-
-    @media (min-width: 720px) {
-      .bad-good {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    .card-small {
-      background: rgba(9,10,18,0.95);
-      border-radius: var(--radius-md);
-      padding: 12px 11px 10px;
-      border: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .card-small h3 {
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-
-    .card-small p {
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
-
-    .step-list {
-      list-style: none;
-      display: grid;
-      gap: 6px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .step-list li {
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-    }
-
-    .step-num {
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: rgba(63,191,127,0.16);
-      color: var(--accent);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .footer-note {
-      margin-top: 12px;
-      font-size: 11px;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .footer-note strong {
-      color: var(--accent);
-      font-weight: 600;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The $42.95 Rule</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0a0a0c; color: #e4e4e7; font-family: 'Inter', sans-serif; }
+        .stat-card { background: #111113; border: 1px solid #27272a; border-radius: 1rem; }
+        .highlight { color: #3b82f6; font-weight: bold; }
+        input { background: #18181b !important; border: 1px solid #3f3f46 !important; color: white !important; }
+    </style>
 </head>
-<body>
-  <div class="page">
-    <header class="hero">
-      <div class="hero-inner">
-        <div>
-          <div class="hero-tag">
-            <span class="hero-tag-dot"></span>
-            <span>Money with a plan</span>
-          </div>
-          <h1 class="hero-title">
-            Why I keep my <span class="highlight">money</span> in my account
-          </h1>
-          <p class="hero-sub">
-            This page is a reminder to my future self: I save so I can say “yes” to what actually matters, not just whatever is in front of me today.
-          </p>
-          <ul class="hero-list">
-            <li>Less impulsive buying, more intentional choices.</li>
-            <li>Cash ready for real emergencies and real experiences.</li>
-            <li>Room to help friends when it actually counts.</li>
-          </ul>
-          <div class="hero-cta-row">
-            <button class="btn-primary" onclick="scrollToSection('plan')">
-              <span class="icon">⏸</span>
-              <span>Pause before I buy</span>
-            </button>
-            <span class="hero-note">
-              One question first: <strong>Will I still want this in 7 days?</strong>
-            </span>
-          </div>
-        </div>
+<body class="p-6">
+    <div class="max-w-xl mx-auto mt-10">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-black tracking-tighter uppercase mb-2">The <span class="text-blue-500">$42.95</span> Rule</h1>
+            <p class="text-zinc-500 italic">Your time is worth more than a "Buy Now" button.</p>
+        </header>
 
-        <aside class="hero-card" aria-label="Impulse vs Intent meter">
-          <div class="hero-card-header">
-            <div class="hero-card-title">Today’s Money Mood</div>
-            <div class="hero-badge-row">
-              <div class="hero-pill">
-                <span class="hero-pill-dot red"></span>
-                <span>Impulse</span>
-              </div>
-              <div class="hero-pill">
-                <span class="hero-pill-dot green"></span>
-                <span>Intentional</span>
-              </div>
+        <div class="stat-card p-8 shadow-2xl">
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">The Item</label>
+                    <input type="text" id="item" class="w-full p-4 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="What are we looking at?">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Price Tag ($)</label>
+                    <input type="number" id="price" class="w-full p-4 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="0.00">
+                </div>
+                <button onclick="processPurchase()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg transition-all active:scale-95">
+                    CONVERT TO REALITY
+                </button>
             </div>
-          </div>
 
-          <div class="meter">
-            <div class="meter-label-row">
-              <span>Spending just to spend</span>
-              <span>Saving for what I really want</span>
+            <div id="display" class="hidden mt-8 pt-8 border-t border-zinc-800 animate-in fade-in duration-500">
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <span class="text-zinc-400">Work Sacrifice:</span>
+                        <span id="hours" class="text-xl font-mono text-blue-400">0 Hours</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-zinc-400">Trip Percentage:</span>
+                        <span id="trip" class="text-xl font-mono text-orange-400">0%</span>
+                    </div>
+                    <div class="p-4 bg-zinc-900/50 rounded-lg border-l-2 border-blue-500">
+                        <p id="verdict" class="text-sm leading-relaxed text-zinc-300 italic"></p>
+                    </div>
+                </div>
             </div>
-            <div class="meter-bar">
-              <div class="meter-indicator" id="meterIndicator" style="left: 60%;"></div>
-            </div>
-          </div>
-
-          <ul class="hero-card-list">
-            <li>
-              <span class="label">Money in account</span>
-              <span class="value" id="moneyInAccount">$0 → Freedom</span>
-            </li>
-            <li>
-              <span class="label">Impulsive buys avoided</span>
-              <span class="value" id="avoidedCount">0 today</span>
-            </li>
-            <li>
-              <span class="label">Future me</span>
-              <span class="value">Already grateful</span>
-            </li>
-          </ul>
-        </aside>
-      </div>
-    </header>
-
-    <main>
-      <section class="section" id="why">
-        <h2>Why I don’t just spend because I can</h2>
-        <p>
-          Impulse buying usually gives a quick hit of “feel good”, then disappears and leaves me with less money for the stuff I actually care about.
-        </p>
-        <p>
-          When I keep money in my account, I’m building a buffer for the unexpected, so a random bill, car issue, or life curveball doesn’t completely wreck me.
-        </p>
-        <ul>
-          <li>Impulse buys often bring regret, not real happiness.</li>
-          <li>Random spending slowly kills savings and future plans.</li>
-          <li>Money in the bank means less stress and more options.</li>
-        </ul>
-        <div class="pill-row">
-          <div class="pill">I don’t have to buy every “nice” thing I see.</div>
-          <div class="pill">I’m allowed to wait, think, and then choose.</div>
-          <div class="pill">Having money beats having clutter.</div>
         </div>
-      </section>
 
-      <section class="section two-column" id="goals">
-        <div>
-          <h2>Saving for emergencies and real experiences</h2>
-          <p>
-            Emergencies are guaranteed at some point, and having cash ready means I don’t have to panic, borrow, or go into debt just to get through it.
-          </p>
-          <p>
-            But I’m not only saving for disasters, I’m saving so I can say yes to the experiences I actually want: trips, events, gear I’ll genuinely use, and moments I’ll remember.
-          </p>
-          <ul>
-            <li>Emergency cash keeps surprise expenses from becoming full-blown crises.</li>
-            <li>Savings turn “I wish I could go” into “I’ve already got this covered”.</li>
-            <li>Waiting and saving makes big purchases feel earned, not random.</li>
-          </ul>
+        <div class="mt-8 grid grid-cols-1 gap-4 text-xs text-zinc-500 uppercase tracking-widest text-center">
+            <p>1 Week of Work = $1,286</p>
+            <p>1 Hour of Work = $42.95</p>
         </div>
-        <div>
-          <h2>Having enough to help friends</h2>
-          <p>
-            When I’m not broke from my own impulse buys, I’m actually in a position to help the people I care about when they really need it.
-          </p>
-          <p>
-            Keeping money in my account means I’m choosing to be the kind of friend who can say “Yeah, I’ve got you” instead of “I would help, but I’m tapped out”.
-          </p>
-          <ul>
-            <li>I can lend or gift a bit without wrecking my own stability.</li>
-            <li>Helping someone in a tight moment feels better than any random purchase.</li>
-            <li>Money becomes a tool for support, not just self-soothing.</li>
-          </ul>
-        </div>
-      </section>
+    </div>
 
-      <section class="section" id="compare">
-        <h2>Impulsive spending vs intentional saving</h2>
-        <div class="bad-good">
-          <div class="card-small">
-            <h3>When I buy just because I feel like it</h3>
-            <p>
-              This is spending to fix boredom, stress, or emotions, not an actual need or real goal.
-            </p>
-            <ul>
-              <li>Feels good for a short time, then I forget about it.</li>
-              <li>Slowly drains my account and kills future plans.</li>
-              <li>Makes surprise bills hit way harder than they need to.</li>
-              <li>Can leave me saying “no” when something I truly want comes up.</li>
-            </ul>
-          </div>
-          <div class="card-small">
-            <h3>When I keep money for what matters</h3>
-            <p>
-              This is me deciding my money has a job: protect me, create options, and back up my future self.
-            </p>
-            <ul>
-              <li>I can handle emergencies without going straight into panic mode.</li>
-              <li>I have cash ready for actual goals, not just quick hits.</li>
-              <li>I can enjoy experiences instead of worrying about the price later.</li>
-              <li>I have space to be generous when someone I care about needs help.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
+    <script>
+        function processPurchase() {
+            const item = document.getElementById('item').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const HOURLY = 42.95;
+            const TRIP_BUDGET = 2500;
 
-      <section class="section" id="plan">
-        <h2>My simple “don’t impulse buy” plan</h2>
-        <p>
-          The goal isn’t to never spend, it’s to stop setting my money on fire for things I honestly won’t care about in a week.
-        </p>
-        <ol class="step-list">
-          <li>
-            <span class="step-num">1</span>
-            <span>
-              When I want to buy something, I pause for at least 24 hours (longer for bigger stuff) before I decide.
-            </span>
-          </li>
-          <li>
-            <span class="step-num">2</span>
-            <span>
-              I ask: “If this money was still in my account next week, what would I be happier about – having this thing or having the cash?”
-            </span>
-          </li>
-          <li>
-            <span class="step-num">3</span>
-            <span>
-              If it’s not a real need or a long-term want, I leave the money where it is and count it as a win for future me.
-            </span>
-          </li>
-          <li>
-            <span class="step-num">4</span>
-            <span>
-              I keep a note or list of what I’m actually saving for: emergencies, experiences I care about, and helping people close to me.
-            </span>
-          </li>
-          <li>
-            <span class="step-num">5</span>
-            <span>
-              Every time I skip an impulse buy, I remind myself: I just bought myself more freedom, options, and peace of mind.
-            </span>
-          </li>
-        </ol>
-      </section>
+            if (!item || isNaN(price)) return;
 
-      <p class="footer-note">
-        This page is my reminder: <strong>money isn’t just for spending, it’s for building the life I actually want</strong>.
-      </p>
-    </main>
-  </div>
+            const hoursNeeded = (price / HOURLY).toFixed(1);
+            const tripCost = ((price / TRIP_BUDGET) * 100).toFixed(1);
 
-  <script>
-    // Tiny script to let you interact with the page a bit (optional).
-    function scrollToSection(id) {
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
+            document.getElementById('hours').innerText = `${hoursNeeded} Hours`;
+            document.getElementById('trip').innerText = `${tripCost}%`;
+            
+            let message = `To buy this ${item}, you have to trade away ${hoursNeeded} hours of your life. `;
+            
+            if (price > 100) {
+                message += `That's ${tripCost}% of your total budget for your March trip. Would you rather have this item, or a significantly better time in March?`;
+            } else {
+                message += `It seems small, but if you do this 5 times, you've just deleted a whole day of your upcoming holiday.`;
+            }
 
-    // You can tweak this if you want later to reflect how “intentional” you’re feeling.
-    (function randomizeMeter() {
-      const indicator = document.getElementById("meterIndicator");
-      if (!indicator) return;
-      const base = 55;
-      const wiggle = Math.random() * 20 - 10;
-      indicator.style.left = Math.max(5, Math.min(95, base + wiggle)) + "%";
-    })();
-  </script>
+            document.getElementById('verdict').innerText = message;
+            document.getElementById('display').classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
