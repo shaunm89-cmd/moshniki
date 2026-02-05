@@ -3,76 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wait. Is it worth it?</title>
+    <title>The Freedom Gate</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
-        .card { background: #1e293b; border: 1px solid #334155; }
+        body { font-family: 'Space Grotesk', sans-serif; background: #050505; color: #fff; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .accent-gradient { background: linear-gradient(90deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
-<body class="p-6 md:p-12">
-    <div class="max-w-3xl mx-auto">
-        <header class="mb-12 text-center">
-            <h1 class="text-4xl font-bold text-blue-400 mb-4">The Opportunity Gate</h1>
-            <p class="text-slate-400 italic">"Saving isn't about saying no today; it's about saying YES later."</p>
-        </header>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-        <div class="grid md:grid-cols-2 gap-6 mb-12">
-            <div class="card p-6 rounded-xl">
-                <h2 class="text-xl font-semibold mb-3 text-green-400">🚀 The Opportunity Fund</h2>
-                <p class="text-sm text-slate-300">Money in the bank is "Ready Mode." When a real deal, a better gadget, or a spontaneous adventure comes up, you can grab it instantly because you didn't blow the cash on a random Tuesday.</p>
+    <div class="max-w-2xl w-full space-y-8">
+        <div class="text-center">
+            <h1 class="text-5xl font-bold accent-gradient mb-2">Is it worth the trade?</h1>
+            <p class="text-gray-400">"Having money is the ability to say YES to the things that actually matter."</p>
+        </div>
+
+        <div class="glass p-8 rounded-3xl shadow-2xl">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">What's the shiny object?</label>
+                    <input type="text" id="itemName" class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:outline-none focus:border-blue-500 transition" placeholder="e.g. Mechanical Keyboard, Random Gadget...">
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">The Damage ($)</label>
+                    <input type="number" id="itemPrice" class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:outline-none focus:border-blue-500 transition" placeholder="0.00">
+                </div>
+
+                <button onclick="calculateTradeOff()" class="w-full bg-white text-black font-bold py-4 rounded-xl hover:bg-gray-200 transition transform hover:scale-[1.02] active:scale-95">
+                    RUN REALITY CHECK
+                </button>
             </div>
-            <div class="card p-6 rounded-xl">
-                <h2 class="text-xl font-semibold mb-3 text-purple-400">🛡️ Financial Peace</h2>
-                <p class="text-sm text-slate-300">It's not just for broken water heaters. It's for the "I'm tired of this job" fund or the "I want to help a friend" fund. Cash is the ultimate tool for flexibility.</p>
+
+            <div id="results" class="hidden mt-8 pt-8 border-t border-white/10 space-y-6 animate-fade-in">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-red-500/10 rounded-xl border border-red-500/20 text-center">
+                        <p class="text-xs text-red-400 uppercase">Trip Impact</p>
+                        <p id="tripMath" class="text-xl font-bold">--</p>
+                    </div>
+                    <div class="p-4 bg-blue-500/10 rounded-xl border border-blue-500/20 text-center">
+                        <p class="text-xs text-blue-400 uppercase">Life Hours</p>
+                        <p id="workMath" class="text-xl font-bold">--</p>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white/5 rounded-2xl italic text-gray-300 border-l-4 border-purple-500">
+                    <span id="realityPunchline"></span>
+                </div>
             </div>
         </div>
 
-        <div class="card p-8 rounded-2xl shadow-2xl border-2 border-blue-500/30">
-            <h2 class="text-2xl font-bold mb-6">Pause. Run the numbers.</h2>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm mb-2">What are you about to buy?</label>
-                    <input type="text" id="item" class="w-full bg-slate-900 border border-slate-700 p-3 rounded" placeholder="e.g. New Tech Gadget">
-                </div>
-                <div>
-                    <label class="block text-sm mb-2">Price ($)</label>
-                    <input type="number" id="price" class="w-full bg-slate-900 border border-slate-700 p-3 rounded" placeholder="0.00">
-                </div>
-                <button onclick="analyze()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition">Analyze Purchase</button>
+        <div class="grid md:grid-cols-3 gap-4 text-center text-sm">
+            <div class="p-4 glass rounded-2xl">
+                <h3 class="font-bold text-blue-400">Not An Emergency</h3>
+                <p class="text-gray-500 mt-1">Cash is a "spontaneous joy" fund. Use it for the stuff you'll actually remember.</p>
             </div>
-
-            <div id="result" class="mt-8 hidden p-4 bg-slate-900 rounded-lg border-l-4 border-yellow-500">
-                <p id="analysis-text" class="text-lg"></p>
+            <div class="p-4 glass rounded-2xl">
+                <h3 class="font-bold text-purple-400">The 48h Rule</h3>
+                <p class="text-gray-500 mt-1">Impulses are chemical. Wait 2 days, and the "need" usually evaporates.</p>
+            </div>
+            <div class="p-4 glass rounded-2xl">
+                <h3 class="font-bold text-green-400">Freedom > Junk</h3>
+                <p class="text-gray-500 mt-1">Every $100 saved is a "Get out of Jail Free" card for future stress.</p>
             </div>
         </div>
-
-        <footer class="mt-12 text-center text-slate-500 text-xs">
-            Remember: If you buy it, you're trading a piece of your March trip for this.
-        </footer>
     </div>
 
     <script>
-        function analyze() {
-            const item = document.getElementById('item').value;
-            const price = document.getElementById('price').value;
-            const resultDiv = document.getElementById('result');
-            const resultText = document.getElementById('analysis-text');
+        function calculateTradeOff() {
+            const name = document.getElementById('itemName').value;
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            const results = document.getElementById('results');
 
-            if (!price || !item) return;
+            if (!name || isNaN(price)) return;
 
-            resultDiv.classList.remove('hidden');
-            
-            // Logic: Calculate how many "hours of life" or "trip days" this costs
-            const tripDayCost = 300; // Hypothetical cost per day for a nice trip
-            const days = (price / tripDayCost).toFixed(1);
+            // Constants based on your life
+            const HOURLY_WAGE = 35; // Example wage
+            const TRIP_BUDGET = 2500; 
 
-            resultText.innerHTML = `
-                <span class="text-yellow-400 font-bold">Hold up!</span><br>
-                Spending <strong>$${price}</strong> on <em>${item}</em> is roughly <strong>${days} days</strong> of a high-end holiday. 
-                <br><br>
-                <span class="text-sm italic">Close this tab and wait 24 hours. If you still want it then, it's not an impulse.</span>
-            `;
+            // Logic
+            const workHours = (price / HOURLY_WAGE).toFixed(1);
+            const tripPercentage = ((price / TRIP_BUDGET) * 100).toFixed(1);
+
+            document.getElementById('tripMath').innerText = `${tripPercentage}% of your trip`;
+            document.getElementById('workMath').innerText = `${workHours} hours of work`;
+
+            let punchline = "";
+            if (price > 200) {
+                punchline = `Is ${name} worth nearly ${workHours} hours of you sitting at your desk? That's almost a full shift for something you didn't even want yesterday.`;
+            } else {
+                punchline = `This takes away ${tripPercentage}% of your total budget for March. Do you want ${name}, or do you want a better experience on your week off?`;
+            }
+
+            document.getElementById('realityPunchline').innerText = punchline;
+            results.classList.remove('hidden');
         }
     </script>
 </body>
