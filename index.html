@@ -3,634 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solo Travel NSW | The Economic Guide</title>
+    <title>Wait. Is it worth it?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #e67e22;
-            --light: #ecf0f1;
-            --dark: #34495e;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --danger: #c0392b;
-            --text: #333;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background-color: #f9f9f9;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('[https://placehold.co/1200x600/2c3e50/ffffff?text=Sydney+Solo+Travel+Landscape](https://placehold.co/1200x600/2c3e50/ffffff?text=Sydney+Solo+Travel+Landscape)');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            text-align: center;
-            padding: 4rem 1rem;
-        }
-
-        header h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto;
-            opacity: 0.9;
-        }
-
-        /* Navigation */
-        nav {
-            background: var(--dark);
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            text-align: center;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: 500;
-            font-size: 1.1rem;
-        }
-
-        nav a:hover {
-            color: var(--accent);
-        }
-
-        /* Container */
-       .container {
-            max-width: 1100px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* Intro Section */
-       .intro {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-       .methodology-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-       .methodology-item {
-            background: var(--light);
-            padding: 1rem;
-            border-radius: 6px;
-        }
-
-       .methodology-item h4 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        /* Destination Cards */
-       .destination {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            margin-bottom: 3rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        @media (min-width: 768px) {
-           .destination {
-                flex-direction: row;
-            }
-        }
-
-       .dest-img {
-            flex: 1;
-            min-height: 300px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-       .dest-img span {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 5px 10px;
-            font-size: 0.8rem;
-            border-radius: 4px;
-        }
-
-       .dest-content {
-            flex: 1.5;
-            padding: 2rem;
-        }
-
-       .dest-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid var(--light);
-            padding-bottom: 1rem;
-        }
-
-       .dest-title h2 {
-            color: var(--primary);
-        }
-
-       .dest-title.tag {
-            display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
-
-       .dest-rating {
-            text-align: right;
-        }
-
-       .rating-score {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--success);
-        }
-
-       .dest-details h3 {
-            font-size: 1.1rem;
-            margin: 1rem 0 0.5rem;
-            color: var(--dark);
-        }
-
-       .dest-details ul {
-            list-style-position: inside;
-            color: #555;
-            margin-bottom: 1rem;
-        }
-
-        /* Cost Table */
-       .cost-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-       .cost-table th,.cost-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-       .cost-table th {
-            background-color: var(--primary);
-            color: white;
-        }
-
-       .cost-table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-       .cost-total {
-            font-weight: bold;
-            background-color: var(--light);
-        }
-
-        /* Comparison Matrix */
-       .matrix-section {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            margin-bottom: 3rem;
-        }
-
-       .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-
-       .comparison-table th,.comparison-table td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
-        }
-
-       .comparison-table th {
-            background: var(--dark);
-            color: white;
-        }
-        
-       .comparison-table td:first-child {
-            text-align: left;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        /* Utility Classes for Ratings */
-       .low { color: var(--success); }
-       .med { color: var(--warning); }
-       .high { color: var(--danger); }
-
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+        .card { background: #1e293b; border: 1px solid #334155; }
     </style>
 </head>
-<body>
+<body class="p-6 md:p-12">
+    <div class="max-w-3xl mx-auto">
+        <header class="mb-12 text-center">
+            <h1 class="text-4xl font-bold text-blue-400 mb-4">The Opportunity Gate</h1>
+            <p class="text-slate-400 italic">"Saving isn't about saying no today; it's about saying YES later."</p>
+        </header>
 
-<header>
-    <h1>Solo Travel NSW</h1>
-    <p>Strategic Itineraries & Realistic Economic Modeling for the Solo Traveler</p>
-</header>
-
-<nav>
-    <a href="#strategy">Strategy</a>
-    <a href="#blue-mountains">Blue Mountains</a>
-    <a href="#hunter-valley">Hunter Valley</a>
-    <a href="#jervis-bay">Jervis Bay</a>
-    <a href="#port-stephens">Port Stephens</a>
-    <a href="#matrix">Comparison</a>
-</nav>
-
-<div class="container">
-
-    <section id="strategy" class="intro">
-        <h2>The Solo Economic Index</h2>
-        <p>Solo travel in NSW faces unique challenges: the "single supplement" penalty, lack of car-sharing costs, and transport connectivity. Our 2025/2026 analysis evaluates destinations based on four key pillars:</p>
-        <div class="methodology-grid">
-            <div class="methodology-item">
-                <h4>🚆 Transport Friction</h4>
-                <p>Can you get there cheaply without a car using the Opal network?</p>
+        <div class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="card p-6 rounded-xl">
+                <h2 class="text-xl font-semibold mb-3 text-green-400">🚀 The Opportunity Fund</h2>
+                <p class="text-sm text-slate-300">Money in the bank is "Ready Mode." When a real deal, a better gadget, or a spontaneous adventure comes up, you can grab it instantly because you didn't blow the cash on a random Tuesday.</p>
             </div>
-            <div class="methodology-item">
-                <h4>🛏️ Accommodation Efficiency</h4>
-                <p>Are there high-quality hostels to avoid paying for a double room alone?</p>
-            </div>
-            <div class="methodology-item">
-                <h4>🚶 Mobility</h4>
-                <p>Cost of "last mile" transport from the station to the sights.</p>
-            </div>
-            <div class="methodology-item">
-                <h4>🛡️ Social Safety</h4>
-                <p>Is the environment conducive to solo safety and interaction?</p>
+            <div class="card p-6 rounded-xl">
+                <h2 class="text-xl font-semibold mb-3 text-purple-400">🛡️ Financial Peace</h2>
+                <p class="text-sm text-slate-300">It's not just for broken water heaters. It's for the "I'm tired of this job" fund or the "I want to help a friend" fund. Cash is the ultimate tool for flexibility.</p>
             </div>
         </div>
-    </section>
 
-    <section id="blue-mountains" class="destination">
-        <div class="dest-img" style="background-image: url('[https://placehold.co/600x800/2c3e50/ffffff?text=Blue+Mountains:+Three+Sisters](https://placehold.co/600x800/2c3e50/ffffff?text=Blue+Mountains:+Three+Sisters)');">
-            <span>The Budget King</span>
-        </div>
-        <div class="dest-content">
-            <div class="dest-header">
-                <div class="dest-title">
-                    <h2>The Blue Mountains</h2>
-                    <span class="tag">High Connectivity Alpine Escape</span>
+        <div class="card p-8 rounded-2xl shadow-2xl border-2 border-blue-500/30">
+            <h2 class="text-2xl font-bold mb-6">Pause. Run the numbers.</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm mb-2">What are you about to buy?</label>
+                    <input type="text" id="item" class="w-full bg-slate-900 border border-slate-700 p-3 rounded" placeholder="e.g. New Tech Gadget">
                 </div>
-                <div class="dest-rating">
-                    <div class="rating-score">9.5/10</div>
-                    <small>Solo Feasibility</small>
+                <div>
+                    <label class="block text-sm mb-2">Price ($)</label>
+                    <input type="number" id="price" class="w-full bg-slate-900 border border-slate-700 p-3 rounded" placeholder="0.00">
                 </div>
+                <button onclick="analyze()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition">Analyze Purchase</button>
             </div>
-            <div class="dest-details">
-                <p>The "Gold Standard" for solo travel. Direct train access from Sydney Central, a dense network of hostels in Katoomba, and world-class hiking that costs nothing makes this the most economically efficient trip.</p>
-                
-                <h3>Key Logistics</h3>
-                <ul>
-                    <li><strong>Transport:</strong> Direct Train (BMT Line). Opal capped at $9.65 (Weekend) or $19.30 (Weekday).</li>
-                    <li><strong>Stay:</strong> Katoomba YHA. Heritage building, very social. $35-$50/night (Dorm).</li>
-                    <li><strong>Mobility:</strong> Explorer Bus ($59) covers all major stops for 3 days, or public bus (free/cheap).</li>
-                    <li><strong>Must Do:</strong> Scenic World ($64) or Prince Henry Cliff Walk (Free).</li>
-                </ul>
 
-                <h3>Estimated Cost (3 Days / 2 Nights)</h3>
-                <table class="cost-table">
-                    <thead>
-                        <tr>
-                            <th>Expense Category</th>
-                            <th>Cost (AUD)</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Transport (Sydney Return)</td>
-                            <td>$9.65</td>
-                            <td>Using Weekend Opal Cap</td>
-                        </tr>
-                        <tr>
-                            <td>Accommodation (2 Nights)</td>
-                            <td>$80.00</td>
-                            <td>YHA Dormitory (Avg)</td>
-                        </tr>
-                        <tr>
-                            <td>Explorer Bus Pass</td>
-                            <td>$59.00</td>
-                            <td>Valid for 3 days</td>
-                        </tr>
-                        <tr>
-                            <td>Food & Drink</td>
-                            <td>$70.00</td>
-                            <td>Bakery lunches / Self-cater dinner</td>
-                        </tr>
-                        <tr class="cost-total">
-                            <td>Total Estimated</td>
-                            <td>$218.65</td>
-                            <td>Unbeatable value</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div id="result" class="mt-8 hidden p-4 bg-slate-900 rounded-lg border-l-4 border-yellow-500">
+                <p id="analysis-text" class="text-lg"></p>
             </div>
         </div>
-    </section>
 
-    <section id="hunter-valley" class="destination">
-        <div class="dest-img" style="background-image: url('[https://placehold.co/600x800/27ae60/ffffff?text=Hunter+Valley+Vineyards](https://placehold.co/600x800/27ae60/ffffff?text=Hunter+Valley+Vineyards)');">
-            <span>The Indulgent Challenge</span>
-        </div>
-        <div class="dest-content">
-            <div class="dest-header">
-                <div class="dest-title">
-                    <h2>Hunter Valley</h2>
-                    <span class="tag">Wine, E-Bikes & Logistics</span>
-                </div>
-                <div class="dest-rating">
-                    <div class="rating-score">6/10</div>
-                    <small>Solo Feasibility</small>
-                </div>
-            </div>
-            <div class="dest-details">
-                <p>High reward, but high logistical friction. The region is spread out and lacks trains to the vineyards. The solo strategy relies heavily on E-bikes to bridge the "last mile" gap without a car.</p>
-                
-                <h3>Key Logistics</h3>
-                <ul>
-                    <li><strong>Transport:</strong> Train to Maitland + Taxi/Uber ($40-60 gap) to Pokolbin.</li>
-                    <li><strong>Stay:</strong> Hunter Valley YHA (Pokolbin). The only budget option among luxury estates.</li>
-                    <li><strong>Mobility:</strong> E-Bike Hire ($85/day) is essential to get around solo.</li>
-                    <li><strong>Must Do:</strong> Cellar door tastings ($10-$25 each).</li>
-                </ul>
+        <footer class="mt-12 text-center text-slate-500 text-xs">
+            Remember: If you buy it, you're trading a piece of your March trip for this.
+        </footer>
+    </div>
 
-                <h3>Estimated Cost (3 Days / 2 Nights)</h3>
-                <table class="cost-table">
-                    <thead>
-                        <tr>
-                            <th>Expense Category</th>
-                            <th>Cost (AUD)</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Transport (Sydney Return)</td>
-                            <td>$30.00</td>
-                            <td>Train + Shared Transfer</td>
-                        </tr>
-                        <tr>
-                            <td>Accommodation (2 Nights)</td>
-                            <td>$90.00</td>
-                            <td>YHA Dorm</td>
-                        </tr>
-                        <tr>
-                            <td>E-Bike Hire (1 Day)</td>
-                            <td>$85.00</td>
-                            <td>Essential for mobility</td>
-                        </tr>
-                        <tr>
-                            <td>Tastings & Food</td>
-                            <td>$180.00</td>
-                            <td>3-4 Wineries + Pub meals</td>
-                        </tr>
-                        <tr class="cost-total">
-                            <td>Total Estimated</td>
-                            <td>$385.00</td>
-                            <td>Moderate investment</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+    <script>
+        function analyze() {
+            const item = document.getElementById('item').value;
+            const price = document.getElementById('price').value;
+            const resultDiv = document.getElementById('result');
+            const resultText = document.getElementById('analysis-text');
 
-    <section id="jervis-bay" class="destination">
-        <div class="dest-img" style="background-image: url('[https://placehold.co/600x800/2980b9/ffffff?text=Jervis+Bay+White+Sands](https://placehold.co/600x800/2980b9/ffffff?text=Jervis+Bay+White+Sands)');">
-            <span>Nature vs. Logistics</span>
-        </div>
-        <div class="dest-content">
-            <div class="dest-header">
-                <div class="dest-title">
-                    <h2>Jervis Bay</h2>
-                    <span class="tag">Marine Sanctuary & White Sands</span>
-                </div>
-                <div class="dest-rating">
-                    <div class="rating-score">5/10</div>
-                    <small>Solo Feasibility</small>
-                </div>
-            </div>
-            <div class="dest-details">
-                <p>Stunning natural beauty but tough for soloists on a budget due to the "Accommodation Gap" (no hostels) and long travel times. Best for a digital detox.</p>
-                
-                <h3>Key Logistics</h3>
-                <ul>
-                    <li><strong>Transport:</strong> Train to Kiama + Bus to Huskisson. Very cheap (Opal cap) but takes 5+ hours.</li>
-                    <li><strong>Stay:</strong> No YHA. Motels cost $150+/night. Huge "Single Supplement" penalty.</li>
-                    <li><strong>Mobility:</strong> Walkable if staying in Huskisson. White Sands Walk is free.</li>
-                    <li><strong>Must Do:</strong> Dolphin Watch Cruise ($35-$62).</li>
-                </ul>
+            if (!price || !item) return;
 
-                <h3>Estimated Cost (3 Days / 2 Nights)</h3>
-                <table class="cost-table">
-                    <thead>
-                        <tr>
-                            <th>Expense Category</th>
-                            <th>Cost (AUD)</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Transport (Sydney Return)</td>
-                            <td>$19.30</td>
-                            <td>Opal Daily Cap (Cheap!)</td>
-                        </tr>
-                        <tr>
-                            <td>Accommodation (2 Nights)</td>
-                            <td>$300.00</td>
-                            <td>Motel (Solo occupancy)</td>
-                        </tr>
-                        <tr>
-                            <td>Activities</td>
-                            <td>$40.00</td>
-                            <td>Dolphin Cruise</td>
-                        </tr>
-                        <tr>
-                            <td>Food & Drink</td>
-                            <td>$120.00</td>
-                            <td>Cafes & Bakery</td>
-                        </tr>
-                        <tr class="cost-total">
-                            <td>Total Estimated</td>
-                            <td>$479.30</td>
-                            <td>Expensive due to accom</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+            resultDiv.classList.remove('hidden');
+            
+            // Logic: Calculate how many "hours of life" or "trip days" this costs
+            const tripDayCost = 300; // Hypothetical cost per day for a nice trip
+            const days = (price / tripDayCost).toFixed(1);
 
-    <section id="port-stephens" class="destination">
-        <div class="dest-img" style="background-image: url('[https://placehold.co/600x800/d35400/ffffff?text=Port+Stephens+Sand+Dunes](https://placehold.co/600x800/d35400/ffffff?text=Port+Stephens+Sand+Dunes)');">
-            <span>The Adventure Hub</span>
-        </div>
-        <div class="dest-content">
-            <div class="dest-header">
-                <div class="dest-title">
-                    <h2>Port Stephens</h2>
-                    <span class="tag">Sand Dunes & Wildlife</span>
-                </div>
-                <div class="dest-rating">
-                    <div class="rating-score">8/10</div>
-                    <small>Solo Feasibility</small>
-                </div>
-            </div>
-            <div class="dest-details">
-                <p>The perfect balance of adventure and social safety. The "Glamping" hostel at Samurai Beach creates a community feel, and the direct coach from Sydney removes transfer stress.</p>
-                
-                <h3>Key Logistics</h3>
-                <ul>
-                    <li><strong>Transport:</strong> Port Stephens Coaches ($65 return). Direct from Central Station.</li>
-                    <li><strong>Stay:</strong> Samurai Beach Bungalows (YHA). Glamping tents in rainforest. Very social.</li>
-                    <li><strong>Mobility:</strong> Local buses are okay, but 4WD tours pick up from the hostel.</li>
-                    <li><strong>Must Do:</strong> Sandboarding ($28) and Koala Sanctuary ($28).</li>
-                </ul>
-
-                <h3>Estimated Cost (3 Days / 2 Nights)</h3>
-                <table class="cost-table">
-                    <thead>
-                        <tr>
-                            <th>Expense Category</th>
-                            <th>Cost (AUD)</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Transport (Sydney Return)</td>
-                            <td>$65.00</td>
-                            <td>Private Coach (Direct)</td>
-                        </tr>
-                        <tr>
-                            <td>Accommodation (2 Nights)</td>
-                            <td>$80.00</td>
-                            <td>YHA Glamping Dorm</td>
-                        </tr>
-                        <tr>
-                            <td>Activities</td>
-                            <td>$56.00</td>
-                            <td>Sandboarding + Koalas</td>
-                        </tr>
-                        <tr>
-                            <td>Food & Drink</td>
-                            <td>$100.00</td>
-                            <td>Club meals / Self-cater</td>
-                        </tr>
-                        <tr class="cost-total">
-                            <td>Total Estimated</td>
-                            <td>$301.00</td>
-                            <td>Great adventure value</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <section id="matrix" class="matrix-section">
-        <h2 style="text-align: center; margin-bottom: 2rem;">Destination Comparison Matrix</h2>
-        <div style="overflow-x: auto;">
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>Blue Mountains</th>
-                        <th>Port Stephens</th>
-                        <th>Hunter Valley</th>
-                        <th>Jervis Bay</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Transport Friction</td>
-                        <td class="low">Low (Train)</td>
-                        <td class="low">Low (Direct Coach)</td>
-                        <td class="high">High (Train+Gap)</td>
-                        <td class="high">High (Multi-modal)</td>
-                    </tr>
-                    <tr>
-                        <td>Solo Accommodation</td>
-                        <td class="low">High Availability</td>
-                        <td class="low">High (Glamping)</td>
-                        <td class="med">Limited (1 YHA)</td>
-                        <td class="high">None (Motels only)</td>
-                    </tr>
-                    <tr>
-                        <td>Total 3-Day Cost</td>
-                        <td class="low">~$220</td>
-                        <td class="low">~$300</td>
-                        <td class="med">~$385</td>
-                        <td class="high">~$480+</td>
-                    </tr>
-                    <tr>
-                        <td>Social / Safety</td>
-                        <td class="low">Very High</td>
-                        <td class="low">High</td>
-                        <td class="med">Medium</td>
-                        <td class="med">Low (Isolated)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-</div>
-
-<footer>
-    <p>&copy; 2025 Solo Travel NSW Guide. Prices based on 2025/2026 estimates.</p>
-    <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 10px;">Disclaimer: This is a research prototype. Prices for Opal, YHA, and tours are subject to change.</p>
-</footer>
-
+            resultText.innerHTML = `
+                <span class="text-yellow-400 font-bold">Hold up!</span><br>
+                Spending <strong>$${price}</strong> on <em>${item}</em> is roughly <strong>${days} days</strong> of a high-end holiday. 
+                <br><br>
+                <span class="text-sm italic">Close this tab and wait 24 hours. If you still want it then, it's not an impulse.</span>
+            `;
+        }
+    </script>
 </body>
 </html>
