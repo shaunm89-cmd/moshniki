@@ -3,407 +3,634 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nicole's Treats | Handcrafted with Love</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-
+    <title>Solo Travel NSW | The Economic Guide</title>
     <style>
         :root {
-            --primary: #d4a373;      /* Warm Biscuit/Gold */
-            --accent: #e69ea3;       /* Soft Rose */
-            --text: #4a4a4a;         /* Charcoal */
-            --white: #ffffff;
-            --border: #e0e0e0;
+            --primary: #2c3e50;
+            --accent: #e67e22;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #c0392b;
+            --text: #333;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
-            font-family: 'Lato', sans-serif;
-            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            overflow-x: hidden;
-            
-            /* NEW BACKGROUND: Warm & Animated */
-            background-color: #fdfcf8; /* Cream base */
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(230, 158, 163, 0.08) 0%, transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(212, 163, 115, 0.1) 0%, transparent 25%);
-            background-attachment: fixed;
-            animation: bgPulse 10s ease-in-out infinite alternate;
+            color: var(--text);
+            background-color: #f9f9f9;
         }
 
-        @keyframes bgPulse {
-            0% { background-size: 100% 100%; }
-            100% { background-size: 110% 110%; }
-        }
-
-        /* --- HEADER --- */
+        /* Header */
         header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.02);
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('[https://placehold.co/1200x600/2c3e50/ffffff?text=Sydney+Solo+Travel+Landscape](https://placehold.co/1200x600/2c3e50/ffffff?text=Sydney+Solo+Travel+Landscape)');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--dark);
+            padding: 1rem;
             position: sticky;
             top: 0;
             z-index: 1000;
-        }
-
-        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
-        
-        nav { display: flex; justify-content: space-between; align-items: center; }
-
-        .brand-logo {
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.8rem;
-            color: var(--accent);
-            text-decoration: none;
-            line-height: 1;
-            text-shadow: 2px 2px 0px rgba(255,255,255,1);
-        }
-        .brand-logo span { color: var(--primary); }
-
-        .nav-links a {
-            margin-left: 30px;
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-        .nav-links a:hover { color: var(--accent); }
-
-        /* --- HERO --- */
-        .hero {
             text-align: center;
-            padding: 120px 20px 80px 20px;
         }
 
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4.5rem;
-            color: #333;
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 0px rgba(255,255,255,0.8);
-        }
-        .hero p {
-            font-size: 1.35rem;
-            color: #666;
-            max-width: 650px;
-            margin: 0 auto 30px auto;
-            font-weight: 300;
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            font-size: 1.1rem;
         }
 
-        /* --- ORDER MENU --- */
-        .order-wrapper {
-            background: var(--white);
-            border-radius: 20px;
-            /* Stronger shadow to pop against the new background */
-            box-shadow: 0 20px 60px rgba(100, 100, 100, 0.08); 
-            border: 1px solid white;
-            overflow: hidden;
-            margin-bottom: 80px;
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* Container */
+       .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Intro Section */
+       .intro {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+       .methodology-grid {
             display: grid;
-            grid-template-columns: 1.5fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
-        .menu-selection { padding: 40px; border-right: 1px solid var(--border); }
-        .menu-title { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 30px; color: #333; }
-
-        .menu-item {
-            display: flex; align-items: center; padding: 25px 0;
-            border-bottom: 1px solid #f0f0f0; transition: 0.3s;
-        }
-        .menu-item:last-child { border-bottom: none; }
-
-        .item-thumb {
-            width: 80px; height: 80px; border-radius: 12px;
-            object-fit: cover; margin-right: 20px; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+       .methodology-item {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 6px;
         }
 
-        .item-details { flex-grow: 1; }
-        .item-name { font-weight: 700; font-size: 1.15rem; display: block; color: #444; }
-        .item-desc { font-size: 0.9rem; color: #999; display: block; margin-top: 4px; }
-        .item-price { color: var(--primary); font-weight: 700; margin-top: 6px; display: block; }
-
-        .qty-control {
-            display: flex; align-items: center; background: #fafafa;
-            border-radius: 30px; padding: 5px; border: 1px solid #eee;
-        }
-        .qty-btn {
-            width: 35px; height: 35px; border-radius: 50%; border: none;
-            background: white; color: #333; font-weight: bold; cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; font-size: 1.2rem;
-        }
-        .qty-btn:hover { background: var(--accent); color: white; }
-        .qty-number { width: 35px; text-align: center; font-weight: bold; font-size: 1.1rem; }
-
-        /* RIGHT SIDE */
-        .order-summary { padding: 40px; background: #fffdfa; }
-
-        .summary-card {
-            background: white; border: 1px solid #f0f0f0; border-radius: 12px;
-            padding: 25px; margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+       .methodology-item h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
 
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.95rem; }
-        .summary-total { 
-            display: flex; justify-content: space-between; 
-            margin-top: 20px; padding-top: 20px; 
-            border-top: 2px dashed #e0e0e0; 
-            font-weight: 800; font-size: 1.5rem; color: #333;
+        /* Destination Cards */
+       .destination {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
         }
-        .discount-line { color: var(--accent); font-size: 0.9rem; font-weight: bold; display: none; }
 
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; color: #aaa; letter-spacing: 1px;}
-        .form-input {
-            width: 100%; padding: 15px; border: 1px solid #e0e0e0; border-radius: 8px;
-            font-family: inherit; transition: 0.3s; background: #fff;
+        @media (min-width: 768px) {
+           .destination {
+                flex-direction: row;
+            }
         }
-        .form-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(230, 158, 163, 0.1); }
 
-        .submit-btn {
-            width: 100%; background: #444; color: white; padding: 18px;
-            border: none; border-radius: 8px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s;
+       .dest-img {
+            flex: 1;
+            min-height: 300px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
         }
-        .submit-btn:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(230, 158, 163, 0.3); }
 
-        .policy-text { font-size: 0.8rem; color: #999; margin-top: 20px; line-height: 1.5; text-align: center; font-style: italic; }
-
-        /* VISUAL MENU */
-        .visual-menu { margin-bottom: 60px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .v-card { 
-            cursor: pointer; border-radius: 15px; overflow: hidden; position: relative; height: 280px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.4s;
+       .dest-img span {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            border-radius: 4px;
         }
-        .v-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
-        .v-card:hover { transform: translateY(-5px); }
-        .v-card:hover img { transform: scale(1.05); }
-        .v-label {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-            color: white; padding: 25px;
+
+       .dest-content {
+            flex: 1.5;
+            padding: 2rem;
         }
-        .v-label h3 { font-size: 1.4rem; font-weight: 700; font-family: 'Playfair Display'; }
 
-        footer { text-align: center; padding: 50px 0; color: #aaa; font-size: 0.9rem; border-top: 1px solid #eee; background: white;}
-
-        /* LIGHTBOX */
-        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 2000; justify-content: center; align-items: center; }
-        .lightbox img { max-width: 90%; max-height: 85vh; box-shadow: 0 20px 60px rgba(0,0,0,0.15); border-radius: 5px;}
-
-        @media(max-width: 800px) {
-            .order-wrapper { grid-template-columns: 1fr; }
-            .menu-selection { border-right: none; border-bottom: 1px solid var(--border); }
-            nav { flex-direction: column; gap: 15px; }
-            .hero h1 { font-size: 3rem; }
+       .dest-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 1rem;
         }
+
+       .dest-title h2 {
+            color: var(--primary);
+        }
+
+       .dest-title.tag {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+       .dest-rating {
+            text-align: right;
+        }
+
+       .rating-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--success);
+        }
+
+       .dest-details h3 {
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+            color: var(--dark);
+        }
+
+       .dest-details ul {
+            list-style-position: inside;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        /* Cost Table */
+       .cost-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+       .cost-table th,.cost-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+       .cost-table th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+       .cost-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+       .cost-total {
+            font-weight: bold;
+            background-color: var(--light);
+        }
+
+        /* Comparison Matrix */
+       .matrix-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+        }
+
+       .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+       .comparison-table th,.comparison-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+       .comparison-table th {
+            background: var(--dark);
+            color: white;
+        }
+        
+       .comparison-table td:first-child {
+            text-align: left;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Utility Classes for Ratings */
+       .low { color: var(--success); }
+       .med { color: var(--warning); }
+       .high { color: var(--danger); }
+
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="container">
-            <nav>
-                <a href="#" class="brand-logo">Nicole's <span>Treats</span></a>
-                <div class="nav-links">
-                    <a href="#menu">Menu</a>
-                    <a href="#order">Order</a>
-                    <a href="#about">About</a>
-                </div>
-            </nav>
-        </div>
-    </header>
+<header>
+    <h1>Solo Travel NSW</h1>
+    <p>Strategic Itineraries & Realistic Economic Modeling for the Solo Traveler</p>
+</header>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Handcrafted with Love.</h1>
-            <p>Personally baked by Nicole using premium ingredients. <br>From custom birthday cookies to indulgent weekend slices.</p>
+<nav>
+    <a href="#strategy">Strategy</a>
+    <a href="#blue-mountains">Blue Mountains</a>
+    <a href="#hunter-valley">Hunter Valley</a>
+    <a href="#jervis-bay">Jervis Bay</a>
+    <a href="#port-stephens">Port Stephens</a>
+    <a href="#matrix">Comparison</a>
+</nav>
+
+<div class="container">
+
+    <section id="strategy" class="intro">
+        <h2>The Solo Economic Index</h2>
+        <p>Solo travel in NSW faces unique challenges: the "single supplement" penalty, lack of car-sharing costs, and transport connectivity. Our 2025/2026 analysis evaluates destinations based on four key pillars:</p>
+        <div class="methodology-grid">
+            <div class="methodology-item">
+                <h4>🚆 Transport Friction</h4>
+                <p>Can you get there cheaply without a car using the Opal network?</p>
+            </div>
+            <div class="methodology-item">
+                <h4>🛏️ Accommodation Efficiency</h4>
+                <p>Are there high-quality hostels to avoid paying for a double room alone?</p>
+            </div>
+            <div class="methodology-item">
+                <h4>🚶 Mobility</h4>
+                <p>Cost of "last mile" transport from the station to the sights.</p>
+            </div>
+            <div class="methodology-item">
+                <h4>🛡️ Social Safety</h4>
+                <p>Is the environment conducive to solo safety and interaction?</p>
+            </div>
         </div>
     </section>
 
-    <div class="container visual-menu" id="menu">
-        <div class="grid-3">
-            <div class="v-card" onclick="openLightbox(this)">
-                <img src="cookie.png" alt="Cookies">
-                <div class="v-label"><h3>Custom Cookies</h3></div>
+    <section id="blue-mountains" class="destination">
+        <div class="dest-img" style="background-image: url('[https://placehold.co/600x800/2c3e50/ffffff?text=Blue+Mountains:+Three+Sisters](https://placehold.co/600x800/2c3e50/ffffff?text=Blue+Mountains:+Three+Sisters)');">
+            <span>The Budget King</span>
+        </div>
+        <div class="dest-content">
+            <div class="dest-header">
+                <div class="dest-title">
+                    <h2>The Blue Mountains</h2>
+                    <span class="tag">High Connectivity Alpine Escape</span>
+                </div>
+                <div class="dest-rating">
+                    <div class="rating-score">9.5/10</div>
+                    <small>Solo Feasibility</small>
+                </div>
             </div>
-            <div class="v-card" onclick="openLightbox(this)">
-                <img src="https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg" alt="Mars">
-                <div class="v-label"><h3>Mars Bar Slice</h3></div>
-            </div>
-            <div class="v-card" onclick="openLightbox(this)">
-                <img src="https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg" alt="Rocky">
-                <div class="v-label"><h3>Rocky Road</h3></div>
+            <div class="dest-details">
+                <p>The "Gold Standard" for solo travel. Direct train access from Sydney Central, a dense network of hostels in Katoomba, and world-class hiking that costs nothing makes this the most economically efficient trip.</p>
+                
+                <h3>Key Logistics</h3>
+                <ul>
+                    <li><strong>Transport:</strong> Direct Train (BMT Line). Opal capped at $9.65 (Weekend) or $19.30 (Weekday).</li>
+                    <li><strong>Stay:</strong> Katoomba YHA. Heritage building, very social. $35-$50/night (Dorm).</li>
+                    <li><strong>Mobility:</strong> Explorer Bus ($59) covers all major stops for 3 days, or public bus (free/cheap).</li>
+                    <li><strong>Must Do:</strong> Scenic World ($64) or Prince Henry Cliff Walk (Free).</li>
+                </ul>
+
+                <h3>Estimated Cost (3 Days / 2 Nights)</h3>
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Expense Category</th>
+                            <th>Cost (AUD)</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Transport (Sydney Return)</td>
+                            <td>$9.65</td>
+                            <td>Using Weekend Opal Cap</td>
+                        </tr>
+                        <tr>
+                            <td>Accommodation (2 Nights)</td>
+                            <td>$80.00</td>
+                            <td>YHA Dormitory (Avg)</td>
+                        </tr>
+                        <tr>
+                            <td>Explorer Bus Pass</td>
+                            <td>$59.00</td>
+                            <td>Valid for 3 days</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>$70.00</td>
+                            <td>Bakery lunches / Self-cater dinner</td>
+                        </tr>
+                        <tr class="cost-total">
+                            <td>Total Estimated</td>
+                            <td>$218.65</td>
+                            <td>Unbeatable value</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="container" id="order">
-        <div class="order-wrapper">
-            
-            <div class="menu-selection">
-                <h2 class="menu-title">Select Your Treats</h2>
-                
-                <div class="menu-item">
-                    <img src="cookie.png" class="item-thumb" onclick="openLightbox(this.parentNode)">
-                    <div class="item-details">
-                        <span class="item-name">Custom Cookie</span>
-                        <span class="item-desc">Fondant sugar cookie. (20 for $70)</span>
-                        <span class="item-price">$4.00</span>
-                    </div>
-                    <div class="qty-control">
-                        <button class="qty-btn" onclick="updateQty('cookie', -1)">-</button>
-                        <div class="qty-number" id="qty-cookie">0</div>
-                        <button class="qty-btn" onclick="updateQty('cookie', 1)">+</button>
-                    </div>
+    <section id="hunter-valley" class="destination">
+        <div class="dest-img" style="background-image: url('[https://placehold.co/600x800/27ae60/ffffff?text=Hunter+Valley+Vineyards](https://placehold.co/600x800/27ae60/ffffff?text=Hunter+Valley+Vineyards)');">
+            <span>The Indulgent Challenge</span>
+        </div>
+        <div class="dest-content">
+            <div class="dest-header">
+                <div class="dest-title">
+                    <h2>Hunter Valley</h2>
+                    <span class="tag">Wine, E-Bikes & Logistics</span>
                 </div>
-
-                <div class="menu-item">
-                    <img src="https://www.cookingwithnanaling.com/wp-content/uploads/2019/06/mars-bar-slice-sq.jpg" class="item-thumb" onclick="openLightbox(this.parentNode)">
-                    <div class="item-details">
-                        <span class="item-name">Mars Bar Slab</span>
-                        <span class="item-desc">Caramel & chocolate slice.</span>
-                        <span class="item-price">$50.00</span>
-                    </div>
-                    <div class="qty-control">
-                        <button class="qty-btn" onclick="updateQty('mars', -1)">-</button>
-                        <div class="qty-number" id="qty-mars">0</div>
-                        <button class="qty-btn" onclick="updateQty('mars', 1)">+</button>
-                    </div>
+                <div class="dest-rating">
+                    <div class="rating-score">6/10</div>
+                    <small>Solo Feasibility</small>
                 </div>
-
-                <div class="menu-item">
-                    <img src="https://www.sugarsaltmagic.com/wp-content/uploads/2017/01/Easy-Rocky-Road-Recipe-2.jpg" class="item-thumb" onclick="openLightbox(this.parentNode)">
-                    <div class="item-details">
-                        <span class="item-name">Rocky Road Slab</span>
-                        <span class="item-desc">Marshmallow, nuts & jelly.</span>
-                        <span class="item-price">$50.00</span>
-                    </div>
-                    <div class="qty-control">
-                        <button class="qty-btn" onclick="updateQty('rocky', -1)">-</button>
-                        <div class="qty-number" id="qty-rocky">0</div>
-                        <button class="qty-btn" onclick="updateQty('rocky', 1)">+</button>
-                    </div>
-                </div>
-
             </div>
-
-            <div class="order-summary">
-                <h2 class="menu-title" style="font-size:1.6rem; margin-bottom:20px;">Your Order</h2>
+            <div class="dest-details">
+                <p>High reward, but high logistical friction. The region is spread out and lacks trains to the vineyards. The solo strategy relies heavily on E-bikes to bridge the "last mile" gap without a car.</p>
                 
-                <div class="summary-card">
-                    <div class="summary-row"><span>Items Selected:</span> <span id="total-count">0</span></div>
-                    <div class="summary-row discount-line" id="discount-row"><span>Bulk Savings:</span> <span>Applied!</span></div>
-                    <div class="summary-total"><span>Total:</span> <span id="total-price">$0.00</span></div>
-                </div>
+                <h3>Key Logistics</h3>
+                <ul>
+                    <li><strong>Transport:</strong> Train to Maitland + Taxi/Uber ($40-60 gap) to Pokolbin.</li>
+                    <li><strong>Stay:</strong> Hunter Valley YHA (Pokolbin). The only budget option among luxury estates.</li>
+                    <li><strong>Mobility:</strong> E-Bike Hire ($85/day) is essential to get around solo.</li>
+                    <li><strong>Must Do:</strong> Cellar door tastings ($10-$25 each).</li>
+                </ul>
 
-                <form>
-                    <input type="hidden" id="order-data" name="order_data">
-                    
-                    <div class="form-group">
-                        <label class="form-label">Full Name</label>
-                        <input type="text" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Special Requests</label>
-                        <textarea rows="3" class="form-input" placeholder="Date needed, color theme, etc."></textarea>
-                    </div>
-
-                    <button class="submit-btn">Send Request</button>
-                    
-                    <p class="policy-text">
-                        * A 50% deposit is required to confirm booking.<br>
-                        * Non-refundable if cancelled within 24hrs.<br>
-                        * Baked fresh with love.
-                    </p>
-                </form>
+                <h3>Estimated Cost (3 Days / 2 Nights)</h3>
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Expense Category</th>
+                            <th>Cost (AUD)</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Transport (Sydney Return)</td>
+                            <td>$30.00</td>
+                            <td>Train + Shared Transfer</td>
+                        </tr>
+                        <tr>
+                            <td>Accommodation (2 Nights)</td>
+                            <td>$90.00</td>
+                            <td>YHA Dorm</td>
+                        </tr>
+                        <tr>
+                            <td>E-Bike Hire (1 Day)</td>
+                            <td>$85.00</td>
+                            <td>Essential for mobility</td>
+                        </tr>
+                        <tr>
+                            <td>Tastings & Food</td>
+                            <td>$180.00</td>
+                            <td>3-4 Wineries + Pub meals</td>
+                        </tr>
+                        <tr class="cost-total">
+                            <td>Total Estimated</td>
+                            <td>$385.00</td>
+                            <td>Moderate investment</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="about" style="text-align:center; padding: 0 20px 80px 20px;">
-        <h2 style="font-family:'Playfair Display'; margin-bottom:15px; font-size:2.5rem;">Baked by Mum</h2>
-        <p style="color:#777; max-width:650px; margin:0 auto; font-size:1.1rem; line-height:1.8;">
-            Nicole's Treats is a home kitchen built on love, butter, and creativity. 
-            When you order from me, you aren't just buying a cookie; you're supporting a dream and getting something made specifically for you.
-        </p>
-    </div>
+    <section id="jervis-bay" class="destination">
+        <div class="dest-img" style="background-image: url('[https://placehold.co/600x800/2980b9/ffffff?text=Jervis+Bay+White+Sands](https://placehold.co/600x800/2980b9/ffffff?text=Jervis+Bay+White+Sands)');">
+            <span>Nature vs. Logistics</span>
+        </div>
+        <div class="dest-content">
+            <div class="dest-header">
+                <div class="dest-title">
+                    <h2>Jervis Bay</h2>
+                    <span class="tag">Marine Sanctuary & White Sands</span>
+                </div>
+                <div class="dest-rating">
+                    <div class="rating-score">5/10</div>
+                    <small>Solo Feasibility</small>
+                </div>
+            </div>
+            <div class="dest-details">
+                <p>Stunning natural beauty but tough for soloists on a budget due to the "Accommodation Gap" (no hostels) and long travel times. Best for a digital detox.</p>
+                
+                <h3>Key Logistics</h3>
+                <ul>
+                    <li><strong>Transport:</strong> Train to Kiama + Bus to Huskisson. Very cheap (Opal cap) but takes 5+ hours.</li>
+                    <li><strong>Stay:</strong> No YHA. Motels cost $150+/night. Huge "Single Supplement" penalty.</li>
+                    <li><strong>Mobility:</strong> Walkable if staying in Huskisson. White Sands Walk is free.</li>
+                    <li><strong>Must Do:</strong> Dolphin Watch Cruise ($35-$62).</li>
+                </ul>
 
-    <footer>
-        &copy; 2026 Nicole's Treats. Est. with Love.
-    </footer>
+                <h3>Estimated Cost (3 Days / 2 Nights)</h3>
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Expense Category</th>
+                            <th>Cost (AUD)</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Transport (Sydney Return)</td>
+                            <td>$19.30</td>
+                            <td>Opal Daily Cap (Cheap!)</td>
+                        </tr>
+                        <tr>
+                            <td>Accommodation (2 Nights)</td>
+                            <td>$300.00</td>
+                            <td>Motel (Solo occupancy)</td>
+                        </tr>
+                        <tr>
+                            <td>Activities</td>
+                            <td>$40.00</td>
+                            <td>Dolphin Cruise</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>$120.00</td>
+                            <td>Cafes & Bakery</td>
+                        </tr>
+                        <tr class="cost-total">
+                            <td>Total Estimated</td>
+                            <td>$479.30</td>
+                            <td>Expensive due to accom</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
-    <div id="lightbox" class="lightbox" onclick="this.style.display='none'">
-        <img id="lb-img" src="">
-    </div>
+    <section id="port-stephens" class="destination">
+        <div class="dest-img" style="background-image: url('[https://placehold.co/600x800/d35400/ffffff?text=Port+Stephens+Sand+Dunes](https://placehold.co/600x800/d35400/ffffff?text=Port+Stephens+Sand+Dunes)');">
+            <span>The Adventure Hub</span>
+        </div>
+        <div class="dest-content">
+            <div class="dest-header">
+                <div class="dest-title">
+                    <h2>Port Stephens</h2>
+                    <span class="tag">Sand Dunes & Wildlife</span>
+                </div>
+                <div class="dest-rating">
+                    <div class="rating-score">8/10</div>
+                    <small>Solo Feasibility</small>
+                </div>
+            </div>
+            <div class="dest-details">
+                <p>The perfect balance of adventure and social safety. The "Glamping" hostel at Samurai Beach creates a community feel, and the direct coach from Sydney removes transfer stress.</p>
+                
+                <h3>Key Logistics</h3>
+                <ul>
+                    <li><strong>Transport:</strong> Port Stephens Coaches ($65 return). Direct from Central Station.</li>
+                    <li><strong>Stay:</strong> Samurai Beach Bungalows (YHA). Glamping tents in rainforest. Very social.</li>
+                    <li><strong>Mobility:</strong> Local buses are okay, but 4WD tours pick up from the hostel.</li>
+                    <li><strong>Must Do:</strong> Sandboarding ($28) and Koala Sanctuary ($28).</li>
+                </ul>
 
-    <script>
-        const PRICES = { 'cookie': 4, 'mars': 50, 'rocky': 50 };
-        let quantities = { 'cookie': 0, 'mars': 0, 'rocky': 0 };
+                <h3>Estimated Cost (3 Days / 2 Nights)</h3>
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Expense Category</th>
+                            <th>Cost (AUD)</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Transport (Sydney Return)</td>
+                            <td>$65.00</td>
+                            <td>Private Coach (Direct)</td>
+                        </tr>
+                        <tr>
+                            <td>Accommodation (2 Nights)</td>
+                            <td>$80.00</td>
+                            <td>YHA Glamping Dorm</td>
+                        </tr>
+                        <tr>
+                            <td>Activities</td>
+                            <td>$56.00</td>
+                            <td>Sandboarding + Koalas</td>
+                        </tr>
+                        <tr>
+                            <td>Food & Drink</td>
+                            <td>$100.00</td>
+                            <td>Club meals / Self-cater</td>
+                        </tr>
+                        <tr class="cost-total">
+                            <td>Total Estimated</td>
+                            <td>$301.00</td>
+                            <td>Great adventure value</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
-        function updateQty(item, change) {
-            const current = quantities[item];
-            const newQty = Math.max(0, current + change); // Prevent negative
-            quantities[item] = newQty;
-            
-            // Update UI Number
-            document.getElementById(`qty-${item}`).innerText = newQty;
-            
-            calculateTotal();
-        }
+    <section id="matrix" class="matrix-section">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Destination Comparison Matrix</h2>
+        <div style="overflow-x: auto;">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Blue Mountains</th>
+                        <th>Port Stephens</th>
+                        <th>Hunter Valley</th>
+                        <th>Jervis Bay</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Transport Friction</td>
+                        <td class="low">Low (Train)</td>
+                        <td class="low">Low (Direct Coach)</td>
+                        <td class="high">High (Train+Gap)</td>
+                        <td class="high">High (Multi-modal)</td>
+                    </tr>
+                    <tr>
+                        <td>Solo Accommodation</td>
+                        <td class="low">High Availability</td>
+                        <td class="low">High (Glamping)</td>
+                        <td class="med">Limited (1 YHA)</td>
+                        <td class="high">None (Motels only)</td>
+                    </tr>
+                    <tr>
+                        <td>Total 3-Day Cost</td>
+                        <td class="low">~$220</td>
+                        <td class="low">~$300</td>
+                        <td class="med">~$385</td>
+                        <td class="high">~$480+</td>
+                    </tr>
+                    <tr>
+                        <td>Social / Safety</td>
+                        <td class="low">Very High</td>
+                        <td class="low">High</td>
+                        <td class="med">Medium</td>
+                        <td class="med">Low (Isolated)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-        function calculateTotal() {
-            let total = 0;
-            let count = 0;
+</div>
 
-            // Calc Cookies (Bulk Logic)
-            const cQty = quantities['cookie'];
-            const bundles = Math.floor(cQty / 20);
-            const remainder = cQty % 20;
-            const cookiePrice = (bundles * 70) + (remainder * 4);
-            
-            total += cookiePrice;
-            count += cQty;
-
-            // Calc Slabs
-            total += (quantities['mars'] * PRICES['mars']);
-            count += quantities['mars'];
-            
-            total += (quantities['rocky'] * PRICES['rocky']);
-            count += quantities['rocky'];
-
-            // Update Total UI
-            document.getElementById('total-price').innerText = '$' + total.toFixed(2);
-            document.getElementById('total-count').innerText = count;
-
-            // Show Discount
-            const discountRow = document.getElementById('discount-row');
-            discountRow.style.display = bundles > 0 ? 'flex' : 'none';
-
-            // Update hidden input
-            const summary = `Cookies: ${cQty}, Mars: ${quantities['mars']}, Rocky: ${quantities['rocky']} | Total: $${total}`;
-            document.getElementById('order-data').value = summary;
-        }
-
-        function openLightbox(el) {
-            document.getElementById('lightbox').style.display = 'flex';
-            document.getElementById('lb-img').src = el.querySelector('img').src;
-        }
-    </script>
+<footer>
+    <p>&copy; 2025 Solo Travel NSW Guide. Prices based on 2025/2026 estimates.</p>
+    <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 10px;">Disclaimer: This is a research prototype. Prices for Opal, YHA, and tours are subject to change.</p>
+</footer>
 
 </body>
 </html>
