@@ -1,178 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Panthers Game Finder - 2026 Full Rebuild</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-:root{
-    --bg-main:#020617;
-    --bg-elevated:rgba(15,23,42,0.96);
-    --accent:#38bdf8;
-    --accent-gold:#fbbf24;
-    --text-main:#e5e7eb;
-    --text-muted:#9ca3af;
-    --radius-lg:18px;
-    --radius-md:14px;
-}
-*{box-sizing:border-box;}
-body{
-    font-family: system-ui, -apple-system, sans-serif;
-    color:var(--text-main);
-    background-color:var(--bg-main);
-    margin:0; padding:15px;
-    height: 100vh; overflow: hidden;
-}
-.app-shell{ width:100%; max-width:1600px; display:grid; grid-template-columns: 1.3fr 0.7fr; gap:15px; height:95vh; margin: auto;}
-.card{ background:var(--bg-elevated); border:1px solid rgba(148,163,184,0.2); border-radius:var(--radius-lg); padding:20px; display:flex; flex-direction:column; overflow:hidden; }
-.search-input{ width:100%; padding:15px 20px; border-radius:30px; border:1px solid #4b5563; background:#0f172a; color:white; font-size:18px; margin-bottom:15px; outline: none; }
-.search-input:focus{ border-color: var(--accent); box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
-.results-area{ flex:1; overflow-y:auto; padding-right:10px; }
-.result-item{ background:rgba(30,41,59,0.4); padding:15px; border-radius:12px; margin-bottom:10px; border-left:5px solid var(--accent); cursor:pointer; transition: transform 0.1s; }
-.result-item:hover{ background:rgba(30,41,59,0.7); transform: scale(1.01); }
-.area-tag{ font-size:10px; font-weight: bold; text-transform:uppercase; color:var(--accent-gold); margin-bottom: 4px; }
-.pack-games{ font-size:12px; color:var(--text-muted); margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
-#rightScroll{ overflow-y:auto; font-size:13px; }
-.m-row{ padding:10px; border-bottom:1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; }
-.m-row:hover{ background:rgba(56,189,248,0.1); }
-.area-header{ background: #1e293b; padding: 10px; margin: 10px 0; border-radius: 8px; font-weight: bold; color: var(--accent); }
-</style>
+    <title>Gaming Floor Game Finder</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 400px;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 18px;
+            margin-left: 10px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .results {
+            margin-top: 30px;
+            text-align: left;
+            display: inline-block;
+            max-width: 600px;
+        }
+
+        .game-result {
+            background: #222;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .machine {
+            color: #00ff88;
+        }
+
+        .no-result {
+            color: #ff4444;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
-<div class="app-shell">
-    <section class="card">
-        <h2 style="margin:0 0 10px 0">PANTHERS GAME FINDER</h2>
-        <input type="text" id="mainSearch" class="search-input" placeholder="Search by Game (e.g. Lucky 88) or Machine # (e.g. 1051)...">
-        <div id="searchResults" class="results-area"></div>
-    </section>
+    <h1>🎰 Game Finder</h1>
 
-    <aside class="card">
-        <h2 style="margin:0 0 10px 0">FLOOR OVERVIEW</h2>
-        <div id="rightScroll"></div>
-    </aside>
-</div>
+    <input type="text" id="searchInput" placeholder="Type game name (e.g. Lucky 88)">
+    <button onclick="findGame()">Search</button>
+
+    <div class="results" id="results"></div>
 
 <script>
-[span_3](start_span)[span_4](start_span)// FULL DATA REBUILD FROM SOURCE [cite: 1-38]
-const DATABASE = {
-    [cite_start]// Game Pack Library [cite: 1-7]
-    "gameToPacks": {
-        "5 DRAGONS": ["5 DRAGONS EMPIRE", "PLAYERS CHOICE CLASS ACT", "PLAYERS CHOICE DIAMOND EDITION", "PLAYERS CHOICE OPAL EDITION", "PLAYERS CHOICE SAPPHIRE EDITION"],
-        "BIG RED": ["PLAYERS CHOICE DIAMOND EDITION", "PLAYERS CHOICE EMERALD EDITION", "PLAYERS CHOICE GOLD JACKPOTS", "PLAYERS CHOICE GRAND", "PLAYERS CHOICE HIGH LIMITS", "PLAYERS CHOICE OPAL EDITION", "PLAYERS CHOICE RUBY EDITION", "PLAYERS CHOICE ULTIMATE JACKPOTS"],
-        "LUCKY 88": ["PLAYERS CHOICE ALL STARS", "PLAYERS CHOICE CLASS ACT", "PLAYERS CHOICE DIAMOND EDITION", "PLAYERS CHOICE JADE EDITION", "PLAYERS CHOICE ULTIMATE JACKPOTS"],
-        "CHOY SUN DOA": ["PLAYERS CHOICE JADE EDITION", "JACKPOT CARNIVAL DELUXE"],
-        "88 FORTUNES": ["MULTIDELUXE"],
-        "WHERE'S THE GOLD": ["PLAYERS CHOICE PLATINUM EDITION", "PLAYERS CHOICE RUBY EDITION", "JACKPOT CARNIVAL DELUXE"],
-        "BUFFALO": ["PLAYERS CHOICE DIAMOND EDITION", "PLAYERS CHOICE RUBY EDITION", "PLAYERS CHOICE EMERALD EDITION"]
-        // Additional mappings can be expanded here
-    },
-    [cite_start]// The Complete Floor Data [cite: 8-38]
-    "machines": [
-        {"id": "1051", "desc": "LIGHTNING CASH DRAGONS RICHES", "manu": "Aristocrat"},
-        {"id": "1055", "desc": "LIGHTNING LINK TIKI FIRE", "manu": "Aristocrat"},
-        {"id": "1059", "desc": "PLAYERS CHOICE OPAL EDITION", "manu": "Aristocrat"},
-        {"id": "1081", "desc": "PLAYERS CHOICE JADE EDITION", "manu": "Aristocrat"},
-        {"id": "1087", "desc": "EASTERN RICHES", "manu": "IGT"},
-        {"id": "1088", "desc": "PLAYERS CHOICE DIAMOND EDITION", "manu": "Aristocrat"},
-        {"id": "1701", "desc": "PLAYERS CHOICE RUBY EDITION", "manu": "Aristocrat"},
-        {"id": "1804", "desc": "PENNY PIER VIP SITTING DUCKS", "manu": "Light & Wonder"},
-        {"id": "2203", "desc": "BULL RUSH STAMPEDE MINOTAURS TREASURE", "manu": "Konami"},
-        {"id": "2301", "desc": "DRAGON TRAIN LINK KHUTULIN BATTLE PRINCESS", "manu": "Light & Wonder"},
-        {"id": "3201", "desc": "FORTUNE DOORS LINK JADE ASSASSIN", "manu": "Light & Wonder"},
-        {"id": "3205", "desc": "LNML CATS HATS N MORE BATS", "manu": "Light & Wonder"},
-        {"id": "4602", "desc": "JACKPOT CARNIVAL DELUXE WHERES THE GOLD", "manu": "Aristocrat"},
-        {"id": "5302", "desc": "MORE CHILLI MULTILINK EXTRA SPICY", "manu": "Aristocrat"},
-        {"id": "6110", "desc": "DRAGON LINK PANDA MAGIC", "manu": "Aristocrat"},
-        {"id": "7014", "desc": "MIGHTY GENIE SAP MR BANKS", "manu": "Aristocrat"},
-        {"id": "8115", "desc": "SHENLONG UNLEASHED SUV GOLDEN EMPEROR", "manu": "Light & Wonder"},
-        {"id": "8701", "desc": "DRAGON CASH HAPPY & PROSPEROUS", "manu": "Aristocrat"}
-        // This array should be populated with the full 400+ machine list from Sources 8-38
+/* 
+    DATA GENERATED FROM YOUR GAME CATALOGUE
+    Format:
+    "Game Name": ["Machine Column 1", "Machine Column 2"]
+*/
+
+const gameData = {
+
+    "5 Dragons": [
+        "5 DRAGONS EMPIRE",
+        "5 Dragons Legends",
+        "PLAYERS CHOICE DIAMOND EDITION",
+        "PLAYERS CHOICE OPAL EDITION",
+        "PLAYERS CHOICE SAPPHIRE EDITION"
+    ],
+
+    "5 DRAGONS DELUXE": [
+        "5 DRAGONS EMPIRE",
+        "PLAYERS CHOICE ALL STARS",
+        "PLAYERS CHOICE EMERALD EDITION",
+        "PLAYERS CHOICE RUBY EDITION"
+    ],
+
+    "5 Dragons Gold": [
+        "5 DRAGONS EMPIRE"
+    ],
+
+    "5 DRAGONS HIGH LIMITS": [
+        "5 DRAGONS EMPIRE",
+        "PLAYERS CHOICE ULTIMATE JACKPOTS"
+    ],
+
+    "5 DRAGONS RAPID": [
+        "5 DRAGONS EMPIRE"
     ]
+
+    // ⚠️ ADD THE REST OF YOUR GAMES HERE
+    // Same format:
+    // "Lucky 88": ["Machine 7012", "Machine 7404"]
+
 };
 
-// Pack Games Reverse Lookup (To show what's inside a machine)
-const packContents = {};
-for (const [game, packs] of Object.entries(DATABASE.gameToPacks)) {
-    packs.forEach(p => {
-        if (!packContents[p]) packContents[p] = [];
-        packContents[p].push(game);
-    });
-}
 
-function getArea(id) {
-    const n = parseInt(id);
-    if (n <= 1099) return "Basement Gaming";
-    if (n >= 1700 && n <= 2299) return "Black Panther Room VIP";
-    if (n >= 7000) return "Kelly's Gaming";
-    return "Main Gaming Floor";
-}
+function findGame() {
 
-const mainSearch = document.getElementById('mainSearch');
-const searchResults = document.getElementById('searchResults');
+    const input = document.getElementById("searchInput").value.toLowerCase().trim();
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
 
-mainSearch.addEventListener('input', () => {
-    const q = mainSearch.value.toUpperCase().trim();
-    searchResults.innerHTML = "";
-    if (q.length < 2) return;
+    if (!input) return;
 
-    DATABASE.machines.forEach(m => {
-        let isMatch = false;
-        let matchType = "";
+    let found = false;
 
-        // Match Machine ID
-        if (m.id.includes(q)) isMatch = true;
+    for (let game in gameData) {
 
-        // Match Machine Description
-        if (m.desc.toUpperCase().includes(q)) isMatch = true;
+        if (game.toLowerCase().includes(input)) {
 
-        [cite_start]// Match Game inside a Multi-Game Pack [cite: 1-7]
-        for (const [gameName, packs] of Object.entries(DATABASE.gameToPacks)) {
-            if (gameName.includes(q)) {
-                if (packs.some(p => m.desc.toUpperCase().includes(p))) {
-                    isMatch = true;
-                    matchType = `(Contains ${gameName})`;
-                }
-            }
-        }
+            found = true;
 
-        if (isMatch) {
-            const div = document.createElement('div');
-            div.className = 'result-item';
-            const area = getArea(m.id);
-            const contents = packContents[m.desc.toUpperCase()] ? `Games: ${packContents[m.desc.toUpperCase()].join(", ")}` : "";
-            
-            div.innerHTML = `
-                <div class="area-tag">${area}</div>
-                <strong>${m.id} — ${m.desc}</strong> ${matchType}
-                <div style="font-size:11px; color:gray">Manufacturer: ${m.manu}</div>
-                ${contents ? `<div class="pack-games">${contents}</div>` : ""}
+            let machineList = gameData[game]
+                .map(machine => `<div class="machine">• ${machine}</div>`)
+                .join("");
+
+            resultsDiv.innerHTML += `
+                <div class="game-result">
+                    <strong>${game}</strong>
+                    <div>${machineList}</div>
+                </div>
             `;
-            searchResults.appendChild(div);
         }
-    });
-});
-
-[cite_start]// Render the Floor Overview [cite: 8-38]
-const rightScroll = document.getElementById('rightScroll');
-const sorted = DATABASE.machines.sort((a,b) => a.id - b.id);
-let currentArea = "";
-
-sorted.forEach(m => {
-    const area = getArea(m.id);
-    if (area !== currentArea) {
-        currentArea = area;
-        const h = document.createElement('div');
-        h.className = 'area-header';
-        h.textContent = area;
-        rightScroll.appendChild(h);
     }
-    const row = document.createElement('div');
-    row.className = 'm-row';
-    row.innerHTML = `<span><strong>${m.id}</strong></span> <span>${m.desc}</span>`;
-    rightScroll.appendChild(row);
-});
 
+    if (!found) {
+        resultsDiv.innerHTML = `<div class="no-result">No games found.</div>`;
+    }
+}
 </script>
+
 </body>
 </html>
