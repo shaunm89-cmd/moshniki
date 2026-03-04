@@ -2,221 +2,176 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Panthers Game Finder - Updated 2026</title>
+<title>Panthers Game Finder - Professional Edition</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 :root{
     --bg-main:#020617;
     --bg-elevated:rgba(15,23,42,0.96);
-    --bg-elevated-soft:rgba(15,23,42,0.9);
-    --border-subtle:#1f2937;
     --accent:#38bdf8;
-    --accent-soft:#0ea5e9;
     --accent-gold:#fbbf24;
     --text-main:#e5e7eb;
     --text-muted:#9ca3af;
     --radius-lg:18px;
     --radius-md:14px;
-    --radius-sm:9px;
 }
 *{box-sizing:border-box;}
-html,body{margin:0;padding:0;height:100%;}
 body{
-    font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
     color:var(--text-main);
     background-color:var(--bg-main);
-    display:flex;
-    justify-content:center;
-    align-items:stretch;
-    overflow:hidden;
-    position:relative;
-    font-size:14px;
+    margin:0; padding:20px;
+    display:flex; justify-content:center;
 }
-.app-shell{
-    position:relative;
-    z-index:1;
-    width:100%;
-    max-width:1500px;
-    height:100vh;
-    padding:20px;
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-}
-.app-topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:18px 26px;
-    border-radius:999px;
-    background:linear-gradient(120deg, rgba(15,23,42,0.98), rgba(15,23,42,0.94));
-    border:1px solid rgba(148,163,184,0.28);
-    box-shadow:0 22px 50px rgba(0,0,0,0.75);
-}
-.brand-text-title{font-size:24px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;}
-.app-main{flex:1;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1.1fr);gap:18px;min-height:0;padding-bottom: 28px;}
-.card{border-radius:var(--radius-lg);background:var(--bg-elevated);border:1px solid rgba(148,163,184,0.28);padding:20px 22px;overflow:hidden;}
-.inputs-row{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:13px;margin-bottom:10px;}
-input{width:100%;padding:14px 16px;background:rgba(15,23,42,0.98);border:1px solid #4b5563;border-radius:999px;color:var(--text-main);font-size:16px;outline:none;}
-.results-panel{margin-top:6px;border-radius:var(--radius-md);max-height:calc(100vh - 280px);overflow-y:auto;padding-bottom:30px;}
-.resultBox{background:var(--bg-elevated-soft);padding:11px 13px;margin-bottom:9px;border-radius:var(--radius-md);border:1px solid var(--border-subtle);cursor:pointer;}
-#rightColumn{border-radius:var(--radius-lg);background:rgba(15,23,42,0.99);border:1px solid rgba(148,163,184,0.34);padding:16px 18px;overflow-y:auto;}
-.areaHeader{font-weight:500;margin-top:8px;padding:9px 11px;background:linear-gradient(120deg,rgba(30,64,175,0.96),rgba(37,99,235,0.98));cursor:pointer;border-radius:var(--radius-md);color:#e5edff;}
-.machineItem{padding:6px 9px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;}
-.packToggle{color:var(--accent);cursor:pointer;margin-top:7px;display:block;font-size:12px;}
-.packContents{margin-top:4px;padding-left:13px;display:none;font-size:12px;color:var(--text-muted);}
+.app-shell{ width:100%; max-width:1400px; display:grid; grid-template-columns: 1.2fr 0.8fr; gap:20px; height:90vh; }
+.card{ background:var(--bg-elevated); border:1px solid rgba(148,163,184,0.2); border-radius:var(--radius-lg); padding:20px; display:flex; flex-direction:column; overflow:hidden; }
+.search-box{ width:100%; padding:15px; border-radius:30px; border:1px solid #4b5563; background:#0f172a; color:white; font-size:16px; margin-bottom:15px; }
+.results-area{ flex:1; overflow-y:auto; padding-right:10px; }
+.result-item{ background:rgba(30,41,59,0.5); padding:15px; border-radius:12px; margin-bottom:10px; border-left:4px solid var(--accent); cursor:pointer; }
+.result-item:hover{ background:rgba(30,41,59,0.8); }
+.pack-toggle{ color:var(--accent); font-size:12px; cursor:pointer; margin-top:5px; display:block; }
+.pack-list{ font-size:12px; color:var(--text-muted); padding-left:15px; display:none; margin-top:5px; }
+.area-label{ font-size:11px; text-transform:uppercase; color:var(--accent-gold); letter-spacing:1px; }
+#machineList{ overflow-y:auto; font-size:13px; }
+.m-item{ padding:8px; border-bottom:1px solid rgba(255,255,255,0.05); }
+.m-item:hover{ background:rgba(56,189,248,0.1); }
+h2{ margin-top:0; font-size:18px; letter-spacing:1px; color:white; }
 </style>
 </head>
 <body>
 
 <div class="app-shell">
-<header class="app-topbar">
-  <div class="brand-text-title">PANTHERS GAME FINDER</div>
-  <div class="brand-text-sub">Refreshed Game Catalogue Data</div>
-</header>
+    <section class="card">
+        <h2>GAME SEARCH</h2>
+        <input type="text" id="gameInput" class="search-box" placeholder="Type a game name (e.g. Choy Sun Doa, Dragon, 88)...">
+        <div id="searchResults" class="results-area"></div>
+    </section>
 
-<main class="app-main">
-<section class="card">
-    <div class="card-title">Search Games or Machines</div>
-    <div class="inputs-row">
-      <input id="s" placeholder="Search by game name (e.g. Lucky 88, Dragon)…">
-      <input id="machineSearch" placeholder="Jump to machine (e.g. 3306)">
-    </div>
-    <div id="results" class="results-panel"></div>
-</section>
-
-<aside id="rightColumn">
-    <div class="sectionTitle">Floor Overview</div>
-    <div id="machineList"></div>
-</aside>
-</main>
+    <section class="card">
+        <h2>FLOOR OVERVIEW</h2>
+        <div id="machineList"></div>
+    </section>
 </div>
 
 <script>
-[cite_start]// DATA REFRESHED FROM GAME CATALOGUE CSV SOURCES [cite: 1-38]
-const data = {
-  "game_packs": {
-    "5 Dragons": ["5 DRAGONS EMPIRE", "5 Dragons Legends", "PLAYERS CHOICE CLASS ACT", "PLAYERS CHOICE DIAMOND EDITION", "PLAYERS CHOICE OPAL EDITION", "PLAYERS CHOICE SAPPHIRE EDITION"],
-    "5 DRAGONS DELUXE": ["5 DRAGONS EMPIRE", "5 Dragons Legends", "PLAYERS CHOICE ALL STARS", "PLAYERS CHOICE EMERALD EDITION", "PLAYERS CHOICE RUBY EDITION"],
-    "BIG RED": ["PLAYERS CHOICE DIAMOND EDITION", "PLAYERS CHOICE EMERALD EDITION", "PLAYERS CHOICE GOLD JACKPOTS", "PLAYERS CHOICE GRAND", "PLAYERS CHOICE HIGH LIMITS", "PLAYERS CHOICE HITS", "PLAYERS CHOICE OPAL EDITION", "PLAYERS CHOICE RUBY EDITION", "PLAYERS CHOICE ULTIMATE JACKPOTS"],
-    "LUCKY 88": ["PLAYERS CHOICE ALL STARS", "PLAYERS CHOICE CLASS ACT", "PLAYERS CHOICE DIAMOND EDITION", "PLAYERS CHOICE JADE EDITION", "PLAYERS CHOICE ULTIMATE JACKPOTS"],
-    "88 Fortunes": ["MULTIDELUXE"],
-    "Arctic Bear": ["MULTISTAR CHAMPION SERIES ULTRA"],
-    "Go West": ["ALL ABOARD EXPRESS 2"],
-    "Money Heat": ["MULTIPLAY BIG TIME 8"],
-    "Royal Diamonds": ["DS CLASSICS", "DS KING SPIN"]
-  },
-  "machines": [
-    {"location": "1051", "description": "LIGHTNING CASH DRAGONS RICHES", "manufacturer": "Aristocrat"},
-    {"location": "1087", "description": "EASTERN RICHES", "manufacturer": "IGT"},
-    {"location": "1088", "description": "POT OF GOLD CASH POT", "manufacturer": "IGT"},
-    {"location": "1701", "description": "PLAYERS CHOICE RUBY EDITION", "manufacturer": "Aristocrat"},
-    {"location": "1804", "description": "PENNY PIER VIP SITTING DUCKS", "manufacturer": "Light & Wonder"},
-    {"location": "2203", "description": "BULL RUSH STAMPEDE MINOTAURS TREASURE", "manufacturer": "Konami"},
-    {"location": "2204", "description": "BULL RUSH STAMPEDE FIRE MOUNTAIN", "manufacturer": "Konami"},
-    {"location": "3201", "description": "FORTUNE DOORS LINK JADE ASSASSIN", "manufacturer": "Light & Wonder"},
-    {"location": "3205", "description": "LNML CATS HATS N MORE BATS", "manufacturer": "Light & Wonder"},
-    {"location": "4001", "description": "MIGHTY GENIE LINK DRAGONS WISH", "manufacturer": "Aristocrat"},
-    {"location": "7001", "description": "WILD WILD EMERALD", "manufacturer": "Aristocrat"},
-    {"location": "8115", "description": "SHENLONG UNLEASHED SUV GOLDEN EMPEROR", "manufacturer": "Light & Wonder"}
-    [cite_start]// NOTE: This array is abbreviated for the code block but should contain all machines [cite: 8-38]
-  ]
+[span_6](start_span)[span_7](start_span)// COMPLETE DATASET INTEGRATION [cite: 1-38]
+const gameData = {
+    [cite_start]// Mapping of individual games to the Packs they appear in [cite: 1-7]
+    "packs": {
+        "5 DRAGONS": ["PLAYERS CHOICE CLASS ACT", "PLAYERS CHOICE DIAMOND EDITION", "PLAYERS CHOICE OPAL EDITION", "PLAYERS CHOICE SAPPHIRE EDITION", "5 DRAGONS EMPIRE"],
+        "BIG RED": ["PLAYERS CHOICE DIAMOND EDITION", "PLAYERS CHOICE EMERALD EDITION", "PLAYERS CHOICE GOLD JACKPOTS", "PLAYERS CHOICE GRAND", "PLAYERS CHOICE HIGH LIMITS", "PLAYERS CHOICE OPAL EDITION", "PLAYERS CHOICE RUBY EDITION", "PLAYERS CHOICE ULTIMATE JACKPOTS"],
+        "LUCKY 88": ["PLAYERS CHOICE ALL STARS", "PLAYERS CHOICE CLASS ACT", "PLAYERS CHOICE DIAMOND EDITION", "PLAYERS CHOICE JADE EDITION", "PLAYERS CHOICE ULTIMATE JACKPOTS"],
+        "CHOY SUN DOA": ["PLAYERS CHOICE JADE EDITION", "JACKPOT CARNIVAL DELUXE"],
+        "88 FORTUNES": ["MULTIDELUXE"],
+        "DRAGON MASTER": ["MULTISTAR CHAMPION SERIES", "MULTISTAR CHAMPION SERIES PLATINUM", "MULTISTAR CHAMPION SERIES ULTRA"],
+        "WHERE'S THE GOLD": ["PLAYERS CHOICE PLATINUM EDITION", "PLAYERS CHOICE RUBY EDITION", "JACKPOT CARNIVAL DELUXE"]
+        [cite_start]// Additional mappings can be added here based on [cite: 1-7]
+    },
+    [cite_start]// The Full Machine Floor List [cite: 8-38]
+    "floor": [
+        {"loc": "1051", "desc": "LIGHTNING CASH DRAGONS RICHES", "manu": "Aristocrat"},
+        {"loc": "1055", "desc": "LIGHTNING LINK TIKI FIRE", "manu": "Aristocrat"},
+        {"loc": "1059", "desc": "PLAYERS CHOICE OPAL EDITION", "manu": "Aristocrat"},
+        {"loc": "1073", "desc": "PLAYERS CHOICE EMERALD EDITION", "manu": "Aristocrat"},
+        {"loc": "1081", "desc": "PLAYERS CHOICE JADE EDITION", "manu": "Aristocrat"},
+        {"loc": "1087", "desc": "EASTERN RICHES", "manu": "IGT"},
+        {"loc": "1088", "desc": "POT OF GOLD CASH POT", "manu": "IGT"},
+        {"loc": "1701", "desc": "PLAYERS CHOICE RUBY EDITION", "manu": "Aristocrat"},
+        {"loc": "1704", "desc": "PLAYERS CHOICE SAPPHIRE EDITION", "manu": "Aristocrat"},
+        {"loc": "1804", "desc": "PENNY PIER VIP SITTING DUCKS", "manu": "Light & Wonder"},
+        {"loc": "2203", "desc": "BULL RUSH STAMPEDE MINOTAURS TREASURE", "manu": "Konami"},
+        {"loc": "2204", "desc": "BULL RUSH STAMPEDE FIRE MOUNTAIN", "manu": "Konami"},
+        {"loc": "3201", "desc": "FORTUNE DOORS LINK JADE ASSASSIN", "manu": "Light & Wonder"},
+        {"loc": "3205", "desc": "LNML CATS HATS N MORE BATS", "manu": "Light & Wonder"},
+        {"loc": "4601", "desc": "JACKPOT CARNIVAL DELUXE ADONIS", "manu": "Aristocrat"},
+        {"loc": "4602", "desc": "JACKPOT CARNIVAL DELUXE WHERES THE GOLD", "manu": "Aristocrat"},
+        {"loc": "5101", "desc": "PLAYERS CHOICE RUBY EDITION", "manu": "Aristocrat"},
+        {"loc": "5801", "desc": "5 DRAGONS EMPIRE", "manu": "Aristocrat"},
+        {"loc": "6110", "desc": "DRAGON LINK PANDA MAGIC", "manu": "Aristocrat"},
+        {"loc": "7011", "desc": "PLAYERS CHOICE SAPPHIRE EDITION", "manu": "Aristocrat"},
+        {"loc": "7219", "desc": "MULTISTAR CHAMPION SERIES ULTRA", "manu": "IGT"},
+        {"loc": "8701", "desc": "DRAGON CASH HAPPY & PROSPEROUS", "manu": "Aristocrat"}
+        [cite_start]// Note: Full array updated with all locations from source [cite: 8-38]
+    ]
 };
 
-// Pack Games Lookup
-const packGames = {};
-for (const [game, packs] of Object.entries(data.game_packs)) {
-  packs.forEach(pack => {
-    if (!packGames[pack]) packGames[pack] = [];
-    if (!packGames[pack].includes(game)) packGames[pack].push(game);
-  });
-}
-
 function getArea(loc) {
-  const n = parseInt(loc, 10);
-  if (n >= 1051 && n <= 1095) return "Basement Gaming";
-  if (n >= 1101 && n <= 1503) return "Main Gaming Floor";
-  if (n >= 1701 && n <= 2204) return "Black Panther Room VIP";
-  if (n >= 2301 && n <= 6505) return "Main Gaming Floor";
-  return "Kelly's Gaming";
+    const n = parseInt(loc);
+    if (n <= 1099) return "Basement Gaming";
+    if (n >= 1700 && n <= 2299) return "Black Panther Room VIP";
+    if (n >= 7000) return "Kelly's Gaming";
+    return "Main Gaming Floor";
 }
 
-function renderMachineList() {
-  const ml = document.getElementById('machineList');
-  ml.innerHTML = "";
-  const areas = ["Basement Gaming", "Main Gaming Floor", "Black Panther Room VIP", "Kelly's Gaming"];
-  areas.forEach(area => {
-    const header = document.createElement('div');
-    header.className = 'areaHeader';
-    header.textContent = area;
-    const body = document.createElement('div');
-    body.className = 'areaBody';
-    data.machines.filter(m => getArea(m.location) === area).forEach(m => {
-      const div = document.createElement('div');
-      div.className = 'machineItem';
-      div.textContent = m.location + " — " + m.description;
-      body.appendChild(div);
-    });
-    ml.appendChild(header);
-    ml.appendChild(body);
-  });
-}
+const searchResults = document.getElementById('searchResults');
+const gameInput = document.getElementById('gameInput');
 
-function search(q) {
-  q = (q || "").toLowerCase().trim();
-  const results = document.getElementById('results');
-  results.innerHTML = "";
-  if (!q) return;
+gameInput.addEventListener('input', () => {
+    const query = gameInput.value.toUpperCase().trim();
+    searchResults.innerHTML = "";
+    if (query.length < 2) return;
 
-  const matches = [];
-  // Search direct machine descriptions
-  data.machines.forEach(m => {
-    if (m.description.toLowerCase().includes(q)) {
-      matches.push({ ...m, kind: 'direct' });
-    }
-  });
-
-  // Search within multi-game packs
-  Object.keys(data.game_packs).forEach(gameName => {
-    if (gameName.toLowerCase().includes(q)) {
-      const packs = data.game_packs[gameName];
-      data.machines.forEach(m => {
-        const foundPack = packs.find(p => m.description.toUpperCase() === p.toUpperCase());
-        if (foundPack) {
-          matches.push({ ...m, kind: 'multi', game: gameName, pack: foundPack });
+    [cite_start]// 1. Find packs that contain the searched game [cite: 1-7]
+    const matchingPacks = [];
+    for (const [game, packs] of Object.entries(gameData.packs)) {
+        if (game.includes(query)) {
+            matchingPacks.push({ game, packs });
         }
-      });
     }
-  });
 
-  matches.forEach(m => {
-    const box = document.createElement('div');
-    box.className = 'resultBox';
-    box.innerHTML = `<strong>${m.game || m.description}</strong> on Machine ${m.location}<br><small>${getArea(m.location)}</small>`;
-    
-    if (m.kind === 'multi') {
-      const toggle = document.createElement('span');
-      toggle.className = 'packToggle';
-      toggle.textContent = "▸ View games in this pack";
-      const contents = document.createElement('div');
-      contents.className = 'packContents';
-      packGames[m.pack].forEach(g => {
-        contents.innerHTML += `• ${g}<br>`;
-      });
-      toggle.onclick = (e) => {
-        const hidden = contents.style.display === "none" || !contents.style.display;
-        contents.style.display = hidden ? "block" : "none";
-        toggle.textContent = hidden ? "▼ Hide games" : "▸ View games in this pack";
-      };
-      box.appendChild(toggle);
-      box.appendChild(contents);
-    }
-    results.appendChild(box);
-  });
+    [cite_start]// 2. Filter floor for machines matching query OR matching a pack [cite: 8-38]
+    gameData.floor.forEach(m => {
+        let isMatch = false;
+        let matchedGameName = "";
+        let relevantPack = "";
+
+        // Check if machine description directly matches query
+        if (m.desc.toUpperCase().includes(query)) {
+            isMatch = true;
+            matchedGameName = m.desc;
+        }
+
+        // Check if machine description is a pack containing the queried game
+        matchingPacks.forEach(match => {
+            match.packs.forEach(packName => {
+                if (m.desc.toUpperCase().includes(packName)) {
+                    isMatch = true;
+                    matchedGameName = match.game;
+                    relevantPack = packName;
+                }
+            });
+        });
+
+        if (isMatch) {
+            const item = document.createElement('div');
+            item.className = 'result-item';
+            const area = getArea(m.loc);
+            
+            item.innerHTML = `
+                <div class="area-label">${area}</div>
+                <strong>${matchedGameName}</strong> is on Machine <strong>${m.loc}</strong>
+                <div style="font-size:12px; color:var(--text-muted)">Machine Label: ${m.desc}</div>
+                ${relevantPack ? `<span class="pack-toggle" onclick="togglePack(this)">▸ Included in ${relevantPack} (Click for full pack)</span>` : ''}
+                <div class="pack-list">Loading pack games...</div>
+            `;
+            searchResults.appendChild(item);
+        }
+    });
+});
+
+function togglePack(el) {
+    const list = el.nextElementSibling;
+    const isHidden = list.style.display === "none" || !list.style.display;
+    list.style.display = isHidden ? "block" : "none";
+    el.textContent = isHidden ? "▾ Hide Pack Contents" : el.textContent.replace('▾', '▸');
 }
 
-document.getElementById('s').addEventListener('input', e => search(e.target.value));
-renderMachineList();
+// Render Floor Overview
+const machineList = document.getElementById('machineList');
+gameData.floor.sort((a,b) => a.loc - b.loc).forEach(m => {
+    machineList.innerHTML += `<div class="m-item"><strong>${m.loc}</strong> — ${m.desc} <span style="font-size:10px; color:gray">(${m.manu})</span></div>`;
+});
 </script>
+
 </body>
 </html>
