@@ -1,138 +1,968 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life Trade Calculator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background: #09090b; color: #fafafa; font-family: 'Inter', sans-serif; }
-        .glass-card { background: #18181b; border: 1px solid #27272a; border-radius: 1.5rem; }
-        .input-style { background: #09090b; border: 1px solid #3f3f46; border-radius: 0.75rem; padding: 0.75rem; width: 100%; outline: none; transition: border-color 0.2s; }
-        .input-style:focus { border-color: #3b82f6; }
-        .accent-text { color: #3b82f6; font-weight: 800; }
-    </style>
+<meta charset="UTF-8">
+<title>Panthers Game Finder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{
+    --bg-main:#020617;
+    --bg-elevated:rgba(15,23,42,0.96);
+    --bg-elevated-soft:rgba(15,23,42,0.9);
+    --border-subtle:#1f2937;
+    --accent:#38bdf8;
+    --accent-soft:#0ea5e9;
+    --accent-gold:#fbbf24;
+    --text-main:#e5e7eb;
+    --text-muted:#9ca3af;
+    --radius-lg:18px;
+    --radius-md:14px;
+    --radius-sm:9px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+    font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--text-main);
+    background-color:var(--bg-main);
+    background-image:url("panthers_bg.jpg");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    display:flex;
+    justify-content:center;
+    align-items:stretch;
+    overflow:hidden;
+    position:relative;
+    font-size:14px;
+}
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at top left, rgba(56,189,248,0.15), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(15,23,42,0.9), rgba(3,7,18,0.98));
+    pointer-events:none;
+    mix-blend-mode:soft-light;
+}
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:linear-gradient(to bottom right, rgba(15,23,42,0.92), rgba(15,23,42,0.85));
+    mix-blend-mode:multiply;
+    pointer-events:none;
+}
+.app-shell{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:1500px;
+    height:100vh;
+    padding:26px 32px 26px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+.app-topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 26px;
+    border-radius:999px;
+    background:linear-gradient(120deg, rgba(15,23,42,0.98), rgba(15,23,42,0.94));
+    border:1px solid rgba(148,163,184,0.28);
+    box-shadow:0 22px 50px rgba(0,0,0,0.75);
+    backdrop-filter:blur(18px);
+}
+.brand{display:flex;align-items:center;gap:18px;}
+.brand-icon{
+    width:56px;height:56px;border-radius:999px;overflow:hidden;
+    background:radial-gradient(circle at center,#111827,#020617);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 2px rgba(15,23,42,0.9),0 0 26px rgba(56,189,248,0.8);
+}
+.brand-icon img{
+    width:135%;height:auto;object-fit:contain;transform:translateX(1px);
+}
+.brand-text-title{
+    font-size:24px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+}
+.brand-text-sub{font-size:14px;color:var(--text-muted);}
+.badge-strip{display:flex;align-items:center;gap:12px;font-size:13px;}
+.badge{
+    padding:7px 13px;border-radius:999px;border:1px solid rgba(148,163,184,0.4);
+    background:radial-gradient(circle at top left,rgba(34,197,94,0.3),rgba(15,23,42,0.99));
+    display:flex;align-items:center;gap:7px;
+}
+.badge-dot{
+    width:10px;height:10px;border-radius:999px;
+    background:radial-gradient(circle at center,#22c55e,#15803d);
+    box-shadow:0 0 10px rgba(34,197,94,0.95);
+}
+.badge-label{font-size:13px;text-transform:uppercase;letter-spacing:0.2em;}
+
+.app-main{
+    flex:1;display:grid;
+    grid-template-columns:minmax(0,1.5fr) minmax(0,1.1fr);
+    gap:18px;min-height:0;
+    padding-bottom: 28px;
+}
+.left-column{display:flex;flex-direction:column;gap:16px;min-height:0;}
+.card{
+    border-radius:var(--radius-lg);background:var(--bg-elevated);
+    border:1px solid rgba(148,163,184,0.28);
+    box-shadow:0 26px 70px rgba(0,0,0,0.9),0 0 0 1px rgba(15,23,42,0.9);
+    padding:20px 22px;position:relative;overflow:hidden;
+}
+.card::before{
+    content:"";position:absolute;inset:-40%;
+    background:radial-gradient(circle at top left,rgba(56,189,248,0.16),transparent 55%);
+    opacity:0.8;pointer-events:none;
+}
+.card-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;}
+.card-title{
+    font-size:20px;letter-spacing:0.2em;text-transform:uppercase;color:#f9fafb;
+    text-shadow:0 0 6px rgba(0,0,0,0.6);
+}
+.card-subtitle{font-size:14px;color:var(--text-muted);}
+.inputs-row{
+    display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);
+    gap:13px;margin-bottom:10px;
+}
+input{
+    width:100%;padding:14px 16px;
+    background:radial-gradient(circle at top left,rgba(15,23,42,0.98),rgba(15,23,42,0.94));
+    border:1px solid #4b5563;border-radius:999px;
+    color:var(--text-main);font-size:16px;outline:none;
+    box-shadow:0 0 0 1px rgba(15,23,42,0.85);
+}
+input:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 1px var(--accent-soft),0 0 16px rgba(56,189,248,0.65);
+}
+.results-panel{
+    margin-top:6px;border-radius:var(--radius-md);
+    background:radial-gradient(circle at top left,rgba(15,23,42,0.96),rgba(15,23,42,0.99));
+    border:1px solid rgba(31,41,55,0.96);
+    max-height:calc(100vh - 280px);
+    overflow-y:auto;
+    padding:12px 12px 30px 12px;
+}
+.results-panel::-webkit-scrollbar,
+#rightColumn::-webkit-scrollbar{width:9px;}
+.results-panel::-webkit-scrollbar-track,
+#rightColumn::-webkit-scrollbar-track{background:rgba(15,23,42,0.96);}
+.results-panel::-webkit-scrollbar-thumb,
+#rightColumn::-webkit-scrollbar-thumb{background:#374151;border-radius:20px;}
+
+.resultBox{
+    background:var(--bg-elevated-soft);padding:11px 13px;margin-bottom:9px;
+    border-radius:var(--radius-md);border:1px solid var(--border-subtle);
+    font-size:15px;cursor:pointer;
+}
+.result-meta{font-size:13px;color:var(--text-muted);margin-top:4px;}
+
+#rightColumn{
+    border-radius:var(--radius-lg);
+    background:radial-gradient(circle at top right,rgba(30,64,175,0.68),rgba(15,23,42,0.99));
+    border:1px solid rgba(148,163,184,0.34);
+    box-shadow:0 28px 76px rgba(0,0,0,0.96),0 0 0 1px rgba(15,23,42,0.9);
+    padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;
+    min-height:0;overflow-y:auto;
+}
+.areaHeader{
+    font-weight:500;margin-top:4px;padding:7px 9px;
+    background:linear-gradient(120deg,rgba(30,64,175,0.97),rgba(37,99,235,0.99));
+    cursor:pointer;border-radius:var(--radius-md);border:1px solid #020617;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:14px;color:#e5edff;text-shadow:0 0 7px rgba(0,0,0,0.9);
+}
+.areaHeader span{font-size:12px;color:#cbd5ff;margin-left:6px;}
+.machineItem{
+    padding:6px 9px;border-bottom:1px solid rgba(15,23,42,0.95);font-size:13px;
+}
+.machineItem.highlight{background:rgba(56,189,248,0.2);}
+.machineItem.jumpHighlight{outline:2px solid var(--accent-gold);}
+</style>
 </head>
-<body class="min-h-screen p-4 md:p-8">
-    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+<body>
+
+<div class="app-shell">
+<header class="app-topbar">
+  <div class="brand">
+    <div class="brand-icon"><img src="panther_icon.png" alt="Panther logo"></div>
+    <div>
+      <div class="brand-text-title">PANTHERS GAME FINDER</div>
+      <div class="brand-text-sub">Updated April 2026</div>
+    </div>
+  </div>
+  <div class="badge-strip">
+    <div class="badge"><div class="badge-dot"></div><div class="badge-label">Live</div></div>
+  </div>
+</header>
+
+<main class="app-main">
+<section class="left-column">
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Search</div>
+        <div class="card-subtitle">Search by game, link, or machine number.</div>
+      </div>
+    </div>
+    <div class="inputs-row">
+      <input id="s" placeholder="Search (e.g. Lucky 88, Dragon, Chilli)…">
+      <input id="machineSearch" placeholder="Jump to machine (e.g. 3306)">
+    </div>
+    <div id="results" class="results-panel"></div>
+  </section>
+</section>
+
+<aside id="rightColumn">
+  <div class="sectionBlock">
+    <div id="machineList"></div>
+  </div>
+</aside>
+</main>
+</div>
+
+<script>
+const data = {
+  "machines": [
+    {"location": "1051", "description": "LIGHTNING CASH DRAGONS RICHES", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1052", "description": "LIGHTNING CASH MINE MINE MINE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1053", "description": "LIGHTNING CASH RAGING BULL", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1054", "description": "LIGHTNING CASH HAPPY LANTERN", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1055", "description": "LIGHTNING LINK TIKI FIRE", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "1056", "description": "LIGHTNING LINK EYES OF FORTUNE", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "1057", "description": "LIGHTNING CASH MAGIC PEARL", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1058", "description": "HAPPY CHANCE PIG", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1059", "description": "PLAYERS CHOICE OPAL EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1061", "description": "VEGAS STAR MULTIGAME WITH BLACKJACK", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1062", "description": "VEGAS STAR MULTIGAME WITH BLACKJACK", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1063", "description": "VEGAS STAR MULTIGAME WITH BLACKJACK", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1064", "description": "VEGAS STAR MULTIGAME WITH BLACKJACK", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1071", "description": "WILD WILD NUGGET", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1072", "description": "5 DRAGONS EMPIRE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1073", "description": "PLAYERS CHOICE EMERALD EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1074", "description": "MULTISTAR CHAMPION SERIES ULTRA", "manufacturer": "IGT", "link": ""},
+    {"location": "1075", "description": "PORTAL LOOT WILD TREASURES", "manufacturer": "IGT", "link": ""},
+    {"location": "1081", "description": "PLAYERS CHOICE JADE EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1082", "description": "DRAGON TOWER JACKPOTS JADE FURY", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1083", "description": "PLAYERS CHOICE JADE EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1084", "description": "DRAGON CASH PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1085", "description": "MULTISTAR JETSETTER", "manufacturer": "IGT", "link": ""},
+    {"location": "1086", "description": "MULTISTAR CHAMPION SERIES", "manufacturer": "IGT", "link": ""},
+    {"location": "1087", "description": "EASTERN RICHES", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "1088", "description": "PLAYERS CHOICE DIAMOND EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1091", "description": "PLAYERS CHOICE GOLD JACKPOTS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1092", "description": "BIG BLAST WILD NED", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1093", "description": "LIGHTNING CASH RAGING BULL", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1094", "description": "LIGHTNING CASH TIKI FIRE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1095", "description": "PLAYERS CHOICE PEARL EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "1101", "description": "VEGAS STAR MULTIGAME WITH BLACKJACK", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1102", "description": "VEGAS STAR MULTIGAME WITH BLACKJACK", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1103", "description": "VEGAS STAR MULTIGAME WITH BLACKJACK", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1104", "description": "VEGAS STAR MULTIGAME WITH BLACKJACK", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1105", "description": "VEGAS STAR MULTIGAME WITH BLACKJACK", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1301", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "1302", "description": "DRAGON LINK SPRING FESTIVAL", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "1303", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "1304", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "1305", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "1306", "description": "DRAGON LINK HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "1307", "description": "DRAGON LINK PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "1308", "description": "DRAGON LINK PEACOCK PRINCESS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "1401", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1402", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1403", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1404", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1405", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1406", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1407", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1408", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1409", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1410", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1411", "description": "VEGAS STAR QUARTZ GC16V", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "1501", "description": "EXTRA CHANCE JETSETTER NEW YORK", "manufacturer": "IGT", "link": ""},
+    {"location": "1502", "description": "EXTRA CHANCE JETSETTER LONDON", "manufacturer": "IGT", "link": ""},
+    {"location": "1503", "description": "MULTISTAR BIG 3 G", "manufacturer": "IGT", "link": ""},
+    {"location": "1701", "description": "PLAYERS CHOICE RUBY EDITION", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1702", "description": "PLAYERS CHOICE OPAL EDITION", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1703", "description": "PLAYERS CHOICE DIAMOND EDITION", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1704", "description": "PLAYERS CHOICE SAPPHIRE EDITION", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1705", "description": "DRAGON LINK PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "1706", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "1707", "description": "DRAGON LINK SPRING FESTIVAL", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "1708", "description": "DRAGON CASH GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1709", "description": "DRAGON CASH HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1710", "description": "DRAGON CASH GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1801", "description": "CASHMAN MULTILINK INFERNO QUEEN", "manufacturer": "Aristocrat", "link": "PEN Multilink, PEN VIP Link"},
+    {"location": "1802", "description": "DRAGON LINK PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Dragon Link, PEN VIP Link"},
+    {"location": "1803", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link, PEN VIP Link"},
+    {"location": "1804", "description": "MYSTERY OF THE LAMP TREASURE OASIS", "manufacturer": "IGT", "link": "PEN VIP Link"},
+    {"location": "1901", "description": "BAO ZHU ZHAO FU BLUE FESTIVAL", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1902", "description": "THUNDER EMPIRE LINK INCA DIAMONDS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire, PEN VIP Link"},
+    {"location": "1903", "description": "GRAND STAR WEALTH", "manufacturer": "Aristocrat", "link": "PEN Grand Star, PEN VIP Link"},
+    {"location": "1904", "description": "DRAGON CASH PEACOCK PRINCESS", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1905", "description": "DRAGON CASH GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1906", "description": "5 DRAGONS LEGENDS", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "1907", "description": "PLAYERS CHOICE DIAMOND EDITION", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "2001", "description": "DRAGON LINK SPRING FESTIVAL", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "2002", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "2003", "description": "DRAGON TRAIN SAP CHI LIN WINS", "manufacturer": "Light & Wonder", "link": "PEN VIP Link"},
+    {"location": "2004", "description": "DRAGON TRAIN LINK FOREVER EMPEROR", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train, PEN VIP Link"},
+    {"location": "2005", "description": "CASHMAN MULTILINK IMMORTAL FORTUNE", "manufacturer": "Aristocrat", "link": "PEN Multilink, PEN VIP Link"},
+    {"location": "2006", "description": "DRAGON LINK HAPPY AND PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link, PEN VIP Link"},
+    {"location": "2007", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link, PEN VIP Link"},
+    {"location": "2101", "description": "DRAGON LINK HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "2102", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "2103", "description": "DRAGON LINK SPRING FESTIVAL", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "2104", "description": "DRAGON LINK GOLDEN GONG", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "2105", "description": "DRAGON LINK PEACOCK PRINCESS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "2106", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2, PEN VIP Link"},
+    {"location": "2201", "description": "THUNDER EMPIRE LINK KING SAMURAI", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire, PEN VIP Link"},
+    {"location": "2202", "description": "THUNDER EMPIRE LINK MAGIC EMPEROR", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire, PEN VIP Link"},
+    {"location": "2203", "description": "EXTRA EXTRA CHANCE LOOT BLUE MOON 2", "manufacturer": "IGT", "link": "PEN VIP Link"},
+    {"location": "2204", "description": "PLAYERS CHOICE CLASS ACT", "manufacturer": "Aristocrat", "link": "PEN VIP Link"},
+    {"location": "2301", "description": "DRAGON TRAIN LINK KHUTULIN BATTLE PRINCESS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "2302", "description": "DRAGON TRAIN LINK FOREVER EMPEROR", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "2303", "description": "DRAGON TRAIN LINK CHI LIN WINS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "2304", "description": "DRAGON TRAIN LINK SUN SHOTS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "2305", "description": "DRAGON TRAIN LINK FOREVER EMPEROR", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "2306", "description": "DRAGON TRAIN LINK CHI LIN WINS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "2307", "description": "DRAGON TRAIN LINK SUN SHOTS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "2308", "description": "DRAGON TRAIN LINK KHUTULIN BATTLE PRINCESS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "2309", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2310", "description": "DRAGON LINK GOLDEN GONG", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2311", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2312", "description": "DRAGON CASH SILK ROAD", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2313", "description": "DRAGON CASH AUTUMN MOON", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2314", "description": "DRAGON CASH GENGHIS KHAN", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2315", "description": "DRAGON CASH HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2316", "description": "DRAGON CASH GENGHIS KHAN", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2317", "description": "DRAGON CASH HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2401", "description": "DRAGON LINK PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2402", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2403", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2404", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2405", "description": "DRAGON LINK HAPPY AND PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2406", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2501", "description": "DRAGON LINK PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2502", "description": "DRAGON LINK HAPPY AND PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2503", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2504", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2505", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2506", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "2601", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2602", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2603", "description": "DRAGON LINK PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2604", "description": "DRAGON LINK SPRING FESTIVAL", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2605", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2606", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2701", "description": "DRAGON LINK SILK ROAD", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2702", "description": "DRAGON LINK PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2703", "description": "DRAGON LINK HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2704", "description": "DRAGON LINK GOLDEN GONG", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2801", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2802", "description": "DRAGON LINK SILK ROAD", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2803", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2804", "description": "DRAGON LINK GOLDEN GONG", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2805", "description": "DRAGON LINK HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2806", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2807", "description": "DRAGON LINK HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2808", "description": "DRAGON LINK PEACOCK PRINCESS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "2901", "description": "DRAGON CASH GOLDEN GONG", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2902", "description": "DRAGON CASH GENGHIS KHAN", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2903", "description": "DRAGON CASH GOLDEN GONG", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2904", "description": "DRAGON CASH PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2905", "description": "DRAGON CASH GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2906", "description": "LIGHTNING CASH DRAGONS RICHES", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2907", "description": "PLAYERS CHOICE JADE EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "2908", "description": "DRAGON CASH PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3001", "description": "DRAGON CASH PANDA MAGIC", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3002", "description": "DRAGON CASH PEACOCK PRINCESS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3003", "description": "DRAGON CASH HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3101", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "3102", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "3103", "description": "DRAGON LINK GOLDEN GONG", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "3104", "description": "DRAGON LINK HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "3105", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "3106", "description": "DRAGON LINK HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "3107", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "3108", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "3109", "description": "DRAGON LINK SILK ROAD", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "3110", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "3201", "description": "FORTUNE DOORS LINK JADE ASSASSIN", "manufacturer": "Light & Wonder", "link": "PEN Fortune Doors"},
+    {"location": "3202", "description": "FORTUNE DOORS LINK AMETHYST PRINCESS", "manufacturer": "Light & Wonder", "link": "PEN Fortune Doors"},
+    {"location": "3203", "description": "FORTUNE DOORS LINK RUBY HERO", "manufacturer": "Light & Wonder", "link": "PEN Fortune Doors"},
+    {"location": "3204", "description": "FORTUNE DOORS LINK SAPPHIRE SAGE", "manufacturer": "Light & Wonder", "link": "PEN Fortune Doors"},
+    {"location": "3205", "description": "LNML CATS HATS N MORE BATS", "manufacturer": "Light & Wonder", "link": "PEN Lock N More Link"},
+    {"location": "3206", "description": "LNML PIGGY N MORE BANKIN", "manufacturer": "Light & Wonder", "link": "PEN Lock N More Link"},
+    {"location": "3207", "description": "LNML HUFF N MORE PUFF", "manufacturer": "Light & Wonder", "link": "PEN Lock N More Link"},
+    {"location": "3208", "description": "LNML PIGGY N MORE BANKIN", "manufacturer": "Light & Wonder", "link": "PEN Lock N More Link"},
+    {"location": "3209", "description": "LNML EUREKA N MORE BLASTIN", "manufacturer": "Light & Wonder", "link": "PEN Lock N More Link"},
+    {"location": "3301", "description": "5 DRAGONS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3302", "description": "DS ROYAL DIAMONDS", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "3303", "description": "DS HONEY BEE", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "3304", "description": "EXTRA CHANCE JETSETTER NEW YORK", "manufacturer": "IGT", "link": ""},
+    {"location": "3305", "description": "GYPSY MOON", "manufacturer": "IGT", "link": ""},
+    {"location": "3306", "description": "PLAYERS CHOICE GRAND", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3307", "description": "PLAYERS CHOICE DIAMOND EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3308", "description": "PLAYERS CHOICE DIAMOND EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3309", "description": "PLAYERS CHOICE ULTIMATE JACKPOTS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3310", "description": "PLAYERS CHOICE HIGH LIMITS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3311", "description": "LIGHTNING CASH TIKI FIRE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "3401", "description": "QS KING SPIN 2", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "3402", "description": "TS KING SPIN", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "3403", "description": "MULTIPLAY BIG TIME 8", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "3404", "description": "HUFF N MORE PUFF", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "3405", "description": "PENNY PIER VIP TEST YOUR STRENGTH", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "3406", "description": "PENNY PIER VIP SITTING DUCKS", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "3407", "description": "HUFF N MORE PUFF", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "3501", "description": "WILD TALES MAGICAL NIGHTS", "manufacturer": "Aruze", "link": ""},
+    {"location": "3502", "description": "FORTUNE MYSTERY LEONIDAS", "manufacturer": "Aruze", "link": ""},
+    {"location": "3503", "description": "CASH BLAZE EASTERN FESTIVAL", "manufacturer": "Aruze", "link": ""},
+    {"location": "3504", "description": "CRAZY JACKPOTS WILD NIGHTS", "manufacturer": "Ainsworth", "link": "PEN Crazy Jackpots"},
+    {"location": "3505", "description": "CRAZY JACKPOTS MIDNIGHT MONEY", "manufacturer": "Ainsworth", "link": "PEN Crazy Jackpots"},
+    {"location": "3506", "description": "CRAZY JACKPOTS BULLION DOLLARS", "manufacturer": "Ainsworth", "link": "PEN Crazy Jackpots"},
+    {"location": "3507", "description": "FORTUNE DRUMS BAG OF WEALTH", "manufacturer": "Aruze", "link": ""},
+    {"location": "3508", "description": "VEGAS RICHES", "manufacturer": "Aruze", "link": ""},
+    {"location": "3509", "description": "FORTUNE DRUMS DRAGON BOAT", "manufacturer": "Aruze", "link": ""},
+    {"location": "3601", "description": "GO FOR GRAND AZTEC WONDERS", "manufacturer": "IGT", "link": ""},
+    {"location": "3602", "description": "MAGIC TREASURES TIGER", "manufacturer": "IGT", "link": ""},
+    {"location": "3603", "description": "GO FOR GRAND POWER CHARMS", "manufacturer": "IGT", "link": ""},
+    {"location": "3604", "description": "MAGIC TREASURES TIGER", "manufacturer": "IGT", "link": ""},
+    {"location": "3605", "description": "MAGIC TREASURES DRAGON", "manufacturer": "IGT", "link": ""},
+    {"location": "3606", "description": "GO FOR GRAND OUTBACK GOLD", "manufacturer": "IGT", "link": ""},
+    {"location": "3701", "description": "K-POW PIG PEACEFUL PANDA", "manufacturer": "Konami", "link": ""},
+    {"location": "3702", "description": "K-POW PIG HAPPY BLESSING", "manufacturer": "Konami", "link": ""},
+    {"location": "3703", "description": "POT OF GOLD CASH POT", "manufacturer": "IGT", "link": ""},
+    {"location": "3704", "description": "GOLDEN FORTUNE JU BAO PEN", "manufacturer": "IGT", "link": ""},
+    {"location": "3801", "description": "BULL RUSH STAMPEDE MINOTAURS TREASURE", "manufacturer": "Konami", "link": ""},
+    {"location": "3802", "description": "BULL RUSH STAMPEDE FIRE MOUNTAIN", "manufacturer": "Konami", "link": ""},
+    {"location": "3803", "description": "GOLDEN STRIKE BEES KNEES", "manufacturer": "Konami", "link": ""},
+    {"location": "3804", "description": "BULL RUSH MAXIMUS MONEY", "manufacturer": "Konami", "link": ""},
+    {"location": "3805", "description": "BULL RUSH EL MATADOR", "manufacturer": "Konami", "link": ""},
+    {"location": "3806", "description": "FORTUNE HEARTS LUNAR DRAGON", "manufacturer": "Konami", "link": ""},
+    {"location": "3807", "description": "FORTUNE HEARTS EMPERORS CHOICE", "manufacturer": "Konami", "link": ""},
+    {"location": "3808", "description": "FORTUNE HEARTS LUNAR DRAGON", "manufacturer": "Konami", "link": ""},
+    {"location": "3901", "description": "HUFF N EVEN MORE PUFF", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "3902", "description": "HUFF N EVEN MORE PUFF", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "3903", "description": "HUFF N EVEN MORE PUFF", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "3904", "description": "DRAGON TRAIN SAP FOREVER EMPEROR", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "3905", "description": "HUFF N EVEN MORE PUFF", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "3906", "description": "MONOPOLY TAKE A CHANCE", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "4001", "description": "MIGHTY GENIE LINK DRAGONS WISH", "manufacturer": "Aristocrat", "link": "PEN Mighty Genie Link"},
+    {"location": "4002", "description": "MIGHTY GENIE LINK PERSIAN TREASURE", "manufacturer": "Aristocrat", "link": "PEN Mighty Genie Link"},
+    {"location": "4003", "description": "MIGHTY GENIE LINK DRAGONS WISH", "manufacturer": "Aristocrat", "link": "PEN Mighty Genie Link"},
+    {"location": "4004", "description": "MIGHTY GENIE LINK MR BANKS", "manufacturer": "Aristocrat", "link": "PEN Mighty Genie Link"},
+    {"location": "4005", "description": "MIGHTY GENIE LINK DRAGONS WISH", "manufacturer": "Aristocrat", "link": "PEN Mighty Genie Link"},
+    {"location": "4006", "description": "MIGHTY GENIE LINK PERSIAN TREASURE", "manufacturer": "Aristocrat", "link": "PEN Mighty Genie Link"},
+    {"location": "4101", "description": "LEGENDS OF THE DEEP NEPTUNES FURY", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "4102", "description": "LEGENDS OF THE DEEP OCEAN NYMPH", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "4103", "description": "CATS HATS AND MORE BATS", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "4201", "description": "THUNDER EMPIRE LINK MONGOLIAN EMPRESS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4202", "description": "THUNDER EMPIRE LINK MONGOLIAN EMPRESS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4203", "description": "THUNDER EMPIRE LINK INCA DIAMONDS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4204", "description": "THUNDER EMPIRE LINK KING SAMURAI", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4205", "description": "THUNDER EMPIRE LINK MAGIC EMPEROR", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4206", "description": "THUNDER EMPIRE LINK MONGOLIAN EMPRESS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4207", "description": "THUNDER EMPIRE LINK MAGIC EMPEROR", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4301", "description": "THUNDER EMPIRE LINK MONGOLIAN EMPRESS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4302", "description": "THUNDER EMPIRE LINK INCA DIAMONDS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4303", "description": "THUNDER EMPIRE LINK KING SAMURAI", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4304", "description": "THUNDER EMPIRE LINK KING SAMURAI", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4305", "description": "THUNDER EMPIRE LINK INCA DIAMONDS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4306", "description": "THUNDER EMPIRE LINK MAGIC EMPEROR", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "4401", "description": "LIGHTNING LINK PUNTERS CHOICE", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "4402", "description": "LIGHTNING LINK RAGING BULL", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "4403", "description": "LIGHTNING LINK MAGIC PEARL", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "4404", "description": "LIGHTNING LINK HIGH STAKES", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "4405", "description": "LIGHTNING CASH FIRE IDOL", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "4406", "description": "LIGHTNING CASH MINE MINE MINE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "4407", "description": "LIGHTNING CASH MINE MINE MINE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "4408", "description": "LIGHTNING CASH EYES OF FORTUNE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "4501", "description": "FH & SJ MAGIC TOUCH", "manufacturer": "Aristocrat", "link": "PEN Fabulous Hold & Spin Jackpots"},
+    {"location": "4502", "description": "FH & SJ COME ONE COME ALL", "manufacturer": "Aristocrat", "link": "PEN Fabulous Hold & Spin Jackpots"},
+    {"location": "4503", "description": "FH & SJ GLITTER AND GLITZ", "manufacturer": "Aristocrat", "link": "PEN Fabulous Hold & Spin Jackpots"},
+    {"location": "4504", "description": "FH & SJ CASH CHAMP", "manufacturer": "Aristocrat", "link": "PEN Fabulous Hold & Spin Jackpots"},
+    {"location": "4601", "description": "JCDL ADONIS", "manufacturer": "Aristocrat", "link": "PEN Jackpot Carnival Deluxe"},
+    {"location": "4602", "description": "JCDL WHERES THE GOLD", "manufacturer": "Aristocrat", "link": "PEN Jackpot Carnival Deluxe"},
+    {"location": "4603", "description": "JCDL CHOY SUN DOA", "manufacturer": "Aristocrat", "link": "PEN Jackpot Carnival Deluxe"},
+    {"location": "4604", "description": "JCDL WHERES THE GOLD", "manufacturer": "Aristocrat", "link": "PEN Jackpot Carnival Deluxe"},
+    {"location": "4605", "description": "JCDL ADONIS", "manufacturer": "Aristocrat", "link": "PEN Jackpot Carnival Deluxe"},
+    {"location": "4606", "description": "JCDL CHOY SUN DOA", "manufacturer": "Aristocrat", "link": "PEN Jackpot Carnival Deluxe"},
+    {"location": "4701", "description": "LONG SUO 888 BLUE DRAGON", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "4702", "description": "NUGGET HUNTER SANDS OF FORTUNE", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "4703", "description": "YEAR OF THE SNAKE BLACK", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "4704", "description": "FORTUNE BULL PROSPERITY", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "4705", "description": "FORTUNE BULL WEALTH", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "4706", "description": "LONG SUO 888 RED DRAGON", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "4801", "description": "PINK PANTHER CASH CASE", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "4802", "description": "SILK MOON", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "4803", "description": "JIN JI BAO XI TREASURES", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "4804", "description": "PINK PANTHER TWO HOOTS", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "4805", "description": "LIGHTNING CASH HIGH STAKES", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "4806", "description": "DRAGON CASH GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "4807", "description": "LIGHTNING CASH WILD CHUCO", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "4808", "description": "LIGHTNING LINK RAGING BULL", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "4809", "description": "LIGHTNING LINK MINE MINE MINE", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "4810", "description": "LIGHTNING LINK EYES OF FORTUNE", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "4901", "description": "DRAGON TRAIN LINK FOREVER EMPEROR", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "4902", "description": "DRAGON TRAIN LINK KHUTULIN BATTLE PRINCESS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "4903", "description": "DRAGON TRAIN LINK SUN SHOTS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "4904", "description": "DRAGON TRAIN LINK CHI LIN WINS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "4905", "description": "DRAGON TRAIN LINK CHI LIN WINS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "4906", "description": "DRAGON TRAIN LINK FOREVER EMPEROR", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "4907", "description": "DRAGON TRAIN LINK SUN SHOTS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "5001", "description": "TIGER AND DRAGON CASH ON REELS", "manufacturer": "IGT", "link": "PEN Tiger and Dragon Link"},
+    {"location": "5002", "description": "TIGER AND DRAGON MULTIPLIER", "manufacturer": "IGT", "link": "PEN Tiger and Dragon Link"},
+    {"location": "5003", "description": "TIGER AND DRAGON CASH ON REELS", "manufacturer": "IGT", "link": "PEN Tiger and Dragon Link"},
+    {"location": "5004", "description": "MYSTERY OF THE LAMP TREASURE OASIS", "manufacturer": "IGT", "link": ""},
+    {"location": "5005", "description": "MYSTERY OF THE LAMP ENCHANTED PALACE", "manufacturer": "IGT", "link": ""},
+    {"location": "5006", "description": "MYSTERY OF THE LAMP TREASURE OASIS", "manufacturer": "IGT", "link": ""},
+    {"location": "5101", "description": "PLAYERS CHOICE RUBY EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "5102", "description": "DRAGON CASH SPRING FESTIVAL", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "5103", "description": "FANTASTIC JACKPOTS HITS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "5104", "description": "LIGHTNING CASH MAGIC TOTEM", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "5105", "description": "LIGHTNING CASH HEART THROB", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "5106", "description": "LIGHTNING CASH EYES OF FORTUNE", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "5201", "description": "POWER PANTHER TIKI TIKI", "manufacturer": "Konami", "link": "PEN Panther Power"},
+    {"location": "5202", "description": "POWER PANTHER WILD KINGDOM", "manufacturer": "Konami", "link": "PEN Panther Power"},
+    {"location": "5203", "description": "POWER PANTHER AZTEC THUNDER", "manufacturer": "Konami", "link": "PEN Panther Power"},
+    {"location": "5204", "description": "POWER PANTHER TIKI TIKI", "manufacturer": "Konami", "link": "PEN Panther Power"},
+    {"location": "5301", "description": "CASHMAN MULTILINK IMMORTAL FORTUNE", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "5302", "description": "MORE CHILLI MULTILINK EXTRA SPICY", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "5303", "description": "CASHMAN MULTILINK INFERNO QUEEN", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "5304", "description": "MORE CHILLI MULTILINK HABERNERO HEATER", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "5305", "description": "CASHMAN MULTILINK TIGERS REEL", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "5306", "description": "MORE CHILLI MULTILINK MAS POLO", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "5401", "description": "MEXP BIG BLACK RHINO", "manufacturer": "Aristocrat", "link": "PEN Midnight Express"},
+    {"location": "5402", "description": "MEXP RED PLANET", "manufacturer": "Aristocrat", "link": "PEN Midnight Express"},
+    {"location": "5403", "description": "MEXP RED PLANET", "manufacturer": "Aristocrat", "link": "PEN Midnight Express"},
+    {"location": "5404", "description": "MEXP BIG BLACK RHINO", "manufacturer": "Aristocrat", "link": "PEN Midnight Express"},
+    {"location": "5405", "description": "MEXP BIG BLACK RHINO", "manufacturer": "Aristocrat", "link": "PEN Midnight Express"},
+    {"location": "5406", "description": "MEXP MR BIG", "manufacturer": "Aristocrat", "link": "PEN Midnight Express"},
+    {"location": "5501", "description": "FU DAI LIAN LIAN PEACOCK", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "5502", "description": "BAO ZHU ZHAO FU RED FESTIVAL", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "5503", "description": "DIAMOND AGE PHARAOHS GEMS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "5504", "description": "OUTGROW LINK BLUE MOON", "manufacturer": "IGT", "link": "PEN O Link"},
+    {"location": "5505", "description": "OUTGROW LINK SPOOKY MOON", "manufacturer": "IGT", "link": "PEN O Link"},
+    {"location": "5506", "description": "OUTGROW LINK BLUE MOON", "manufacturer": "IGT", "link": "PEN O Link"},
+    {"location": "5601", "description": "MULTISTAR CHAMPION SERIES ULTRA", "manufacturer": "IGT", "link": ""},
+    {"location": "5602", "description": "LUCKY GONG CASH MYSTICAL EMPEROR DUAL", "manufacturer": "IGT", "link": ""},
+    {"location": "5603", "description": "POT OF GOLD CASH POT", "manufacturer": "IGT", "link": ""},
+    {"location": "5604", "description": "JETSETTER GOLD SYDNEY", "manufacturer": "IGT", "link": ""},
+    {"location": "5605", "description": "MEGA VAULT GREAT SOUTHERN LAND", "manufacturer": "IGT", "link": ""},
+    {"location": "5606", "description": "MEGA VAULT EMPERORS GUARDIANS", "manufacturer": "IGT", "link": ""},
+    {"location": "5607", "description": "MEGA VAULT VEGAS BABY", "manufacturer": "IGT", "link": ""},
+    {"location": "5608", "description": "MEGA VAULT JIN LONGZHOU", "manufacturer": "IGT", "link": ""},
+    {"location": "5701", "description": "BANDIT LINK MONEY HEIST", "manufacturer": "IGT", "link": "PEN Bandit Link"},
+    {"location": "5702", "description": "BANDIT LINK FORBIDDEN SANDS", "manufacturer": "IGT", "link": "PEN Bandit Link"},
+    {"location": "5703", "description": "BANDIT LINK FORTUNES SHOW", "manufacturer": "IGT", "link": "PEN Bandit Link"},
+    {"location": "5704", "description": "BANDIT LINK FORTUNES SHOW", "manufacturer": "IGT", "link": "PEN Bandit Link"},
+    {"location": "5705", "description": "BANDIT LINK MONEY HEIST", "manufacturer": "IGT", "link": "PEN Bandit Link"},
+    {"location": "5706", "description": "BANDIT LINK WILDS BUNCH", "manufacturer": "IGT", "link": "PEN Bandit Link"},
+    {"location": "5801", "description": "5 DRAGONS EMPIRE", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "5802", "description": "5 DRAGONS EMPIRE", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "5803", "description": "5 DRAGONS EMPIRE", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "5804", "description": "5 DRAGONS EMPIRE", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "5901", "description": "FIRE DRAGON LOOT MOON BLOSSOM", "manufacturer": "IGT", "link": ""},
+    {"location": "5902", "description": "FIRE DRAGON LOOT SAMURAI SUNSET", "manufacturer": "IGT", "link": ""},
+    {"location": "5903", "description": "FIREWORK LOOT FESTIVAL OF LIGHTS", "manufacturer": "IGT", "link": ""},
+    {"location": "5904", "description": "FIREWORK LOOT TREASURES OF THE ORIENT", "manufacturer": "IGT", "link": ""},
+    {"location": "6001", "description": "LIGHTNING CASH EYES OF FORTUNE", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6002", "description": "LIGHTNING CASH RAGING BULL", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6003", "description": "5 DRAGONS EMPIRE", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6004", "description": "DRAGON CASH GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6005", "description": "DRAGON CASH PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6006", "description": "5 DRAGONS EMPIRE", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6101", "description": "BULL RUSH EL MATADOR", "manufacturer": "Konami", "link": "PEN Phoenix Link"},
+    {"location": "6102", "description": "BULL RUSH MAXIMUS MONEY", "manufacturer": "Konami", "link": "PEN Phoenix Link"},
+    {"location": "6103", "description": "BULL RUSH YARR MATEY", "manufacturer": "Konami", "link": "PEN Phoenix Link"},
+    {"location": "6104", "description": "BULL RUSH WILD OUTBACK", "manufacturer": "Konami", "link": "PEN Phoenix Link"},
+    {"location": "6106", "description": "GRAND STAR SAPPHIRE", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "6107", "description": "GRAND STAR EMERALD", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "6108", "description": "GRAND STAR PLATINUM", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "6109", "description": "CASH SPARK MAGIC SPARK", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "6110", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "6111", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "6112", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "6113", "description": "DRAGON LINK PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "6114", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "6115", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "6116", "description": "GRAND STAR WEALTH", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "6117", "description": "GRAND STAR WEALTH", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "6118", "description": "GRAND STAR SAPPHIRE", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "6119", "description": "GRAND STAR EMERALD", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "6120", "description": "GRAND STAR PLATINUM", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "6121", "description": "DRAGON LINK HAPPY AND PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "6122", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "6123", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "6124", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "6125", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "6201", "description": "MULTISTAR CHAMPION SERIES", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "6202", "description": "WAY OF SHOGUN", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "6203", "description": "FIREBALL BLUE MOON 2 EXPRESS", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "6204", "description": "MULTISTAR CHAMPION SERIES IMMORTAL", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "6205", "description": "FIREBALL MONEY BEANS EXPRESS", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "6206", "description": "GOLD OF THE GODS PEGASUS OF OLYMPUS", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "6207", "description": "GOLD OF THE GODS SNAKES OF MEDUSA", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "6208", "description": "WILD WILD PEARL", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6209", "description": "PLAYERS CHOICE OPAL EDITION", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6210", "description": "FANTASTIC JACKPOTS STAKES", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6301", "description": "MEGA CHOICE GOLD", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "6302", "description": "RISE OF THE DRAGON", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "6303", "description": "QS KING SPIN II", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "6304", "description": "LUCKY STARS DELUXE BLAZIN HOT", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "6305", "description": "LUCKY STARS DELUXE DOUBLE CHANCE", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "6306", "description": "MEGA CHOICE GOLD", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "6307", "description": "SUPER GRAND STAR VIKINGS", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6308", "description": "SUPER GRAND STAR PROSPERITY", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6309", "description": "AQUA KINGDOM JADE MERMAID", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6401", "description": "DRAGON CASH PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6402", "description": "DRAGON CASH HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6403", "description": "DRAGON CASH GOLDEN GONG", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "6404", "description": "JETSETTER FIRST CLASS SYDNEY", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "6405", "description": "MULTISTAR BIG 3 G", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "6406", "description": "MULTISTAR CHAMPION SERIES PLATINUM", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "6501", "description": "SAN FA PANDAS", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "6502", "description": "SAN FA TIGERS", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "6503", "description": "YEAR OF THE DRAGON GOLD", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "6504", "description": "YEAR OF THE DRAGON GOLD", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "6505", "description": "YEAR OF THE DRAGON RED", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7001", "description": "WILD WILD EMERALD", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7002", "description": "FANTASTIC JACKPOTS STAKES", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7003", "description": "PLAYERS CHOICE OPAL EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7004", "description": "FANTASTIC JACKPOTS STAKES", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7005", "description": "SAN FA PANDAS", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7006", "description": "SAN FA TIGERS", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7007", "description": "YEAR OF THE SNAKE GOLD", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7008", "description": "NUGGET HUNTER BLAST FOR BUCKS", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7009", "description": "EXTRA EXTRA CHANCE LOOT MONEY BEANS", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "7010", "description": "MYSTERY OF THE LAMP ENCHANTED PALACE", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "7011", "description": "MYSTERY OF THE LAMP TREASURE OASIS", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "7012", "description": "PROSPERITY LOOT JADE PRINCESS", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "7013", "description": "DIAMOND AGE PHARAOHS GEMS", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7014", "description": "MIGHTY GENIE SAP MR BANKS", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7015", "description": "AQUA KINGDOM EGYPTIAN SEA", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7016", "description": "SUPER GRAND STAR PROSPERITY", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7017", "description": "RISE OF THE PHOENIX", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7018", "description": "RISE OF THE TIGER", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7019", "description": "MOON MONEY", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7020", "description": "KRAKATOA", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7101", "description": "THUNDER EMPIRE LINK INCA DIAMONDS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "7102", "description": "THUNDER EMPIRE LINK KING SAMURAI", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "7103", "description": "THUNDER EMPIRE LINK MAGIC EMPEROR", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "7104", "description": "THUNDER EMPIRE LINK MONGOLIAN EMPRESS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "7105", "description": "THUNDER EMPIRE LINK INCA DIAMONDS", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "7106", "description": "THUNDER EMPIRE LINK KING SAMURAI", "manufacturer": "Aristocrat", "link": "PEN Thunder Empire"},
+    {"location": "7107", "description": "VEGAS STAR MULTIGAME", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "7108", "description": "VEGAS STAR MULTIGAME", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "7109", "description": "VEGAS STAR MULTIGAME", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "7110", "description": "VEGAS STAR MULTIGAME", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "7111", "description": "VEGAS STAR MULTIGAME", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "7112", "description": "VEGAS STAR MULTIGAME", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "7113", "description": "LIGHTNING LINK FIRE IDOL", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "7114", "description": "LIGHTNING LINK MINE MINE MINE", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "7115", "description": "LIGHTNING LINK WILD CHUCO", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "7116", "description": "LIGHTNING LINK HIGH STAKES", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "7117", "description": "LIGHTNING LINK DRAGONS RICHES", "manufacturer": "Aristocrat", "link": "PEN Lightning Link"},
+    {"location": "7201", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "7202", "description": "DRAGON LINK SILK ROAD", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "7203", "description": "DRAGON LINK GOLDEN GONG", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "7204", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "7205", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "7206", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "7207", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "7208", "description": "DRAGON LINK HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "7209", "description": "LIGHTNING CASH WILD CHUCO", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7210", "description": "PLAYERS CHOICE RUBY EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7211", "description": "DRAGON CASH SPRING FESTIVAL", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7212", "description": "FANTASTIC JACKPOTS CASH", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7213", "description": "FANTASTIC JACKPOTS PAYS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7214", "description": "GRAND FORTUNE BULL GOLD", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "7215", "description": "FORTUNE BULL WEALTH", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "7216", "description": "EAGLE RICHES MONGOL EMPIRE", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "7217", "description": "MAGIC TREASURES DRAGON", "manufacturer": "IGT", "link": ""},
+    {"location": "7218", "description": "MAGIC TREASURES TIGER", "manufacturer": "IGT", "link": ""},
+    {"location": "7219", "description": "MULTISTAR CHAMPION SERIES TITANIUM", "manufacturer": "IGT", "link": ""},
+    {"location": "7220", "description": "MULTISTAR DAZZLING DIAMONDS", "manufacturer": "IGT", "link": ""},
+    {"location": "7221", "description": "MULTISTAR WORLD CHAMPION SERIES", "manufacturer": "IGT", "link": ""},
+    {"location": "7222", "description": "CLEOPATRA RISING DUAL", "manufacturer": "IGT", "link": ""},
+    {"location": "7223", "description": "PLAYERS CHOICE DIAMOND EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7224", "description": "PLAYERS CHOICE SAPPHIRE EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7225", "description": "PLAYERS CHOICE DIAMOND EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7226", "description": "PLAYERS CHOICE ALL STARS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7227", "description": "PLAYERS CHOICE SAPPHIRE EDITION", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "7301", "description": "MORE CHILLI MULTILINK HABERNERO HEATER", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "7302", "description": "CASHMAN MULTILINK TIGERS REEL", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "7303", "description": "MORE CHILLI MULTILINK MAS POLO", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "7304", "description": "CASHMAN MULTILINK IMMORTAL FORTUNE", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "7305", "description": "MORE CHILLI MULTILINK EXTRA SPICY", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "7306", "description": "CASHMAN MULTILINK INFERNO QUEEN", "manufacturer": "Aristocrat", "link": "PEN Multilink"},
+    {"location": "7401", "description": "DRAGON CASH PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7402", "description": "DRAGON CASH GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7403", "description": "DRAGON CASH AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7404", "description": "DRAGON CASH GOLDEN GONG", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7405", "description": "DRAGON CASH HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7406", "description": "DRAGON CASH GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7407", "description": "DRAGON CASH GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7408", "description": "DRAGON CASH PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7409", "description": "QS ELECTRIC NIGHTS", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7410", "description": "BLACK BEAR", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7411", "description": "QS HOTTER THAN HOT", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7501", "description": "YEAR OF THE DRAGON RED", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7502", "description": "YEAR OF THE DRAGON GOLD", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7503", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "7504", "description": "DRAGON LINK GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "7505", "description": "DRAGON LINK AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "7506", "description": "DRAGON LINK PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Dragon Link"},
+    {"location": "7601", "description": "BULL RUSH WILD OUTBACK", "manufacturer": "Konami", "link": "PEN Phoenix Link"},
+    {"location": "7602", "description": "BULL RUSH MAXIMUS MONEY", "manufacturer": "Konami", "link": "PEN Phoenix Link"},
+    {"location": "7603", "description": "BULL RUSH LONE RIDER", "manufacturer": "Konami", "link": "PEN Phoenix Link"},
+    {"location": "7701", "description": "PLAYERS CHOICE RUBY EDITION", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7702", "description": "PLAYERS CHOICE SAPPHIRE EDITION", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7703", "description": "PLAYERS CHOICE SAPPHIRE EDITION", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7704", "description": "5 DRAGONS EMPIRE", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7705", "description": "PLAYERS CHOICE OPAL EDITION", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7706", "description": "5 DRAGONS EMPIRE", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7707", "description": "JUNGLE QUEST", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "7708", "description": "QS GOLDEN LION", "manufacturer": "Ainsworth", "link": "PEN Phoenix Link"},
+    {"location": "7709", "description": "DRAGON CASH GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7710", "description": "PLAYERS CHOICE JADE EDITION", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7711", "description": "DRAGON CASH AUTUMN MOON", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "7801", "description": "LNML CATS HATS N MORE BATS", "manufacturer": "Light & Wonder", "link": "PEN Lock N More Link"},
+    {"location": "7802", "description": "LNML PIGGY N MORE BANKIN", "manufacturer": "Light & Wonder", "link": "PEN Lock N More Link"},
+    {"location": "7803", "description": "LNML HUFF N MORE PUFF", "manufacturer": "Light & Wonder", "link": "PEN Lock N More Link"},
+    {"location": "7804", "description": "LNML CATS HATS N MORE BATS", "manufacturer": "Light & Wonder", "link": "PEN Lock N More Link"},
+    {"location": "7805", "description": "DRAGON TRAIN LINK KHUTULIN BATTLE PRINCESS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "7806", "description": "DRAGON TRAIN LINK SUN SHOTS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "7807", "description": "DRAGON TRAIN LINK FOREVER EMPEROR", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "7808", "description": "DRAGON TRAIN LINK CHI LIN WINS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "7809", "description": "DRAGON TRAIN LINK KHUTULIN BATTLE PRINCESS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8001", "description": "DRAGON LINK SPRING FESTIVAL", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8002", "description": "DRAGON LINK GOLDEN GONG", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8003", "description": "DRAGON LINK SPRING FESTIVAL", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8101", "description": "DRAGON LINK PEACOCK PRINCESS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8102", "description": "DRAGON LINK HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8103", "description": "DRAGON LINK GENGHIS KHAN", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8104", "description": "DRAGON LINK SILK ROAD", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8105", "description": "DRAGON LINK GOLDEN GONG", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8106", "description": "DRAGON LINK PEACOCK PRINCESS", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8107", "description": "DRAGON LINK PANDA MAGIC", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8108", "description": "DRAGON LINK PEACE AND LONG LIFE", "manufacturer": "Aristocrat", "link": "PEN Dragon Link 2"},
+    {"location": "8109", "description": "JCDL ADONIS", "manufacturer": "Aristocrat", "link": "PEN Jackpot Carnival Deluxe"},
+    {"location": "8110", "description": "JCDL WHERES THE GOLD", "manufacturer": "Aristocrat", "link": "PEN Jackpot Carnival Deluxe"},
+    {"location": "8111", "description": "JCDL CHOY SUN DOA", "manufacturer": "Aristocrat", "link": "PEN Jackpot Carnival Deluxe"},
+    {"location": "8112", "description": "SHENLONG UNLEASHED SUV GOLDEN EMPEROR", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "8113", "description": "HUFF N EVEN MORE PUFF", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "8114", "description": "SHENLONG UNLEASHED SUV WILD GUARDIANS", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "8115", "description": "HUFF N EVEN MORE PUFF", "manufacturer": "Light & Wonder", "link": ""},
+    {"location": "8116", "description": "EXTRA CHANCE JETSETTER SYDNEY", "manufacturer": "IGT", "link": ""},
+    {"location": "8117", "description": "EXTRA CHANCE JETSETTER NEW YORK", "manufacturer": "IGT", "link": ""},
+    {"location": "8118", "description": "JUNGLE QUEST", "manufacturer": "IGT", "link": ""},
+    {"location": "8119", "description": "EXTRA CHANCE JETSETTER LONDON", "manufacturer": "IGT", "link": ""},
+    {"location": "8120", "description": "EXTRA CHANCE JETSETTER SYDNEY", "manufacturer": "IGT", "link": ""},
+    {"location": "8121", "description": "TS KING SPIN", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "8122", "description": "BLACK EAGLE", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "8123", "description": "QS KING SPIN 2", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "8124", "description": "DS CLASSIC SERIES", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "8125", "description": "SKY HIGH DIAMOND AVALANCHE", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "8126", "description": "WIZARDS WAND", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "8127", "description": "AFRICAN WONDERS", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "8201", "description": "BULL RUSH YARR MATEY", "manufacturer": "Konami", "link": ""},
+    {"location": "8202", "description": "ALL ABOARD PROSPEROUS PANDA", "manufacturer": "Konami", "link": ""},
+    {"location": "8203", "description": "BULL RUSH GOLDEN EMPRESS", "manufacturer": "Konami", "link": ""},
+    {"location": "8204", "description": "MULTISTAR CHAMPION SERIES IMMORTAL", "manufacturer": "IGT", "link": ""},
+    {"location": "8205", "description": "MULTISTAR CHAMPION SERIES ULTRA", "manufacturer": "IGT", "link": ""},
+    {"location": "8206", "description": "CASH CATCH PANTHERS GOLD DUAL", "manufacturer": "IGT", "link": ""},
+    {"location": "8207", "description": "BUFFALO RUMBLE 2", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "8208", "description": "QS GOLDEN LION", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "8209", "description": "DS YEAR OF THE OX FESTIVAL", "manufacturer": "Ainsworth", "link": ""},
+    {"location": "8210", "description": "BULL RUSH EL MATADOR", "manufacturer": "Konami", "link": ""},
+    {"location": "8211", "description": "BULL RUSH MAXIMUS MONEY", "manufacturer": "Konami", "link": ""},
+    {"location": "8301", "description": "GRAND STAR EMERALD", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "8302", "description": "GRAND STAR SAPPHIRE", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "8303", "description": "GRAND STAR PLATINUM", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "8304", "description": "GRAND STAR EMERALD", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "8305", "description": "GRAND STAR SAPPHIRE", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "8306", "description": "GRAND STAR WEALTH", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "8307", "description": "GRAND STAR PLATINUM", "manufacturer": "Aristocrat", "link": "PEN Grand Star"},
+    {"location": "8401", "description": "5 DRAGONS", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "8402", "description": "CHOY SUN RETURNS", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "8403", "description": "5 DRAGONS", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "8404", "description": "5 DRAGONS", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "8405", "description": "5 KOI POWER PAY", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "8406", "description": "5 DRAGONS", "manufacturer": "Aristocrat", "link": "PEN Phoenix Link"},
+    {"location": "8501", "description": "MULTISTAR CHAMPION SERIES", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "8502", "description": "POT OF GOLD", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "8503", "description": "EXTRA CHANCE BLUE MOON 2", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "8504", "description": "POT OF GOLD", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "8505", "description": "WINGS OF EGYPT", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "8506", "description": "SUNDANCE", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "8507", "description": "SUNDANCE", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "8508", "description": "ORIENTAL TREASURES", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "8509", "description": "ORIENTAL TREASURES", "manufacturer": "IGT", "link": "PEN Phoenix Link"},
+    {"location": "8601", "description": "DRAGON TRAIN LINK CHI LIN WINS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8602", "description": "DRAGON TRAIN LINK KHUTULIN BATTLE PRINCESS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8603", "description": "DRAGON TRAIN LINK FOREVER EMPEROR", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8604", "description": "DRAGON TRAIN LINK SUN SHOTS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8605", "description": "DRAGON TRAIN LINK CHI LIN WINS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8606", "description": "DRAGON TRAIN LINK FOREVER EMPEROR", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8607", "description": "DRAGON TRAIN LINK KHUTULIN BATTLE PRINCESS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8608", "description": "DRAGON TRAIN LINK SUN SHOTS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8609", "description": "DRAGON TRAIN LINK CHI LIN WINS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8610", "description": "DRAGON TRAIN LINK SUN SHOTS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8611", "description": "DRAGON TRAIN LINK KHUTULIN BATTLE PRINCESS", "manufacturer": "Light & Wonder", "link": "PEN Dragon Train"},
+    {"location": "8701", "description": "DRAGON CASH HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "8702", "description": "DRAGON CASH GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "8703", "description": "DRAGON CASH HAPPY & PROSPEROUS", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "8704", "description": "DRAGON CASH AUTUMN MOON", "manufacturer": "Aristocrat", "link": ""},
+    {"location": "8705", "description": "DRAGON CASH GOLDEN CENTURY", "manufacturer": "Aristocrat", "link": ""}
+  ]
+};
+
+const areaCollapsed = {};
+const resultAreaCollapsed = {};
+
+function getArea(loc){
+    const n = parseInt(loc, 10);
+    if(isNaN(n)) return "Other";
+    if(n >= 1051 && n <= 1095) return "Basement Gaming";
+    if(n >= 1101 && n <= 1503) return "Main Gaming Floor";
+    if(n >= 1701 && n <= 2204) return "Black Panther Room VIP";
+    if(n >= 2301 && n <= 6505) return "Main Gaming Floor";
+    if(n >= 7001 && n <= 8705) return "Kelly's Gaming";
+    return "Other";
+}
+
+function jumpToMachine(num){
+    num = (num || "").trim();
+    if(!num) return;
+    const item = document.querySelector('.machineItem[data-location="'+num+'"]');
+    if(!item) return;
+    const body = item.closest('.areaBody');
+    if(body){
+        body.style.display = 'block';
+        const area = body.getAttribute('data-area');
+        if(area){ areaCollapsed[area] = false; }
+    }
+    item.scrollIntoView({behavior:'smooth', block:'center'});
+    item.classList.add('jumpHighlight');
+    setTimeout(() => item.classList.remove('jumpHighlight'), 1500);
+}
+
+function renderMachineList(filterText=""){
+    const ml = document.getElementById('machineList');
+    ml.innerHTML = "";
+    filterText = (filterText || "").toLowerCase();
+    const areaOrder = ["Basement Gaming", "Main Gaming Floor", "Black Panther Room VIP", "Kelly's Gaming", "Other"];
+    const groups = {};
+    areaOrder.forEach(a => groups[a] = []);
+
+    data.machines.forEach(m => {
+        const area = getArea(m.location);
+        const searchPool = (m.description + m.location + m.link).toLowerCase();
+        const highlight = filterText && searchPool.includes(filterText);
+        groups[area].push({location:m.location, description:m.description, highlight, area});
+    });
+
+    areaOrder.forEach(area => {
+        const list = groups[area];
+        if(!list || list.length === 0) return;
+        if(!(area in areaCollapsed)) areaCollapsed[area] = true;
         
-        <div class="glass-card p-6 space-y-6">
-            <div>
-                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-                    <span>⚙️</span> Personalize Your Numbers
-                </h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs text-zinc-500 uppercase font-bold mb-1">Weekly Take-Home Pay ($)</label>
-                        <input type="number" id="weeklyPay" value="1286" class="input-style" oninput="updateHourly()">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-zinc-500 uppercase font-bold mb-1">Weekly Work Hours</label>
-                        <input type="number" id="weeklyHours" value="30" class="input-style" oninput="updateHourly()">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-zinc-500 uppercase font-bold mb-1">Your Big Goal (e.g., March Trip Cost)</label>
-                        <input type="number" id="goalTotal" value="2500" class="input-style">
-                    </div>
-                </div>
-                <div class="mt-4 p-4 bg-blue-500/10 rounded-xl text-center">
-                    <p class="text-xs text-zinc-400">YOUR TIME IS CURRENTLY WORTH</p>
-                    <p class="text-2xl font-black text-blue-400">$<span id="hourlyRateDisplay">42.87</span>/hr</p>
-                </div>
-            </div>
-        </div>
+        const header = document.createElement('div');
+        header.className = 'areaHeader';
+        header.textContent = area;
+        const countSpan = document.createElement('span');
+        countSpan.textContent = "(" + list.length + " machines)";
+        header.appendChild(countSpan);
+        
+        const body = document.createElement('div');
+        body.className = 'areaBody';
+        body.setAttribute('data-area', area);
+        list.sort((a,b) => a.location.localeCompare(b.location));
+        list.forEach(m => {
+            const div = document.createElement('div');
+            div.className = 'machineItem';
+            div.setAttribute('data-location', m.location);
+            if(m.highlight) div.classList.add('highlight');
+            div.textContent = m.location + " — " + m.description;
+            div.onclick = () => jumpToMachine(m.location);
+            body.appendChild(div);
+        });
+        body.style.display = areaCollapsed[area] ? "none" : "block";
+        header.onclick = () => {
+            areaCollapsed[area] = !areaCollapsed[area];
+            body.style.display = areaCollapsed[area] ? "none" : "block";
+        };
+        ml.appendChild(header);
+        ml.appendChild(body);
+    });
+}
 
-        <div class="glass-card p-6 border-blue-500/30">
-            <h2 class="text-xl font-bold mb-4">🛒 Impulse Reality Check</h2>
-            <div class="space-y-4">
-                <input type="text" id="itemName" placeholder="What are you buying?" class="input-style">
-                <input type="number" id="itemPrice" placeholder="Price ($)" class="input-style">
-                <button onclick="calculateTrade()" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-4 rounded-xl transition-all shadow-lg shadow-blue-500/20">
-                    CONVERT TO LIFE-TIME
-                </button>
-            </div>
+function search(q){
+    q = (q || "").toLowerCase().trim();
+    const results = document.getElementById('results');
+    if(!q){
+        results.innerHTML = "";
+        renderMachineList();
+        return;
+    }
+    renderMachineList(q);
+    const finalResults = data.machines.filter(m => {
+        return (m.description.toLowerCase().includes(q) || 
+                m.location.toString().includes(q) || 
+                m.link.toLowerCase().includes(q));
+    });
 
-            <div id="results" class="hidden mt-8 space-y-4 animate-in fade-in slide-in-from-bottom-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="p-4 bg-zinc-900 rounded-xl">
-                        <p class="text-[10px] text-zinc-500 uppercase">Hours of Work</p>
-                        <p id="resHours" class="text-xl font-bold text-red-400">--</p>
-                    </div>
-                    <div class="p-4 bg-zinc-900 rounded-xl">
-                        <p class="text-[10px] text-zinc-500 uppercase">Goal Impact</p>
-                        <p id="resGoal" class="text-xl font-bold text-orange-400">--</p>
-                    </div>
-                </div>
-                <p id="verdictText" class="text-sm text-zinc-400 italic bg-black/30 p-4 rounded-lg border-l-2 border-blue-500"></p>
-                
-                <button onclick="logSave()" class="w-full bg-green-600/20 text-green-400 border border-green-600/30 font-bold py-2 rounded-lg hover:bg-green-600/30">
-                    I'm Walking Away (Log a Win)
-                </button>
-            </div>
-        </div>
-    </div>
+    results.innerHTML = "";
+    const areaOrder = ["Basement Gaming", "Main Gaming Floor", "Black Panther Room VIP", "Kelly's Gaming", "Other"];
+    const areaGroups = {};
+    areaOrder.forEach(a => areaGroups[a] = []);
+    
+    finalResults.forEach(r => {
+        const area = getArea(r.location);
+        areaGroups[area].push(r);
+    });
 
-    <div class="max-w-4xl mx-auto mt-8 glass-card p-6 flex flex-wrap justify-around gap-4 text-center">
-        <div>
-            <p class="text-xs text-zinc-500 uppercase">Total Money Saved</p>
-            <p id="totalSaved" class="text-2xl font-bold text-green-500">$0</p>
-        </div>
-        <div>
-            <p class="text-xs text-zinc-500 uppercase">Life-Hours Reclaimed</p>
-            <p id="totalHours" class="text-2xl font-bold text-blue-500 text-blue-400">0.0</p>
-        </div>
-        <div>
-            <p class="text-xs text-zinc-500 uppercase">Wins</p>
-            <p id="totalWins" class="text-2xl font-bold text-purple-500">0</p>
-        </div>
-    </div>
+    areaOrder.forEach(area => {
+        const group = areaGroups[area];
+        if(!group || group.length === 0) return;
+        
+        const header = document.createElement('div');
+        header.className = 'areaHeader';
+        header.style.marginBottom = "8px";
+        header.textContent = area;
+        const span = document.createElement('span');
+        span.textContent = "(" + group.length + " matches)";
+        header.appendChild(span);
+        results.appendChild(header);
 
-    <script>
-        let savingsData = { money: 0, hours: 0, wins: 0 };
-        let currentHourly = 42.87;
+        group.forEach(r => {
+            const box = document.createElement('div');
+            box.className = 'resultBox';
+            box.innerHTML = `
+                <div class="result-main">${r.description} on Machine ${r.location}</div>
+                <div class="result-meta">${r.link ? 'Link: ' + r.link : 'Standalone'} | ${r.manufacturer}</div>
+            `;
+            box.onclick = () => jumpToMachine(r.location);
+            results.appendChild(box);
+        });
+    });
+}
 
-        function updateHourly() {
-            const pay = document.getElementById('weeklyPay').value || 0;
-            const hours = document.getElementById('weeklyHours').value || 1;
-            currentHourly = (pay / hours).toFixed(2);
-            document.getElementById('hourlyRateDisplay').innerText = currentHourly;
-        }
+document.getElementById('s').addEventListener('input', e => search(e.target.value));
+document.getElementById('machineSearch').addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ jumpToMachine(e.target.value); }
+});
 
-        function calculateTrade() {
-            const price = parseFloat(document.getElementById('itemPrice').value);
-            const goal = parseFloat(document.getElementById('goalTotal').value);
-            const name = document.getElementById('itemName').value || "this item";
-            
-            if(!price) return;
-
-            const hours = (price / currentHourly).toFixed(1);
-            const goalImpact = ((price / goal) * 100).toFixed(1);
-
-            document.getElementById('resHours').innerText = `${hours} hrs`;
-            document.getElementById('resGoal').innerText = `${goalImpact}%`;
-            document.getElementById('verdictText').innerText = `Buying ${name} means trading ${hours} hours of your life. That's ${goalImpact}% of your target goal gone.`;
-            
-            document.getElementById('results').classList.remove('hidden');
-        }
-
-        function logSave() {
-            const price = parseFloat(document.getElementById('itemPrice').value);
-            const hours = parseFloat(price / currentHourly);
-            
-            savingsData.money += price;
-            savingsData.hours += hours;
-            savingsData.wins += 1;
-
-            document.getElementById('totalSaved').innerText = `$${savingsData.money.toFixed(2)}`;
-            document.getElementById('totalHours').innerText = savingsData.hours.toFixed(1);
-            document.getElementById('totalWins').innerText = savingsData.wins;
-
-            // Reset UI
-            document.getElementById('results').classList.add('hidden');
-            document.getElementById('itemPrice').value = '';
-            document.getElementById('itemName').value = '';
-            alert("Win logged! You just bought back your freedom.");
-        }
-    </script>
+renderMachineList();
+</script>
 </body>
 </html>
