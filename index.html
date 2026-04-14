@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panthers Game Finder v6</title>
+    <title>Panthers Game Finder v7</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Orbitron:wght@400;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,6 +11,11 @@
             --panther-black: #0a0a0a;
             --panther-teal: #00b2bd;
             --row-bg: rgba(25, 25, 25, 0.95);
+        }
+
+        /* Applying the "Zoomed" feel by increasing base font and sizing */
+        html {
+            font-size: 18px; /* Default is usually 16px. 18px-20px mimics the 125% zoom feel */
         }
 
         body { 
@@ -31,145 +36,134 @@
             background-position: center;
         }
 
-        /* Slim-line Layout Wrapper */
         .app-container {
             display: grid;
-            grid-template-columns: 240px 1fr;
-            max-width: 1400px;
+            grid-template-columns: 280px 1fr; /* Slightly wider sidebar for the larger font */
+            max-width: 1600px; /* Wider container */
             margin: 0 auto;
-            padding: 20px;
-            gap: 20px;
+            padding: 30px;
+            gap: 30px;
         }
 
-        /* Header Styling */
         .header-bar {
             grid-column: 1 / -1;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 102, 0, 0.3);
-            padding-bottom: 15px;
-            margin-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 102, 0, 0.4);
+            padding-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .header-bar h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: 2px;
+            font-size: 2rem;
+            letter-spacing: 3px;
             margin: 0;
             color: var(--panther-orange);
             text-transform: uppercase;
         }
 
-        /* Sidebar - Sharp & Professional */
         .sidebar {
             background: rgba(15, 15, 15, 0.9);
             border: 1px solid rgba(255, 102, 0, 0.2);
-            border-radius: 4px;
-            padding: 15px;
+            border-radius: 6px;
+            padding: 20px;
             height: fit-content;
         }
 
         .sidebar h3 {
             font-family: 'Syncopate', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             color: var(--panther-orange);
-            margin: 0 0 15px 0;
+            margin: 0 0 20px 0;
             text-transform: uppercase;
         }
 
-        .link-list { list-style: none; padding: 0; margin: 0; max-height: 70vh; overflow-y: auto; }
+        .link-list { list-style: none; padding: 0; margin: 0; max-height: 75vh; overflow-y: auto; }
         .link-item { 
-            padding: 8px 10px; margin-bottom: 2px; border-radius: 2px; cursor: pointer; 
-            font-size: 0.75rem; font-weight: 700; transition: all 0.2s;
-            color: #999; border-left: 2px solid transparent;
+            padding: 12px 15px; margin-bottom: 4px; border-radius: 4px; cursor: pointer; 
+            font-size: 0.9rem; font-weight: 700; transition: all 0.2s;
+            color: #bbb; border-left: 3px solid transparent;
         }
-        .link-item:hover { color: #fff; background: rgba(255,102,0,0.1); border-left-color: var(--panther-orange); }
+        .link-item:hover { color: #fff; background: rgba(255,102,0,0.15); border-left-color: var(--panther-orange); }
         .link-item.active { background: var(--panther-orange); color: #000; border-left-color: #fff; }
 
-        /* Main Search & Table */
-        .main-view { display: flex; flex-direction: column; gap: 15px; }
+        .main-view { display: flex; flex-direction: column; gap: 20px; }
 
         .search-input-wrap { position: relative; }
         #searchInput { 
-            width: 100%; padding: 12px 20px; font-size: 1rem; border: 1px solid rgba(255,102,0,0.3);
-            border-radius: 4px; background: rgba(30, 30, 30, 0.8); color: #fff;
+            width: 100%; padding: 18px 25px; font-size: 1.2rem; border: 1px solid rgba(255,102,0,0.4);
+            border-radius: 6px; background: rgba(35, 35, 35, 0.9); color: #fff;
             outline: none; box-sizing: border-box;
-            transition: border-color 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
-        #searchInput:focus { border-color: var(--panther-orange); box-shadow: 0 0 10px rgba(255,102,0,0.2); }
+        #searchInput:focus { border-color: var(--panther-orange); }
 
-        /* Slim Table Design */
         .table-wrap {
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        table { width: 100%; border-collapse: collapse; font-size: 1rem; }
         
         thead th {
             background: #111;
-            padding: 12px 10px;
+            padding: 18px 15px;
             text-align: left;
             font-family: 'Syncopate', sans-serif;
-            font-size: 0.6rem;
-            color: #666;
+            font-size: 0.7rem;
+            color: #888;
             text-transform: uppercase;
-            border-bottom: 2px solid var(--panther-orange);
+            border-bottom: 3px solid var(--panther-orange);
         }
 
         .machine-row { 
             background: var(--row-bg); 
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            transition: all 0.2s;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         
-        /* Highlight Color */
         .machine-row:hover { 
-            background: rgba(255, 102, 0, 0.1); 
-            box-shadow: inset 4px 0 0 var(--panther-orange);
+            background: rgba(255, 102, 0, 0.12); 
+            box-shadow: inset 6px 0 0 var(--panther-orange);
         }
 
-        td { padding: 8px 10px; vertical-align: middle; line-height: 1.2; }
+        td { padding: 15px; vertical-align: middle; line-height: 1.4; }
         
-        .col-loc { font-weight: 900; color: var(--panther-orange); font-family: 'Orbitron', sans-serif; width: 50px; }
-        .col-area { color: #aaa; width: 140px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
-        .col-desc { font-weight: 700; width: 220px; color: #eee; }
-        .col-links { width: 150px; }
+        .col-loc { font-weight: 900; color: var(--panther-orange); font-family: 'Orbitron', sans-serif; font-size: 1.3rem; width: 70px; }
+        .col-area { color: #aaa; width: 180px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .col-desc { font-weight: 700; width: 280px; color: #fff; font-size: 1.1rem; }
+        .col-links { width: 180px; }
 
-        /* Decal/Badge effects */
         .badge-link { 
-            display: inline-block; padding: 2px 6px; border-radius: 2px; 
+            display: inline-block; padding: 4px 10px; border-radius: 4px; 
             background: transparent; color: var(--panther-teal); 
-            font-size: 0.65rem; font-weight: 800; border: 1px solid var(--panther-teal);
-            margin: 1px;
+            font-size: 0.75rem; font-weight: 800; border: 2px solid var(--panther-teal);
+            margin: 2px;
+            text-transform: uppercase;
         }
 
         .game-tag { 
-            display: inline-block; padding: 2px 6px; margin: 1px; 
-            border-radius: 2px; background: rgba(255,255,255,0.05); color: #888; 
-            font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.1);
+            display: inline-block; padding: 5px 12px; margin: 3px; 
+            border-radius: 4px; background: rgba(255,255,255,0.08); color: #ccc; 
+            font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.15);
+            font-weight: 500;
         }
         
         .highlight-game { 
-            background: rgba(0, 178, 189, 0.2) !important; 
-            color: var(--panther-teal) !important; 
+            background: rgba(0, 178, 189, 0.3) !important; 
+            color: #fff !important; 
             border-color: var(--panther-teal) !important;
-            font-weight: 700;
+            box-shadow: 0 0 15px rgba(0, 178, 189, 0.4);
         }
 
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--panther-orange); }
+        .reset-trigger { cursor: pointer; color: var(--panther-orange); font-size: 0.7rem; float: right; }
 
-        .reset-trigger { cursor: pointer; color: var(--panther-orange); font-size: 0.6rem; float: right; }
-
-        @media (max-width: 900px) {
-            .app-container { grid-template-columns: 1fr; }
-        }
+        /* Custom Scrollbar for the Link List */
+        .link-list::-webkit-scrollbar { width: 4px; }
+        .link-list::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -179,7 +173,7 @@
     <div class="app-container">
         <header class="header-bar">
             <h1>Panthers Game Finder</h1>
-            <div style="font-size: 0.6rem; color: #444; font-family: 'Syncopate';">v6.0 // OPERATIONAL</div>
+            <div style="font-size: 0.7rem; color: #666; font-family: 'Syncopate';">v7.0 // HIGH-VIS OPERATIONAL</div>
         </header>
 
         <aside class="sidebar">
@@ -189,7 +183,7 @@
 
         <main class="main-view">
             <div class="search-input-wrap">
-                <input type="text" id="searchInput" placeholder="SEARCH MACHINES OR GAMES (e.g. 'Fab')..." oninput="handleInput()">
+                <input type="text" id="searchInput" placeholder="SEARCH MACHINES OR GAMES..." oninput="handleInput()">
             </div>
             
             <div class="table-wrap">
@@ -200,7 +194,7 @@
                             <th class="col-area">AREA</th>
                             <th class="col-desc">MACHINE</th>
                             <th class="col-links">LINKS</th>
-                            <th>INCLUDED GAMES</th>
+                            <th>GAMES</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
@@ -274,7 +268,7 @@
                         <td class="col-loc">${item.L}</td>
                         <td class="col-area">${item.Area}</td>
                         <td class="col-desc">
-                            <div style="color:var(--panther-orange); font-size:0.7rem; font-family:'Orbitron'">${item.M}</div>
+                            <div style="color:var(--panther-orange); font-size:0.75rem; font-family:'Orbitron'; margin-bottom: 4px;">${item.M}</div>
                             <div>${item.D}</div>
                         </td>
                         <td class="col-links">${linksHtml}</td>
