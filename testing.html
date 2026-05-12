@@ -20,7 +20,7 @@
             --cream-paper: #FDFDFB;      /* Warm White for boxes */
             --white: #ffffff;
             
-            /* BACKGROUND IMAGE (Linked from GitHub) */
+            /* BACKGROUND IMAGE */
             --bg-image: url('https://raw.githubusercontent.com/shaunm89-cmd/Rhonda/refs/heads/main/background.png'); 
         }
 
@@ -31,8 +31,6 @@
             font-family: 'Lato', sans-serif;
             color: var(--deep-forest);
             line-height: 1.8;
-            
-            /* PARALLAX WALLPAPER SETTINGS */
             background-image: var(--bg-image);
             background-attachment: fixed; 
             background-size: cover;       
@@ -43,14 +41,12 @@
         a { text-decoration: none; transition: 0.3s; }
         ul { list-style: none; }
 
-        /* --- LAYOUT --- */
         .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 0 25px;
         }
 
-        /* --- SECTIONS --- */
         section {
             background: var(--cream-paper);
             padding: 80px 0;
@@ -60,7 +56,6 @@
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* Hero is transparent to show the wallpaper */
         .hero-section {
             background: transparent;
             margin: 0;
@@ -71,7 +66,6 @@
             align-items: center;
         }
 
-        /* --- TYPOGRAPHY --- */
         h1, h2, h3 {
             font-family: 'Cinzel Decorative', serif;
             color: var(--deep-forest);
@@ -91,7 +85,6 @@
             position: relative;
         }
 
-        /* Gold underline for headers */
         h2::after {
             content: '';
             display: block;
@@ -103,7 +96,6 @@
 
         h3 { font-size: 1.4rem; margin-bottom: 15px; }
 
-        /* --- BUTTONS --- */
         .btn {
             display: inline-block;
             background-color: var(--deep-forest);
@@ -121,7 +113,6 @@
             transform: translateY(-2px);
         }
 
-        /* --- HEADER --- */
         header {
             background: rgba(255, 255, 255, 0.95); 
             position: sticky;
@@ -171,7 +162,6 @@
         }
         .nav-links a:hover { color: var(--gold-accent); }
 
-        /* --- HERO BOX --- */
         .hero-box {
             background: rgba(255, 255, 255, 0.9);
             padding: 60px;
@@ -208,7 +198,6 @@
             opacity: 0.8;
         }
 
-        /* --- SERVICES GRID --- */
         .services-intro {
             text-align: center;
             max-width: 800px;
@@ -244,24 +233,21 @@
             line-height: 1rem;
         }
 
-        /* --- SESSION GRID --- */
         .session-grid {
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
+        
         .session-card {
             background: var(--white);
             padding: 40px;
-            flex: 1;
-            min-width: 300px;
-            max-width: 500px;
             border: 1px solid #f0f0f0;
             border-top: 4px solid var(--gold-accent);
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- REFERRALS --- */
         .referral-box { max-width: 800px; margin: 0 auto; background: var(--white); padding: 50px; border: 1px solid #f0f0f0; }
         .referral-item {
             margin-bottom: 25px;
@@ -276,7 +262,6 @@
             font-size: 1.1rem;
         }
 
-        /* --- FOOTER (Tidied 2-Column Layout) --- */
         footer {
             background: rgba(27, 46, 27, 0.95);
             backdrop-filter: blur(5px);
@@ -288,23 +273,18 @@
         
         footer a { color: var(--white); border-bottom: 1px dotted rgba(255,255,255,0.5); }
         
-        footer h2 { 
-            color: var(--white); 
-            text-align: left; 
-            margin-bottom: 5px;
-        }
+        footer h2 { color: var(--white); text-align: left; margin-bottom: 5px; }
         footer h2::after { display: none; } 
         
         .footer-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Photo | Info */
+            grid-template-columns: 1fr 1fr;
             gap: 60px;
             align-items: center;
-            max-width: 800px; /* Prevents stretching */
+            max-width: 800px;
             margin: 0 auto;
         }
 
-        /* Footer Photo Styling */
         .footer-photo img {
             width: 100%;
             max-width: 280px; 
@@ -316,11 +296,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .footer-info { 
-            padding: 0 20px;
-            text-align: left;
-        }
-
+        .footer-info { padding: 0 20px; text-align: left; }
         .contact-item { margin-bottom: 25px; font-size: 1.1rem; }
         .contact-label { 
             display: block; 
@@ -332,34 +308,16 @@
             margin-bottom: 5px; 
         }
 
-        .spam-notice {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            opacity: 0.8;
-            font-style: italic;
-        }
+        .spam-notice { margin-top: 20px; font-size: 0.9rem; line-height: 1.5; opacity: 0.8; font-style: italic; }
+        .footer-abn { margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.8rem; opacity: 0.5; }
 
-        .footer-abn {
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-            font-size: 0.8rem;
-            opacity: 0.5;
-        }
-
-        /* --- MOBILE --- */
         @media (max-width: 900px) {
             .hero-box { flex-direction: column-reverse; text-align: center; gap: 30px; padding: 40px 20px; }
             .hero-photo { width: 280px; height: 280px; }
             h1 { font-size: 2.2rem; }
-            
-            /* Stack footer columns on mobile */
             .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 40px;}
             .footer-info { text-align: center; }
             footer h2 { text-align: center; }
-            
             .nav-links { display: none; }
             nav { justify-content: center; }
             .logo { align-items: center; }
@@ -375,7 +333,6 @@
                     <span class="logo-main">Rhonda Blackadder</span>
                     <span class="logo-sub">Psychologist</span>
                 </div>
-                
                 <div class="nav-links">
                     <a href="#about">About</a>
                     <a href="#services">Services</a>
@@ -417,7 +374,7 @@
             <div style="max-width: 800px; margin: 0 auto; text-align: center;">
                 <p>I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported. I tailor each session to the individual, recognising the unique experiences, strengths, and needs that every young person brings.</p>
                 <br>
-                <p>My career has taken me across a range of clinical and educational settings. I have supported university students managing both academic pressures and personal challenges, and I have worked as a psychologist within primary and secondary schools. These experiences have deepened my understanding of child and adolescent development, learning needs, and the emotional hurdles young people may encounter. This background allows me to provide sensitive, practical, and well-informed guidance to those I work with.</p>
+                <p>My career has taken me across a range of clinical and educational settings. I have supported university students managing both academic pressures and personal challenges, and I have worked as a psychologist within primary and secondary schools. These experiences have deepened my understanding of child and adolescent development, learning needs, and the emotional hurdles young people may encounter.</p>
             </div>
         </div>
     </section>
@@ -425,13 +382,11 @@
     <section id="services">
         <div class="container">
             <h2>Individual Therapy</h2>
-            
             <div class="services-intro">
                 <p>I offer a calm, supportive space where you can talk openly about what’s been feeling heavy, overwhelming, or hard to put into words. Whether you’re seeking support for yourself or your child, you don’t have to navigate this alone.</p>
             </div>
 
             <div class="services-grid">
-                
                 <div class="service-card">
                     <h3>Who I Support</h3>
                     <p style="margin-bottom: 20px;">
@@ -440,46 +395,21 @@
                         I work with a range of concerns including anxiety, academic stress, emotional regulation, grief, self-esteem, low mood, stress, emotional overwhelm, and life transitions.
                         <br><br>
                         I also have a particular interest in supporting women during the perinatal period, including postnatal anxiety, postnatal depression, matrescence, and adjustment to parenthood.
-                        <br><br>
-                        Please feel free to get in touch to explore whether I may be the right fit for you.
                     </p>
                 </div>
 
                 <div class="service-card">
                     <h3>Areas of Special Interest</h3>
                     <ul class="service-list">
-                        <li>Anxiety</li>
-                        <li>Depression</li>
-                        <li>Adjustment difficulties</li>
+                        <li>Anxiety & Depression</li>
                         <li>Grief and loss</li>
-                        <li>Acute stress and psychological distress</li>
-                        <li>Bullying</li>
-                        <li>Self-confidence and self-esteem issues</li>
-                        <li>Emotional regulation difficulties</li>
+                        <li>Self-confidence issues</li>
                         <li>Academic and study-related stress</li>
-                        <li>Life transitions and change</li>
                         <li>Burnout and emotional overwhelm</li>
-                        <li>School-related anxiety</li>
-                        <li>Stress management and resilience building</li>
-                        <li>Women’s mental health</li>
                         <li>Perinatal mental health</li>
-                        <li>Postnatal anxiety and depression</li>
                         <li>Matrescence and adjustment to parenthood</li>
-                        <li>Parenting support and adjustment challenges</li>
                     </ul>
                 </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="approach">
-        <div class="container">
-            <h2>Therapeutic Approach</h2>
-            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-                <p>My practice is informed by positive psychology and a strengths-focused perspective. I use evidence-based therapies, including Acceptance and Commitment Therapy (ACT) and Cognitive Behavioural Therapy (CBT), to help young people build resilience, develop emotional regulation skills, and learn strategies that support their overall wellbeing.</p>
-                <br>
-                <p>I value collaboration and believe that effective support often involves the wider network surrounding a young person. When appropriate, I work alongside families, educators, and other health professionals to ensure care is consistent, holistic, and responsive to each client’s needs.</p>
             </div>
         </div>
     </section>
@@ -490,6 +420,12 @@
             <p style="text-align: center; max-width: 700px; margin: 0 auto 40px auto; font-style: italic; color: #666;">The first session focuses on understanding the presenting concerns and gathering important developmental, family, and background information to guide treatment planning.</p>
             
             <div class="session-grid">
+                <!-- Added Adult Box -->
+                <div class="session-card">
+                    <h3>Adults</h3>
+                    <p>Adult clients initial appointment, 60 minutes duration to discuss the client's history, strengths, and areas of concern.</p>
+                </div>
+
                 <div class="session-card">
                     <h3>Children under 14 years</h3>
                     <p>The initial appointment is held with <strong>parents or caregivers only</strong> to discuss the child’s history, strengths, and areas of concern.</p>
@@ -504,7 +440,6 @@
                     </ul>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 30px; font-style: 0.9rem;">Clients may also complete assessments or questionnaires to help clarify the presenting issues and support the development of an individualised treatment plan.</p>
         </div>
     </section>
 
@@ -513,20 +448,13 @@
             <h2>Pathways to Referral</h2>
             <div class="referral-box">
                 <p style="text-align: center; margin-bottom: 30px; font-weight: bold;">I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.</p>
-                
                 <div class="referral-item">
                     <span class="referral-title">Mental Health Care Plans (MHCPs)</span>
                     For children and young people seeking psychological support through Medicare.
                 </div>
-                
                 <div class="referral-item">
                     <span class="referral-title">NDIS Referrals</span>
                     I see both self-managed and plan-managed clients.
-                </div>
-                
-                <div class="referral-item">
-                    <span class="referral-title">Private Referrals</span>
-                    No formal referral is required—parents, caregivers, and students may self-refer.
                 </div>
             </div>
         </div>
@@ -535,35 +463,26 @@
     <footer id="contact">
         <div class="container">
             <div class="footer-grid">
-                
                 <div class="footer-photo">
                     <img src="https://raw.githubusercontent.com/shaunm89-cmd/Rhonda/refs/heads/main/rhonda2.png" alt="Rhonda Blackadder">
                 </div>
-
                 <div class="footer-info">
                     <h2>Rhonda Blackadder</h2>
                     <h3 style="font-size: 1.1rem; color: #C5A059; margin-bottom: 30px; margin-top: 0;">Psychologist</h3>
-                    
                     <div class="contact-item">
                         <span class="contact-label">Address</span>
                         Uralla Cottage<br>3 Baker Street, Windsor, NSW 2756
                     </div>
-                    
                     <div class="contact-item">
                         <span class="contact-label">Email</span>
                         <a href="mailto:rhondablackadderpsychology@gmail.com">rhondablackadderpsychology@gmail.com</a>
                     </div>
-                    
                     <div class="contact-item">
                         <span class="contact-label">Mobile</span>
                         <a href="tel:0421140107">0421 140 107</a>
                     </div>
-
-                    <p class="spam-notice">If you don’t receive a response within 2 business days, please check your spam folder or feel free to contact me via phone.</p>
                 </div>
-
             </div>
-
             <div class="footer-abn">
                 ABN 75 872 154 399<br>
                 © 2026 Rhonda Blackadder Psychologist
