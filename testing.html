@@ -248,4 +248,834 @@
     .nav-links {
       display: flex;
       align-items: center;
-      g
+      gap: 7px;
+      padding: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.78);
+    }
+
+    .nav-links a {
+      padding: 9px 13px;
+      border-radius: 999px;
+      color: var(--forest-soft);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a:hover {
+      background: var(--sage-light);
+      color: var(--forest);
+    }
+
+    .hero {
+      padding: 78px 0 72px;
+      min-height: calc(100vh - 84px);
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      align-items: center;
+      gap: 48px;
+      padding: clamp(28px, 5.4vw, 70px);
+      border-radius: 46px;
+      background: rgba(255,253,248,0.84);
+      border: 1px solid rgba(255,255,255,0.88);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      width: 430px;
+      height: 430px;
+      right: -150px;
+      top: -160px;
+      border-radius: 50%;
+      background: rgba(226,204,157,0.36);
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      left: -120px;
+      bottom: -120px;
+      border-radius: 50%;
+      background: rgba(123,143,120,0.2);
+    }
+
+    .hero-copy, .hero-media {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-copy .lead {
+      font-size: clamp(1.1rem, 2vw, 1.28rem);
+      max-width: 690px;
+      color: #536050;
+      margin-bottom: 28px;
+    }
+
+    .hero-note {
+      margin: 26px 0 32px;
+      padding: 20px 22px;
+      border-radius: 22px;
+      background: rgba(244,247,241,0.88);
+      border: 1px solid rgba(123,143,120,0.22);
+      color: #566153;
+    }
+
+    .hero-media {
+      display: grid;
+      justify-items: center;
+      gap: 18px;
+    }
+
+    .portrait-wrap {
+      width: min(390px, 100%);
+      aspect-ratio: 1;
+      padding: 14px;
+      border-radius: 44% 56% 51% 49% / 52% 45% 55% 48%;
+      background: linear-gradient(135deg, var(--gold-soft), var(--sage-light));
+      box-shadow: 0 24px 48px rgba(23,40,29,0.18);
+    }
+
+    .portrait-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+      border: 8px solid rgba(255,253,248,0.95);
+    }
+
+    .credential-card {
+      width: min(420px, 100%);
+      background: rgba(255,255,255,0.84);
+      border: 1px solid rgba(189,150,82,0.26);
+      border-radius: 22px;
+      padding: 18px 20px;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .credential-card strong {
+      display: block;
+      color: var(--forest);
+      font-size: 0.98rem;
+      margin-bottom: 3px;
+    }
+
+    .credential-card span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .quick-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 26px;
+    }
+
+    .quick-point {
+      background: rgba(255,255,255,0.66);
+      border: 1px solid rgba(189,150,82,0.22);
+      border-radius: 20px;
+      padding: 16px;
+    }
+
+    .quick-point strong {
+      display: block;
+      color: var(--forest);
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .quick-point span {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+      display: block;
+    }
+
+    section.content-section {
+      padding: 90px 0;
+    }
+
+    .panel {
+      background: rgba(255,253,248,0.86);
+      border: 1px solid rgba(255,255,255,0.85);
+      border-radius: var(--radius-large);
+      padding: clamp(28px, 5vw, 58px);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .about-image {
+      border-radius: 30px;
+      overflow: hidden;
+      border: 10px solid rgba(255,255,255,0.78);
+      box-shadow: var(--shadow-soft);
+      background: var(--sage-light);
+    }
+
+    .about-image img {
+      width: 100%;
+      min-height: 430px;
+      object-fit: cover;
+    }
+
+    .about-copy p + p {
+      margin-top: 18px;
+    }
+
+    .soft-quote {
+      margin-top: 26px;
+      padding: 22px 24px;
+      border-left: 4px solid var(--gold);
+      border-radius: 0 18px 18px 0;
+      background: rgba(244,247,241,0.82);
+      color: var(--forest-soft);
+      font-weight: 700;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .feature-card {
+      position: relative;
+      background: rgba(255,255,255,0.76);
+      border: 1px solid rgba(189,150,82,0.18);
+      border-radius: var(--radius-medium);
+      padding: 30px;
+      box-shadow: 0 10px 26px rgba(23,40,29,0.06);
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: linear-gradient(var(--gold), var(--sage));
+      opacity: 0.88;
+    }
+
+    .feature-card p {
+      margin-top: 8px;
+    }
+
+    .support-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 16px;
+      margin-top: 18px;
+    }
+
+    .support-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: #556151;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(123,143,120,0.14);
+    }
+
+    .support-list li::before {
+      content: '✦';
+      color: var(--gold);
+      font-size: 0.92rem;
+      margin-top: 1px;
+      flex: 0 0 auto;
+    }
+
+    .approach-band {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .approach-item {
+      text-align: center;
+      padding: 32px 24px;
+      border-radius: 26px;
+      background: rgba(244,247,241,0.78);
+      border: 1px solid rgba(123,143,120,0.18);
+    }
+
+    .approach-icon {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--warm-white);
+      border: 1px solid rgba(189,150,82,0.25);
+      box-shadow: 0 9px 18px rgba(23,40,29,0.06);
+      color: var(--gold);
+      font-size: 1.45rem;
+    }
+
+    .session-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .session-card {
+      padding: 32px;
+      border-radius: var(--radius-medium);
+      background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(244,247,241,0.8));
+      border: 1px solid rgba(189,150,82,0.2);
+      box-shadow: 0 12px 26px rgba(23,40,29,0.06);
+    }
+
+    .session-card .number {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--forest);
+      color: var(--warm-white);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .referral-box {
+      max-width: 840px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    .referral-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 24px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.76);
+      border: 1px solid rgba(189,150,82,0.18);
+    }
+
+    .referral-dot {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--sage-light);
+      display: grid;
+      place-items: center;
+      color: var(--forest);
+      font-weight: 900;
+    }
+
+    .contact-section {
+      padding: 96px 0 0;
+    }
+
+    footer {
+      background: linear-gradient(135deg, rgba(23,40,29,0.97), rgba(36,56,42,0.97));
+      color: var(--warm-white);
+      margin-top: 80px;
+      padding: 72px 0 34px;
+      border-top: 1px solid rgba(226,204,157,0.4);
+    }
+
+    .footer-card {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 46px;
+      align-items: center;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .footer-photo {
+      border-radius: 30px;
+      overflow: hidden;
+      border: 8px solid rgba(255,255,255,0.12);
+      box-shadow: 0 22px 46px rgba(0,0,0,0.25);
+    }
+
+    .footer-photo img {
+      width: 100%;
+      min-height: 360px;
+      object-fit: cover;
+    }
+
+    footer h2, footer h3 {
+      color: var(--warm-white);
+    }
+
+    footer h2 {
+      margin-bottom: 6px;
+    }
+
+    footer h3 {
+      color: var(--gold-soft);
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 28px;
+    }
+
+    .contact-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-item {
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .contact-label {
+      display: block;
+      color: var(--gold-soft);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .contact-item a {
+      border-bottom: 1px dotted rgba(226,204,157,0.7);
+    }
+
+    .spam-notice {
+      margin-top: 22px;
+      color: rgba(255,253,248,0.72);
+      font-size: 0.94rem;
+      font-style: italic;
+    }
+
+    .footer-bottom {
+      max-width: 920px;
+      margin: 42px auto 0;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+      color: rgba(255,253,248,0.55);
+      font-size: 0.86rem;
+    }
+
+    @media (max-width: 980px) {
+      .nav-links {
+        display: none;
+      }
+
+      nav {
+        justify-content: center;
+      }
+
+      .hero-card,
+      .about-grid,
+      .footer-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        text-align: center;
+      }
+
+      .hero-copy .eyebrow {
+        justify-content: center;
+      }
+
+      .hero-copy .eyebrow::before {
+        display: none;
+      }
+
+      .btn-row {
+        justify-content: center;
+      }
+
+      .quick-points,
+      .approach-band,
+      .session-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-image img,
+      .footer-photo img {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 680px) {
+      body {
+        background-attachment: scroll;
+      }
+
+      .container {
+        width: min(100% - 28px, 1160px);
+      }
+
+      .hero {
+        padding: 36px 0 44px;
+        min-height: auto;
+      }
+
+      .hero-card,
+      .panel {
+        border-radius: 28px;
+      }
+
+      .brand {
+        gap: 10px;
+      }
+
+      .brand-name {
+        font-size: 1.18rem;
+      }
+
+      .brand-subtitle {
+        font-size: 0.62rem;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+      }
+
+      .support-list,
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .referral-item {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-section,
+      section.content-section {
+        padding: 58px 0;
+      }
+
+      footer {
+        margin-top: 30px;
+        padding-top: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="Rhonda Blackadder Psychologist home">
+          <span class="brand-mark">R</span>
+          <span>
+            <span class="brand-name">Rhonda Blackadder</span>
+            <span class="brand-subtitle">Registered Psychologist</span>
+          </span>
+        </a>
+
+        <div class="nav-links" aria-label="Page sections">
+          <a href="#about">About</a>
+          <a href="#support">Support</a>
+          <a href="#approach">Approach</a>
+          <a href="#session">First Session</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero-card">
+          <div class="hero-copy">
+            <span class="eyebrow">Windsor, NSW</span>
+            <h1 id="hero-title">A calm place to feel heard, supported, and understood.</h1>
+            <p class="lead">
+              Psychological support for children, adolescents, university students, adults, and families in a warm, person-centred environment.
+            </p>
+            <div class="hero-note">
+              I support people experiencing anxiety, low mood, stress, emotional overwhelm, grief, self-esteem concerns, and life transitions. I also have a special interest in supporting women during the perinatal period, including postnatal anxiety, postnatal depression, matrescence, and adjustment to parenthood.
+            </div>
+            <div class="btn-row">
+              <a href="#contact" class="btn btn-primary">Get in touch</a>
+              <a href="#session" class="btn btn-secondary">What to expect</a>
+            </div>
+
+            <div class="quick-points" aria-label="Quick highlights">
+              <div class="quick-point">
+                <strong>Children & teens</strong>
+                <span>Support for ages 5–18 and their families.</span>
+              </div>
+              <div class="quick-point">
+                <strong>Adults & students</strong>
+                <span>Support for study, stress, mood, and change.</span>
+              </div>
+              <div class="quick-point">
+                <strong>Perinatal care</strong>
+                <span>Warm support through pregnancy and parenthood.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-media">
+            <div class="portrait-wrap">
+              <img src="https://raw.githubusercontent.com/shaunm89-cmd/Rhonda/refs/heads/main/rhonda1.png" alt="Rhonda Blackadder" />
+            </div>
+            <div class="credential-card">
+              <strong>BAEng&amp;Psy, BPsySt(Hons), DipProPrac</strong>
+              <span>Registered Psychologist · AHPRA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="content-section" aria-labelledby="about-title">
+      <div class="container">
+        <div class="panel about-grid">
+          <div class="about-image">
+            <img src="https://raw.githubusercontent.com/shaunm89-cmd/Rhonda/refs/heads/main/rhonda2.png" alt="Rhonda Blackadder seated outdoors" />
+          </div>
+          <div class="about-copy">
+            <span class="eyebrow">About me</span>
+            <h2 id="about-title">Warm, approachable, and grounded in care.</h2>
+            <p>
+              I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported.
+            </p>
+            <p>
+              I tailor each session to the individual, recognising the unique experiences, strengths, and needs that every young person brings. My career has taken me across a range of clinical and educational settings, including work with university students and within primary and secondary schools.
+            </p>
+            <p>
+              These experiences have deepened my understanding of child and adolescent development, learning needs, academic pressures, and the emotional hurdles young people and families may encounter.
+            </p>
+            <div class="soft-quote">
+              Meaningful therapy begins when people feel safe enough to be themselves.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="support" class="content-section" aria-labelledby="support-title">
+      <div class="container">
+        <div class="section-intro">
+          <span class="eyebrow">Individual therapy</span>
+          <h2 id="support-title">Support for life’s heavy moments.</h2>
+          <p>
+            I offer a calm, supportive space where you can talk openly about what has been feeling heavy, overwhelming, or hard to put into words. Whether you are seeking support for yourself or your child, you do not have to navigate it alone.
+          </p>
+        </div>
+
+        <div class="cards-grid">
+          <article class="feature-card">
+            <h3>Who I support</h3>
+            <p>
+              I support the emotional wellbeing of children and adolescents aged 5–18, university students, adults, and families.
+            </p>
+            <p>
+              I work with concerns including anxiety, academic stress, emotional regulation, grief, self-esteem, low mood, stress, emotional overwhelm, and life transitions.
+            </p>
+            <p>
+              I also have a particular interest in supporting women during the perinatal period, including postnatal anxiety, postnatal depression, matrescence, and adjustment to parenthood.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Areas of special interest</h3>
+            <ul class="support-list">
+              <li>Anxiety</li>
+              <li>Depression</li>
+              <li>Adjustment difficulties</li>
+              <li>Grief and loss</li>
+              <li>Acute stress and psychological distress</li>
+              <li>Bullying</li>
+              <li>Self-confidence and self-esteem issues</li>
+              <li>Emotional regulation difficulties</li>
+              <li>Academic and study-related stress</li>
+              <li>Life transitions and change</li>
+              <li>Burnout and emotional overwhelm</li>
+              <li>School-related anxiety</li>
+              <li>Stress management and resilience building</li>
+              <li>Women’s mental health</li>
+              <li>Perinatal mental health</li>
+              <li>Postnatal anxiety and depression</li>
+              <li>Matrescence and adjustment to parenthood</li>
+              <li>Parenting support and adjustment challenges</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="approach" class="content-section" aria-labelledby="approach-title">
+      <div class="container">
+        <div class="panel">
+          <div class="section-intro">
+            <span class="eyebrow">Therapeutic approach</span>
+            <h2 id="approach-title">Gentle, collaborative, and evidence-informed.</h2>
+            <p>
+              Therapy is shaped around the person in front of me. Sessions are designed to feel safe and respectful while still working toward meaningful, practical change.
+            </p>
+          </div>
+
+          <div class="approach-band">
+            <article class="approach-item">
+              <div class="approach-icon" aria-hidden="true">☾</div>
+              <h3>Safe</h3>
+              <p>A calm environment where clients can feel settled, respected, and understood.</p>
+            </article>
+            <article class="approach-item">
+              <div class="approach-icon" aria-hidden="true">✧</div>
+              <h3>Personal</h3>
+              <p>Support is tailored to individual strengths, needs, experiences, and goals.</p>
+            </article>
+            <article class="approach-item">
+              <div class="approach-icon" aria-hidden="true">♡</div>
+              <h3>Supportive</h3>
+              <p>A compassionate space for children, young people, adults, parents, and families.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="session" class="content-section" aria-labelledby="session-title">
+      <div class="container">
+        <div class="section-intro">
+          <span class="eyebrow">First session</span>
+          <h2 id="session-title">What to expect when beginning.</h2>
+          <p>
+            The first session focuses on understanding the presenting concerns and gathering important developmental, family, and background information to guide treatment planning.
+          </p>
+        </div>
+
+        <div class="session-grid">
+          <article class="session-card">
+            <div class="number">1</div>
+            <h3>Adults</h3>
+            <p>
+              Adult clients attend an initial 60-minute appointment to discuss history, strengths, current concerns, and hopes for therapy.
+            </p>
+          </article>
+
+          <article class="session-card">
+            <div class="number">2</div>
+            <h3>Children under 14</h3>
+            <p>
+              The initial appointment is held with parents or caregivers only to discuss the child’s history, strengths, and areas of concern.
+            </p>
+          </article>
+
+          <article class="session-card">
+            <div class="number">3</div>
+            <h3>Young people 14+</h3>
+            <p>
+              The session is generally divided into 30 minutes with the young person and 30 minutes with parents or caregivers.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="referrals" class="content-section" aria-labelledby="referrals-title">
+      <div class="container">
+        <div class="panel">
+          <div class="section-intro">
+            <span class="eyebrow">Referral pathways</span>
+            <h2 id="referrals-title">Simple ways to connect.</h2>
+            <p>
+              I welcome referrals from GPs, paediatricians, and medical specialists. Families are also welcome to contact me directly.
+            </p>
+          </div>
+
+          <div class="referral-box">
+            <article class="referral-item">
+              <div class="referral-dot">M</div>
+              <div>
+                <h3>Mental Health Care Plans</h3>
+                <p>For children and young people seeking psychological support through Medicare.</p>
+              </div>
+            </article>
+
+            <article class="referral-item">
+              <div class="referral-dot">N</div>
+              <div>
+                <h3>NDIS referrals</h3>
+                <p>Self-managed and plan-managed clients are welcome.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-card">
+        <div class="footer-photo">
+          <img src="https://raw.githubusercontent.com/shaunm89-cmd/Rhonda/refs/heads/main/rhonda2.png" alt="Rhonda Blackadder" />
+        </div>
+
+        <div class="footer-info">
+          <span class="eyebrow">Contact</span>
+          <h2>Rhonda Blackadder</h2>
+          <h3>Registered Psychologist</h3>
+
+          <div class="contact-grid">
+            <div class="contact-item">
+              <span class="contact-label">Address</span>
+              Uralla Cottage<br />3 Baker Street, Windsor, NSW 2756
+            </div>
+
+            <div class="contact-item">
+              <span class="contact-label">Email</span>
+              <a href="mailto:rhondablackadderpsychology@gmail.com">rhondablackadderpsychology@gmail.com</a>
+            </div>
+
+            <div class="contact-item">
+              <span class="contact-label">Mobile</span>
+              <a href="tel:0421140107">0421 140 107</a>
+            </div>
+          </div>
+
+          <p class="spam-notice">
+            If you do not receive a reply, please check your junk or spam folder in case the response has been filtered.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        ABN 75 872 154 399<br />
+        © 2026 Rhonda Blackadder Psychologist
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
