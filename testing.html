@@ -17,7 +17,7 @@
         :root {
             --gold-accent: #C5A059;
             --deep-forest: #1B2E1B;
-            --glass-white: rgba(255, 255, 255, 0.85);
+            --glass-white: rgba(255, 255, 255, 0.92);
             --white: #ffffff;
             --bg-image: url('https://raw.githubusercontent.com/shaunm89-cmd/Rhonda/refs/heads/main/background.png'); 
         }
@@ -87,7 +87,7 @@
 
         /* --- HERO SECTION --- */
         .hero-section {
-            min-height: 90vh;
+            min-height: 95vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -116,10 +116,10 @@
         }
 
         .hero-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             margin-bottom: 40px;
             color: #333;
-            font-weight: 300;
+            font-weight: 400;
         }
 
         .hero-photo {
@@ -151,7 +151,7 @@
 
         /* --- CONTENT SECTIONS --- */
         section {
-            padding: 120px 0;
+            padding: 80px 0;
             display: flex;
             justify-content: center;
         }
@@ -171,7 +171,7 @@
             font-family: 'Cinzel Decorative', serif;
             font-size: 2.4rem;
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
             color: var(--deep-forest);
         }
 
@@ -182,6 +182,13 @@
             height: 3px;
             background: var(--gold-accent);
             margin: 20px auto 0;
+        }
+
+        h3 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            color: var(--deep-forest);
         }
 
         .grid-2 {
@@ -196,27 +203,33 @@
             gap: 30px;
         }
 
-        /* --- MODERN CARDS --- */
-        .feature-box {
-            background: rgba(255,255,255,0.6);
-            padding: 40px;
-            border-radius: 2px;
-            border-left: 5px solid var(--gold-accent);
-            transition: 0.3s;
+        /* --- LIST STYLES --- */
+        .service-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 40px;
+            list-style: none;
+            margin-top: 20px;
         }
-        .feature-box:hover { background: var(--white); }
 
         .service-list li {
-            padding: 12px 0;
+            padding: 8px 0;
             border-bottom: 1px solid rgba(0,0,0,0.05);
             display: flex;
             gap: 15px;
+            font-size: 0.95rem;
         }
         .service-list li::before {
             content: '•';
             color: var(--gold-accent);
-            font-size: 1.5rem;
-            line-height: 1;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        .session-card {
+            background: rgba(255,255,255,0.5);
+            padding: 35px;
+            border-top: 4px solid var(--gold-accent);
         }
 
         /* --- FOOTER --- */
@@ -224,7 +237,7 @@
             background: rgba(27, 46, 27, 0.98);
             backdrop-filter: blur(10px);
             color: var(--white);
-            padding: 120px 0 60px;
+            padding: 100px 0 60px;
             border-top: 5px solid var(--gold-accent);
         }
 
@@ -232,8 +245,8 @@
             max-width: 1100px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 100px;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 80px;
             padding: 0 40px;
         }
 
@@ -255,10 +268,10 @@
         }
 
         .contact-item { margin-bottom: 30px; font-size: 1.1rem; }
-        .contact-item a { color: var(--white); text-decoration: none; }
+        .contact-item a { color: var(--white); text-decoration: none; border-bottom: 1px dotted rgba(255,255,255,0.4); }
 
         @media (max-width: 1000px) {
-            .hero-content, .grid-2, .grid-3, .footer-container { 
+            .hero-content, .grid-2, .grid-3, .footer-container, .service-list { 
                 flex-direction: column; 
                 grid-template-columns: 1fr; 
                 padding: 40px;
@@ -293,9 +306,11 @@
             <div class="hero-text">
                 <h1>Nurturing Resilience & Wellbeing</h1>
                 <p class="hero-subtitle">
-                    Supporting children, university students, and adults in a safe, person-centred environment. Specialised support for perinatal mental health and adjustment to parenthood.
+                    Supporting the emotional wellbeing of children, young people, university students, adults, and families in a safe, person-centred environment.
+                    <br><br>
+                    I support individuals experiencing anxiety, low mood, stress, emotional overwhelm, and life transitions, with a particular interest in supporting women through the perinatal period.
                 </p>
-                <a href="#contact" class="btn">Start Your Journey</a>
+                <a href="#contact" class="btn">Get in Touch</a>
             </div>
             <div class="hero-image">
                 <img src="https://raw.githubusercontent.com/shaunm89-cmd/Rhonda/refs/heads/main/rhonda1.png" alt="Rhonda Blackadder" class="hero-photo">
@@ -305,10 +320,11 @@
 
     <section id="about">
         <div class="content-card">
-            <h2>About Rhonda</h2>
-            <div style="column-count: 2; column-gap: 40px; text-align: justify;">
-                <p>I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported.</p>
-                <p style="margin-top: 20px;">I tailor each session to the individual, recognising the unique experiences, strengths, and needs that every person brings. My career has taken me across a range of clinical and educational settings, supporting university students and school-aged children through academic and emotional hurdles.</p>
+            <h2>About Me</h2>
+            <div style="text-align: center; max-width: 850px; margin: 0 auto;">
+                <p>I am a warm and approachable psychologist dedicated to supporting the emotional wellbeing of children, young people, and their families. My work is grounded in a person-centred approach, and I strive to create a therapeutic environment where clients feel safe, understood, and supported. I tailor each session to the individual, recognising the unique experiences, strengths, and needs that every young person brings.</p>
+                <br>
+                <p>My career has taken me across a range of clinical and educational settings. I have supported university students managing both academic pressures and personal challenges, and I have worked as a psychologist within primary and secondary schools. These experiences have deepened my understanding of child and adolescent development, learning needs, and the emotional hurdles young people may encounter.</p>
             </div>
         </div>
     </section>
@@ -316,26 +332,47 @@
     <section id="services">
         <div class="content-card">
             <h2>Individual Therapy</h2>
+            <div style="text-align: center; margin-bottom: 40px;">
+                <p>I offer a calm, supportive space where you can talk openly about what’s been feeling heavy, overwhelming, or hard to put into words.</p>
+            </div>
+            
             <div class="grid-2">
                 <div>
                     <h3>Who I Support</h3>
-                    <p style="margin: 20px 0;">I support children (5–18), university students, and adults. I have a particular interest in women’s mental health and the perinatal period.</p>
-                    <ul class="service-list">
-                        <li>Anxiety & Depression</li>
-                        <li>Grief and Loss</li>
-                        <li>Bullying & School Stress</li>
-                        <li>Emotional Regulation</li>
-                    </ul>
+                    <p>I support the emotional wellbeing of children and adolescents (ages 5–18), university students, adults, and families in a safe, person-centred environment.</p>
+                    <br>
+                    <p>I work with a range of concerns including anxiety, academic stress, emotional regulation, grief, self-esteem, low mood, stress, and life transitions.</p>
+                    <br>
+                    <p>I also have a particular interest in supporting women during the perinatal period, including postnatal anxiety, postnatal depression, matrescence, and adjustment to parenthood.</p>
                 </div>
                 <div>
-                    <h3>Special Interests</h3>
-                    <ul class="service-list">
-                        <li>Postnatal Anxiety & Depression</li>
-                        <li>Matrescence & Adjustment</li>
-                        <li>Academic & Burnout Support</li>
-                        <li>Life Transitions</li>
+                    <h3>Areas of Special Interest</h3>
+                    <ul class="service-list" style="grid-template-columns: 1fr;">
+                        <li>Anxiety & Depression</li>
+                        <li>Adjustment difficulties</li>
+                        <li>Grief and loss</li>
+                        <li>Perinatal mental health</li>
+                        <li>Postnatal anxiety and depression</li>
+                        <li>Matrescence and adjustment to parenthood</li>
+                        <li>School-related anxiety</li>
+                        <li>Emotional regulation difficulties</li>
                     </ul>
                 </div>
+            </div>
+
+            <div style="margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 30px;">
+                <p style="font-weight: 700; color: var(--gold-accent); margin-bottom: 10px;">I also provide support for:</p>
+                <ul class="service-list">
+                    <li>Acute stress and psychological distress</li>
+                    <li>Bullying</li>
+                    <li>Self-confidence and self-esteem issues</li>
+                    <li>Academic and study-related stress</li>
+                    <li>Life transitions and change</li>
+                    <li>Burnout and emotional overwhelm</li>
+                    <li>Stress management and resilience building</li>
+                    <li>Women’s mental health</li>
+                    <li>Parenting support and adjustment challenges</li>
+                </ul>
             </div>
         </div>
     </section>
@@ -343,15 +380,10 @@
     <section id="approach">
         <div class="content-card">
             <h2>Therapeutic Approach</h2>
-            <div class="grid-2">
-                <div class="feature-box">
-                    <h3>Evidence-Based</h3>
-                    <p>Utilising Acceptance and Commitment Therapy (ACT) and Cognitive Behavioural Therapy (CBT) to build lasting resilience.</p>
-                </div>
-                <div class="feature-box">
-                    <h3>Collaborative</h3>
-                    <p>Working alongside families, educators, and health professionals to ensure holistic, consistent care.</p>
-                </div>
+            <div style="text-align: center; max-width: 850px; margin: 0 auto;">
+                <p>My practice is informed by positive psychology and a strengths-focused perspective. I use evidence-based therapies, including Acceptance and Commitment Therapy (ACT) and Cognitive Behavioural Therapy (CBT), to help young people build resilience, develop emotional regulation skills, and learn strategies that support their overall wellbeing.</p>
+                <br>
+                <p>I value collaboration and believe that effective support often involves the wider network surrounding a young person. When appropriate, I work alongside families, educators, and other health professionals to ensure care is consistent, holistic, and responsive to each client’s needs.</p>
             </div>
         </div>
     </section>
@@ -359,18 +391,36 @@
     <section id="session">
         <div class="content-card">
             <h2>First Session</h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 40px auto; font-style: italic; opacity: 0.8;">The first session focuses on understanding concerns and gathering developmental and background information.</p>
+            
             <div class="grid-3">
-                <div class="feature-box">
+                <div class="session-card">
                     <h3>Adults</h3>
-                    <p>A 60-minute initial appointment to discuss your history and personal goals.</p>
+                    <p>Adult clients initial appointment, 60 minutes duration to discuss history, strengths, and areas of concern.</p>
                 </div>
-                <div class="feature-box">
-                    <h3>Children (U14)</h3>
-                    <p>Held with parents/caregivers only to establish developmental background.</p>
+                <div class="session-card">
+                    <h3>Children (Under 14)</h3>
+                    <p>Initial appointment is held with <strong>parents or caregivers only</strong> to discuss the child’s history and strengths.</p>
                 </div>
-                <div class="feature-box">
-                    <h3>Teens (14+)</h3>
-                    <p>Split 30/30 session between the young person and their caregivers.</p>
+                <div class="session-card">
+                    <h3>Young People (14+)</h3>
+                    <p>The session is divided into 30 minutes with the young person and 30 minutes with parents or caregivers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="referrals">
+        <div class="content-card">
+            <h2>Pathways to Referral</h2>
+            <div class="grid-2">
+                <div class="session-card" style="border-left: 4px solid var(--gold-accent); border-top: none;">
+                    <h3>Mental Health Care Plans (MHCPs)</h3>
+                    <p>For individuals seeking psychological support through Medicare.</p>
+                </div>
+                <div class="session-card" style="border-left: 4px solid var(--gold-accent); border-top: none;">
+                    <h3>NDIS Referrals</h3>
+                    <p>I see both self-managed and plan-managed clients.</p>
                 </div>
             </div>
         </div>
@@ -382,12 +432,12 @@
                 <img src="https://raw.githubusercontent.com/shaunm89-cmd/Rhonda/refs/heads/main/rhonda2.png" alt="Rhonda Blackadder">
             </div>
             <div class="footer-info">
-                <h2 style="color: white; text-align: left; margin-bottom: 10px;">Rhonda Blackadder</h2>
-                <span class="logo-sub" style="margin-bottom: 40px; display: block;">Registered Psychologist</span>
+                <h2 style="color: white; text-align: left; margin-bottom: 5px;">Rhonda Blackadder</h2>
+                <span class="logo-sub" style="margin-bottom: 40px; display: block;">Psychologist</span>
                 
                 <div class="contact-item">
-                    <span class="contact-label">Location</span>
-                    Uralla Cottage, 3 Baker Street, Windsor, NSW 2756
+                    <span class="contact-label">Address</span>
+                    Uralla Cottage<br>3 Baker Street, Windsor, NSW 2756
                 </div>
                 <div class="contact-item">
                     <span class="contact-label">Email</span>
@@ -398,9 +448,10 @@
                     <a href="tel:0421140107">0421 140 107</a>
                 </div>
                 
-                <p style="opacity: 0.5; font-size: 0.8rem; margin-top: 60px;">
-                    ABN 75 872 154 399 | © 2026 Rhonda Blackadder
-                </p>
+                <div style="margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; opacity: 0.6;">
+                    ABN 75 872 154 399<br>
+                    © 2026 Rhonda Blackadder Psychologist
+                </div>
             </div>
         </div>
     </footer>
