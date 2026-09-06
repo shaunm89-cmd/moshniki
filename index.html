@@ -1,116 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Austreams Support — Stream More Together</title>
-<meta name="description" content="Support hub for Austreams IPTV: pricing, help guides, install guides and FAQ.">
-<link rel="icon" href="assets/img/logo.png">
-<link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#05070d" />
+  <meta name="description" content="Austreams device setup, support, video guides and community help." />
+  <title>Austreams | Stream More Together</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="noise"></div>
 
-<header class="site-header">
-  <div class="container nav">
-    <a href="index.html" class="brand">
-      <img src="assets/img/logo.png" alt="Austreams logo">
-      <span>AU<em>Streams</em></span>
-    </a>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="prices.html">Prices</a></li>
-      <li><a href="help-guide.html">Help Guide</a></li>
-      <li><a href="install-guide.html">Install Guide</a></li>
-      <li><a href="faq.html">FAQ</a></li>
-    </ul>
-    <a class="nav-cta" href="https://discord.gg/REPLACE-WITH-INVITE" target="_blank" rel="noopener">Join Discord</a>
-  </div>
-</header>
-
-<main>
-  <section class="container hero">
-    <div>
-      <span class="section-tag">Support Hub</span>
-      <h1>Everything you need, sorted by channel.</h1>
-      <p class="lede">This is your one-stop page for Austreams IPTV — device pricing, setup videos, install steps and answers to the questions we get asked most. Have a look before opening a ticket, most issues sort themselves out in a minute or two.</p>
-      <div class="hero-actions">
-        <a href="install-guide.html" class="btn btn-primary">Get set up</a>
-        <a href="https://discord.gg/REPLACE-WITH-INVITE" class="btn btn-ghost" target="_blank" rel="noopener">Official Discord</a>
-      </div>
-    </div>
-    <div class="hero-art">
-      <div class="ring"></div>
-      <div class="ring r2"></div>
-      <img src="assets/img/logo.png" alt="">
-    </div>
-  </section>
-
-  <div class="container">
-    <div class="signal-rule"></div>
-  </div>
-
-  <section class="container">
-    <span class="section-tag">Where to start</span>
-    <h2>Pick a channel</h2>
-    <div class="grid-cards">
-      <a href="prices.html" class="card">
-        <span class="num">01 — HARDWARE</span>
-        <h3>Prices</h3>
-        <p>Formuler Z11 Pro bundle pricing, specs and what's in the box.</p>
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a href="#top" class="brand" aria-label="Austreams home">
+        <img src="assets/austreams-logo.png" alt="Austreams logo" />
+        <span>AUSTREAMS</span>
       </a>
-      <a href="help-guide.html" class="card">
-        <span class="num">02 — VIDEOS</span>
-        <h3>Help Guide</h3>
-        <p>Video walkthroughs for Formuler, Ausmate, Unlinked and Firestick.</p>
-      </a>
-      <a href="install-guide.html" class="card">
-        <span class="num">03 — SETUP</span>
-        <h3>Install Guide</h3>
-        <p>Downloader and Unlinked codes to get Austreams apps on your device.</p>
-      </a>
-      <a href="faq.html" class="card">
-        <span class="num">04 — SUPPORT</span>
-        <h3>FAQ</h3>
-        <p>Buffering, login details, sport events and what to do if nothing works.</p>
-      </a>
-    </div>
-  </section>
 
-  <div class="container">
-    <div class="signal-rule"></div>
-  </div>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
 
-  <section class="container">
-    <div class="panel" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;">
-      <div>
-        <h3 style="margin-bottom:6px;">Still stuck?</h3>
-        <p style="margin:0;">Jump into the Support channel on Discord — tell us the device, the app and what's happening, and a moderator will help you out.</p>
-      </div>
-      <a href="https://discord.gg/REPLACE-WITH-INVITE" class="btn btn-primary" target="_blank" rel="noopener">Open Discord</a>
-    </div>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-row">
-      <div class="footer-brand">
-        <img src="assets/img/logo.png" alt="Austreams logo">
-        <span>Austreams</span>
-      </div>
-      <nav class="footer-links">
-        <a href="prices.html">Prices</a>
-        <a href="help-guide.html">Help Guide</a>
-        <a href="install-guide.html">Install Guide</a>
-        <a href="faq.html">FAQ</a>
-        <a href="https://discord.gg/REPLACE-WITH-INVITE" target="_blank" rel="noopener">Discord</a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#device">Devices</a>
+        <a href="#guides">Video Guides</a>
+        <a href="#install">Install</a>
+        <a href="#faq">FAQ</a>
+        <a href="#support" class="nav-cta">Support</a>
       </nav>
     </div>
-    <p class="footer-fine">Austreams — Stream More Together. This page is a support resource, not a storefront.</p>
-  </div>
-</footer>
+  </header>
 
-<script src="assets/js/main.js"></script>
+  <main>
+    <section class="hero section-pad">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow"><span class="status-dot"></span> AUSTRALIAN STREAMING COMMUNITY</div>
+          <h1>Stream more.<br><span>Together.</span></h1>
+          <p class="hero-text">A cleaner way to get your Austreams setup running — with device help, app installation guides, video tutorials and community support all in one place.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#install">Get Started</a>
+            <a class="btn btn-secondary" href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Watch Video Guides</a>
+          </div>
+          <div class="hero-points">
+            <div><strong>4K Ready</strong><span>Modern compatible devices</span></div>
+            <div><strong>Simple Setup</strong><span>Clear step-by-step help</span></div>
+            <div><strong>Discord Support</strong><span>Updates and community help</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal delay-1">
+          <div class="logo-orbit orbit-a"></div>
+          <div class="logo-orbit orbit-b"></div>
+          <div class="hero-logo-card">
+            <div class="glow-ring"></div>
+            <img src="assets/austreams-logo.png" alt="Austreams official Discord logo" />
+          </div>
+          <div class="floating-pill pill-one">LIVE SPORT</div>
+          <div class="floating-pill pill-two">4K STREAMING</div>
+          <div class="floating-pill pill-three">DEVICE SUPPORT</div>
+        </div>
+      </div>
+      <div class="hero-line"></div>
+    </section>
+
+    <section class="trust-strip">
+      <div class="container trust-grid">
+        <div>FORMULER</div><div>MYTVONLINE</div><div>AUSMATE</div><div>FIRESTICK</div><div>UNLINKED</div>
+      </div>
+    </section>
+
+    <section class="section-pad" id="about">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div class="eyebrow">WHY AUSTREAMS</div>
+          <h2>Everything in one <span>simple hub</span></h2>
+          <p>From first-time setup to troubleshooting, Austreams gives members a central place for practical guidance and support.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <div class="icon">▶</div>
+            <h3>Video Guides</h3>
+            <p>Easy walkthroughs for Formuler, MyTVOnline, Ausmate, Unlinked and common device tasks.</p>
+          </article>
+          <article class="feature-card reveal delay-1">
+            <div class="icon">⚡</div>
+            <h3>Fast Setup</h3>
+            <p>Use the Austreams app library to get the required apps installed without hunting around.</p>
+          </article>
+          <article class="feature-card reveal delay-2">
+            <div class="icon">🛠</div>
+            <h3>Practical Support</h3>
+            <p>Buffering, channel issues, app problems and device troubleshooting explained in plain language.</p>
+          </article>
+          <article class="feature-card reveal delay-3">
+            <div class="icon">🏟</div>
+            <h3>Sport Updates</h3>
+            <p>Check Discord announcements for sporting schedules, service notices and special-event information.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-pad device-section" id="device">
+      <div class="container device-grid">
+        <div class="device-copy reveal">
+          <div class="eyebrow">FEATURED DEVICE</div>
+          <h2>Formuler Z11 Pro<br><span>BT Edition</span></h2>
+          <p class="lead">A ready-to-go 4K Android streaming receiver supplied with Austreams apps installed and ready for your username.</p>
+
+          <div class="price-row">
+            <div class="price">$250</div>
+            <div class="price-copy"><strong>Free shipping Australia-wide</strong><span>2-year Australian warranty</span></div>
+          </div>
+
+          <ul class="spec-list">
+            <li><span>OS</span><strong>Android 11</strong></li>
+            <li><span>Video</span><strong>4K 60fps • AV1 • HEVC • VP9</strong></li>
+            <li><span>HDR</span><strong>HDR10+ • HLG • HDR10</strong></li>
+            <li><span>Network</span><strong>Gigabit Ethernet • Dual-band Wi-Fi 5</strong></li>
+            <li><span>Memory</span><strong>2GB DDR4 • 16GB eMMC</strong></li>
+            <li><span>Bluetooth</span><strong>Bluetooth 5.0</strong></li>
+          </ul>
+
+          <div class="device-note">Subscription is not included with the device purchase.</div>
+        </div>
+
+        <div class="device-panel reveal delay-1">
+          <div class="device-screen">
+            <div class="device-screen-top"><span></span><span></span><span></span></div>
+            <div class="mock-tv">
+              <img src="assets/austreams-logo.png" alt="Austreams on screen" />
+              <div class="mock-scanline"></div>
+            </div>
+          </div>
+          <div class="included-box">
+            <h3>What’s in the box</h3>
+            <div class="included-grid">
+              <span>Z11 Pro receiver</span>
+              <span>BT1 voice remote</span>
+              <span>Remote cover</span>
+              <span>HDMI cable</span>
+              <span>IR extension</span>
+              <span>12V power adapter</span>
+              <span>2 × AA batteries</span>
+              <span>Quick setup guide</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-pad" id="guides">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div class="eyebrow">AUSTREAMS VIDEO GUIDES</div>
+          <h2>Help when you <span>need it</span></h2>
+          <p>Quick walkthroughs covering setup, login details, portal changes, app maintenance and more.</p>
+        </div>
+
+        <div class="guide-tabs reveal">
+          <button class="tab-btn active" data-tab="formuler">Formuler / MyTVOnline</button>
+          <button class="tab-btn" data-tab="ausmate">Ausmate</button>
+          <button class="tab-btn" data-tab="unlinked">Unlinked</button>
+          <button class="tab-btn" data-tab="firestick">Firestick</button>
+        </div>
+
+        <div class="guide-panels reveal delay-1">
+          <div class="guide-panel active" id="formuler">
+            <div class="guide-list">
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Aus Hub Setup on Formuler Z11 <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Turning on Z11 Pro for the First Time <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Change Portal on Z11 Pro <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Update Portal on Z10 / MyTVOnline2 <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">MyTVOnline3 Overview <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Find Username / Password on MyTVOnline3 <span>↗</span></a>
+            </div>
+          </div>
+          <div class="guide-panel" id="ausmate">
+            <div class="guide-list">
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">How to Use Ausmate <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Clear Data on Ausmate <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Find Username / Password on Ausmate <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Parental Controls in Ausmate <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Move Groups Around in Ausmate <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Add Free-to-Air Channels <span>↗</span></a>
+            </div>
+          </div>
+          <div class="guide-panel" id="unlinked">
+            <div class="guide-list">
+              <a href="https://www.youtube.com/watch?v=NM4sGjZNYJk&list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Install Unlinked for Austreams <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Use the Austreams App Store <span>↗</span></a>
+            </div>
+          </div>
+          <div class="guide-panel" id="firestick">
+            <div class="guide-list">
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Firestick Maintenance <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Move Apps to the Front Screen <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Deregister Your Amazon Account <span>↗</span></a>
+              <a href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Check Storage & Clear Cache <span>↗</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="center reveal">
+          <a class="btn btn-primary" href="https://www.youtube.com/playlist?list=PL7LLqlTchFHzaTXbQv9COAk2Oq4_4pyaC" target="_blank" rel="noopener">Open Full YouTube Playlist</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-pad install-section" id="install">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div class="eyebrow">QUICK INSTALL</div>
+          <h2>Set up Austreams in <span>four steps</span></h2>
+          <p>Use Downloader and Unlinked to access the Austreams app library.</p>
+        </div>
+
+        <div class="steps-grid">
+          <article class="step-card reveal">
+            <div class="step-no">01</div>
+            <h3>Install Downloader</h3>
+            <p>Open your device app store, search for <strong>Downloader</strong> and install it.</p>
+          </article>
+          <article class="step-card reveal delay-1">
+            <div class="step-no">02</div>
+            <h3>Install Unlinked</h3>
+            <p>Open Downloader and enter the code below.</p>
+            <button class="code-box copy-code" data-code="234753"><span>234753</span><small>CLICK TO COPY</small></button>
+          </article>
+          <article class="step-card reveal delay-2">
+            <div class="step-no">03</div>
+            <h3>Open the Library</h3>
+            <p>Launch Unlinked and enter the Austreams library code.</p>
+            <button class="code-box copy-code" data-code="B46DA2E8"><span>B46DA2E8</span><small>CLICK TO COPY</small></button>
+          </article>
+          <article class="step-card reveal delay-3">
+            <div class="step-no">04</div>
+            <h3>Install Austreams Hub</h3>
+            <p>Choose the required app, install it, then sign in using the username and password provided with your service.</p>
+          </article>
+        </div>
+
+        <div class="tip-banner reveal">
+          <div class="tip-icon">💡</div>
+          <div>
+            <strong>Buying a device from Austreams?</strong>
+            <span>The apps can be preinstalled and set up for you, making the process much easier.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-pad" id="faq">
+      <div class="container faq-grid">
+        <div class="faq-intro reveal">
+          <div class="eyebrow">SUPPORT CENTRE</div>
+          <h2>Frequently asked <span>questions</span></h2>
+          <p>Start here if something isn’t working. Most common issues can be fixed in a couple of minutes.</p>
+          <div class="support-mini-card">
+            <span>Need more help?</span>
+            <strong>Contact a Moderator in Discord</strong>
+          </div>
+        </div>
+
+        <div class="accordion reveal delay-1">
+          <div class="faq-item active">
+            <button class="faq-question">Why is my stream buffering?<span>+</span></button>
+            <div class="faq-answer"><div>
+              <p>Common causes include slow or unstable internet, weak Wi-Fi, congestion, low device storage, a device or app needing a restart, or a temporary issue with one channel.</p>
+              <p><strong>Try:</strong> restart your device and modem/router, test other channels, use Ethernet where possible, clear the app cache and check Discord for known issues.</p>
+            </div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">One channel isn’t working — what should I do?<span>+</span></button>
+            <div class="faq-answer"><div><p>Try several other channels first. If everything else works, report the affected channel and include the channel name, device/app, what is happening and whether you are using a VPN.</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">Nothing is working. What should I check?<span>+</span></button>
+            <div class="faq-answer"><div><p>Confirm your subscription is active, check your internet, close and reopen the app, restart your device and modem/router, then check Discord service announcements. If it still does not work, contact a moderator.</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">Wi-Fi or Ethernet?<span>+</span></button>
+            <div class="faq-answer"><div><p>Ethernet is recommended whenever possible because a wired connection is generally more stable and is not affected by Wi-Fi interference or weak signal strength.</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">Should I clear my app cache?<span>+</span></button>
+            <div class="faq-answer"><div><p>Yes. Clearing cache can help if an app is slow, freezing or behaving strangely. Avoid clearing app data unless you know your login and setup information, as this can reset the app.</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">Where do I find my username and password?<span>+</span></button>
+            <div class="faq-answer"><div><p>Check the Austreams video guides. Tutorials are available for finding login details on supported Austreams apps and devices.</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">Where do I find live sport and special events?<span>+</span></button>
+            <div class="faq-answer"><div><p>Check the Austreams Sport Announcements section and Discord for the latest schedules. Major events may also have dedicated Special Event or Live / Pay-Per-View channels.</p></div></div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">Why hasn’t a sporting event started yet?<span>+</span></button>
+            <div class="faq-answer"><div><p>Broadcast times can change and some feeds may not begin until shortly before the event. Check the latest schedule posted in Discord before reporting the stream.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-pad support-section" id="support">
+      <div class="container support-card reveal">
+        <div class="support-glow"></div>
+        <div class="support-content">
+          <div class="eyebrow">OFFICIAL DISCORD</div>
+          <h2>Need a hand? <span>We’ve got you.</span></h2>
+          <p>Use the support channel for assistance, and check Service Status / Announcements for known issues and updates.</p>
+          <div class="report-grid">
+            <div><span>📺</span><strong>Channel / App</strong></div>
+            <div><span>📦</span><strong>Device</strong></div>
+            <div><span>❗</span><strong>Problem</strong></div>
+            <div><span>⏰</span><strong>When it started</strong></div>
+          </div>
+          <a href="#" class="btn btn-primary disabled-link" aria-disabled="true" title="Add your Discord invite link here">Official Discord</a>
+          <p class="small-note">Add your Discord invite URL to this button before publishing.</p>
+        </div>
+        <img class="support-logo" src="assets/austreams-logo.png" alt="Austreams Discord" />
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="assets/austreams-logo.png" alt="Austreams logo" />
+        <div><strong>AUSTREAMS</strong><span>Stream More Together</span></div>
+      </div>
+      <div class="footer-links">
+        <a href="#device">Devices</a>
+        <a href="#guides">Guides</a>
+        <a href="#install">Install</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer-copy">© <span id="year"></span> Austreams. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">Copied!</div>
+  <script src="script.js"></script>
 </body>
 </html>
