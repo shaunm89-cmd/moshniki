@@ -23,24 +23,12 @@
             background: #1a1f2b;
             padding: 30px;
             border-radius: 16px;
-        }
-
-        h1 {
-            margin-top: 0;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            border-radius: 8px;
-            border: 1px solid #444;
+            text-align: center;
         }
 
         button {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             border: 0;
             border-radius: 8px;
             font-size: 16px;
@@ -49,7 +37,7 @@
 
         #result {
             margin-top: 20px;
-            line-height: 1.6;
+            line-height: 1.8;
         }
     </style>
 </head>
@@ -60,17 +48,10 @@
 
     <h1>Reylo TV Trial</h1>
 
-    <p>Create a test trial account.</p>
+    <p>Create a trial account.</p>
 
-    <input
-        type="text"
-        id="username"
-        placeholder="Username"
-        required
-    >
-
-    <button onclick="createTrial()">
-        Create Trial
+    <button onclick="createTrial()" id="createButton">
+        Create Trial Account
     </button>
 
     <div id="result"></div>
@@ -81,31 +62,16 @@
 
 async function createTrial() {
 
-    const username = document.getElementById("username").value;
-
     const result = document.getElementById("result");
+    const button = document.getElementById("createButton");
 
-    if (!username) {
-        result.innerHTML = "Please enter a username.";
-        return;
-    }
-
-    result.innerHTML = "Creating trial...";
+    button.disabled = true;
+    result.innerHTML = "Creating trial account...";
 
     try {
 
         const response = await fetch("create-trial.php", {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                username: username
-            })
-
+            method: "POST"
         });
 
         const data = await response.json();
@@ -113,25 +79,26 @@ async function createTrial() {
         if (data.success) {
 
             result.innerHTML = `
-                <strong>Trial Created!</strong><br><br>
-                Username: ${data.username}<br>
-                Password: ${data.password}<br>
-                Expiry: ${data.expiry ?? "Trial"}
+                <strong>✅ Trial Created</strong><br><br>
+                Username: <strong>${data.username}</strong><br>
+                Password: <strong>${data.password}</strong><br>
+                ${data.expiry ? `Expiry: <strong>${data.expiry}</strong>` : ""}
             `;
 
         } else {
 
             result.innerHTML =
-                "Error: " + (data.error ?? "Unknown error");
+                "❌ Error: " + (data.error ?? "Unable to create trial.");
 
         }
 
     } catch (error) {
 
-        result.innerHTML = "Connection error.";
+        result.innerHTML = "❌ Connection error.";
 
     }
 
+    button.disabled = false;
 }
 
 </script>
