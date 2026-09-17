@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reylo TV Trial</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #10131a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 420px;
+            background: #1a1f2b;
+            padding: 30px;
+            border-radius: 16px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: 0;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>Reylo TV Trial</h1>
+
+    <p>Create a test trial account.</p>
+
+    <input
+        type="text"
+        id="username"
+        placeholder="Username"
+        required
+    >
+
+    <button onclick="createTrial()">
+        Create Trial
+    </button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+async function createTrial() {
+
+    const username = document.getElementById("username").value;
+
+    const result = document.getElementById("result");
+
+    if (!username) {
+        result.innerHTML = "Please enter a username.";
+        return;
+    }
+
+    result.innerHTML = "Creating trial...";
+
+    try {
+
+        const response = await fetch("create-trial.php", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                username: username
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+
+            result.innerHTML = `
+                <strong>Trial Created!</strong><br><br>
+                Username: ${data.username}<br>
+                Password: ${data.password}<br>
+                Expiry: ${data.expiry ?? "Trial"}
+            `;
+
+        } else {
+
+            result.innerHTML =
+                "Error: " + (data.error ?? "Unknown error");
+
+        }
+
+    } catch (error) {
+
+        result.innerHTML = "Connection error.";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
