@@ -1,65 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reylo TV Trial</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #10131a;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        .box {
-            width: 100%;
-            max-width: 420px;
-            background: #1a1f2b;
-            padding: 30px;
-            border-radius: 16px;
-            text-align: center;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            border: 0;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        #result {
-            margin-top: 20px;
-            line-height: 1.8;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="box">
-
-    <h1>Reylo TV Trial</h1>
-
-    <p>Create a trial account.</p>
-
-    <button onclick="createTrial()" id="createButton">
-        Create Trial Account
-    </button>
-
-    <div id="result"></div>
-
-</div>
-
 <script>
-
 async function createTrial() {
 
     const result = document.getElementById("result");
@@ -70,11 +9,36 @@ async function createTrial() {
 
     try {
 
-        const response = await fetch("create-trial.php", {
+        const response = await fetch("./create-trial.php", {
             method: "POST"
         });
 
-        const data = await response.json();
+        const raw = await response.text();
+
+        console.log("HTTP Status:", response.status);
+        console.log("Server response:", raw);
+
+        let data;
+
+        try {
+            data = JSON.parse(raw);
+        } catch (e) {
+            result.innerHTML = `
+                ❌ Server returned an invalid response.<br><br>
+                <strong>HTTP ${response.status}</strong><br><br>
+                <pre style="
+                    text-align:left;
+                    white-space:pre-wrap;
+                    background:#111;
+                    padding:10px;
+                    border-radius:6px;
+                    font-size:12px;
+                ">${escapeHtml(raw)}</pre>
+            `;
+
+            button.disabled = false;
+            return;
+        }
 
         if (data.success) {
 
@@ -87,21 +51,34 @@ async function createTrial() {
 
         } else {
 
-            result.innerHTML =
-                "❌ Error: " + (data.error ?? "Unable to create trial.");
+            result.innerHTML = `
+                ❌ Error<br><br>
+                ${data.error ?? "Unable to create trial."}
+                ${data.status ? `<br>HTTP Status: ${data.status}` : ""}
+            `;
 
         }
 
     } catch (error) {
 
-        result.innerHTML = "❌ Connection error.";
+        console.error(error);
+
+        result.innerHTML = `
+            ❌ Could not contact create-trial.php<br><br>
+            ${error.message}
+        `;
 
     }
 
     button.disabled = false;
 }
 
-</script>
 
-</body>
-</html>
+function escapeHtml(text) {
+
+    const div = document.createElement("div");
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+</script>
