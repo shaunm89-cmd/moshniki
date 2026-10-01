@@ -1,12 +1,15 @@
-REYLO TV LANDING PAGE
-======================
-Open index.html in a browser to preview.
+REYLO TV — ONE PAGE DESIGN
+Open index.html in a browser.
 
-Before publishing:
-- Replace the XX pricing placeholders.
-- Replace placeholder copy with your real service details.
-- Add your real support/trial links to the CTA buttons.
-- Replace any device/service claims so they exactly match what Reylo TV supports.
-- Add your own logo/imagery if desired.
+This is a completely separate visual concept from the first Reylo design:
+- cinematic full-screen hero
+- giant typography
+- scrolling marquee
+- editorial content wall
+- light/dark visual transition
+- device orbit
+- three-step setup
+- large final CTA
+- compact FAQ
 
-This design is an original implementation inspired by modern streaming/SaaS landing-page patterns; it does not copy Omega Media source code or assets.
+Replace placeholder CTA links, support information, trial details and device claims before publishing.
