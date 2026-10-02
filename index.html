@@ -4,9 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Austreams Halloween Giveaway 🎃</title>
+  
+  <!-- Fonts: Plus Jakarta Sans & Spooky Creepster -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
     /* BASE RESET & VARIABLE CONFIGURATION */
@@ -30,7 +32,7 @@
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 50% 5%, rgba(255, 107, 0, 0.3), transparent 55%),
+        radial-gradient(circle at 50% 5%, rgba(255, 107, 0, 0.35), transparent 55%),
         radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.35), transparent 50%),
         radial-gradient(circle at 15% 80%, rgba(168, 85, 247, 0.25), transparent 50%),
         linear-gradient(to bottom, rgba(10, 5, 18, 0.35), rgba(10, 5, 18, 0.85)),
@@ -70,32 +72,54 @@
       z-index: 1;
     }
 
-    /* HEADER */
+    /* SPOOKY HEADER STYLING */
     header {
       text-align: center;
       margin-bottom: 2.75rem;
     }
 
     .brand-title {
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       font-weight: 900;
-      letter-spacing: 5px;
+      letter-spacing: 6px;
       color: var(--accent-orange);
       text-transform: uppercase;
-      margin-bottom: 0.75rem;
-      text-shadow: 0 0 20px rgba(255, 107, 0, 0.6);
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 15px rgba(255, 107, 0, 0.8), 0 0 30px rgba(255, 107, 0, 0.4);
     }
 
-    h1 {
-      font-size: 4rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
+    .spooky-heading {
+      font-family: 'Creepster', cursive;
+      font-size: 5.5rem;
+      font-weight: 400;
+      letter-spacing: 3px;
       line-height: 1.1;
-      margin-bottom: 1rem;
-      background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
+      margin-bottom: 1.25rem;
+      background: linear-gradient(180deg, #ffe600 0%, #ff6b00 50%, #d93800 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 6px 15px rgba(0,0,0,0.6));
+      filter: drop-shadow(0 0 12px rgba(255, 107, 0, 0.7)) 
+              drop-shadow(0 0 35px rgba(168, 85, 247, 0.5))
+              drop-shadow(0 8px 10px rgba(0, 0, 0, 0.9));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .pumpkin-icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.12em;
+      filter: drop-shadow(0 0 15px rgba(255, 107, 0, 0.9)) 
+              drop-shadow(0 0 30px rgba(255, 107, 0, 0.5));
+      animation: floatPumpkin 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatPumpkin {
+      0% { transform: translateY(0px) rotate(-3deg); }
+      100% { transform: translateY(-8px) rotate(4deg); }
     }
 
     .subtitle {
@@ -116,8 +140,8 @@
     }
 
     @media (max-width: 640px) {
-      h1 { font-size: 2.5rem; }
-      .brand-title { font-size: 1rem; }
+      .spooky-heading { font-size: 3.2rem; gap: 8px; }
+      .brand-title { font-size: 1.1rem; }
       .subtitle { font-size: 1.05rem; }
       .community-note { font-size: 0.9rem; }
     }
@@ -158,7 +182,7 @@
       color: var(--text-muted);
     }
 
-    /* UPGRADED PRIZES SECTION */
+    /* PRIZES SECTION */
     .prizes-container {
       display: flex;
       flex-direction: column;
@@ -436,12 +460,15 @@
   <div class="wrapper">
     
     <!-- HEADER -->
-<header>
-  <div class="brand-title">AUSTREAMS</div>
-  <h1>Halloween Giveaway &#127875;</h1>
-  <p class="subtitle">Join the ultimate Austreams Spooktacular Giveaway for your chance to share in $700 worth of Giveaways!</p>
-  <p class="community-note">Thank you for being part of the Austreams Community!</p>
-</header>
+    <header>
+      <div class="brand-title">AUSTREAMS</div>
+      <h1 class="spooky-heading">
+        Halloween Giveaway 
+        <img class="pumpkin-icon" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f383.svg" alt="🎃" />
+      </h1>
+      <p class="subtitle">Join the ultimate Austreams Spooktacular Giveaway for your chance to share in $700 worth of Giveaways!</p>
+      <p class="community-note">Thank you for being part of the Austreams Community!</p>
+    </header>
 
     <!-- COUNTDOWN TIMER -->
     <div class="countdown-container">
@@ -529,7 +556,7 @@
 
         <div class="form-group">
           <label for="name">Your Name</label>
-          <input type="text" id="name" name="name" required placeholder="First Name" />
+          <input type="text" id="name" name="name" required placeholder="Full Name" />
         </div>
 
         <div class="checkbox-group">
