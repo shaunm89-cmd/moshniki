@@ -29,7 +29,6 @@
 
     body {
       background-color: var(--bg-dark);
-      /* Points to halloween-bg.png with ambient orange & purple glowing overlays */
       background-image: 
         radial-gradient(circle at 50% 5%, rgba(255, 107, 0, 0.3), transparent 55%),
         radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.35), transparent 50%),
@@ -78,39 +77,49 @@
     }
 
     .brand-title {
-      font-size: 1.1rem;
+      font-size: 1.25rem;
       font-weight: 900;
-      letter-spacing: 4px;
+      letter-spacing: 5px;
       color: var(--accent-orange);
       text-transform: uppercase;
-      margin-bottom: 0.6rem;
-      text-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+      margin-bottom: 0.75rem;
+      text-shadow: 0 0 20px rgba(255, 107, 0, 0.6);
     }
 
     h1 {
-      font-size: 3.25rem;
+      font-size: 4rem;
       font-weight: 900;
       letter-spacing: -0.03em;
-      line-height: 1.15;
-      margin-bottom: 0.85rem;
-      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+      filter: drop-shadow(0 6px 15px rgba(0,0,0,0.6));
     }
 
     .subtitle {
       color: #e2e8f0;
-      font-size: 1.15rem;
-      font-weight: 500;
-      max-width: 620px;
-      margin: 0 auto;
-      line-height: 1.5;
+      font-size: 1.25rem;
+      font-weight: 600;
+      max-width: 700px;
+      margin: 0 auto 0.75rem auto;
+      line-height: 1.45;
+    }
+
+    .community-note {
+      color: var(--accent-purple);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
     }
 
     @media (max-width: 640px) {
-      h1 { font-size: 2.25rem; }
-      .subtitle { font-size: 1rem; }
+      h1 { font-size: 2.5rem; }
+      .brand-title { font-size: 1rem; }
+      .subtitle { font-size: 1.05rem; }
+      .community-note { font-size: 0.9rem; }
     }
 
     /* COUNTDOWN TIMER */
@@ -128,21 +137,21 @@
       border: 1px solid var(--card-border);
       padding: 0.85rem 1.1rem;
       border-radius: 14px;
-      min-width: 80px;
+      min-width: 85px;
       text-align: center;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     }
 
     .timer-number {
-      font-size: 1.75rem;
+      font-size: 1.85rem;
       font-weight: 900;
       color: var(--accent-orange);
       display: block;
-      text-shadow: 0 0 10px rgba(255, 107, 0, 0.4);
+      text-shadow: 0 0 12px rgba(255, 107, 0, 0.5);
     }
 
     .timer-label {
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -286,6 +295,20 @@
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
     }
 
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .form-header h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
     .form-group {
       margin-bottom: 1.5rem;
     }
@@ -416,7 +439,8 @@
     <header>
       <div class="brand-title">AUSTREAMS</div>
       <h1>Halloween Giveaway 🎃</h1>
-      <p class="subtitle">Join the ultimate Austreams Spooktacular to score over $700 in elite streaming tech & subscriptions!</p>
+      <p class="subtitle">Join the ultimate Austreams Spooktacular Giveaway for your chance to share in $700 worth of Giveaways!</p>
+      <p class="community-note">Thank you for being part of the Austreams Community!</p>
     </header>
 
     <!-- COUNTDOWN TIMER -->
@@ -471,6 +495,10 @@
 
     <!-- ENTRY FORM -->
     <div class="form-card">
+      <div class="form-header">
+        <h2>Answer the questions below to submit your entry</h2>
+      </div>
+
       <div id="errorMessage" class="msg msg-error"></div>
       <div id="successMessage" class="msg msg-success">🎉 Entry submitted! Good luck in the giveaway!</div>
 
