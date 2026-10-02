@@ -21,27 +21,40 @@ body {
     color: white;
     background:
         linear-gradient(
-            rgba(7, 3, 15, 0.45),
+            rgba(7, 3, 15, 0.55),
             rgba(7, 3, 15, 0.95)
         ),
         url("halloween-bg.png");
     background-size: cover;
     background-position: center top;
     background-attachment: fixed;
+    overflow-x: hidden;
+    position: relative;
 }
 
-/* DARK PURPLE GLOW OVERLAY */
-body::before {
-    content: "";
+/* FLOATING AMBIENT PARTICLES / EMBERS */
+.ember {
     position: fixed;
-    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff6900 0%, rgba(255,105,0,0) 70%);
+    opacity: 0.6;
     pointer-events: none;
-    background:
-        radial-gradient(
-            circle at 50% 20%,
-            rgba(168, 85, 247, 0.15),
-            transparent 50%
-        );
+    animation: floatUp 8s infinite linear;
+    z-index: 0;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+    }
 }
 
 /* MAIN CONTAINER */
@@ -50,12 +63,14 @@ body::before {
     max-width: 900px;
     margin: auto;
     padding: 40px 0 70px;
+    position: relative;
+    z-index: 1;
 }
 
 /* HERO SECTION */
 .hero {
     text-align: center;
-    padding: 20px 0 30px;
+    padding: 20px 0 20px;
 }
 
 .small-title {
@@ -93,55 +108,120 @@ body::before {
     color: #eee6f5;
 }
 
+/* COUNTDOWN TIMER */
+.timer-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 28px 0 10px;
+}
+
+.timer-card {
+    background: rgba(15, 8, 30, 0.75);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    border-radius: 12px;
+    padding: 10px 14px;
+    min-width: 70px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.timer-card .number {
+    font-size: 24px;
+    font-weight: 900;
+    color: #ff6900;
+    text-shadow: 0 0 10px rgba(255, 105, 0, 0.4);
+}
+
+.timer-card .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #b0a3c0;
+    margin-top: 2px;
+}
+
 /* PRIZES CONTAINER */
 .prizes-container {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin: 30px 0 40px;
+    gap: 18px;
+    margin: 35px 0 40px;
 }
 
-/* BASE PRIZE CARD */
+/* BASE PRIZE CARD (GLASSMORPHISM) */
 .prize-card {
-    background: rgba(8, 5, 15, 0.85);
+    background: rgba(12, 7, 24, 0.85);
     border: 1px solid rgba(192, 132, 252, 0.3);
-    border-radius: 18px;
-    padding: 24px;
+    border-radius: 20px;
+    padding: 26px;
     text-align: center;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(25px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
 }
 
-/* 1ST GRAND PRIZE (FEATURED TOP) */
+/* 1ST GRAND PRIZE (PULSING GLOW) */
 .prize-card.grand-prize {
-    border-color: rgba(255, 105, 0, 0.6);
-    background: linear-gradient(180deg, rgba(35, 15, 45, 0.9), rgba(8, 5, 15, 0.9));
-    box-shadow: 0 0 30px rgba(255, 105, 0, 0.2);
+    border-color: rgba(255, 105, 0, 0.7);
+    background: linear-gradient(180deg, rgba(45, 18, 60, 0.9), rgba(12, 7, 24, 0.9));
+    animation: grandPulse 3s infinite ease-in-out;
 }
 
-.prize-card.grand-prize .prize-badge {
-    color: #ff6900;
+@keyframes grandPulse {
+    0% {
+        box-shadow: 0 0 20px rgba(255, 105, 0, 0.25), inset 0 0 15px rgba(255, 105, 0, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(255, 105, 0, 0.5), inset 0 0 25px rgba(255, 105, 0, 0.25);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(255, 105, 0, 0.25), inset 0 0 15px rgba(255, 105, 0, 0.1);
+    }
+}
+
+/* BADGES (METALLIC GRADIENT PILLS) */
+.prize-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.badge-1st {
+    background: linear-gradient(90deg, #ff6900, #ff8a22);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(255, 105, 0, 0.5);
+}
+
+.badge-2nd {
+    background: linear-gradient(90deg, #a855f7, #c084fc);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+}
+
+.badge-3rd {
+    background: linear-gradient(90deg, #7c3aed, #9333ea);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
 }
 
 /* 2ND & 3RD PRIZES GRID */
 .prizes-grid-bottom {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-.prize-badge {
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #a855f7;
-    margin-bottom: 6px;
+    gap: 18px;
 }
 
 .prize-card h3 {
     margin: 6px 0;
-    font-size: 20px;
+    font-size: 21px;
     font-weight: bold;
     color: #ffffff;
 }
@@ -149,18 +229,18 @@ body::before {
 .prize-card p {
     margin: 0;
     font-size: 14px;
-    color: #bdb2c8;
+    color: #d1c4e9;
     line-height: 1.4;
 }
 
 /* FORM CARD */
 .form-card {
-    background: rgba(8, 5, 15, 0.88);
+    background: rgba(12, 7, 24, 0.9);
     border: 1px solid rgba(192, 132, 252, 0.35);
     border-radius: 25px;
-    padding: 32px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+    padding: 36px;
+    backdrop-filter: blur(25px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
 }
 
 .form-card h2 {
@@ -205,20 +285,21 @@ label.main-label {
 input[type="text"],
 textarea {
     width: 100%;
-    padding: 14px;
+    padding: 14px 16px;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(0, 0, 0, 0.4);
     color: white;
     font-size: 16px;
     outline: none;
     font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 input[type="text"]:focus,
 textarea:focus {
-    border-color: #a855f7;
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+    border-color: #ff6900;
+    box-shadow: 0 0 12px rgba(255, 105, 0, 0.25);
 }
 
 textarea {
@@ -228,12 +309,18 @@ textarea {
 
 .word-counter {
     float: right;
-    color: #aaa0b0;
     font-size: 13px;
+    font-weight: bold;
+    color: #22c55e; /* Starts Green */
+    transition: color 0.2s;
 }
 
 .word-counter.warning {
-    color: #ff5252;
+    color: #f97316; /* Orange at 21-25 */
+}
+
+.word-counter.danger {
+    color: #ef4444; /* Red if over 25 */
 }
 
 .hint {
@@ -249,36 +336,41 @@ textarea {
     color: #c9c0d1;
     font-size: 14px;
     line-height: 1.5;
+    cursor: pointer;
 }
 
 .confirm input {
     margin-top: 3px;
-    accent-color: #a855f7;
+    accent-color: #ff6900;
 }
 
+/* SUBMIT BUTTON WITH GLOW & SHIMMER */
 .submit-button {
     width: 100%;
-    padding: 17px;
+    padding: 18px;
     border: 0;
     border-radius: 14px;
     background: linear-gradient(90deg, #7c3aed, #a855f7, #ff6900);
+    background-size: 200% auto;
     color: white;
     font-size: 17px;
     font-weight: 900;
     cursor: pointer;
-    box-shadow: 0 12px 35px rgba(124, 58, 237, 0.3);
-    transition: transform 0.2s, filter 0.2s;
+    box-shadow: 0 10px 30px rgba(255, 105, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
 .submit-button:hover {
+    background-position: right center;
     transform: translateY(-2px);
-    filter: brightness(1.1);
+    box-shadow: 0 15px 40px rgba(255, 105, 0, 0.5);
 }
 
 .submit-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
 }
 
 .success {
@@ -305,8 +397,8 @@ textarea {
 
 /* RULES SECTION */
 .rules-box {
-    margin-top: 30px;
-    padding-top: 20px;
+    margin-top: 35px;
+    padding-top: 22px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -347,11 +439,27 @@ footer {
     .form-card {
         padding: 22px;
     }
+
+    .timer-card {
+        min-width: 60px;
+        padding: 8px 10px;
+    }
+    
+    .timer-card .number {
+        font-size: 18px;
+    }
 }
 </style>
 </head>
 
 <body>
+
+<!-- AMBIENT FLOATING EMBERS -->
+<div class="ember" style="left: 10%; width: 6px; height: 6px; animation-duration: 7s;"></div>
+<div class="ember" style="left: 25%; width: 8px; height: 8px; animation-duration: 10s; animation-delay: 2s;"></div>
+<div class="ember" style="left: 55%; width: 5px; height: 5px; animation-duration: 6s; animation-delay: 1s;"></div>
+<div class="ember" style="left: 75%; width: 9px; height: 9px; animation-duration: 9s; animation-delay: 3s;"></div>
+<div class="ember" style="left: 90%; width: 7px; height: 7px; animation-duration: 8s; animation-delay: 0.5s;"></div>
 
 <div class="container">
 
@@ -370,6 +478,26 @@ footer {
         Fill out your details below, tell us why you love Austreams in 25 words or less,
         and you're officially in the draw on October 28th. 👻
     </p>
+
+    <!-- LIVE COUNTDOWN TIMER -->
+    <div class="timer-container">
+        <div class="timer-card">
+            <div class="number" id="days">00</div>
+            <div class="label">Days</div>
+        </div>
+        <div class="timer-card">
+            <div class="number" id="hours">00</div>
+            <div class="label">Hours</div>
+        </div>
+        <div class="timer-card">
+            <div class="number" id="minutes">00</div>
+            <div class="label">Mins</div>
+        </div>
+        <div class="timer-card">
+            <div class="number" id="seconds">00</div>
+            <div class="label">Secs</div>
+        </div>
+    </div>
 </section>
 
 <!-- PRIZES SECTION -->
@@ -377,7 +505,7 @@ footer {
 
     <!-- 1ST GRAND PRIZE (FEATURED TOP) -->
     <div class="prize-card grand-prize">
-        <div class="prize-badge">🏆 1st Grand Prize</div>
+        <span class="prize-badge badge-1st">🏆 1st Grand Prize</span>
         <h3>Formuler Z11 Pro Max + 1 Year Sub</h3>
         <p>Win a Formuler Z11 Pro Max streaming device together with a full 1 Year Austreams Subscription.</p>
     </div>
@@ -385,13 +513,13 @@ footer {
     <!-- 2ND & 3RD PRIZES (SIDE BY SIDE) -->
     <div class="prizes-grid-bottom">
         <div class="prize-card">
-            <div class="prize-badge">🥈 2nd Prize</div>
+            <span class="prize-badge badge-2nd">🥈 2nd Prize</span>
             <h3>1 Year Sub</h3>
             <p>1 Year Austreams Subscription.</p>
         </div>
 
         <div class="prize-card">
-            <div class="prize-badge">🥉 3rd Prize</div>
+            <span class="prize-badge badge-3rd">🥉 3rd Prize</span>
             <h3>1 Year Sub</h3>
             <p>1 Year Austreams Subscription.</p>
         </div>
@@ -423,7 +551,7 @@ footer {
         <!-- WHY AUSTREAMS -->
         <label class="main-label" for="why">
             ❤️ In 25 words or less, why do you love Austreams?
-            <span class="word-counter"><span id="wordCount">0</span>/25</span>
+            <span class="word-counter" id="wordCounterWrapper"><span id="wordCount">0</span>/25</span>
         </label>
         <textarea id="why" name="why" maxlength="400" placeholder="Keep it short, funny, heartfelt... or all three! 😈" required></textarea>
         <div class="hint">Maximum 25 words.</div>
@@ -473,9 +601,10 @@ footer {
 </div>
 
 <script>
-/* 25 WORD COUNTER */
+/* DYNAMIC WORD COUNTER WITH COLOR SHIFTS */
 const whyBox = document.getElementById("why");
 const wordCount = document.getElementById("wordCount");
+const wordCounterWrapper = document.getElementById("wordCounterWrapper");
 
 function countWords(text) {
     if (!text.trim()) return 0;
@@ -485,12 +614,39 @@ function countWords(text) {
 whyBox.addEventListener("input", function() {
     const count = countWords(this.value);
     wordCount.textContent = count;
+    
+    wordCounterWrapper.classList.remove("warning", "danger");
     if (count > 25) {
-        wordCount.classList.add("warning");
-    } else {
-        wordCount.classList.remove("warning");
+        wordCounterWrapper.classList.add("danger");
+    } else if (count >= 20) {
+        wordCounterWrapper.classList.add("warning");
     }
 });
+
+/* LIVE COUNTDOWN TIMER TO OCT 28TH */
+function updateCountdown() {
+    const now = new Date();
+    let currentYear = now.getFullYear();
+    let targetDate = new Date(`October 28, ${currentYear} 23:59:59`);
+
+    if (now > targetDate) {
+        targetDate = new Date(`October 28, ${currentYear + 1} 23:59:59`);
+    }
+
+    const diff = targetDate - now;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById("days").textContent = days < 10 ? "0" + days : days;
+    document.getElementById("hours").textContent = hours < 10 ? "0" + hours : hours;
+    document.getElementById("minutes").textContent = minutes < 10 ? "0" + minutes : minutes;
+    document.getElementById("seconds").textContent = seconds < 10 ? "0" + seconds : seconds;
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
 
 /* GOOGLE APPS SCRIPT LINK */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJ534YHKjr5-eTjt727heb94cOvEnUi5wOGICmAQ14YstNA3hLu_vgo_qADK-n0srbSQ/exec";
@@ -536,6 +692,7 @@ document.getElementById("giveawayForm").addEventListener("submit", function(e) {
         success.scrollIntoView({ behavior: "smooth", block: "center" });
         document.getElementById("giveawayForm").reset();
         wordCount.textContent = "0";
+        wordCounterWrapper.classList.remove("warning", "danger");
     })
     .catch(err => {
         submitBtn.disabled = false;
