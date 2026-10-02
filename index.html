@@ -194,20 +194,8 @@ body::before {
 }
 
 .question h3 {
-    margin: 9px 0 17px;
+    margin: 9px 0 14px;
     font-size: 18px;
-}
-
-.answer {
-    display: block;
-    margin: 12px 0;
-    color: #ddd5e4;
-    cursor: pointer;
-}
-
-.answer input {
-    margin-right: 9px;
-    accent-color: #a855f7;
 }
 
 /* LABELS */
@@ -445,8 +433,7 @@ AUSTREAMS
 </h1>
 
 <p>
-Think you've got what it takes to survive the Halloween questions?
-Answer them, tell us why you love Austreams in 25 words or less,
+Fill out your details and answers below, tell us why you love Austreams in 25 words or less,
 and you're officially in the draw. 👻
 </p>
 
@@ -504,7 +491,7 @@ One whole year of Austreams.
 </h2>
 
 <p class="subtitle">
-Answer both Halloween questions correctly, then complete the final question.
+Complete all questions below to submit your entry.
 </p>
 
 
@@ -521,28 +508,17 @@ QUESTION 1
 </div>
 
 <h3>
-👻 Why are ghosts terrible liars?
+🎬 What is your favorite scary movie or suspense thriller?
 </h3>
 
-<label class="answer">
-<input type="radio" name="question1" value="A">
-A) They always disappear
-</label>
-
-<label class="answer">
-<input type="radio" name="question1" value="B">
-B) You can see right through them
-</label>
-
-<label class="answer">
-<input type="radio" name="question1" value="C">
-C) They hate talking
-</label>
-
-<label class="answer">
-<input type="radio" name="question1" value="D">
-D) They only whisper
-</label>
+<input
+type="text"
+id="movie"
+name="movie"
+placeholder="e.g. Halloween, Scream, The Shining..."
+maxlength="120"
+required
+>
 
 </div>
 
@@ -557,28 +533,17 @@ QUESTION 2
 </div>
 
 <h3>
-💀 Why don't skeletons ever fight each other?
+📺 What device do you currently use?
 </h3>
 
-<label class="answer">
-<input type="radio" name="question2" value="A">
-A) They don't have the guts
-</label>
-
-<label class="answer">
-<input type="radio" name="question2" value="B">
-B) They're too scared
-</label>
-
-<label class="answer">
-<input type="radio" name="question2" value="C">
-C) They hate Halloween
-</label>
-
-<label class="answer">
-<input type="radio" name="question2" value="D">
-D) They have no weapons
-</label>
+<input
+type="text"
+id="device"
+name="device"
+placeholder="e.g. Formuler Z11, Firestick, Shield TV, Smart TV..."
+maxlength="120"
+required
+>
 
 </div>
 
@@ -775,16 +740,11 @@ document
 
     e.preventDefault();
 
-
     const q1 =
-        document.querySelector(
-            'input[name="question1"]:checked'
-        );
+        document.getElementById("movie").value.trim();
 
     const q2 =
-        document.querySelector(
-            'input[name="question2"]:checked'
-        );
+        document.getElementById("device").value.trim();
 
     const why =
         whyBox.value;
@@ -808,30 +768,12 @@ document
         "none";
 
 
-    /* QUESTIONS */
+    /* CHECK INPUTS */
 
     if (!q1 || !q2) {
 
         error.textContent =
-            "Please answer both Halloween questions.";
-
-        error.style.display =
-            "block";
-
-        return;
-
-    }
-
-
-    /* ANSWERS */
-
-    if (
-        q1.value !== "B" ||
-        q2.value !== "A"
-    ) {
-
-        error.textContent =
-            "Oooh... not quite! 👻 Check your Halloween answers and try again.";
+            "Please answer both Question 1 and Question 2.";
 
         error.style.display =
             "block";
@@ -883,7 +825,6 @@ document
     */
 
 });
-
 
 </script>
 
