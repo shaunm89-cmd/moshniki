@@ -112,7 +112,7 @@ body::before {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* 1ST GRAND PRIZE (TOP / FULL WIDTH) */
+/* 1ST GRAND PRIZE (FEATURED TOP) */
 .prize-card.grand-prize {
     border-color: rgba(255, 105, 0, 0.6);
     background: linear-gradient(180deg, rgba(35, 15, 45, 0.9), rgba(8, 5, 15, 0.9));
@@ -273,6 +273,12 @@ textarea {
 .submit-button:hover {
     transform: translateY(-2px);
     filter: brightness(1.1);
+}
+
+.submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .success {
@@ -486,34 +492,57 @@ whyBox.addEventListener("input", function() {
     }
 });
 
+/* GOOGLE APPS SCRIPT LINK */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJ534YHKjr5-eTjt727heb94cOvEnUi5wOGICmAQ14YstNA3hLu_vgo_qADK-n0srbSQ/exec";
+
 /* FORM SUBMISSION LOGIC */
 document.getElementById("giveawayForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
-    const q1 = document.getElementById("movie").value.trim();
-    const q2 = document.getElementById("device").value.trim();
-    const why = whyBox.value;
-
+    const submitBtn = document.getElementById("submitButton");
     const error = document.getElementById("errorMessage");
     const success = document.getElementById("successMessage");
+
+    const payload = {
+        movie: document.getElementById("movie").value.trim(),
+        device: document.getElementById("device").value.trim(),
+        why: whyBox.value.trim(),
+        telegram: document.getElementById("telegram").value.trim(),
+        name: document.getElementById("name").value.trim()
+    };
 
     error.style.display = "none";
     success.style.display = "none";
 
-    if (!q1 || !q2) {
-        error.textContent = "Please answer both Question 1 and Question 2.";
-        error.style.display = "block";
-        return;
-    }
-
-    if (countWords(why) > 25) {
+    if (countWords(payload.why) > 25) {
         error.textContent = "Your Austreams answer needs to be 25 words or less.";
         error.style.display = "block";
         return;
     }
 
-    success.style.display = "block";
-    success.scrollIntoView({ behavior: "smooth", block: "center" });
+    submitBtn.disabled = true;
+    submitBtn.textContent = "SUBMITTING...";
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    })
+    .then(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "🎃 SUBMIT MY ENTRY 👻";
+        success.style.display = "block";
+        success.scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById("giveawayForm").reset();
+        wordCount.textContent = "0";
+    })
+    .catch(err => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "🎃 SUBMIT MY ENTRY 👻";
+        error.textContent = "Something went wrong submitting your entry. Please try again.";
+        error.style.display = "block";
+    });
 });
 </script>
 
