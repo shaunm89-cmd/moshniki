@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
+    /* BASE RESET & VARIABLE CONFIGURATION */
     :root {
       --bg-dark: #0a0512;
       --card-bg: rgba(18, 10, 28, 0.65);
@@ -70,6 +71,7 @@
       z-index: 1;
     }
 
+    /* SPOOKY HEADER STYLING */
     header {
       text-align: center;
       margin-bottom: 2.75rem;
@@ -143,11 +145,17 @@
       .community-note { font-size: 0.9rem; }
     }
 
+    /* COUNTDOWN TIMER */
+    .countdown-section {
+      text-align: center;
+      margin-bottom: 2.75rem;
+    }
+
     .countdown-container {
       display: flex;
       justify-content: center;
       gap: 1rem;
-      margin-bottom: 2.75rem;
+      margin-bottom: 0.75rem;
     }
 
     .timer-box {
@@ -178,6 +186,15 @@
       color: var(--text-muted);
     }
 
+    .ends-text {
+      font-family: 'Creepster', cursive;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      color: var(--accent-orange);
+      text-shadow: 0 0 10px rgba(255, 107, 0, 0.6);
+    }
+
+    /* PRIZES SECTION */
     .prizes-container {
       display: flex;
       flex-direction: column;
@@ -215,6 +232,7 @@
       transform: translateY(-6px) scale(1.01);
     }
 
+    /* GRAND PRIZE LAYOUT WITH PRODUCT IMAGE INTEGRATION */
     .grand-prize {
       background: radial-gradient(circle at top, rgba(255, 107, 0, 0.22), rgba(15, 8, 25, 0.85));
       border: 1px solid rgba(255, 120, 0, 0.45);
@@ -251,7 +269,7 @@
     .product-img {
       width: 100%;
       height: auto;
-      max-height: 220px;
+      max-height: 160px;
       object-fit: contain;
       filter: contrast(105%) brightness(98%);
       mix-blend-mode: multiply;
@@ -268,7 +286,7 @@
         text-align: center;
       }
       .product-img-wrapper {
-        max-width: 280px;
+        max-width: 220px;
         margin: 0 auto;
       }
     }
@@ -308,14 +326,14 @@
 
     .prize-title {
       color: #ffffff;
-      font-size: 1.4rem;
+      font-size: 1.25rem;
       font-weight: 800;
       margin-bottom: 0.4rem;
       letter-spacing: -0.01em;
     }
 
     .grand-prize .prize-title {
-      font-size: 1.65rem;
+      font-size: 1.45rem;
       background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -323,17 +341,17 @@
 
     .prize-desc {
       color: #cbd5e1;
-      font-size: 0.92rem;
-      margin-bottom: 1.25rem;
-      line-height: 1.45;
+      font-size: 0.88rem;
+      margin-bottom: 1rem;
+      line-height: 1.4;
     }
 
     .price-tag {
       display: inline-block;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 800;
       letter-spacing: 1px;
-      padding: 6px 16px;
+      padding: 5px 14px;
       border-radius: 8px;
       background: rgba(0, 0, 0, 0.45);
     }
@@ -350,6 +368,23 @@
       box-shadow: inset 0 0 10px rgba(192, 132, 252, 0.2);
     }
 
+    .draw-date-note {
+      font-size: 0.75rem;
+      color: var(--accent-orange);
+      font-weight: 700;
+      margin-top: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .subscriber-note {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+      font-style: italic;
+    }
+
+    /* FORM STYLING */
     .form-card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
@@ -358,7 +393,7 @@
       border-radius: 20px;
       padding: 2.5rem 2rem;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
     }
 
     .form-header {
@@ -441,6 +476,15 @@
       line-height: 1.4;
     }
 
+    .submit-note {
+      display: block;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-style: italic;
+    }
+
     .submit-btn {
       width: 100%;
       background: linear-gradient(135deg, #ff6b00, #ff4500);
@@ -467,6 +511,7 @@
       transform: none;
     }
 
+    /* FORM MESSAGES */
     .msg {
       padding: 1rem;
       border-radius: 10px;
@@ -488,83 +533,36 @@
       color: #86efac;
     }
 
+    /* TERMS & CONDITIONS SECTION */
     .terms-card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      margin-bottom: 2rem;
+      border-radius: 20px;
+      padding: 2rem 1.75rem;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
-      overflow: hidden;
-      transition: border-color 0.3s ease;
+      margin-bottom: 2rem;
     }
 
-    .terms-card:hover {
-      border-color: rgba(168, 85, 247, 0.35);
-    }
-
-    .terms-toggle-btn {
-      width: 100%;
-      background: transparent;
-      border: none;
-      padding: 1.15rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      cursor: pointer;
+    .terms-card h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--accent-orange);
+      margin-bottom: 1rem;
       text-transform: uppercase;
-      transition: color 0.2s ease;
+      letter-spacing: 1px;
     }
 
-    .terms-toggle-btn:hover {
-      color: #ffffff;
-    }
-
-    .terms-arrow {
-      transition: transform 0.3s ease;
-      font-size: 0.8rem;
-    }
-
-    .terms-card.active .terms-arrow {
-      transform: rotate(180deg);
-    }
-
-    .terms-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      padding: 0 1.5rem;
-    }
-
-    .terms-card.active .terms-content {
-      max-height: 400px;
-      padding-bottom: 1.5rem;
-    }
-
-    .terms-list {
-      list-style-type: decimal;
+    .terms-card ol {
       padding-left: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
       color: var(--text-muted);
-      font-size: 0.82rem;
-      line-height: 1.5;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 1rem;
+      font-size: 0.85rem;
+      line-height: 1.6;
     }
 
-    .terms-list li {
-      transition: color 0.2s ease;
-    }
-
-    .terms-list li:hover {
-      color: #cbd5e1;
+    .terms-card li {
+      margin-bottom: 0.5rem;
     }
 
     footer {
@@ -578,35 +576,41 @@
 
   <div class="wrapper">
     
+    <!-- HEADER -->
     <header>
       <div class="brand-title">AUSTREAMS</div>
       <h1 class="spooky-heading">
         Halloween Giveaway 
         <img class="pumpkin-icon" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f383.svg" alt="🎃" />
       </h1>
-      <p class="subtitle">Join the ultimate Austreams Spooktacular Giveaway for your chance to share in $700 worth of Prizes!</p>
+      <p class="subtitle">Join the ultimate Austreams Spooktacular Giveaway for your chance to share in $700 worth of Giveaways!</p>
       <p class="community-note">Thank you for being part of the Austreams Community!</p>
     </header>
 
-    <div class="countdown-container">
-      <div class="timer-box">
-        <span class="timer-number" id="days">00</span>
-        <span class="timer-label">Days</span>
+    <!-- COUNTDOWN TIMER -->
+    <div class="countdown-section">
+      <div class="countdown-container">
+        <div class="timer-box">
+          <span class="timer-number" id="days">00</span>
+          <span class="timer-label">Days</span>
+        </div>
+        <div class="timer-box">
+          <span class="timer-number" id="hours">00</span>
+          <span class="timer-label">Hours</span>
+        </div>
+        <div class="timer-box">
+          <span class="timer-number" id="minutes">00</span>
+          <span class="timer-label">Mins</span>
+        </div>
+        <div class="timer-box">
+          <span class="timer-number" id="seconds">00</span>
+          <span class="timer-label">Secs</span>
+        </div>
       </div>
-      <div class="timer-box">
-        <span class="timer-number" id="hours">00</span>
-        <span class="timer-label">Hours</span>
-      </div>
-      <div class="timer-box">
-        <span class="timer-number" id="minutes">00</span>
-        <span class="timer-label">Mins</span>
-      </div>
-      <div class="timer-box">
-        <span class="timer-number" id="seconds">00</span>
-        <span class="timer-label">Secs</span>
-      </div>
+      <div class="ends-text">Ends 27th October</div>
     </div>
 
+    <!-- PRIZES SECTION -->
     <div class="prizes-container">
       <!-- 1st Grand Prize -->
       <div class="prize-card grand-prize">
@@ -616,6 +620,8 @@
             <h2 class="prize-title">Formuler Z11 Pro Max + 1 Year Sub</h2>
             <p class="prize-desc">Win a Formuler Z11 Pro Max streaming device together with a full 1 Year Austreams Subscription.</p>
             <div class="price-tag gold-glow">VALUED AT $400</div>
+            <div class="draw-date-note">Winner drawn on 28th October</div>
+            <div class="subscriber-note">Must be an active subscriber to win</div>
           </div>
           <div class="product-img-wrapper">
             <img src="prize.png" alt="Formuler Z11 Pro Max" class="product-img" />
@@ -631,6 +637,8 @@
           <h3 class="prize-title">1 Year Sub</h3>
           <p class="prize-desc">1 Year Austreams Subscription.</p>
           <div class="price-tag purple-glow">VALUED AT $150</div>
+          <div class="draw-date-note">Winner drawn on 28th October</div>
+          <div class="subscriber-note">Must be an active subscriber to win</div>
         </div>
 
         <!-- 3rd Prize -->
@@ -639,10 +647,13 @@
           <h3 class="prize-title">1 Year Sub</h3>
           <p class="prize-desc">1 Year Austreams Subscription.</p>
           <div class="price-tag purple-glow">VALUED AT $150</div>
+          <div class="draw-date-note">Winner drawn on 28th October</div>
+          <div class="subscriber-note">Must be an active subscriber to win</div>
         </div>
       </div>
     </div>
 
+    <!-- ENTRY FORM -->
     <div class="form-card">
       <div class="form-header">
         <h2>Answer the questions below to submit your entry</h2>
@@ -678,7 +689,7 @@
 
         <div class="form-group">
           <label for="name">Your Name</label>
-          <input type="text" id="name" name="name" required placeholder="First Name" />
+          <input type="text" id="name" name="name" required placeholder="Full Name" />
         </div>
 
         <div class="checkbox-group">
@@ -686,31 +697,30 @@
           <label for="telegramCheck">I confirm that I am in the official Austreams Telegram group.</label>
         </div>
 
+        <span class="submit-note">May take up to 30 seconds for it to submit</span>
         <button type="submit" id="submitButton" class="submit-btn">🎃 SUBMIT MY ENTRY 👻</button>
       </form>
     </div>
 
-    <div class="terms-card" id="termsCard">
-      <button type="button" class="terms-toggle-btn" id="termsToggle">
-        <span>📜 Terms & Conditions</span>
-        <span class="terms-arrow">▼</span>
-      </button>
-      <div class="terms-content">
-        <ol class="terms-list">
-          <li>Winner must be an active Austreams Subscriber.</li>
-          <li>Draws will take place on October 28th.</li>
-          <li>Winners will be announced on Telegram on October 28th.</li>
-          <li>Winners will need to contact an admin to claim their prize.</li>
-          <li>12 Month Subscription can be a new username or extend current subscription by 12 months.</li>
-          <li>Winner of 1st place will have their prize mailed to them.</li>
-        </ol>
-      </div>
+    <!-- TERMS AND CONDITIONS -->
+    <div class="terms-card">
+      <h3>Terms & Conditions</h3>
+      <ol>
+        <li>Winner must be an active Austreams Subscriber.</li>
+        <li>Draws will take place on October 28th.</li>
+        <li>Winners will be announced on Telegram on October 28th.</li>
+        <li>Winners will need to contact an admin to claim their Prize.</li>
+        <li>12 Month Subscription can be a new username or extend current subscription by 12 months.</li>
+        <li>Winner of 1st place will have their prize mailed to them.</li>
+      </ol>
     </div>
 
     <footer>Austreams Halloween Giveaway • Drawing Live Oct 28th</footer>
   </div>
 
+  <!-- JAVASCRIPT LOGIC -->
   <script>
+    /* DYNAMIC WORD COUNTER WITH COLOR SHIFTS */
     const whyBox = document.getElementById("why");
     const wordCount = document.getElementById("wordCount");
     const wordCounterWrapper = document.getElementById("wordCounterWrapper");
@@ -732,10 +742,10 @@
       }
     });
 
+    /* LIVE COUNTDOWN TIMER TO END OF OCT 27TH / MIDNIGHT START OF OCT 28TH */
     function updateCountdown() {
       const now = new Date();
       let currentYear = now.getFullYear();
-      // Target midnight going into October 28th (i.e. Oct 28 at 00:00:00)
       let targetDate = new Date(`October 28, ${currentYear} 00:00:00`);
 
       if (now > targetDate) {
@@ -757,13 +767,7 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    const termsCard = document.getElementById("termsCard");
-    const termsToggle = document.getElementById("termsToggle");
-
-    termsToggle.addEventListener("click", function() {
-      termsCard.classList.toggle("active");
-    });
-
+    /* GOOGLE APPS SCRIPT SUBMISSION */
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJ534YHKjr5-eTjt727heb94cOvEnUi5wOGICmAQ14YstNA3hLu_vgo_qADK-n0srbSQ/exec";
 
     document.getElementById("giveawayForm").addEventListener("submit", function(e) {
@@ -783,7 +787,7 @@
       }
 
       submitBtn.disabled = true;
-      submitBtn.textContent = "SUBMITTING...";
+      submitBtn.textContent = "SUBMITTING (UP TO 30S)...";
 
       const formData = new URLSearchParams();
       formData.append("movie", document.getElementById("movie").value.trim());
