@@ -648,10 +648,9 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-/* GOOGLE APPS SCRIPT LINK */
+/* GOOGLE APPS SCRIPT SUBMISSION */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJ534YHKjr5-eTjt727heb94cOvEnUi5wOGICmAQ14YstNA3hLu_vgo_qADK-n0srbSQ/exec";
 
-/* FORM SUBMISSION LOGIC */
 document.getElementById("giveawayForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
@@ -659,18 +658,10 @@ document.getElementById("giveawayForm").addEventListener("submit", function(e) {
     const error = document.getElementById("errorMessage");
     const success = document.getElementById("successMessage");
 
-    const payload = {
-        movie: document.getElementById("movie").value.trim(),
-        device: document.getElementById("device").value.trim(),
-        why: whyBox.value.trim(),
-        telegram: document.getElementById("telegram").value.trim(),
-        name: document.getElementById("name").value.trim()
-    };
-
     error.style.display = "none";
     success.style.display = "none";
 
-    if (countWords(payload.why) > 25) {
+    if (countWords(whyBox.value) > 25) {
         error.textContent = "Your Austreams answer needs to be 25 words or less.";
         error.style.display = "block";
         return;
@@ -679,11 +670,19 @@ document.getElementById("giveawayForm").addEventListener("submit", function(e) {
     submitBtn.disabled = true;
     submitBtn.textContent = "SUBMITTING...";
 
+    // Build URL-encoded form data
+    const formData = new URLSearchParams();
+    formData.append("movie", document.getElementById("movie").value.trim());
+    formData.append("device", document.getElementById("device").value.trim());
+    formData.append("why", whyBox.value.trim());
+    formData.append("telegram", document.getElementById("telegram").value.trim());
+    formData.append("name", document.getElementById("name").value.trim());
+
     fetch(SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
     })
     .then(() => {
         submitBtn.disabled = false;
