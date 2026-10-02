@@ -1,160 +1,891 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planet Explorer | Fun World Facts</title>
-  <style>
-    :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --primary: #38bdf8;
-      --accent: #f43f5e;
-      --text: #f8fafc;
-      --muted: #94a3b8;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Austreams Halloween Giveaway 🎃</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+
+    background:
+        linear-gradient(
+            rgba(7, 3, 15, 0.35),
+            rgba(7, 3, 15, 0.92)
+        ),
+        url("halloween-bg.png");
+
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+}
+
+/* DARK OVERLAY */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(168,85,247,0.12),
+            transparent 40%
+        );
+}
+
+/* MAIN */
+
+.container {
+    width: 92%;
+    max-width: 950px;
+    margin: auto;
+    padding: 45px 0 70px;
+}
+
+/* HERO */
+
+.hero {
+    text-align: center;
+    padding: 45px 0 30px;
+}
+
+.small-title {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #e9d5ff;
+    font-weight: bold;
+}
+
+.hero h1 {
+    margin: 18px 0 0;
+    font-size: clamp(48px, 9vw, 100px);
+    line-height: 0.85;
+    font-weight: 1000;
+    letter-spacing: -5px;
+
+    text-shadow:
+        0 0 20px rgba(168,85,247,.55),
+        0 0 50px rgba(168,85,247,.25);
+}
+
+.hero h1 span {
+    display: block;
+    color: #ff6900;
+
+    text-shadow:
+        0 0 15px rgba(255,105,0,.55),
+        0 0 40px rgba(255,105,0,.25);
+}
+
+.hero p {
+    max-width: 650px;
+    margin: 25px auto;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #eee6f5;
+}
+
+/* PRIZES */
+
+.prizes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 25px 0 35px;
+}
+
+.prize {
+    background: rgba(8,5,15,.82);
+    border: 1px solid rgba(192,132,252,.3);
+    border-radius: 20px;
+    padding: 25px;
+
+    backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.4);
+}
+
+.prize-label {
+    color: #ff9a3d;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.prize h2 {
+    margin: 10px 0;
+    font-size: 21px;
+}
+
+.prize p {
+    color: #bdb2c8;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* FORM CARD */
+
+.form-card {
+    background: rgba(8,5,15,.88);
+
+    border:
+        1px solid rgba(192,132,252,.35);
+
+    border-radius: 25px;
+
+    padding: 32px;
+
+    backdrop-filter: blur(20px);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.55);
+}
+
+.form-card h2 {
+    margin-top: 0;
+    font-size: 28px;
+}
+
+.subtitle {
+    color: #bfb3c9;
+    margin-bottom: 30px;
+}
+
+/* QUESTIONS */
+
+.question {
+    background: rgba(255,255,255,.035);
+
+    border:
+        1px solid rgba(255,255,255,.1);
+
+    border-radius: 18px;
+
+    padding: 22px;
+
+    margin-bottom: 18px;
+}
+
+.question-number {
+    color: #ff8a22;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.question h3 {
+    margin: 9px 0 17px;
+    font-size: 18px;
+}
+
+.answer {
+    display: block;
+    margin: 12px 0;
+    color: #ddd5e4;
+    cursor: pointer;
+}
+
+.answer input {
+    margin-right: 9px;
+    accent-color: #a855f7;
+}
+
+/* LABELS */
+
+label.main-label {
+    display: block;
+    margin: 25px 0 9px;
+    font-weight: bold;
+}
+
+/* INPUTS */
+
+input[type="text"],
+textarea {
+
+    width: 100%;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    background: rgba(0,0,0,.35);
+
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+
+    font-family: inherit;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+
+    border-color: #a855f7;
+
+    box-shadow:
+        0 0 0 3px rgba(168,85,247,.12);
+}
+
+textarea {
+    min-height: 125px;
+    resize: vertical;
+}
+
+/* WORD COUNTER */
+
+.word-counter {
+    float: right;
+    color: #aaa0b0;
+    font-size: 13px;
+}
+
+.word-counter.warning {
+    color: #ff5252;
+}
+
+/* HINT */
+
+.hint {
+    margin-top: 7px;
+    color: #82778b;
+    font-size: 12px;
+}
+
+/* CHECKBOX */
+
+.confirm {
+    display: flex;
+    gap: 10px;
+
+    margin: 25px 0;
+
+    color: #c9c0d1;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+.confirm input {
+    margin-top: 3px;
+    accent-color: #a855f7;
+}
+
+/* BUTTON */
+
+.submit-button {
+
+    width: 100%;
+
+    padding: 17px;
+
+    border: 0;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7c3aed,
+            #a855f7,
+            #ff6900
+        );
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 12px 35px rgba(124,58,237,.3);
+
+    transition: .2s;
+}
+
+.submit-button:hover {
+
+    transform: translateY(-2px);
+
+    filter: brightness(1.1);
+}
+
+/* SUCCESS */
+
+.success {
+
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 18px;
+
+    border-radius: 13px;
+
+    background: rgba(34,197,94,.12);
+
+    border:
+        1px solid rgba(34,197,94,.3);
+
+    color: #bbf7d0;
+
+    text-align: center;
+
+    font-weight: bold;
+}
+
+/* ERROR */
+
+.error {
+
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    border-radius: 13px;
+
+    background: rgba(239,68,68,.12);
+
+    border:
+        1px solid rgba(239,68,68,.3);
+
+    color: #fecaca;
+
+}
+
+/* FOOTER */
+
+footer {
+
+    text-align: center;
+
+    margin-top: 25px;
+
+    color: #776c80;
+
+    font-size: 12px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+    .container {
+        padding-top: 20px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); padding: 2rem 1rem; line-height: 1.5; }
-    
-    header { text-align: center; margin-bottom: 3rem; }
-    header h1 { font-size: 2.5rem; color: var(--primary); margin-bottom: 0.5rem; }
-    header p { color: var(--muted); }
+    .hero {
+        padding-top: 20px;
+    }
 
-    .container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2.5rem; }
+    .hero h1 {
+        letter-spacing: -3px;
+    }
 
-    /* Interactive Fact Generator */
-    .fact-box {
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      border: 2px solid var(--primary);
-      border-radius: 1rem;
-      padding: 2rem;
-      text-align: center;
-      box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.2);
+    .prizes {
+        grid-template-columns: 1fr;
     }
-    .fact-box h2 { font-size: 1.25rem; color: var(--muted); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; }
-    .fact-text { font-size: 1.4rem; font-weight: 600; min-height: 80px; display: flex; align-items: center; justify-content: center; }
-    
-    button {
-      background: var(--primary);
-      color: #000;
-      border: none;
-      padding: 0.75rem 1.75rem;
-      font-size: 1rem;
-      font-weight: 700;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
-      margin-top: 1rem;
-    }
-    button:hover { transform: scale(1.05); background: #7dd3fc; }
 
-    /* Cards Grid */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-    .card {
-      background: var(--card-bg);
-      border-radius: 0.75rem;
-      padding: 1.5rem;
-      border: 1px solid rgba(255,255,255,0.05);
-      transition: transform 0.2s;
+    .form-card {
+        padding: 22px;
     }
-    .card:hover { transform: translateY(-5px); }
-    .card-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-    .card h3 { color: var(--primary); margin-bottom: 0.5rem; }
-    .card p { color: var(--muted); font-size: 0.95rem; }
 
-    /* Quiz Section */
-    .quiz-box {
-      background: var(--card-bg);
-      border-radius: 1rem;
-      padding: 2rem;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .quiz-options { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
-    .option-btn {
-      background: #334155;
-      color: var(--text);
-      text-align: left;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
-      font-weight: 500;
-    }
-    .option-btn:hover { background: #475569; }
-  </style>
+}
+
+</style>
 </head>
+
+
 <body>
 
-  <header>
-    <h1>🌍 Planet Explorer</h1>
-    <p>Unusual facts, extreme records, and quick world trivia.</p>
-  </header>
+<div class="container">
 
-  <div class="container">
-    
-    <!-- Random Fact Generator -->
-    <section class="fact-box">
-      <h2>Did You Know?</h2>
-      <div class="fact-text" id="factDisplay">Click below to generate a strange fact about Earth!</div>
-      <button onclick="getNewFact()">Discover Random Fact</button>
-    </section>
 
-    <!-- Stat Highlights -->
-    <section class="grid">
-      <div class="card">
-        <div class="card-icon">🌋</div>
-        <h3>Extreme Geography</h3>
-        <p>Mauna Kea is taller than Mount Everest if measured from its underwater base to peak (33,500 ft).</p>
-      </div>
-      <div class="card">
-        <div class="card-icon">⏰</div>
-        <h3>Time Zone Madness</h3>
-        <p>France uses the most time zones of any country in the world (12 total), thanks to its overseas territories.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon">🌲</div>
-        <h3>Oxygen Factory</h3>
-        <p>Over 20% of the Earth's oxygen is produced by the Amazon Rainforest alone.</p>
-      </div>
-    </section>
+<!-- HERO -->
 
-    <!-- Mini Quiz -->
-    <section class="quiz-box">
-      <h3 style="color: var(--primary);">Quick World Quiz</h3>
-      <p id="quizQuestion" style="margin-top: 0.5rem;">Which country has no official capital city?</p>
-      <div class="quiz-options" id="quizOptions">
-        <button class="option-btn" onclick="checkAnswer(false)">Monaco</button>
-        <button class="option-btn" onclick="checkAnswer(true)">Nauru</button>
-        <button class="option-btn" onclick="checkAnswer(false)">Liechtenstein</button>
-      </div>
-      <p id="quizResult" style="margin-top: 1rem; font-weight: bold;"></p>
-    </section>
+<section class="hero">
 
-  </div>
+<div class="small-title">
+🎃 TWO PRIZES • ONE SPOOKY SEASON • $550 VALUE 🎃
+</div>
 
-  <script>
-    const facts = [
-      "Russia has a larger surface area than the entire planet Pluto!",
-      "Canada has more lakes than all other countries in the world combined.",
-      "There is a town in Norway called 'A' - just a single letter!",
-      "Antarctica is technically the largest desert on Earth because of its low precipitation.",
-      "Sudan has more ancient pyramids than Egypt."
-    ];
+<h1>
+AUSTREAMS
+<span>HALLOWEEN GIVEAWAY</span>
+</h1>
 
-    function getNewFact() {
-      const randomIndex = Math.floor(Math.random() * facts.length);
-      document.getElementById('factDisplay').innerText = facts[randomIndex];
+<p>
+Think you've got what it takes to survive the Halloween questions?
+Answer them, tell us why you love Austreams in 25 words or less,
+and you're officially in the draw. 👻
+</p>
+
+</section>
+
+
+
+<!-- PRIZES -->
+
+<section class="prizes">
+
+<div class="prize">
+
+<div class="prize-label">
+👻 GRAND PRIZE
+</div>
+
+<h2>
+Formuler Z11 Pro Max + 1 Year Sub
+</h2>
+
+<p>
+Win a Formuler Z11 Pro Max together with a full 1 year Austreams subscription.
+</p>
+
+</div>
+
+
+<div class="prize">
+
+<div class="prize-label">
+🧙 SECOND PRIZE
+</div>
+
+<h2>
+1 Year Austreams Subscription
+</h2>
+
+<p>
+One whole year of Austreams.
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- FORM -->
+
+<section class="form-card">
+
+<h2>
+🎃 Enter the Halloween Giveaway
+</h2>
+
+<p class="subtitle">
+Answer both Halloween questions correctly, then complete the final question.
+</p>
+
+
+
+<form id="giveawayForm">
+
+
+<!-- QUESTION 1 -->
+
+<div class="question">
+
+<div class="question-number">
+QUESTION 1
+</div>
+
+<h3>
+👻 Why are ghosts terrible liars?
+</h3>
+
+<label class="answer">
+<input type="radio" name="question1" value="A">
+A) They always disappear
+</label>
+
+<label class="answer">
+<input type="radio" name="question1" value="B">
+B) You can see right through them
+</label>
+
+<label class="answer">
+<input type="radio" name="question1" value="C">
+C) They hate talking
+</label>
+
+<label class="answer">
+<input type="radio" name="question1" value="D">
+D) They only whisper
+</label>
+
+</div>
+
+
+
+<!-- QUESTION 2 -->
+
+<div class="question">
+
+<div class="question-number">
+QUESTION 2
+</div>
+
+<h3>
+💀 Why don't skeletons ever fight each other?
+</h3>
+
+<label class="answer">
+<input type="radio" name="question2" value="A">
+A) They don't have the guts
+</label>
+
+<label class="answer">
+<input type="radio" name="question2" value="B">
+B) They're too scared
+</label>
+
+<label class="answer">
+<input type="radio" name="question2" value="C">
+C) They hate Halloween
+</label>
+
+<label class="answer">
+<input type="radio" name="question2" value="D">
+D) They have no weapons
+</label>
+
+</div>
+
+
+
+<!-- WHY AUSTREAMS -->
+
+<label class="main-label" for="why">
+❤️ In 25 words or less, why do you love Austreams?
+
+<span class="word-counter">
+<span id="wordCount">0</span>/25
+</span>
+
+</label>
+
+<textarea
+id="why"
+name="why"
+maxlength="400"
+placeholder="Keep it short, funny, heartfelt... or all three! 😈"
+required></textarea>
+
+<div class="hint">
+Maximum 25 words.
+</div>
+
+
+
+<!-- TELEGRAM -->
+
+<label class="main-label" for="telegram">
+📱 Telegram Username
+</label>
+
+<input
+type="text"
+id="telegram"
+name="telegram"
+placeholder="@yourusername"
+maxlength="64"
+required
+>
+
+
+
+<!-- NAME -->
+
+<label class="main-label" for="name">
+👤 Name / Nickname
+</label>
+
+<input
+type="text"
+id="name"
+name="name"
+placeholder="What should we call you?"
+maxlength="80"
+required
+>
+
+
+
+<!-- CONFIRM -->
+
+<label class="confirm">
+
+<input
+type="checkbox"
+id="member"
+required
+>
+
+<span>
+I confirm that I'm a member of the Austreams Telegram group
+and that this is my genuine entry.
+</span>
+
+</label>
+
+
+
+<!-- SUBMIT -->
+
+<button
+type="submit"
+class="submit-button"
+id="submitButton"
+>
+🎃 SUBMIT MY ENTRY 👻
+</button>
+
+
+
+<div
+class="success"
+id="successMessage"
+>
+🎃 ENTRY RECEIVED! 🎃
+<br><br>
+You're officially in the Halloween Giveaway.
+Good luck! 👻
+</div>
+
+
+<div
+class="error"
+id="errorMessage"
+></div>
+
+
+</form>
+
+
+<p style="
+margin-top:25px;
+font-size:12px;
+color:#766b80;
+line-height:1.6;
+">
+One entry per person. Entries may be checked for eligibility and duplicate
+Telegram usernames. Final giveaway terms and closing/draw dates should be
+added before launch.
+</p>
+
+</section>
+
+
+
+<footer>
+Austreams Halloween Giveaway 🎃
+</footer>
+
+
+</div>
+
+
+
+<script>
+
+/* ========================================
+   25 WORD COUNTER
+======================================== */
+
+const whyBox =
+document.getElementById("why");
+
+const wordCount =
+document.getElementById("wordCount");
+
+
+function countWords(text) {
+
+    if (!text.trim()) {
+        return 0;
     }
 
-    function checkAnswer(isCorrect) {
-      const resultEl = document.getElementById('quizResult');
-      if(isCorrect) {
-        resultEl.innerText = "✅ Correct! Nauru is the only country without an official capital.";
-        resultEl.style.color = "#4ade80";
-      } else {
-        resultEl.innerText = "❌ Not quite! Give it another shot.";
-        resultEl.style.color = "#f43f5e";
-      }
+    return text
+        .trim()
+        .split(/\s+/)
+        .length;
+}
+
+
+whyBox.addEventListener("input", function() {
+
+    const count =
+        countWords(this.value);
+
+    wordCount.textContent =
+        count;
+
+    if (count > 25) {
+
+        wordCount.classList.add("warning");
+
+    } else {
+
+        wordCount.classList.remove("warning");
+
     }
-  </script>
+
+});
+
+
+
+/* ========================================
+   FORM
+======================================== */
+
+document
+.getElementById("giveawayForm")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+
+    const q1 =
+        document.querySelector(
+            'input[name="question1"]:checked'
+        );
+
+    const q2 =
+        document.querySelector(
+            'input[name="question2"]:checked'
+        );
+
+    const why =
+        whyBox.value;
+
+
+    const error =
+        document.getElementById(
+            "errorMessage"
+        );
+
+    const success =
+        document.getElementById(
+            "successMessage"
+        );
+
+
+    error.style.display =
+        "none";
+
+    success.style.display =
+        "none";
+
+
+    /* QUESTIONS */
+
+    if (!q1 || !q2) {
+
+        error.textContent =
+            "Please answer both Halloween questions.";
+
+        error.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    /* ANSWERS */
+
+    if (
+        q1.value !== "B" ||
+        q2.value !== "A"
+    ) {
+
+        error.textContent =
+            "Oooh... not quite! 👻 Check your Halloween answers and try again.";
+
+        error.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    /* WORD COUNT */
+
+    const words =
+        countWords(why);
+
+
+    if (words > 25) {
+
+        error.textContent =
+            "Your Austreams answer needs to be 25 words or less.";
+
+        error.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    /* SHOW SUCCESS */
+
+    success.style.display =
+        "block";
+
+
+    success.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+
+    /*
+       ====================================
+       GOOGLE SHEETS CONNECTION GOES HERE
+       ====================================
+
+       We'll connect this to your Google
+       Sheet next so the entry is saved.
+
+    */
+
+});
+
+
+</script>
+
 </body>
 </html>
