@@ -578,7 +578,6 @@
 
   <div class="wrapper">
     
-    <!-- HEADER -->
     <header>
       <div class="brand-title">AUSTREAMS</div>
       <h1 class="spooky-heading">
@@ -589,7 +588,6 @@
       <p class="community-note">Thank you for being part of the Austreams Community!</p>
     </header>
 
-    <!-- COUNTDOWN TIMER -->
     <div class="countdown-container">
       <div class="timer-box">
         <span class="timer-number" id="days">00</span>
@@ -609,7 +607,6 @@
       </div>
     </div>
 
-    <!-- PRIZES SECTION -->
     <div class="prizes-container">
       <!-- 1st Grand Prize -->
       <div class="prize-card grand-prize">
@@ -621,7 +618,7 @@
             <div class="price-tag gold-glow">VALUED AT $400</div>
           </div>
           <div class="product-img-wrapper">
-            <img src="1-c7c49ebc25-z11-pro-max-bt.jpg.webp" alt="Formuler Z11 Pro Max" class="product-img" />
+            <img src="prize.png" alt="Formuler Z11 Pro Max" class="product-img" />
           </div>
         </div>
       </div>
@@ -646,7 +643,6 @@
       </div>
     </div>
 
-    <!-- ENTRY FORM -->
     <div class="form-card">
       <div class="form-header">
         <h2>Answer the questions below to submit your entry</h2>
@@ -714,7 +710,6 @@
     <footer>Austreams Halloween Giveaway • Drawing Live Oct 28th</footer>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
   <script>
     const whyBox = document.getElementById("why");
     const wordCount = document.getElementById("wordCount");
@@ -740,10 +735,11 @@
     function updateCountdown() {
       const now = new Date();
       let currentYear = now.getFullYear();
-      let targetDate = new Date(`October 28, ${currentYear} 23:59:59`);
+      // Target midnight going into October 28th (i.e. Oct 28 at 00:00:00)
+      let targetDate = new Date(`October 28, ${currentYear} 00:00:00`);
 
       if (now > targetDate) {
-        targetDate = new Date(`October 28, ${currentYear + 1} 23:59:59`);
+        targetDate = new Date(`October 28, ${currentYear + 1} 00:00:00`);
       }
 
       const diff = targetDate - now;
