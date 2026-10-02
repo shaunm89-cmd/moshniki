@@ -1,690 +1,567 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Austreams Halloween Giveaway 🎃</title>
-
-<style>
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
-    color: white;
-    background:
-        linear-gradient(
-            rgba(7, 3, 15, 0.55),
-            rgba(7, 3, 15, 0.95)
-        ),
-        url("halloween-bg.png");
-    background-size: cover;
-    background-position: center top;
-    background-attachment: fixed;
-    overflow-x: hidden;
-    position: relative;
-}
-
-/* FLOATING AMBIENT PARTICLES / EMBERS */
-.ember {
-    position: fixed;
-    border-radius: 50%;
-    background: radial-gradient(circle, #ff6900 0%, rgba(255,105,0,0) 70%);
-    opacity: 0.6;
-    pointer-events: none;
-    animation: floatUp 8s infinite linear;
-    z-index: 0;
-}
-
-@keyframes floatUp {
-    0% {
-        transform: translateY(100vh) scale(0.5);
-        opacity: 0;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Austreams Halloween Giveaway 🎃</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* BASE RESET & VARIABLES */
+    :root {
+      --bg-dark: #0a0512;
+      --card-bg: rgba(22, 13, 33, 0.65);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-orange: #ff6b00;
+      --accent-purple: #a855f7;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
     }
-    50% {
-        opacity: 0.7;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    100% {
-        transform: translateY(-10vh) scale(1.2);
-        opacity: 0;
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.15), transparent 50%),
+        radial-gradient(circle at 50% 100%, rgba(255, 107, 0, 0.1), transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
     }
-}
 
-/* MAIN CONTAINER */
-.container {
-    width: 92%;
-    max-width: 900px;
-    margin: auto;
-    padding: 40px 0 70px;
-    position: relative;
-    z-index: 1;
-}
-
-/* HERO SECTION */
-.hero {
-    text-align: center;
-    padding: 20px 0 20px;
-}
-
-.small-title {
-    font-size: 13px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #e9d5ff;
-    font-weight: bold;
-}
-
-.hero h1 {
-    margin: 15px 0 0;
-    font-size: clamp(42px, 8vw, 90px);
-    line-height: 0.88;
-    font-weight: 1000;
-    letter-spacing: -4px;
-    text-shadow:
-        0 0 20px rgba(168, 85, 247, .55),
-        0 0 50px rgba(168, 85, 247, .25);
-}
-
-.hero h1 span {
-    display: block;
-    color: #ff6900;
-    text-shadow:
-        0 0 15px rgba(255, 105, 0, .55),
-        0 0 40px rgba(255, 105, 0, .25);
-}
-
-.hero p {
-    max-width: 620px;
-    margin: 20px auto 0;
-    font-size: 17px;
-    line-height: 1.6;
-    color: #eee6f5;
-}
-
-/* COUNTDOWN TIMER */
-.timer-container {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin: 28px 0 10px;
-}
-
-.timer-card {
-    background: rgba(15, 8, 30, 0.75);
-    border: 1px solid rgba(168, 85, 247, 0.35);
-    border-radius: 12px;
-    padding: 10px 14px;
-    min-width: 70px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-}
-
-.timer-card .number {
-    font-size: 24px;
-    font-weight: 900;
-    color: #ff6900;
-    text-shadow: 0 0 10px rgba(255, 105, 0, 0.4);
-}
-
-.timer-card .label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #b0a3c0;
-    margin-top: 2px;
-}
-
-/* PRIZES CONTAINER */
-.prizes-container {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    margin: 35px 0 40px;
-}
-
-/* BASE PRIZE CARD (GLASSMORPHISM) */
-.prize-card {
-    background: rgba(12, 7, 24, 0.85);
-    border: 1px solid rgba(192, 132, 252, 0.3);
-    border-radius: 20px;
-    padding: 26px;
-    text-align: center;
-    backdrop-filter: blur(25px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-    position: relative;
-    overflow: hidden;
-}
-
-/* 1ST GRAND PRIZE (PULSING GLOW) */
-.prize-card.grand-prize {
-    border-color: rgba(255, 105, 0, 0.7);
-    background: linear-gradient(180deg, rgba(45, 18, 60, 0.9), rgba(12, 7, 24, 0.9));
-    animation: grandPulse 3s infinite ease-in-out;
-}
-
-@keyframes grandPulse {
-    0% {
-        box-shadow: 0 0 20px rgba(255, 105, 0, 0.25), inset 0 0 15px rgba(255, 105, 0, 0.1);
+    .wrapper {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
     }
-    50% {
-        box-shadow: 0 0 40px rgba(255, 105, 0, 0.5), inset 0 0 25px rgba(255, 105, 0, 0.25);
+
+    /* HEADER */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
     }
-    100% {
-        box-shadow: 0 0 20px rgba(255, 105, 0, 0.25), inset 0 0 15px rgba(255, 105, 0, 0.1);
+
+    .brand-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
     }
-}
 
-/* BADGES (METALLIC GRADIENT PILLS) */
-.prize-badge {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 50px;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-}
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-.badge-1st {
-    background: linear-gradient(90deg, #ff6900, #ff8a22);
-    color: #ffffff;
-    box-shadow: 0 0 12px rgba(255, 105, 0, 0.5);
-}
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
 
-.badge-2nd {
-    background: linear-gradient(90deg, #a855f7, #c084fc);
-    color: #ffffff;
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
-}
+    /* COUNTDOWN TIMER */
+    .countdown-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
 
-.badge-3rd {
-    background: linear-gradient(90deg, #7c3aed, #9333ea);
-    color: #ffffff;
-    box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
-}
+    .timer-box {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      min-width: 75px;
+      text-align: center;
+    }
 
-/* 2ND & 3RD PRIZES GRID */
-.prizes-grid-bottom {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-}
+    .timer-number {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent-orange);
+      display: block;
+    }
 
-.prize-card h3 {
-    margin: 6px 0;
-    font-size: 21px;
-    font-weight: bold;
-    color: #ffffff;
-}
+    .timer-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
 
-.prize-card p {
-    margin: 0;
-    font-size: 14px;
-    color: #d1c4e9;
-    line-height: 1.4;
-}
+    /* UPGRADED PRIZES SECTION */
+    .prizes-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
 
-/* FORM CARD */
-.form-card {
-    background: rgba(12, 7, 24, 0.9);
-    border: 1px solid rgba(192, 132, 252, 0.35);
-    border-radius: 25px;
-    padding: 36px;
-    backdrop-filter: blur(25px);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-}
+    .prizes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
 
-.form-card h2 {
-    margin-top: 0;
-    font-size: 26px;
-}
-
-.subtitle {
-    color: #bfb3c9;
-    margin-bottom: 25px;
-}
-
-/* QUESTIONS */
-.question {
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 18px;
-}
-
-.question-number {
-    color: #ff8a22;
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-.question h3 {
-    margin: 8px 0 12px;
-    font-size: 17px;
-}
-
-/* INPUT LABELS & FIELDS */
-label.main-label {
-    display: block;
-    margin: 22px 0 8px;
-    font-weight: bold;
-}
-
-input[type="text"],
-textarea {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(0, 0, 0, 0.4);
-    color: white;
-    font-size: 16px;
-    outline: none;
-    font-family: inherit;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input[type="text"]:focus,
-textarea:focus {
-    border-color: #ff6900;
-    box-shadow: 0 0 12px rgba(255, 105, 0, 0.25);
-}
-
-textarea {
-    min-height: 110px;
-    resize: vertical;
-}
-
-.word-counter {
-    float: right;
-    font-size: 13px;
-    font-weight: bold;
-    color: #22c55e; /* Starts Green */
-    transition: color 0.2s;
-}
-
-.word-counter.warning {
-    color: #f97316; /* Orange at 21-25 */
-}
-
-.word-counter.danger {
-    color: #ef4444; /* Red if over 25 */
-}
-
-.hint {
-    margin-top: 6px;
-    color: #82778b;
-    font-size: 12px;
-}
-
-.confirm {
-    display: flex;
-    gap: 10px;
-    margin: 25px 0;
-    color: #c9c0d1;
-    font-size: 14px;
-    line-height: 1.5;
-    cursor: pointer;
-}
-
-.confirm input {
-    margin-top: 3px;
-    accent-color: #ff6900;
-}
-
-/* SUBMIT BUTTON WITH GLOW & SHIMMER */
-.submit-button {
-    width: 100%;
-    padding: 18px;
-    border: 0;
-    border-radius: 14px;
-    background: linear-gradient(90deg, #7c3aed, #a855f7, #ff6900);
-    background-size: 200% auto;
-    color: white;
-    font-size: 17px;
-    font-weight: 900;
-    cursor: pointer;
-    box-shadow: 0 10px 30px rgba(255, 105, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-.submit-button:hover {
-    background-position: right center;
-    transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(255, 105, 0, 0.5);
-}
-
-.submit-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-.success {
-    display: none;
-    margin-top: 20px;
-    padding: 18px;
-    border-radius: 13px;
-    background: rgba(34, 197, 94, 0.12);
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    color: #bbf7d0;
-    text-align: center;
-    font-weight: bold;
-}
-
-.error {
-    display: none;
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 13px;
-    background: rgba(239, 68, 68, 0.12);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #fecaca;
-}
-
-/* RULES SECTION */
-.rules-box {
-    margin-top: 35px;
-    padding-top: 22px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.rules-title {
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #ff8a22;
-    margin-bottom: 12px;
-}
-
-.rules-list {
-    margin: 0;
-    padding-left: 18px;
-    color: #a89cb5;
-    font-size: 13px;
-    line-height: 1.7;
-}
-
-.rules-list li {
-    margin-bottom: 6px;
-}
-
-footer {
-    text-align: center;
-    margin-top: 25px;
-    color: #776c80;
-    font-size: 12px;
-}
-
-/* MOBILE STYLES */
-@media(max-width: 600px) {
-    .prizes-grid-bottom {
+    @media (max-width: 640px) {
+      .prizes-grid {
         grid-template-columns: 1fr;
+      }
     }
 
+    .prize-card {
+      position: relative;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 1.75rem 1.5rem;
+      text-align: center;
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    .prize-card:hover {
+      transform: translateY(-6px) scale(1.01);
+    }
+
+    .grand-prize {
+      background: radial-gradient(circle at top, rgba(255, 107, 0, 0.18), rgba(15, 8, 25, 0.75));
+      border: 1px solid rgba(255, 120, 0, 0.4);
+      box-shadow: 0 0 25px rgba(255, 107, 0, 0.15), inset 0 0 15px rgba(255, 107, 0, 0.08);
+    }
+
+    .grand-prize:hover {
+      border-color: rgba(255, 140, 0, 0.8);
+      box-shadow: 0 0 35px rgba(255, 107, 0, 0.35), inset 0 0 20px rgba(255, 107, 0, 0.15);
+    }
+
+    .runner-up {
+      background: radial-gradient(circle at top, rgba(168, 85, 247, 0.12), rgba(15, 8, 25, 0.65));
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .runner-up:hover {
+      border-color: rgba(192, 132, 252, 0.7);
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.25);
+    }
+
+    .prize-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .badge-gold {
+      background: linear-gradient(135deg, #ff8c00, #ff4500);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(255, 107, 0, 0.5);
+    }
+
+    .badge-purple {
+      background: linear-gradient(135deg, #a855f7, #7e22ce);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+    }
+
+    .prize-title {
+      color: #ffffff;
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+    }
+
+    .grand-prize .prize-title {
+      font-size: 1.6rem;
+      background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .prize-desc {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      margin-bottom: 1.1rem;
+      line-height: 1.4;
+    }
+
+    .price-tag {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 5px 14px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .gold-glow {
+      color: #ffb703;
+      border: 1px solid rgba(255, 183, 3, 0.4);
+      box-shadow: inset 0 0 8px rgba(255, 183, 3, 0.15);
+    }
+
+    .purple-glow {
+      color: #e9d5ff;
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      box-shadow: inset 0 0 8px rgba(192, 132, 252, 0.15);
+    }
+
+    /* FORM STYLING */
     .form-card {
-        padding: 22px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
 
-    .timer-card {
-        min-width: 60px;
-        padding: 8px 10px;
+    .form-group {
+      margin-bottom: 1.5rem;
     }
-    
-    .timer-card .number {
-        font-size: 18px;
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
     }
-}
-</style>
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      background: rgba(10, 5, 18, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      color: #ffffff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: var(--accent-orange);
+      box-shadow: 0 0 10px rgba(255, 107, 0, 0.25);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .counter-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    .counter-wrapper.warning { color: #f59e0b; }
+    .counter-wrapper.danger { color: #ef4444; }
+
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .checkbox-group input {
+      margin-top: 0.2rem;
+      accent-color: var(--accent-orange);
+    }
+
+    .checkbox-group label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #ff6b00, #ff4500);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 1.1rem;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(255, 107, 0, 0.4);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(255, 107, 0, 0.6);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* MESSAGES */
+    .msg {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      display: none;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .msg-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+
+    .msg-success {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #86efac;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- AMBIENT FLOATING EMBERS -->
-<div class="ember" style="left: 10%; width: 6px; height: 6px; animation-duration: 7s;"></div>
-<div class="ember" style="left: 25%; width: 8px; height: 8px; animation-duration: 10s; animation-delay: 2s;"></div>
-<div class="ember" style="left: 55%; width: 5px; height: 5px; animation-duration: 6s; animation-delay: 1s;"></div>
-<div class="ember" style="left: 75%; width: 9px; height: 9px; animation-duration: 9s; animation-delay: 3s;"></div>
-<div class="ember" style="left: 90%; width: 7px; height: 7px; animation-duration: 8s; animation-delay: 0.5s;"></div>
-
-<div class="container">
-
-<!-- HERO -->
-<section class="hero">
-    <div class="small-title">
-        🎃 THREE PRIZES • DRAW DATE: 28TH OCTOBER • $700 TOTAL VALUE 🎃
-    </div>
-
-    <h1>
-        AUSTREAMS
-        <span>HALLOWEEN GIVEAWAY</span>
-    </h1>
-
-    <p>
-        Fill out your details below, tell us why you love Austreams in 25 words or less,
-        and you're officially in the draw on October 28th. 👻
-    </p>
-
-    <!-- LIVE COUNTDOWN TIMER -->
-    <div class="timer-container">
-        <div class="timer-card">
-            <div class="number" id="days">00</div>
-            <div class="label">Days</div>
-        </div>
-        <div class="timer-card">
-            <div class="number" id="hours">00</div>
-            <div class="label">Hours</div>
-        </div>
-        <div class="timer-card">
-            <div class="number" id="minutes">00</div>
-            <div class="label">Mins</div>
-        </div>
-        <div class="timer-card">
-            <div class="number" id="seconds">00</div>
-            <div class="label">Secs</div>
-        </div>
-    </div>
-</section>
-
-<!-- PRIZES SECTION -->
-<div class="prizes-container">
-
-    <!-- 1ST GRAND PRIZE (FEATURED TOP) -->
-    <div class="prize-card grand-prize">
-        <span class="prize-badge badge-1st">🏆 1st Grand Prize</span>
-        <h3>Formuler Z11 Pro Max + 1 Year Sub</h3>
-        <p>Win a Formuler Z11 Pro Max streaming device together with a full 1 Year Austreams Subscription.</p>
-    </div>
-
-    <!-- 2ND & 3RD PRIZES (SIDE BY SIDE) -->
-    <div class="prizes-grid-bottom">
-        <div class="prize-card">
-            <span class="prize-badge badge-2nd">🥈 2nd Prize</span>
-            <h3>1 Year Sub</h3>
-            <p>1 Year Austreams Subscription.</p>
-        </div>
-
-        <div class="prize-card">
-            <span class="prize-badge badge-3rd">🥉 3rd Prize</span>
-            <h3>1 Year Sub</h3>
-            <p>1 Year Austreams Subscription.</p>
-        </div>
-    </div>
-
-</div>
-
-<!-- ENTRY FORM -->
-<section class="form-card">
-    <h2>🎃 Enter the Halloween Giveaway</h2>
-    <p class="subtitle">Complete all questions below to submit your entry.</p>
-
-    <form id="giveawayForm">
-
-        <!-- QUESTION 1 -->
-        <div class="question">
-            <div class="question-number">QUESTION 1</div>
-            <h3>🎬 What is your favorite scary movie or suspense thriller?</h3>
-            <input type="text" id="movie" name="movie" placeholder="e.g. Halloween, Scream, The Shining..." maxlength="120" required>
-        </div>
-
-        <!-- QUESTION 2 -->
-        <div class="question">
-            <div class="question-number">QUESTION 2</div>
-            <h3>📺 What device do you currently use?</h3>
-            <input type="text" id="device" name="device" placeholder="e.g. Formuler Z11, Firestick, Shield TV, Smart TV..." maxlength="120" required>
-        </div>
-
-        <!-- WHY AUSTREAMS -->
-        <label class="main-label" for="why">
-            ❤️ In 25 words or less, why do you love Austreams?
-            <span class="word-counter" id="wordCounterWrapper"><span id="wordCount">0</span>/25</span>
-        </label>
-        <textarea id="why" name="why" maxlength="400" placeholder="Keep it short, funny, heartfelt... or all three! 😈" required></textarea>
-        <div class="hint">Maximum 25 words.</div>
-
-        <!-- TELEGRAM -->
-        <label class="main-label" for="telegram">📱 Telegram Username</label>
-        <input type="text" id="telegram" name="telegram" placeholder="@yourusername" maxlength="64" required>
-
-        <!-- NAME -->
-        <label class="main-label" for="name">👤 Name / Nickname</label>
-        <input type="text" id="name" name="name" placeholder="What should we call you?" maxlength="80" required>
-
-        <!-- CONFIRMATION CHECKBOX -->
-        <label class="confirm">
-            <input type="checkbox" id="member" required>
-            <span>I confirm that I'm a member of the Austreams Telegram group and that this is my genuine entry.</span>
-        </label>
-
-        <!-- SUBMIT BUTTON -->
-        <button type="submit" class="submit-button" id="submitButton">🎃 SUBMIT MY ENTRY 👻</button>
-
-        <div class="success" id="successMessage">
-            🎃 ENTRY RECEIVED! 🎃<br><br>
-            You're officially entered into the Halloween Giveaway. Draw date is October 28th. Good luck! 👻
-        </div>
-
-        <div class="error" id="errorMessage"></div>
-
-    </form>
-
-    <!-- RULES -->
-    <div class="rules-box">
-        <div class="rules-title">📜 Giveaway Rules & Terms</div>
-        <ol class="rules-list">
-            <li>Must have a current active Austreams username.</li>
-            <li>One entry per person.</li>
-            <li>Draw will be conducted on the 28th of October.</li>
-            <li>Winners will be announced as soon as the draw is conducted and must contact us to claim their prize.</li>
-            <li>Grand Prize Formuler Z11 will be posted to the winner.</li>
-            <li>1-Year Subscription prizes can be applied as a new account or used to extend a current account by 12 months (winner's choice).</li>
-        </ol>
-    </div>
-</section>
-
-<footer>Austreams Halloween Giveaway 🎃</footer>
-
-</div>
-
-<script>
-/* DYNAMIC WORD COUNTER WITH COLOR SHIFTS */
-const whyBox = document.getElementById("why");
-const wordCount = document.getElementById("wordCount");
-const wordCounterWrapper = document.getElementById("wordCounterWrapper");
-
-function countWords(text) {
-    if (!text.trim()) return 0;
-    return text.trim().split(/\s+/).length;
-}
-
-whyBox.addEventListener("input", function() {
-    const count = countWords(this.value);
-    wordCount.textContent = count;
+  <div class="wrapper">
     
-    wordCounterWrapper.classList.remove("warning", "danger");
-    if (count > 25) {
+    <!-- HEADER -->
+    <header>
+      <div class="brand-title">Austreams</div>
+      <h1>Halloween Giveaway 🎃</h1>
+      <p class="subtitle">Enter below for a chance to win $700+ in streaming prizes!</p>
+    </header>
+
+    <!-- COUNTDOWN -->
+    <div class="countdown-container">
+      <div class="timer-box">
+        <span class="timer-number" id="days">00</span>
+        <span class="timer-label">Days</span>
+      </div>
+      <div class="timer-box">
+        <span class="timer-number" id="hours">00</span>
+        <span class="timer-label">Hours</span>
+      </div>
+      <div class="timer-box">
+        <span class="timer-number" id="minutes">00</span>
+        <span class="timer-label">Mins</span>
+      </div>
+      <div class="timer-box">
+        <span class="timer-number" id="seconds">00</span>
+        <span class="timer-label">Secs</span>
+      </div>
+    </div>
+
+    <!-- PRIZES SECTION -->
+    <div class="prizes-container">
+      <!-- 1st Grand Prize -->
+      <div class="prize-card grand-prize">
+        <div class="prize-badge badge-gold">🥇 1ST GRAND PRIZE</div>
+        <h2 class="prize-title">Formuler Z11 Pro Max + 1 Year Sub</h2>
+        <p class="prize-desc">Win a Formuler Z11 Pro Max streaming device together with a full 1 Year Austreams Subscription.</p>
+        <div class="price-tag gold-glow">VALUED AT $400</div>
+      </div>
+
+      <!-- 2nd & 3rd Prizes Grid -->
+      <div class="prizes-grid">
+        <!-- 2nd Prize -->
+        <div class="prize-card runner-up">
+          <div class="prize-badge badge-purple">🥈 2ND PRIZE</div>
+          <h3 class="prize-title">1 Year Sub</h3>
+          <p class="prize-desc">1 Year Austreams Subscription.</p>
+          <div class="price-tag purple-glow">VALUED AT $150</div>
+        </div>
+
+        <!-- 3rd Prize -->
+        <div class="prize-card runner-up">
+          <div class="prize-badge badge-purple">🥉 3RD PRIZE</div>
+          <h3 class="prize-title">1 Year Sub</h3>
+          <p class="prize-desc">1 Year Austreams Subscription.</p>
+          <div class="price-tag purple-glow">VALUED AT $150</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENTRY FORM -->
+    <div class="form-card">
+      <div id="errorMessage" class="msg msg-error"></div>
+      <div id="successMessage" class="msg msg-success">🎉 Entry submitted! Good luck in the giveaway!</div>
+
+      <form id="giveawayForm">
+        
+        <div class="form-group">
+          <label for="movie">What's your favorite Halloween movie?</label>
+          <input type="text" id="movie" name="movie" required placeholder="e.g. Halloween, Hocus Pocus, Scream" />
+        </div>
+
+        <div class="form-group">
+          <label for="device">What device do you use to stream?</label>
+          <input type="text" id="device" name="device" required placeholder="e.g. Firestick, Formuler, Nvidia Shield, Smart TV" />
+        </div>
+
+        <div class="form-group">
+          <label for="why">Why do you love Austreams? (Max 25 words)</label>
+          <textarea id="why" name="why" required placeholder="Tell us why you love our service..."></textarea>
+          <div class="counter-wrapper" id="wordCounterWrapper">
+            <span id="wordCount">0</span>/25 words
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="telegram">Telegram Username</label>
+          <input type="text" id="telegram" name="telegram" required placeholder="@username" />
+        </div>
+
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" required placeholder="Full Name" />
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="telegramCheck" required />
+          <label for="telegramCheck">I confirm that I am in the official Austreams Telegram group.</label>
+        </div>
+
+        <button type="submit" id="submitButton" class="submit-btn">🎃 SUBMIT MY ENTRY 👻</button>
+      </form>
+    </div>
+
+    <footer>Austreams Halloween Giveaway • Drawing Live Oct 28th</footer>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    /* DYNAMIC WORD COUNTER WITH COLOR SHIFTS */
+    const whyBox = document.getElementById("why");
+    const wordCount = document.getElementById("wordCount");
+    const wordCounterWrapper = document.getElementById("wordCounterWrapper");
+
+    function countWords(text) {
+      if (!text.trim()) return 0;
+      return text.trim().split(/\s+/).length;
+    }
+
+    whyBox.addEventListener("input", function() {
+      const count = countWords(this.value);
+      wordCount.textContent = count;
+      
+      wordCounterWrapper.classList.remove("warning", "danger");
+      if (count > 25) {
         wordCounterWrapper.classList.add("danger");
-    } else if (count >= 20) {
+      } else if (count >= 20) {
         wordCounterWrapper.classList.add("warning");
-    }
-});
+      }
+    });
 
-/* LIVE COUNTDOWN TIMER TO OCT 28TH */
-function updateCountdown() {
-    const now = new Date();
-    let currentYear = now.getFullYear();
-    let targetDate = new Date(`October 28, ${currentYear} 23:59:59`);
+    /* LIVE COUNTDOWN TIMER TO OCT 28TH */
+    function updateCountdown() {
+      const now = new Date();
+      let currentYear = now.getFullYear();
+      let targetDate = new Date(`October 28, ${currentYear} 23:59:59`);
 
-    if (now > targetDate) {
+      if (now > targetDate) {
         targetDate = new Date(`October 28, ${currentYear + 1} 23:59:59`);
+      }
+
+      const diff = targetDate - now;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById("days").textContent = days < 10 ? "0" + days : days;
+      document.getElementById("hours").textContent = hours < 10 ? "0" + hours : hours;
+      document.getElementById("minutes").textContent = minutes < 10 ? "0" + minutes : minutes;
+      document.getElementById("seconds").textContent = seconds < 10 ? "0" + seconds : seconds;
     }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
 
-    const diff = targetDate - now;
+    /* GOOGLE APPS SCRIPT SUBMISSION */
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJ534YHKjr5-eTjt727heb94cOvEnUi5wOGICmAQ14YstNA3hLu_vgo_qADK-n0srbSQ/exec";
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById("giveawayForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-    document.getElementById("days").textContent = days < 10 ? "0" + days : days;
-    document.getElementById("hours").textContent = hours < 10 ? "0" + hours : hours;
-    document.getElementById("minutes").textContent = minutes < 10 ? "0" + minutes : minutes;
-    document.getElementById("seconds").textContent = seconds < 10 ? "0" + seconds : seconds;
-}
-setInterval(updateCountdown, 1000);
-updateCountdown();
+      const submitBtn = document.getElementById("submitButton");
+      const error = document.getElementById("errorMessage");
+      const success = document.getElementById("successMessage");
 
-/* GOOGLE APPS SCRIPT SUBMISSION */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJ534YHKjr5-eTjt727heb94cOvEnUi5wOGICmAQ14YstNA3hLu_vgo_qADK-n0srbSQ/exec";
+      error.style.display = "none";
+      success.style.display = "none";
 
-document.getElementById("giveawayForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const submitBtn = document.getElementById("submitButton");
-    const error = document.getElementById("errorMessage");
-    const success = document.getElementById("successMessage");
-
-    error.style.display = "none";
-    success.style.display = "none";
-
-    if (countWords(whyBox.value) > 25) {
+      if (countWords(whyBox.value) > 25) {
         error.textContent = "Your Austreams answer needs to be 25 words or less.";
         error.style.display = "block";
         return;
-    }
+      }
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = "SUBMITTING...";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "SUBMITTING...";
 
-    // Build URL-encoded form data
-    const formData = new URLSearchParams();
-    formData.append("movie", document.getElementById("movie").value.trim());
-    formData.append("device", document.getElementById("device").value.trim());
-    formData.append("why", whyBox.value.trim());
-    formData.append("telegram", document.getElementById("telegram").value.trim());
-    formData.append("name", document.getElementById("name").value.trim());
+      // Build URL-encoded form data
+      const formData = new URLSearchParams();
+      formData.append("movie", document.getElementById("movie").value.trim());
+      formData.append("device", document.getElementById("device").value.trim());
+      formData.append("why", whyBox.value.trim());
+      formData.append("telegram", document.getElementById("telegram").value.trim());
+      formData.append("name", document.getElementById("name").value.trim());
 
-    fetch(SCRIPT_URL, {
+      fetch(SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formData.toString()
-    })
-    .then(() => {
+      })
+      .then(() => {
         submitBtn.disabled = false;
         submitBtn.textContent = "🎃 SUBMIT MY ENTRY 👻";
         success.style.display = "block";
@@ -692,15 +569,14 @@ document.getElementById("giveawayForm").addEventListener("submit", function(e) {
         document.getElementById("giveawayForm").reset();
         wordCount.textContent = "0";
         wordCounterWrapper.classList.remove("warning", "danger");
-    })
-    .catch(err => {
+      })
+      .catch(err => {
         submitBtn.disabled = false;
         submitBtn.textContent = "🎃 SUBMIT MY ENTRY 👻";
         error.textContent = "Something went wrong submitting your entry. Please try again.";
         error.style.display = "block";
+      });
     });
-});
-</script>
-
+  </script>
 </body>
 </html>
