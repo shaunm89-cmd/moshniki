@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
-    /* BASE RESET & VARIABLE CONFIGURATION */
     :root {
       --bg-dark: #0a0512;
       --card-bg: rgba(18, 10, 28, 0.65);
@@ -71,7 +70,6 @@
       z-index: 1;
     }
 
-    /* SPOOKY HEADER STYLING */
     header {
       text-align: center;
       margin-bottom: 2.75rem;
@@ -145,7 +143,6 @@
       .community-note { font-size: 0.9rem; }
     }
 
-    /* COUNTDOWN TIMER */
     .countdown-container {
       display: flex;
       justify-content: center;
@@ -181,7 +178,6 @@
       color: var(--text-muted);
     }
 
-    /* PRIZES SECTION */
     .prizes-container {
       display: flex;
       flex-direction: column;
@@ -219,7 +215,6 @@
       transform: translateY(-6px) scale(1.01);
     }
 
-    /* GRAND PRIZE LAYOUT WITH PRODUCT IMAGE INTEGRATION */
     .grand-prize {
       background: radial-gradient(circle at top, rgba(255, 107, 0, 0.22), rgba(15, 8, 25, 0.85));
       border: 1px solid rgba(255, 120, 0, 0.45);
@@ -355,7 +350,6 @@
       box-shadow: inset 0 0 10px rgba(192, 132, 252, 0.2);
     }
 
-    /* FORM STYLING */
     .form-card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
@@ -364,7 +358,7 @@
       border-radius: 20px;
       padding: 2.5rem 2rem;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
     }
 
     .form-header {
@@ -473,7 +467,6 @@
       transform: none;
     }
 
-    /* FORM MESSAGES */
     .msg {
       padding: 1rem;
       border-radius: 10px;
@@ -495,60 +488,87 @@
       color: #86efac;
     }
 
-    /* TERMS AND CONDITIONS SECTION */
     .terms-card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 1.75rem 2rem;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      transition: border-color 0.3s ease;
     }
 
-    .terms-title {
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--accent-orange);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
+    .terms-card:hover {
+      border-color: rgba(168, 85, 247, 0.35);
+    }
+
+    .terms-toggle-btn {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 1.15rem 1.5rem;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+
+    .terms-toggle-btn:hover {
+      color: #ffffff;
+    }
+
+    .terms-arrow {
+      transition: transform 0.3s ease;
+      font-size: 0.8rem;
+    }
+
+    .terms-card.active .terms-arrow {
+      transform: rotate(180deg);
+    }
+
+    .terms-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0 1.5rem;
+    }
+
+    .terms-card.active .terms-content {
+      max-height: 400px;
+      padding-bottom: 1.5rem;
     }
 
     .terms-list {
-      list-style: none;
-      padding-left: 0;
+      list-style-type: decimal;
+      padding-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 1rem;
     }
 
     .terms-list li {
-      position: relative;
-      padding-left: 1.5rem;
-      margin-bottom: 0.65rem;
+      transition: color 0.2s ease;
+    }
+
+    .terms-list li:hover {
       color: #cbd5e1;
-      font-size: 0.88rem;
-      line-height: 1.5;
-    }
-
-    .terms-list li:last-child {
-      margin-bottom: 0;
-    }
-
-    .terms-list li::before {
-      content: "•";
-      position: absolute;
-      left: 0.3rem;
-      color: var(--accent-purple);
-      font-size: 1.2rem;
-      line-height: 1;
-      top: 0;
     }
 
     footer {
       text-align: center;
-      margin-top: 2.5rem;
       color: var(--text-muted);
       font-size: 0.85rem;
     }
@@ -576,372 +596,228 @@
         <span class="timer-label">Days</span>
       </div>
       <div class="timer-box">
-        <span class="timer-number" id="hours">00Here is the complete, updated HTML file incorporating all requested changes, including the fixed countdown targeting midnight on October 27th AEST (the start of October 28th), side-by-side grand prize styling with transparent image blending, and the terms & conditions section at the bottom:
+        <span class="timer-number" id="hours">00</span>
+        <span class="timer-label">Hours</span>
+      </div>
+      <div class="timer-box">
+        <span class="timer-number" id="minutes">00</span>
+        <span class="timer-label">Mins</span>
+      </div>
+      <div class="timer-box">
+        <span class="timer-number" id="seconds">00</span>
+        <span class="timer-label">Secs</span>
+      </div>
+    </div>
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Austreams Halloween Giveaway 🎃</title>
-  
-  <!-- Fonts: Plus Jakarta Sans & Spooky Creepster -->
-  <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
-  <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-  <link href="[https://fonts.googleapis.com/css2?family=Creepster&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap](https://fonts.googleapis.com/css2?family=Creepster&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap)" rel="stylesheet">
-  
-  <style>
-    /* BASE RESET & VARIABLE CONFIGURATION */
-    :root {
-      --bg-dark: #0a0512;
-      --card-bg: rgba(18, 10, 28, 0.65);
-      --card-border: rgba(255, 255, 255, 0.1);
-      --accent-orange: #ff6b00;
-      --accent-purple: #a855f7;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+    <!-- PRIZES SECTION -->
+    <div class="prizes-container">
+      <!-- 1st Grand Prize -->
+      <div class="prize-card grand-prize">
+        <div class="grand-prize-content">
+          <div>
+            <div class="prize-badge badge-gold">🥇 1ST GRAND PRIZE</div>
+            <h2 class="prize-title">Formuler Z11 Pro Max + 1 Year Sub</h2>
+            <p class="prize-desc">Win a Formuler Z11 Pro Max streaming device together with a full 1 Year Austreams Subscription.</p>
+            <div class="price-tag gold-glow">VALUED AT $400</div>
+          </div>
+          <div class="product-img-wrapper">
+            <img src="1-c7c49ebc25-z11-pro-max-bt.jpg.webp" alt="Formuler Z11 Pro Max" class="product-img" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 2nd & 3rd Prizes Grid -->
+      <div class="prizes-grid">
+        <!-- 2nd Prize -->
+        <div class="prize-card runner-up">
+          <div class="prize-badge badge-purple">🥈 2ND PRIZE</div>
+          <h3 class="prize-title">1 Year Sub</h3>
+          <p class="prize-desc">1 Year Austreams Subscription.</p>
+          <div class="price-tag purple-glow">VALUED AT $150</div>
+        </div>
+
+        <!-- 3rd Prize -->
+        <div class="prize-card runner-up">
+          <div class="prize-badge badge-purple">🥉 3RD PRIZE</div>
+          <h3 class="prize-title">1 Year Sub</h3>
+          <p class="prize-desc">1 Year Austreams Subscription.</p>
+          <div class="price-tag purple-glow">VALUED AT $150</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENTRY FORM -->
+    <div class="form-card">
+      <div class="form-header">
+        <h2>Answer the questions below to submit your entry</h2>
+      </div>
+
+      <div id="errorMessage" class="msg msg-error"></div>
+      <div id="successMessage" class="msg msg-success">🎉 Entry submitted! Good luck in the giveaway!</div>
+
+      <form id="giveawayForm">
+        
+        <div class="form-group">
+          <label for="movie">What's your favorite Halloween movie?</label>
+          <input type="text" id="movie" name="movie" required placeholder="e.g. Halloween, Hocus Pocus, Scream" />
+        </div>
+
+        <div class="form-group">
+          <label for="device">What device do you use to stream?</label>
+          <input type="text" id="device" name="device" required placeholder="e.g. Firestick, Formuler, Nvidia Shield, Smart TV" />
+        </div>
+
+        <div class="form-group">
+          <label for="why">Why do you love Austreams? (Max 25 words)</label>
+          <textarea id="why" name="why" required placeholder="Tell us why you love our service..."></textarea>
+          <div class="counter-wrapper" id="wordCounterWrapper">
+            <span id="wordCount">0</span>/25 words
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="telegram">Telegram Username</label>
+          <input type="text" id="telegram" name="telegram" required placeholder="@username" />
+        </div>
+
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" required placeholder="Full Name" />
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="telegramCheck" required />
+          <label for="telegramCheck">I confirm that I am in the official Austreams Telegram group.</label>
+        </div>
+
+        <button type="submit" id="submitButton" class="submit-btn">🎃 SUBMIT MY ENTRY 👻</button>
+      </form>
+    </div>
+
+    <div class="terms-card" id="termsCard">
+      <button type="button" class="terms-toggle-btn" id="termsToggle">
+        <span>📜 Terms & Conditions</span>
+        <span class="terms-arrow">▼</span>
+      </button>
+      <div class="terms-content">
+        <ol class="terms-list">
+          <li>Winner must be an active Austreams Subscriber.</li>
+          <li>Draws will take place on October 28th.</li>
+          <li>Winners will be announced on Telegram on October 28th.</li>
+          <li>Winners will need to contact an admin to claim their prize.</li>
+          <li>12 Month Subscription can be a new username or extend current subscription by 12 months.</li>
+          <li>Winner of 1st place will have their prize mailed to them.</li>
+        </ol>
+      </div>
+    </div>
+
+    <footer>Austreams Halloween Giveaway • Drawing Live Oct 28th</footer>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    const whyBox = document.getElementById("why");
+    const wordCount = document.getElementById("wordCount");
+    const wordCounterWrapper = document.getElementById("wordCounterWrapper");
+
+    function countWords(text) {
+      if (!text.trim()) return 0;
+      return text.trim().split(/\s+/).length;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(circle at 50% 5%, rgba(255, 107, 0, 0.35), transparent 55%),
-        radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.35), transparent 50%),
-        radial-gradient(circle at 15% 80%, rgba(168, 85, 247, 0.25), transparent 50%),
-        linear-gradient(to bottom, rgba(10, 5, 18, 0.35), rgba(10, 5, 18, 0.85)),
-        url('halloween-bg.png');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      background-repeat: no-repeat;
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 3rem 1rem;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at center, transparent 30%, rgba(10, 5, 18, 0.85) 100%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .wrapper {
-      width: 100%;
-      max-width: 880px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* SPOOKY HEADER STYLING */
-    header {
-      text-align: center;
-      margin-bottom: 2.75rem;
-    }
-
-    .brand-title {
-      font-size: 1.35rem;
-      font-weight: 900;
-      letter-spacing: 6px;
-      color: var(--accent-orange);
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 15px rgba(255, 107, 0, 0.8), 0 0 30px rgba(255, 107, 0, 0.4);
-    }
-
-    .spooky-heading {
-      font-family: 'Creepster', cursive;
-      font-size: 5.5rem;
-      font-weight: 400;
-      letter-spacing: 3px;
-      line-height: 1.1;
-      margin-bottom: 1.25rem;
-      background: linear-gradient(180deg, #ffe600 0%, #ff6b00 50%, #d93800 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 12px rgba(255, 107, 0, 0.7)) 
-              drop-shadow(0 0 35px rgba(168, 85, 247, 0.5))
-              drop-shadow(0 8px 10px rgba(0, 0, 0, 0.9));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .pumpkin-icon {
-      width: 1em;
-      height: 1em;
-      vertical-align: -0.12em;
-      filter: drop-shadow(0 0 15px rgba(255, 107, 0, 0.9)) 
-              drop-shadow(0 0 30px rgba(255, 107, 0, 0.5));
-      animation: floatPumpkin 3s ease-in-out infinite alternate;
-    }
-
-    @keyframes floatPumpkin {
-      0% { transform: translateY(0px) rotate(-3deg); }
-      100% { transform: translateY(-8px) rotate(4deg); }
-    }
-
-    .subtitle {
-      color: #e2e8f0;
-      font-size: 1.25rem;
-      font-weight: 600;
-      max-width: 700px;
-      margin: 0 auto 0.75rem auto;
-      line-height: 1.45;
-    }
-
-    .community-note {
-      color: var(--accent-purple);
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
-    }
-
-    @media (max-width: 640px) {
-      .spooky-heading { font-size: 3.2rem; gap: 8px; }
-      .brand-title { font-size: 1.1rem; }
-      .subtitle { font-size: 1.05rem; }
-      .community-note { font-size: 0.9rem; }
-    }
-
-    /* COUNTDOWN TIMER */
-    .countdown-container {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2.75rem;
-    }
-
-    .timer-box {
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      padding: 0.85rem 1.1rem;
-      border-radius: 14px;
-      min-width: 85px;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    }
-
-    .timer-number {
-      font-size: 1.85rem;
-      font-weight: 900;
-      color: var(--accent-orange);
-      display: block;
-      text-shadow: 0 0 12px rgba(255, 107, 0, 0.5);
-    }
-
-    .timer-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-muted);
-    }
-
-    /* PRIZES SECTION */
-    .prizes-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-      margin-bottom: 2.75rem;
-    }
-
-    .prizes-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-    }
-
-    @media (max-width: 640px) {
-      .prizes-grid {
-        grid-template-columns: 1fr;
+    whyBox.addEventListener("input", function() {
+      const count = countWords(this.value);
+      wordCount.textContent = count;
+      
+      wordCounterWrapper.classList.remove("warning", "danger");
+      if (count > 25) {
+        wordCounterWrapper.classList.add("danger");
+      } else if (count >= 20) {
+        wordCounterWrapper.classList.add("warning");
       }
-    }
+    });
 
-    .prize-card {
-      position: relative;
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 1.85rem 1.5rem;
-      text-align: center;
-      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      overflow: hidden;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
-    }
+    function updateCountdown() {
+      const now = new Date();
+      let currentYear = now.getFullYear();
+      let targetDate = new Date(`October 28, ${currentYear} 23:59:59`);
 
-    .prize-card:hover {
-      transform: translateY(-6px) scale(1.01);
-    }
-
-    /* GRAND PRIZE LAYOUT */
-    .grand-prize {
-      background: radial-gradient(circle at top, rgba(255, 107, 0, 0.22), rgba(15, 8, 25, 0.85));
-      border: 1px solid rgba(255, 120, 0, 0.45);
-      box-shadow: 0 0 30px rgba(255, 107, 0, 0.2), inset 0 0 15px rgba(255, 107, 0, 0.1);
-      padding: 2rem;
-    }
-
-    .grand-prize:hover {
-      border-color: rgba(255, 140, 0, 0.85);
-      box-shadow: 0 0 40px rgba(255, 107, 0, 0.4), inset 0 0 20px rgba(255, 107, 0, 0.2);
-    }
-
-    .grand-prize-content {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      align-items: center;
-      gap: 1.5rem;
-      text-align: left;
-    }
-
-    .product-img-wrapper {
-      position: relative;
-      background: rgba(255, 255, 255, 0.92);
-      border-radius: 16px;
-      padding: 0.75rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 0 25px rgba(255, 107, 0, 0.35);
-      mix-blend-mode: lighten;
-      overflow: hidden;
-    }
-
-    .product-img {
-      width: 100%;
-      height: auto;
-      max-height: 220px;
-      object-fit: contain;
-      filter: contrast(105%) brightness(98%);
-      mix-blend-mode: multiply;
-      transition: transform 0.3s ease;
-    }
-
-    .grand-prize:hover .product-img {
-      transform: scale(1.05);
-    }
-
-    @media (max-width: 768px) {
-      .grand-prize-content {
-        grid-template-columns: 1fr;
-        text-align: center;
+      if (now > targetDate) {
+        targetDate = new Date(`October 28, ${currentYear + 1} 23:59:59`);
       }
-      .product-img-wrapper {
-        max-width: 280px;
-        margin: 0 auto;
+
+      const diff = targetDate - now;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById("days").textContent = days < 10 ? "0" + days : days;
+      document.getElementById("hours").textContent = hours < 10 ? "0" + hours : hours;
+      document.getElementById("minutes").textContent = minutes < 10 ? "0" + minutes : minutes;
+      document.getElementById("seconds").textContent = seconds < 10 ? "0" + seconds : seconds;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    const termsCard = document.getElementById("termsCard");
+    const termsToggle = document.getElementById("termsToggle");
+
+    termsToggle.addEventListener("click", function() {
+      termsCard.classList.toggle("active");
+    });
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJ534YHKjr5-eTjt727heb94cOvEnUi5wOGICmAQ14YstNA3hLu_vgo_qADK-n0srbSQ/exec";
+
+    document.getElementById("giveawayForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById("submitButton");
+      const error = document.getElementById("errorMessage");
+      const success = document.getElementById("successMessage");
+
+      error.style.display = "none";
+      success.style.display = "none";
+
+      if (countWords(whyBox.value) > 25) {
+        error.textContent = "Your Austreams answer needs to be 25 words or less.";
+        error.style.display = "block";
+        return;
       }
-    }
 
-    .runner-up {
-      background: radial-gradient(circle at top, rgba(168, 85, 247, 0.15), rgba(15, 8, 25, 0.75));
-      border: 1px solid rgba(168, 85, 247, 0.35);
-    }
+      submitBtn.disabled = true;
+      submitBtn.textContent = "SUBMITTING...";
 
-    .runner-up:hover {
-      border-color: rgba(192, 132, 252, 0.75);
-      box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
-    }
+      const formData = new URLSearchParams();
+      formData.append("movie", document.getElementById("movie").value.trim());
+      formData.append("device", document.getElementById("device").value.trim());
+      formData.append("why", whyBox.value.trim());
+      formData.append("telegram", document.getElementById("telegram").value.trim());
+      formData.append("name", document.getElementById("name").value.trim());
 
-    .prize-badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      padding: 6px 16px;
-      border-radius: 50px;
-      margin-bottom: 0.9rem;
-      text-transform: uppercase;
-    }
-
-    .badge-gold {
-      background: linear-gradient(135deg, #ff8c00, #ff4500);
-      color: #ffffff;
-      box-shadow: 0 0 14px rgba(255, 107, 0, 0.55);
-    }
-
-    .badge-purple {
-      background: linear-gradient(135deg, #a855f7, #7e22ce);
-      color: #ffffff;
-      box-shadow: 0 0 14px rgba(168, 85, 247, 0.45);
-    }
-
-    .prize-title {
-      color: #ffffff;
-      font-size: 1.4rem;
-      font-weight: 800;
-      margin-bottom: 0.4rem;
-      letter-spacing: -0.01em;
-    }
-
-    .grand-prize .prize-title {
-      font-size: 1.65rem;
-      background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .prize-desc {
-      color: #cbd5e1;
-      font-size: 0.92rem;
-      margin-bottom: 1.25rem;
-      line-height: 1.45;
-    }
-
-    .price-tag {
-      display: inline-block;
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-      padding: 6px 16px;
-      border-radius: 8px;
-      background: rgba(0, 0, 0, 0.45);
-    }
-
-    .gold-glow {
-      color: #ffb703;
-      border: 1px solid rgba(255, 183, 3, 0.45);
-      box-shadow: inset 0 0 10px rgba(255, 183, 3, 0.2);
-    }
-
-    .purple-glow {
-      color: #e9d5ff;
-      border: 1px solid rgba(192, 132, 252, 0.45);
-      box-shadow: inset 0 0 10px rgba(192, 132, 252, 0.2);
-    }
-
-    /* FORM STYLING */
-    .form-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 2.5rem 2rem;
-      box-shadow: 0
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
+      })
+      .then(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "🎃 SUBMIT MY ENTRY 👻";
+        success.style.display = "block";
+        success.scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById("giveawayForm").reset();
+        wordCount.textContent = "0";
+        wordCounterWrapper.classList.remove("warning", "danger");
+      })
+      .catch(err => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "🎃 SUBMIT MY ENTRY 👻";
+        error.textContent = "Something went wrong submitting your entry. Please try again.";
+        error.style.display = "block";
+      });
+    });
+  </script>
+</body>
+</html>
