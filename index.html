@@ -3,55 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Austreams Halloween Giveaway</title>
+<title>Austreams Halloween Giveaway 🎃</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    background:
+        linear-gradient(
+            rgba(7, 3, 15, 0.45),
+            rgba(7, 3, 15, 0.95)
+        ),
+        url("halloween-bg.png");
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+}
+
+/* DARK PURPLE GLOW OVERLAY */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(168, 85, 247, 0.15),
+            transparent 50%
+        );
+}
+
+/* MAIN CONTAINER */
+.container {
+    width: 92%;
+    max-width: 900px;
+    margin: auto;
+    padding: 40px 0 70px;
+}
+
+/* HERO SECTION */
+.hero {
+    text-align: center;
+    padding: 20px 0 30px;
+}
+
+.small-title {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #e9d5ff;
+    font-weight: bold;
+}
+
+.hero h1 {
+    margin: 15px 0 0;
+    font-size: clamp(42px, 8vw, 90px);
+    line-height: 0.88;
+    font-weight: 1000;
+    letter-spacing: -4px;
+    text-shadow:
+        0 0 20px rgba(168, 85, 247, .55),
+        0 0 50px rgba(168, 85, 247, .25);
+}
+
+.hero h1 span {
+    display: block;
+    color: #ff6900;
+    text-shadow:
+        0 0 15px rgba(255, 105, 0, .55),
+        0 0 40px rgba(255, 105, 0, .25);
+}
+
+.hero p {
+    max-width: 620px;
+    margin: 20px auto 0;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #eee6f5;
+}
+
 /* PRIZES CONTAINER */
 .prizes-container {
-    max-width: 850px;
-    margin: 30px auto;
     display: flex;
     flex-direction: column;
     gap: 16px;
+    margin: 30px 0 40px;
 }
 
 /* BASE PRIZE CARD */
 .prize-card {
-    background: rgba(15, 10, 25, 0.85);
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    border-radius: 16px;
+    background: rgba(8, 5, 15, 0.85);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+    border-radius: 18px;
     padding: 24px;
     text-align: center;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* 1ST GRAND PRIZE (FULL WIDTH) */
+/* 1ST GRAND PRIZE (TOP / FULL WIDTH) */
 .prize-card.grand-prize {
-    border-color: #ff6900;
-    box-shadow: 0 0 25px rgba(255, 105, 0, 0.25);
-    background: linear-gradient(180deg, rgba(35, 15, 45, 0.9), rgba(15, 10, 25, 0.9));
+    border-color: rgba(255, 105, 0, 0.6);
+    background: linear-gradient(180deg, rgba(35, 15, 45, 0.9), rgba(8, 5, 15, 0.9));
+    box-shadow: 0 0 30px rgba(255, 105, 0, 0.2);
 }
 
 .prize-card.grand-prize .prize-badge {
     color: #ff6900;
 }
 
-/* 2ND & 3RD PRIZES (SIDE BY SIDE) */
+/* 2ND & 3RD PRIZES GRID */
 .prizes-grid-bottom {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
 }
 
-/* BADGES & TYPOGRAPHY */
 .prize-badge {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #a855f7;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .prize-card h3 {
@@ -64,31 +149,235 @@
 .prize-card p {
     margin: 0;
     font-size: 14px;
-    color: #d1c4e9;
+    color: #bdb2c8;
+    line-height: 1.4;
 }
 
-/* MOBILE RESPONSIVE: Stack 2nd and 3rd on small screens */
-@media (max-width: 600px) {
+/* FORM CARD */
+.form-card {
+    background: rgba(8, 5, 15, 0.88);
+    border: 1px solid rgba(192, 132, 252, 0.35);
+    border-radius: 25px;
+    padding: 32px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.form-card h2 {
+    margin-top: 0;
+    font-size: 26px;
+}
+
+.subtitle {
+    color: #bfb3c9;
+    margin-bottom: 25px;
+}
+
+/* QUESTIONS */
+.question {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.question-number {
+    color: #ff8a22;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.question h3 {
+    margin: 8px 0 12px;
+    font-size: 17px;
+}
+
+/* INPUT LABELS & FIELDS */
+label.main-label {
+    display: block;
+    margin: 22px 0 8px;
+    font-weight: bold;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.35);
+    color: white;
+    font-size: 16px;
+    outline: none;
+    font-family: inherit;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+}
+
+textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.word-counter {
+    float: right;
+    color: #aaa0b0;
+    font-size: 13px;
+}
+
+.word-counter.warning {
+    color: #ff5252;
+}
+
+.hint {
+    margin-top: 6px;
+    color: #82778b;
+    font-size: 12px;
+}
+
+.confirm {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+    color: #c9c0d1;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.confirm input {
+    margin-top: 3px;
+    accent-color: #a855f7;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 17px;
+    border: 0;
+    border-radius: 14px;
+    background: linear-gradient(90deg, #7c3aed, #a855f7, #ff6900);
+    color: white;
+    font-size: 17px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 12px 35px rgba(124, 58, 237, 0.3);
+    transition: transform 0.2s, filter 0.2s;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.success {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 13px;
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #bbf7d0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.error {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 13px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fecaca;
+}
+
+/* RULES SECTION */
+.rules-box {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rules-title {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #ff8a22;
+    margin-bottom: 12px;
+}
+
+.rules-list {
+    margin: 0;
+    padding-left: 18px;
+    color: #a89cb5;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.rules-list li {
+    margin-bottom: 6px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #776c80;
+    font-size: 12px;
+}
+
+/* MOBILE STYLES */
+@media(max-width: 600px) {
     .prizes-grid-bottom {
         grid-template-columns: 1fr;
+    }
+
+    .form-card {
+        padding: 22px;
     }
 }
 </style>
 </head>
+
 <body>
 
+<div class="container">
+
+<!-- HERO -->
+<section class="hero">
+    <div class="small-title">
+        🎃 THREE PRIZES • DRAW DATE: 28TH OCTOBER • $700 TOTAL VALUE 🎃
+    </div>
+
+    <h1>
+        AUSTREAMS
+        <span>HALLOWEEN GIVEAWAY</span>
+    </h1>
+
+    <p>
+        Fill out your details below, tell us why you love Austreams in 25 words or less,
+        and you're officially in the draw on October 28th. 👻
+    </p>
+</section>
+
+<!-- PRIZES SECTION -->
 <div class="prizes-container">
 
-    <!-- 1ST GRAND PRIZE (TOP / FULL WIDTH) -->
+    <!-- 1ST GRAND PRIZE (FEATURED TOP) -->
     <div class="prize-card grand-prize">
         <div class="prize-badge">🏆 1st Grand Prize</div>
         <h3>Formuler Z11 Pro Max + 1 Year Sub</h3>
-        <p>Win a brand new Formuler Z11 Pro Max device plus a 1 Year Austreams Subscription.</p>
+        <p>Win a Formuler Z11 Pro Max streaming device together with a full 1 Year Austreams Subscription.</p>
     </div>
 
     <!-- 2ND & 3RD PRIZES (SIDE BY SIDE) -->
     <div class="prizes-grid-bottom">
-        
         <div class="prize-card">
             <div class="prize-badge">🥈 2nd Prize</div>
             <h3>1 Year Sub</h3>
@@ -100,10 +389,133 @@
             <h3>1 Year Sub</h3>
             <p>1 Year Austreams Subscription.</p>
         </div>
-
     </div>
 
 </div>
+
+<!-- ENTRY FORM -->
+<section class="form-card">
+    <h2>🎃 Enter the Halloween Giveaway</h2>
+    <p class="subtitle">Complete all questions below to submit your entry.</p>
+
+    <form id="giveawayForm">
+
+        <!-- QUESTION 1 -->
+        <div class="question">
+            <div class="question-number">QUESTION 1</div>
+            <h3>🎬 What is your favorite scary movie or suspense thriller?</h3>
+            <input type="text" id="movie" name="movie" placeholder="e.g. Halloween, Scream, The Shining..." maxlength="120" required>
+        </div>
+
+        <!-- QUESTION 2 -->
+        <div class="question">
+            <div class="question-number">QUESTION 2</div>
+            <h3>📺 What device do you currently use?</h3>
+            <input type="text" id="device" name="device" placeholder="e.g. Formuler Z11, Firestick, Shield TV, Smart TV..." maxlength="120" required>
+        </div>
+
+        <!-- WHY AUSTREAMS -->
+        <label class="main-label" for="why">
+            ❤️ In 25 words or less, why do you love Austreams?
+            <span class="word-counter"><span id="wordCount">0</span>/25</span>
+        </label>
+        <textarea id="why" name="why" maxlength="400" placeholder="Keep it short, funny, heartfelt... or all three! 😈" required></textarea>
+        <div class="hint">Maximum 25 words.</div>
+
+        <!-- TELEGRAM -->
+        <label class="main-label" for="telegram">📱 Telegram Username</label>
+        <input type="text" id="telegram" name="telegram" placeholder="@yourusername" maxlength="64" required>
+
+        <!-- NAME -->
+        <label class="main-label" for="name">👤 Name / Nickname</label>
+        <input type="text" id="name" name="name" placeholder="What should we call you?" maxlength="80" required>
+
+        <!-- CONFIRMATION CHECKBOX -->
+        <label class="confirm">
+            <input type="checkbox" id="member" required>
+            <span>I confirm that I'm a member of the Austreams Telegram group and that this is my genuine entry.</span>
+        </label>
+
+        <!-- SUBMIT BUTTON -->
+        <button type="submit" class="submit-button" id="submitButton">🎃 SUBMIT MY ENTRY 👻</button>
+
+        <div class="success" id="successMessage">
+            🎃 ENTRY RECEIVED! 🎃<br><br>
+            You're officially entered into the Halloween Giveaway. Draw date is October 28th. Good luck! 👻
+        </div>
+
+        <div class="error" id="errorMessage"></div>
+
+    </form>
+
+    <!-- RULES -->
+    <div class="rules-box">
+        <div class="rules-title">📜 Giveaway Rules & Terms</div>
+        <ol class="rules-list">
+            <li>Must have a current active Austreams username.</li>
+            <li>One entry per person.</li>
+            <li>Draw will be conducted on the 28th of October.</li>
+            <li>Winners will be announced as soon as the draw is conducted and must contact us to claim their prize.</li>
+            <li>Grand Prize Formuler Z11 will be posted to the winner.</li>
+            <li>1-Year Subscription prizes can be applied as a new account or used to extend a current account by 12 months (winner's choice).</li>
+        </ol>
+    </div>
+</section>
+
+<footer>Austreams Halloween Giveaway 🎃</footer>
+
+</div>
+
+<script>
+/* 25 WORD COUNTER */
+const whyBox = document.getElementById("why");
+const wordCount = document.getElementById("wordCount");
+
+function countWords(text) {
+    if (!text.trim()) return 0;
+    return text.trim().split(/\s+/).length;
+}
+
+whyBox.addEventListener("input", function() {
+    const count = countWords(this.value);
+    wordCount.textContent = count;
+    if (count > 25) {
+        wordCount.classList.add("warning");
+    } else {
+        wordCount.classList.remove("warning");
+    }
+});
+
+/* FORM SUBMISSION LOGIC */
+document.getElementById("giveawayForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const q1 = document.getElementById("movie").value.trim();
+    const q2 = document.getElementById("device").value.trim();
+    const why = whyBox.value;
+
+    const error = document.getElementById("errorMessage");
+    const success = document.getElementById("successMessage");
+
+    error.style.display = "none";
+    success.style.display = "none";
+
+    if (!q1 || !q2) {
+        error.textContent = "Please answer both Question 1 and Question 2.";
+        error.style.display = "block";
+        return;
+    }
+
+    if (countWords(why) > 25) {
+        error.textContent = "Your Austreams answer needs to be 25 words or less.";
+        error.style.display = "block";
+        return;
+    }
+
+    success.style.display = "block";
+    success.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+</script>
 
 </body>
 </html>
